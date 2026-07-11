@@ -1,0 +1,402 @@
+{
+    "categorias": {
+        "arroces": {
+            "nombre": "Arroces",
+            "productos": {
+                "arroz_a_la_marinera": {
+                    "nombre": "Arroz a la Marinera",
+                    "precio": 35000,
+                    "descripcion": "Arroz con mariscos mixtos, verduras y especias",
+                    "disponible": true
+                },
+                "arroz_mixto": {
+                    "nombre": "Arroz Mixto",
+                    "precio": 32000,
+                    "descripcion": "Arroz con pescado y camarones",
+                    "disponible": true
+                },
+                "arroz_con_camaron": {
+                    "nombre": "Arroz con Camarón",
+                    "precio": 38000,
+                    "descripcion": "Arroz con camarones salteados y vegetales",
+                    "disponible": true
+                },
+                "arroz_de_langostino": {
+                    "nombre": "Arroz de Langostino",
+                    "precio": 50000,
+                    "descripcion": "Arroz con langostinos enteros, un manjar del mar",
+                    "disponible": true
+                }
+            }
+        },
+        "cazuelas": {
+            "nombre": "Cazuelas",
+            "productos": {
+                "cazuela_de_camaron": {
+                    "nombre": "Cazuela de Camarón",
+                    "precio": 40000,
+                    "descripcion": "Cazuela con camarones, verduras y crema de mariscos",
+                    "disponible": true
+                },
+                "cazuela_mixta": {
+                    "nombre": "Cazuela Mixta",
+                    "precio": 36000,
+                    "descripcion": "Cazuela con pescado, camarones y calamares",
+                    "disponible": true
+                },
+                "cazuela_central": {
+                    "nombre": "Cazuela Central",
+                    "precio": 49000,
+                    "descripcion": "Cazuela con langostinos, camarones y pescado",
+                    "disponible": true
+                },
+                "cazuela_de_mariscos": {
+                    "nombre": "Cazuela de Mariscos",
+                    "precio": 33000,
+                    "descripcion": "Cazuela con surtido de mariscos del Pacífico",
+                    "disponible": true
+                },
+                "cazuela_de_langostino": {
+                    "nombre": "Cazuela de Langostino",
+                    "precio": 51000,
+                    "descripcion": "Cazuela con langostinos jugosos y salsa especial",
+                    "disponible": true
+                },
+                "ceviche_de_camaron": {
+                    "nombre": "Ceviche de Camarón",
+                    "precio": 24000,
+                    "descripcion": "Ceviche fresco con camarones, limón y cilantro",
+                    "disponible": true
+                }
+            }
+        },
+        "pescados_precio_fijo": {
+            "nombre": "Pescados (Precio Fijo)",
+            "productos": {
+                "mojarra_en_salsa": {
+                    "nombre": "Mojarra en Salsa",
+                    "precio": 37000,
+                    "descripcion": "Mojarra fresca bañada en nuestra salsa especial",
+                    "disponible": true
+                },
+                "mojarra_frita": {
+                    "nombre": "Mojarra Frita",
+                    "precio": 37000,
+                    "descripcion": "Mojarra crujiente, dorada a la perfección",
+                    "disponible": true
+                },
+                "salmon": {
+                    "nombre": "Salmón",
+                    "precio": 50000,
+                    "descripcion": "Salmón fresco a la plancha, suave y delicioso",
+                    "disponible": true
+                },
+                "sierra_frita_especial": {
+                    "nombre": "Sierra Frita Especial",
+                    "precio": 36000,
+                    "descripcion": "Sierra frita con toque especial de la casa",
+                    "disponible": true
+                },
+                "filete_a_la_marinera": {
+                    "nombre": "Filete a la Marinera",
+                    "precio": 37000,
+                    "descripcion": "Filete de pescado con salsa marinera de mariscos",
+                    "disponible": true
+                },
+                "filete_al_ajillo": {
+                    "nombre": "Filete al Ajillo",
+                    "precio": 34000,
+                    "descripcion": "Filete de pescado con salsa de ajo y especias",
+                    "disponible": true
+                },
+                "bagre_a_la_marinera": {
+                    "nombre": "Bagre a la Marinera",
+                    "precio": 42000,
+                    "descripcion": "Bagre jugoso con salsa marinera de mariscos",
+                    "disponible": true
+                },
+                "bagre_al_ajillo": {
+                    "nombre": "Bagre al Ajillo",
+                    "precio": 39000,
+                    "descripcion": "Bagre con salsa de ajo y toques de limón",
+                    "disponible": true
+                },
+                "trucha_a_la_marinera": {
+                    "nombre": "Trucha a la Marinera",
+                    "precio": 41000,
+                    "descripcion": "Trucha con salsa marinera, exquisita y suave",
+                    "disponible": true
+                },
+                "trucha_al_ajillo": {
+                    "nombre": "Trucha al Ajillo",
+                    "precio": 37000,
+                    "descripcion": "Trucha con salsa de ajo y hierbas aromáticas",
+                    "disponible": true
+                },
+                "trucha_en_salsa_de_camaron": {
+                    "nombre": "Trucha en Salsa de Camarón",
+                    "precio": 50000,
+                    "descripcion": "Trucha bañada en salsa cremosa de camarones",
+                    "disponible": true
+                },
+                "trucha_a_la_plancha": {
+                    "nombre": "Trucha a la Plancha",
+                    "precio": 27500,
+                    "descripcion": "Trucha a la plancha, saludable y deliciosa",
+                    "disponible": true
+                },
+                "sancocho_de_bagre": {
+                    "nombre": "Sancocho de Bagre",
+                    "precio": 35000,
+                    "descripcion": "Sancocho tradicional con bagre y verduras",
+                    "disponible": true
+                },
+                "filete_o_bagre_en_salsa": {
+                    "nombre": "Filete o Bagre en Salsa",
+                    "precio": 45000,
+                    "descripcion": "Filete o bagre con nuestra salsa de la casa",
+                    "disponible": true
+                },
+                "camaron_al_ajillo": {
+                    "nombre": "Camarón al Ajillo",
+                    "precio": 39000,
+                    "descripcion": "Camarones salteados con ajo y vino blanco",
+                    "disponible": true
+                },
+                "langostinos_al_ajillo": {
+                    "nombre": "Langostinos al Ajillo",
+                    "precio": 150000,
+                    "descripcion": "Langostinos premium con salsa de ajo, un plato especial",
+                    "disponible": true
+                }
+            }
+        },
+        "pescados_segun_tamano": {
+            "nombre": "Pescados (Según Tamaño)",
+            "productos": {
+                "pargo_rojo_frito_o_salsa": {
+                    "nombre": "Pargo Rojo Frito o en Salsa",
+                    "precio": "Según tamaño",
+                    "descripcion": "Pargo rojo fresco, disponible frito o en salsa",
+                    "disponible": true
+                },
+                "robalo_frito_o_salsa": {
+                    "nombre": "Robalo Frito o en Salsa",
+                    "precio": "Según tamaño",
+                    "descripcion": "Robalo fresco, disponible frito o en salsa",
+                    "disponible": true
+                },
+                "viudo_de_capaz": {
+                    "nombre": "Viudo de Capaz",
+                    "precio": "Según tamaño",
+                    "descripcion": "Viudo tradicional de capaz, receta del Pacífico",
+                    "disponible": true
+                },
+                "viudo_de_mapara": {
+                    "nombre": "Viudo de Mapará",
+                    "precio": "Según tamaño",
+                    "descripcion": "Viudo de mapará, plato típico de la región",
+                    "disponible": true
+                },
+                "bocachico_frito_o_salsa": {
+                    "nombre": "Bocachico Frito o en Salsa",
+                    "precio": "Según tamaño",
+                    "descripcion": "Bocachico fresco, disponible frito o en salsa",
+                    "disponible": true
+                },
+                "bagre_frito_o_salsa": {
+                    "nombre": "Bagre Frito o en Salsa",
+                    "precio": "Según tamaño",
+                    "descripcion": "Bagre fresco, disponible frito o en salsa",
+                    "disponible": true
+                },
+                "pargo_rojo_a_la_marinera": {
+                    "nombre": "Pargo Rojo a la Marinera",
+                    "precio": "Según tamaño",
+                    "descripcion": "Pargo rojo con salsa marinera de mariscos",
+                    "disponible": true
+                },
+                "robalo_a_la_marinera": {
+                    "nombre": "Robalo a la Marinera",
+                    "precio": "Según tamaño",
+                    "descripcion": "Robalo con salsa marinera, una delicia del mar",
+                    "disponible": true
+                },
+                "camaron_bbq": {
+                    "nombre": "Camarón BBQ",
+                    "precio": "Según tamaño",
+                    "descripcion": "Camarones a la parrilla con salsa BBQ",
+                    "disponible": true
+                },
+                "de_camarones": {
+                    "nombre": "De Camarones",
+                    "precio": "Según tamaño",
+                    "descripcion": "Plato de camarones, disponible en diferentes presentaciones",
+                    "disponible": true
+                }
+            }
+        },
+        "almuerzos_ejecutivos": {
+            "nombre": "Almuerzos Ejecutivos",
+            "productos": {
+                "bagre_frito": {
+                    "nombre": "Bagre Frito",
+                    "precio": 21500,
+                    "descripcion": "Bagre frito con acompañamiento",
+                    "disponible": true
+                },
+                "filete_a_la_marinera_ejecutivo": {
+                    "nombre": "Filete a la Marinera",
+                    "precio": 23500,
+                    "descripcion": "Filete con salsa marinera, incluye acompañamiento",
+                    "disponible": true
+                },
+                "arroz_con_camaron_ejecutivo": {
+                    "nombre": "Arroz con Camarón",
+                    "precio": 21500,
+                    "descripcion": "Arroz con camarones, incluye acompañamiento",
+                    "disponible": true
+                },
+                "bagre_en_salsa": {
+                    "nombre": "Bagre en Salsa",
+                    "precio": 21500,
+                    "descripcion": "Bagre en salsa especial, incluye acompañamiento",
+                    "disponible": true
+                },
+                "cazuela_de_mariscos_ejecutiva": {
+                    "nombre": "Cazuela de Mariscos",
+                    "precio": 23500,
+                    "descripcion": "Cazuela de mariscos, incluye acompañamiento",
+                    "disponible": true
+                },
+                "cazuela_especial": {
+                    "nombre": "Cazuela Especial",
+                    "precio": 30500,
+                    "descripcion": "Cazuela con mariscos selectos",
+                    "disponible": true
+                },
+                "filete_al_ajillo_ejecutivo": {
+                    "nombre": "Filete al Ajillo",
+                    "precio": 21500,
+                    "descripcion": "Filete al ajillo, incluye acompañamiento",
+                    "disponible": true
+                },
+                "filete_sin_apanar": {
+                    "nombre": "Filete sin Apanar",
+                    "precio": 21500,
+                    "descripcion": "Filete de pescado sin apanar, saludable",
+                    "disponible": true
+                },
+                "filete_apanado": {
+                    "nombre": "Filete Apanado",
+                    "precio": 21500,
+                    "descripcion": "Filete de pescado apanado, crujiente",
+                    "disponible": true
+                },
+                "filete_al_vapor": {
+                    "nombre": "Filete al Vapor",
+                    "precio": 21500,
+                    "descripcion": "Filete de pescado al vapor, opción saludable",
+                    "disponible": true
+                },
+                "sierra_frita_ejecutiva": {
+                    "nombre": "Sierra Frita",
+                    "precio": 24500,
+                    "descripcion": "Sierra frita, incluye acompañamiento",
+                    "disponible": true
+                },
+                "mojarra_frita_ejecutiva": {
+                    "nombre": "Mojarra Frita",
+                    "precio": 21500,
+                    "descripcion": "Mojarra frita, incluye acompañamiento",
+                    "disponible": true
+                },
+                "lenguado": {
+                    "nombre": "Lenguado",
+                    "precio": 24500,
+                    "descripcion": "Lenguado fresco a la plancha",
+                    "disponible": true
+                },
+                "mapara_frito": {
+                    "nombre": "Mapará Frito",
+                    "precio": 18500,
+                    "descripcion": "Mapará frito, incluye acompañamiento",
+                    "disponible": true
+                },
+                "mapara_en_salsa": {
+                    "nombre": "Mapará en Salsa",
+                    "precio": 18500,
+                    "descripcion": "Mapará en salsa especial",
+                    "disponible": true
+                },
+                "arroz_a_la_marinera_ejecutivo": {
+                    "nombre": "Arroz a la Marinera",
+                    "precio": 23500,
+                    "descripcion": "Arroz a la marinera, incluye acompañamiento",
+                    "disponible": true
+                },
+                "trucha_a_la_plancha_ejecutiva": {
+                    "nombre": "Trucha a la Plancha",
+                    "precio": 27500,
+                    "descripcion": "Trucha a la plancha, incluye acompañamiento",
+                    "disponible": true
+                },
+                "trucha_a_la_marinera_ejecutiva": {
+                    "nombre": "Trucha a la Marinera",
+                    "precio": 35500,
+                    "descripcion": "Trucha con salsa marinera",
+                    "disponible": true
+                },
+                "viudo_de_mapara_ejecutivo": {
+                    "nombre": "Viudo de Mapará",
+                    "precio": 21500,
+                    "descripcion": "Viudo de mapará, incluye acompañamiento",
+                    "disponible": true
+                },
+                "churrasco": {
+                    "nombre": "Churrasco",
+                    "precio": 27500,
+                    "descripcion": "Churrasco a la parrilla con acompañamiento",
+                    "disponible": true
+                }
+            }
+        }
+    },
+    "informacion_restaurante": {
+        "nombre": "Mar Azul del Pacífico",
+        "direccion": "Calle 9a # 32a-11 Sur, Ciudad Montes, Bogotá",
+        "telefono": "(Los clientes se comunican por WhatsApp)",
+        "whatsapp": "Disponible para consultas y pedidos",
+        "horario": {
+            "lunes_a_sabado": "11:00 AM - 9:00 PM",
+            "domingos_festivos": "11:00 AM - 6:00 PM",
+            "dia_descanso": "Martes (mantenimiento y surtido)"
+        },
+        "parqueadero": {
+            "disponible": true,
+            "costo": "Gratuito para clientes",
+            "capacidad": 15
+        },
+        "domicilios": {
+            "zona_cobertura": "Ciudad Montes y alrededores",
+            "monto_minimo": 25000,
+            "costo": 5000,
+            "costo_gratis_superior_a": 80000,
+            "tiempo_estimado": "30-45 minutos",
+            "horario": "12:00 PM - 8:00 PM"
+        },
+        "medios_pago": [
+            "Efectivo",
+            "Tarjeta débito/crédito",
+            "Nequi",
+            "Daviplata",
+            "Transferencia bancaria (BRE-B - Colombia)",
+            "Pago QR (BRE-B - Colombia)"
+        ],
+        "servicios": {
+            "reservas": "Sí, sin costo adicional",
+            "eventos": "Sí, capacidad para 50 personas",
+            "menu_infantil": "Sí, consultar disponibilidad"
+        }
+    }
+}

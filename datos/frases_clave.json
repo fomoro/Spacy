@@ -1,0 +1,65 @@
+{
+    "informacion_general": [
+        "¿qué tipo de producto venden?",
+        "¿cuál es la especialidad del restaurante?",
+        "¿tienen sucursal física?",
+        "¿dónde están ubicados?",
+        "¿cuál es el horario de atención?",
+        "¿atienden todos los días?",
+        "¿el establecimiento cuenta con parqueadero?",
+        "¿cuál es el monto mínimo para solicitar un domicilio?",
+        "¿cuáles son los medios de pago?",
+        "¿aceptan pagos con tarjeta de crédito?",
+        "¿aceptan pagos con nequi?",
+        "¿aceptan pagos con daviplata?",
+        "¿me puedo comunicar por whatsapp?",
+        "¿puedo separar una mesa?",
+        "¿puedo hacer una reserva?",
+        "¿tiene un costo adicional la reserva?",
+        "¿tienen servicio para eventos?",
+        "¿realizan domicilios?",
+        "¿tiene algún costo el domicilio?",
+        "¿cuánto tiempo dura el domicilio para llegar?"
+    ],
+    "menu": [
+        "me enseñas el menú",
+        "¿cuál es el menú?",
+        "¿cuál es la especialidad de la casa?",
+        "¿cuál es el plato del día?",
+        "¿cuáles son las entradas?",
+        "¿cuáles son los platos ejecutivos?",
+        "¿cuáles son los platos especiales?",
+        "¿qué tipo de almuerzo ofrecen?",
+        "¿qué tipo de pescado tienen?",
+        "¿qué tipo de arroces tienen?",
+        "¿qué tipo de cazuelas tienen?",
+        "¿qué tipo de ceviche tienen?",
+        "¿cuál es el plato más vendido?",
+        "¿qué me pueden recomendar?",
+        "¿qué tienen para hoy?",
+        "¿tiene salsa de camarones?",
+        "¿qué tipo de platos tiene con camarones?"
+    ],
+    "recomendaciones": [
+        "¿cuál es el pescado que tiene menos espinas?",
+        "¿cuál es el pescado que sabe mejor?",
+        "¿cuál es el pescado más grande?",
+        "¿cuál es el pescado que piden con frecuencia?",
+        "¿tiene menú infantil?",
+        "¿cuál plato me recomienda para un niño?",
+        "¿con qué tipo de salsa puedo acompañar el plato?",
+        "¿cuál plato alcanza para dos personas?"
+    ],
+    "preparacion": [
+        "¿qué tipo de preparaciones tienen?",
+        "¿qué tamaños tienen?",
+        "¿qué diferencia hay entre el ajillo y a la marinera?"
+    ],
+    "precio": [
+        "¿cuál es el plato más caro?",
+        "¿cuál es el plato más barato?"
+    ],
+    "pedido": [
+        "¿le puedo adicionar camarones?"
+    ]
+}

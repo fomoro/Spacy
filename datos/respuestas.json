@@ -1,0 +1,16 @@
+{
+    "saludo": "¡Hola! Bienvenido a Mar Azul del Pacífico. ¿En qué puedo ayudarte? 🐟",
+    "menu": "📋 Nuestro menú incluye:\n- Arroces (a la marinera, mixto, con camarón, de langostino)\n- Cazuelas (de camarón, mixta, central, de mariscos, de langostino)\n- Pescados (mojarra, bagre, salmón, trucha, sierra, pargo, etc.)\n- Almuerzos ejecutivos\n\n¿Qué te gustaría saber en específico?",
+    "productos_especificos": "Sí, tenemos {producto}. Está disponible en {preparacion}. ¿Te gustaría pedirlo?",
+    "preparacion": "Sí, podemos prepararlo {preparacion}. ¿Te gustaría así?",
+    "precio": "El {producto} cuesta ${precio}. ¿Te gustaría pedirlo?",
+    "pedido": "Perfecto, tomaré tu pedido. ¿Algo más que desees agregar?",
+    "pago": "Aceptamos efectivo, tarjeta, Nequi, Daviplata, transferencia y pago QR.",
+    "ubicacion": "📍 Estamos en Calle 9a # 32a-11 Sur, Ciudad Montes, Bogotá.",
+    "horario": "🕐 Lunes a Sábado: 11am - 9pm. Domingos: 11am - 6pm. Cerramos los martes.",
+    "informacion_general": "Claro, te cuento: somos un restaurante especializado en pescados y mariscos con más de 20 años de tradición. ¿Qué más quieres saber?",
+    "recomendaciones": "Te recomiendo probar nuestra Mojarra Frita o el Arroz con Camarones. Son los favoritos de nuestros clientes. ¿Te gustaría alguno?",
+    "gracias": "¡De nada! ¿Hay algo más en lo que pueda ayudarte?",
+    "despedida": "¡Gracias por visitarnos! Vuelve pronto a Mar Azul del Pacífico. 🐟",
+    "desconocido": "No entendí tu mensaje. Puedes preguntarme sobre el menú, precios, ubicación, horario o hacer un pedido."
+}

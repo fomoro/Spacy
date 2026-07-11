@@ -1,0 +1,21 @@
+{
+    "nombre_restaurante": "Mar Azul del Pacífico",
+    "modelo_spacy": "es_core_news_sm",
+    "mensaje_bienvenida": "¡Bienvenido a Mar Azul del Pacífico! 🐟",
+    "version": "1.0.0",
+    "intenciones": [
+        "saludo",
+        "menu",
+        "productos_especificos",
+        "preparacion",
+        "precio",
+        "pedido",
+        "pago",
+        "ubicacion",
+        "horario",
+        "informacion_general",
+        "recomendaciones",
+        "gracias",
+        "desconocido"
+    ]
+}

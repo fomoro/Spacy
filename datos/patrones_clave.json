@@ -1,0 +1,47 @@
+{
+    "saludo": [
+        "^(hola|buen[oa]s?|hey|qui?ubo?|qu[eé] tal|saludos|c[óo]mo (est[áa]s|vamos))"
+    ],
+    "menu": [
+        "(mu[eé]stra|ver|cu[aá]l es|enseñame|dime|quiero ver) (el )?men[uú]",
+        "qu[eé] (venden|ofrecen|tienen|hay|comida|productos)",
+        "^(pescados|arroces|cazuelas|mariscos|camarones|langostinos|ceviche|almuerzos|ejecutivos)$"
+    ],
+    "productos_especificos": [
+        "tienen (bagre|mojarra|salm[oó]n|trucha|sierra|pargo|mapar[aá]|lenguado|robalo|bocachico|capaz|camarones|langostinos|ceviche) (en salsa|frito|frita|al horno|sudada|dorado|al ajillo|a la marinera|apanado|a la plancha|al vapor)?"
+    ],
+    "preparacion": [
+        "lo (preparan|hacen|tienen) (frito|al ajillo|en salsa|apanado|a la marinera|al vapor|a la plancha|a la parrilla)"
+    ],
+    "precio": [
+        "cu[aá]nto (cuesta|cuestan|vale|valen|sale|salen|es|son|est[aá]|est[aá]n) (el|la|un|una) (mojarra|bagre|mapar[aá]|pargo|sierra|trucha|salm[oó]n|camarones|ceviche|lenguado|langostinos|arroz|cazuela|filete|robalo|viudo|bocachico|churrasco|sancocho)",
+        "qu[eé] precio tiene (el|la) (mojarra|bagre|mapar[aá]|pargo|sierra|trucha|salm[oó]n|camarones|ceviche|lenguado|langostinos|arroz|cazuela|filete|robalo|viudo|bocachico|churrasco|sancocho)"
+    ],
+    "pedido": [
+        "(quiero|me gustar[ií]a|deseo|voy a|quisiera|necesito) (pedir|ordenar|comprar|hacer un pedido)",
+        "(hacer|realizar) (un )?pedido",
+        "(quiero|deseo|me gustar[ií]a|voy a|quisiera|necesito) (un|una) (mojarra|bagre|salm[oó]n|trucha|sierra|pargo|mapar[aá]|lenguado|robalo|bocachico|capaz|camarones|langostinos|ceviche|arroz|cazuela|filete|sancocho|churrasco)"
+    ],
+    "pago": [
+        "voy a pagar (en|con|por) (efectivo|tarjeta|nequi|daviplata|transferencia|qr)",
+        "c[oó]mo (se )?paga|formas? de pago",
+        "m[eé]todos? de pago|medios? de pago",
+        "aceptan (tarjeta|efectivo|nequi|daviplata)",
+        "pago con (tarjeta|efectivo|nequi|daviplata|debito|credito)",
+        "se puede pagar con"
+    ],
+    "ubicacion": [
+        "d[oó]nde (est[aá]n|queda|se encuentra|los encuentro|los puedo encontrar)",
+        "ubicaci[oó]n|direcci[oó]n|local"
+    ],
+    "horario": [
+        "horario[s]?|horas? de (atenci[oó]n|apertura|cierre)",
+        "(a )?qu[eé] hora (abren|cierran|atienden|trabajan)",
+        "cu[aá]ndo (abren|cierran|atienden|trabajan)"
+    ],
+    "gracias": [
+        "gracias|agradecid[oa]|mil gracias|muchas gracias",
+        "te agradezco|muy amable",
+        "gracias por (la info|la informaci[oó]n|todo|ayuda)"
+    ]
+}

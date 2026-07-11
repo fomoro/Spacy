@@ -1,0 +1,20 @@
+📂 mar_azul_bot/
+│
+├── 📂 data/                          # Archivos de datos (JSON)
+│   ├── 📄 productos.json              # Menú completo del restaurante
+│   ├── 📄 respuestas.json             # Respuestas del bot por intención
+│   ├── 📄 patrones_clave.json         # Patrones regex para detección
+│   ├── 📄 frases_clave.json           # Frases únicas para detección
+│   └── 📄 config.json                 # Configuración general
+│
+├── 📂 src/                            # Código fuente
+│   ├── 📄 bot.py                      # Código principal del bot
+│   └── 📄 utils.py                    # Funciones auxiliares (carga JSON, etc.)
+│
+├── 📂 tests/                          # Pruebas (opcional)
+│   ├── 📄 test_patrones.py            # Pruebas de patrones
+│   └── 📄 test_mensajes.txt           # Mensajes de prueba
+│
+├── 📄 requirements.txt                # Dependencias del proyecto
+├── 📄 README.md                       # Documentación del proyecto
+└── 📄 main.py                         # Punto de entrada (ejecuta el bot)

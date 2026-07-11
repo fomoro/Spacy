@@ -1,0 +1,2 @@
+spacy>=3.0.0
+es-core-news-sm>=3.0.0
