@@ -1,0 +1,10 @@
+{
+  "lowercase": true,
+  "unicode_form": "NFC",
+  "collapse_whitespace": true,
+  "normalize_quotes": true,
+  "normalize_punctuation_spacing": true,
+  "strip_outer_whitespace": true,
+  "preserve_accents": true,
+  "preserve_original": true
+}
