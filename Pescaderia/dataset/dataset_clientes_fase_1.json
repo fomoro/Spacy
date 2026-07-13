@@ -1,0 +1,5046 @@
+{
+  "metadata": {
+    "nombre": "Fase 1 - Dataset de 10 clientes para Mar Azul del Pacífico",
+    "version": "1.0.0",
+    "fecha_generacion": "2026-07-11",
+    "idioma": "es-CO",
+    "ciudad_objetivo": "Bogotá D.C.",
+    "total_perfiles": 10,
+    "total_casos": 200,
+    "casos_por_perfil": 20,
+    "objetivo": "Servir como base de diseño, validación y pruebas para la refactorización NLP con lemas, Matcher y PhraseMatcher."
+  },
+  "politicas_conversacionales": {
+    "producto_especifico": "Responder únicamente con la información del producto solicitado. No desplegar todo el menú. Ofrecer el PDF solo como complemento cuando sea útil.",
+    "categoria_especifica": "Listar únicamente los productos de la categoría consultada, preferiblemente con nombre, precio y disponibilidad.",
+    "menu_general": "Entregar el PDF cuando nunca se haya enviado o exista una versión más reciente.",
+    "menu_enviado_hace_menos_de_7_dias": "No reenviar automáticamente. Indicar fecha y hora del envío anterior y preguntar si desea recibirlo nuevamente.",
+    "solicitud_explicita_de_reenvio": "Reenviar el PDF sin una confirmación adicional.",
+    "menu_desactualizado": "Enviar la versión actual y aclarar que existe una actualización.",
+    "datos_no_confirmados": "No inventar. Hacer una pregunta de aclaración o escalar a personal del restaurante.",
+    "alergenos": "No garantizar ausencia de alérgenos o contaminación cruzada sin datos operativos confirmados."
+  },
+  "perfiles": [
+    {
+      "id": "cliente_01_estudiante",
+      "nombre": "Santiago",
+      "edad": 19,
+      "zona": "Kennedy",
+      "nivel_socioeconomico_aproximado": "medio-bajo",
+      "nivel_educativo": "universitario en curso",
+      "estilo_linguistico": [
+        "coloquial",
+        "mensajes cortos",
+        "abreviaciones",
+        "presupuesto explícito"
+      ],
+      "necesidades_frecuentes": [
+        "precio",
+        "almuerzo ejecutivo",
+        "domicilio",
+        "Nequi",
+        "opciones económicas"
+      ]
+    },
+    {
+      "id": "cliente_02_oficinista",
+      "nombre": "Laura",
+      "edad": 28,
+      "zona": "Puente Aranda",
+      "nivel_socioeconomico_aproximado": "medio",
+      "nivel_educativo": "profesional",
+      "estilo_linguistico": [
+        "directo",
+        "orientado a tiempo",
+        "pedidos para varias personas"
+      ],
+      "necesidades_frecuentes": [
+        "menú del día",
+        "tiempo de entrega",
+        "facturación",
+        "pago con tarjeta"
+      ]
+    },
+    {
+      "id": "cliente_03_padre_familia",
+      "nombre": "Andrés",
+      "edad": 38,
+      "zona": "Ciudad Montes",
+      "nivel_socioeconomico_aproximado": "medio",
+      "nivel_educativo": "técnico",
+      "estilo_linguistico": [
+        "preguntas completas",
+        "comparación",
+        "orientado a familia"
+      ],
+      "necesidades_frecuentes": [
+        "porciones",
+        "menú infantil",
+        "espinas",
+        "parqueadero",
+        "presupuesto familiar"
+      ]
+    },
+    {
+      "id": "cliente_04_adulta_mayor",
+      "nombre": "Marta",
+      "edad": 67,
+      "zona": "Restrepo",
+      "nivel_socioeconomico_aproximado": "medio-bajo",
+      "nivel_educativo": "secundaria",
+      "estilo_linguistico": [
+        "cortés",
+        "explicativo",
+        "referencias como 'pescadito' o 'ese'"
+      ],
+      "necesidades_frecuentes": [
+        "preparaciones suaves",
+        "acompañamientos",
+        "horarios",
+        "opciones no fritas"
+      ]
+    },
+    {
+      "id": "cliente_05_habitual",
+      "nombre": "Carlos",
+      "edad": 45,
+      "zona": "Ciudad Montes",
+      "nivel_socioeconomico_aproximado": "medio",
+      "nivel_educativo": "tecnólogo",
+      "estilo_linguistico": [
+        "confianza",
+        "referencias implícitas",
+        "mensajes breves"
+      ],
+      "necesidades_frecuentes": [
+        "disponibilidad",
+        "precio vigente",
+        "repetir pedido",
+        "misma dirección"
+      ]
+    },
+    {
+      "id": "cliente_06_profesional",
+      "nombre": "Natalia",
+      "edad": 42,
+      "zona": "Chapinero",
+      "nivel_socioeconomico_aproximado": "medio-alto",
+      "nivel_educativo": "posgrado",
+      "estilo_linguistico": [
+        "formal",
+        "preciso",
+        "orientado a calidad y servicio"
+      ],
+      "necesidades_frecuentes": [
+        "especialidades",
+        "productos premium",
+        "reservas",
+        "eventos"
+      ]
+    },
+    {
+      "id": "cliente_07_baja_alfabetizacion_digital",
+      "nombre": "Jorge",
+      "edad": 55,
+      "zona": "Tunjuelito",
+      "nivel_socioeconomico_aproximado": "bajo",
+      "nivel_educativo": "primaria",
+      "estilo_linguistico": [
+        "errores ortográficos",
+        "sin tildes",
+        "fragmentos"
+      ],
+      "necesidades_frecuentes": [
+        "precio",
+        "domicilio",
+        "ubicación",
+        "pago"
+      ]
+    },
+    {
+      "id": "cliente_08_adolescente",
+      "nombre": "Valentina",
+      "edad": 16,
+      "zona": "Bosa",
+      "nivel_socioeconomico_aproximado": "medio-bajo",
+      "nivel_educativo": "bachillerato",
+      "estilo_linguistico": [
+        "muy corto",
+        "ambiguo",
+        "abreviaciones"
+      ],
+      "necesidades_frecuentes": [
+        "menú",
+        "precio",
+        "domicilio",
+        "referencias contextuales"
+      ]
+    },
+    {
+      "id": "cliente_09_restricciones",
+      "nombre": "Diana",
+      "edad": 33,
+      "zona": "Teusaquillo",
+      "nivel_socioeconomico_aproximado": "medio",
+      "nivel_educativo": "profesional",
+      "estilo_linguistico": [
+        "detallado",
+        "preventivo",
+        "preguntas sobre ingredientes"
+      ],
+      "necesidades_frecuentes": [
+        "alérgenos",
+        "ingredientes",
+        "modificaciones",
+        "contaminación cruzada"
+      ]
+    },
+    {
+      "id": "cliente_10_administrativo",
+      "nombre": "Felipe",
+      "edad": 31,
+      "zona": "Centro",
+      "nivel_socioeconomico_aproximado": "medio",
+      "nivel_educativo": "profesional",
+      "estilo_linguistico": [
+        "operativo",
+        "pedidos grupales",
+        "requisitos de entrega"
+      ],
+      "necesidades_frecuentes": [
+        "factura",
+        "pedidos programados",
+        "cantidades",
+        "empaque individual"
+      ]
+    }
+  ],
+  "casos": [
+    {
+      "id": "caso_001",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Parce, ¿qué almuerzo tienen barato?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion_por_presupuesto",
+      "entidades_esperadas": {
+        "presupuesto": "bajo",
+        "categoria": "almuerzos_ejecutivos"
+      },
+      "accion_esperada": "listar_opciones_relevantes",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar ejecutivos económicos, con precio, sin desplegar todo el menú."
+    },
+    {
+      "id": "caso_002",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Hay ejecutivo hoy?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "almuerzos_ejecutivos",
+        "fecha_relativa": "hoy"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar ejecutivos disponibles hoy."
+    },
+    {
+      "id": "caso_003",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Qué puedo pedir con veinte lucas?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion_por_presupuesto",
+      "entidades_esperadas": {
+        "presupuesto_maximo": 20000
+      },
+      "accion_esperada": "filtrar_por_precio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar productos dentro del presupuesto o explicar si no hay."
+    },
+    {
+      "id": "caso_004",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Reciben Nequi?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "Nequi"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar Nequi."
+    },
+    {
+      "id": "caso_005",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿El domi cuánto vale?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "costo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar costo, mínimo y condición de gratuidad."
+    },
+    {
+      "id": "caso_006",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Pásame el menú",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF porque nunca se ha enviado."
+    },
+    {
+      "id": "caso_007",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Pásame el menú",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Decir fecha y hora del último envío y preguntar si desea recibirlo otra vez."
+    },
+    {
+      "id": "caso_008",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Mándamelo otra vez",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar sin pedir confirmación."
+    },
+    {
+      "id": "caso_009",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Cuánto vale la mojarra frita?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "mojarra_frita",
+        "preparacion": "frita"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar precio e información puntual; no reenviar el menú."
+    },
+    {
+      "id": "caso_010",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Qué arroces tienen?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "arroces"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar únicamente arroces."
+    },
+    {
+      "id": "caso_011",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Hay algo con camarón que no sea tan caro?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "ingrediente": "camarón",
+        "criterio": "económico"
+      },
+      "accion_esperada": "filtrar_productos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar opciones con camarón ordenadas por precio."
+    },
+    {
+      "id": "caso_012",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Quiero una mojarra",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "iniciar_pedido",
+      "entidades_esperadas": {
+        "producto": "mojarra"
+      },
+      "accion_esperada": "solicitar_datos_faltantes",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar preparación, tamaño o presentación."
+    },
+    {
+      "id": "caso_013",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Una frita",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "seleccionar_preparacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "preparacion": "frita"
+      },
+      "accion_esperada": "validar_combinacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Usar contexto y validar si existe esa preparación."
+    },
+    {
+      "id": "caso_014",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿El arroz con camarón viene con bebida?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "arroz_con_camaron",
+        "atributo": "acompañamientos"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Responder solo sobre el producto y sus acompañamientos."
+    },
+    {
+      "id": "caso_015",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Atienden hoy?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_horario",
+      "entidades_esperadas": {
+        "fecha_relativa": "hoy"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Responder según el día actual y horario."
+    },
+    {
+      "id": "caso_016",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Hasta dónde llega el domicilio?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "cobertura"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar zona de cobertura."
+    },
+    {
+      "id": "caso_017",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Se puede pagar cuando llegue?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "modalidad": "contra_entrega"
+      },
+      "accion_esperada": "responder_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar medios disponibles al recibir o pedir precisión."
+    },
+    {
+      "id": "caso_018",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Qué plato llena más?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "criterio": "porción"
+      },
+      "accion_esperada": "recomendar_con_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Recomendar según porciones registradas."
+    },
+    {
+      "id": "caso_019",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "¿Tienen ceviche pequeño?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_producto",
+      "entidades_esperadas": {
+        "producto": "ceviche",
+        "tamaño": "pequeño"
+      },
+      "accion_esperada": "responder_producto_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Informar tamaños disponibles o pedir confirmación."
+    },
+    {
+      "id": "caso_020",
+      "perfil_cliente_id": "cliente_01_estudiante",
+      "mensaje": "Gracias, era eso",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Responder agradecimiento breve."
+    },
+    {
+      "id": "caso_021",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Qué menú ejecutivo tienen hoy?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "almuerzos_ejecutivos",
+        "fecha_relativa": "hoy"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar ejecutivos disponibles."
+    },
+    {
+      "id": "caso_022",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Necesito pedir para tres personas.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "iniciar_pedido_grupal",
+      "entidades_esperadas": {
+        "cantidad_personas": 3
+      },
+      "accion_esperada": "solicitar_productos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar selección o preferencias."
+    },
+    {
+      "id": "caso_023",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Cuánto demora el domicilio a Ciudad Montes?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "destino": "Ciudad Montes",
+        "atributo": "tiempo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar tiempo estimado y cobertura."
+    },
+    {
+      "id": "caso_024",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Me envían factura?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_facturacion",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Responder según información confirmada; no inventar."
+    },
+    {
+      "id": "caso_025",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Puedo pagar con tarjeta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "tarjeta"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar tarjeta débito/crédito."
+    },
+    {
+      "id": "caso_026",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Envíame la carta en PDF.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {
+        "formato": "pdf"
+      },
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_027",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Envíame la carta en PDF.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {
+        "formato": "pdf"
+      },
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Indicar fecha y hora y ofrecer reenvío."
+    },
+    {
+      "id": "caso_028",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Sí, reenvíala.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_029",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Qué trae la cazuela mixta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "cazuela_mixta",
+        "atributo": "ingredientes"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar descripción puntual."
+    },
+    {
+      "id": "caso_030",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Qué cazuelas manejan?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "cazuelas"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar cazuelas con precio."
+    },
+    {
+      "id": "caso_031",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Quiero dos arroces con camarón y una cazuela.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agregar_productos_pedido",
+      "entidades_esperadas": {
+        "items": [
+          {
+            "producto": "arroz_con_camaron",
+            "cantidad": 2
+          },
+          {
+            "categoria": "cazuela",
+            "cantidad": 1
+          }
+        ]
+      },
+      "accion_esperada": "solicitar_datos_faltantes",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Registrar arroces y preguntar cuál cazuela."
+    },
+    {
+      "id": "caso_032",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Pueden llegar a la una en punto?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_pedido_programado",
+      "entidades_esperadas": {
+        "hora": "13:00"
+      },
+      "accion_esperada": "validar_capacidad",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Validar disponibilidad operativa."
+    },
+    {
+      "id": "caso_033",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Cuál plato sale más rápido?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "criterio": "tiempo_preparacion"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar tiempos no registrados."
+    },
+    {
+      "id": "caso_034",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿La trucha a la plancha está disponible?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_disponibilidad_producto",
+      "entidades_esperadas": {
+        "producto": "trucha_a_la_plancha"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar disponibilidad registrada y aclarar sujeción a inventario."
+    },
+    {
+      "id": "caso_035",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿El precio incluye el domicilio?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "inclusion_en_precio"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Explicar costo aparte y condiciones."
+    },
+    {
+      "id": "caso_036",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Me separan cada pedido?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_empaque",
+      "entidades_esperadas": {
+        "tipo": "individual"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar solo si está documentado."
+    },
+    {
+      "id": "caso_037",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Dónde quedan exactamente?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_ubicacion",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar dirección."
+    },
+    {
+      "id": "caso_038",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "¿Tienen parqueadero?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_parqueadero",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar disponibilidad y condiciones."
+    },
+    {
+      "id": "caso_039",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Necesito una recomendación para una reunión corta.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "contexto_consumo": "reunión corta"
+      },
+      "accion_esperada": "hacer_pregunta_aclaracion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar cantidad, presupuesto y preferencias."
+    },
+    {
+      "id": "caso_040",
+      "perfil_cliente_id": "cliente_02_oficinista",
+      "mensaje": "Perfecto, muchas gracias.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    },
+    {
+      "id": "caso_041",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Qué plato me recomienda para un niño?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "destinatario": "niño"
+      },
+      "accion_esperada": "recomendar_con_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Recomendar solo con datos registrados."
+    },
+    {
+      "id": "caso_042",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿La mojarra tiene muchas espinas?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "mojarra",
+        "atributo": "espinas"
+      },
+      "accion_esperada": "responder_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Responder con precaución; no garantizar ausencia."
+    },
+    {
+      "id": "caso_043",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Qué alcanza para compartir?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "criterio": "compartir"
+      },
+      "accion_esperada": "filtrar_por_porciones",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar platos según porciones registradas."
+    },
+    {
+      "id": "caso_044",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "Somos cuatro, ¿qué nos recomienda?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "cantidad_personas": 4
+      },
+      "accion_esperada": "hacer_pregunta_aclaracion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir presupuesto y preferencias."
+    },
+    {
+      "id": "caso_045",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Tienen parqueadero?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_parqueadero",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar parqueadero."
+    },
+    {
+      "id": "caso_046",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "Quiero ver todo el menú.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_047",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "Quiero ver todo el menú.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mencionar envío previo."
+    },
+    {
+      "id": "caso_048",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "Vuelva y me lo manda, por favor.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_049",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Cuánto cuesta el salmón?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "salmon"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar precio puntual."
+    },
+    {
+      "id": "caso_050",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Qué pescados tienen?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "pescados"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar categoría de pescados."
+    },
+    {
+      "id": "caso_051",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿El arroz a la marinera alcanza para dos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "arroz_a_la_marinera",
+        "atributo": "porciones"
+      },
+      "accion_esperada": "responder_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Responder según dato de porciones."
+    },
+    {
+      "id": "caso_052",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Tienen menú infantil?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_servicio",
+      "entidades_esperadas": {
+        "servicio": "menu_infantil"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar y pedir disponibilidad."
+    },
+    {
+      "id": "caso_053",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Cuál pescado tiene menos espinas?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "criterio": "menos_espinas"
+      },
+      "accion_esperada": "recomendar_con_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "No prometer ausencia total de espinas."
+    },
+    {
+      "id": "caso_054",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Qué viene con la mojarra frita?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "mojarra_frita",
+        "atributo": "acompañamientos"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar acompañamientos registrados."
+    },
+    {
+      "id": "caso_055",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Puedo reservar una mesa para cinco?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {
+        "numero_personas": 5
+      },
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha, hora y nombre."
+    },
+    {
+      "id": "caso_056",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿La reserva cuesta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_reserva",
+      "entidades_esperadas": {
+        "atributo": "costo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar que no tiene costo adicional."
+    },
+    {
+      "id": "caso_057",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Abren el domingo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_horario",
+      "entidades_esperadas": {
+        "dia": "domingo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar horario de domingo."
+    },
+    {
+      "id": "caso_058",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "¿Aceptan Daviplata?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "Daviplata"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_059",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "Quiero una cazuela para compartir.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "iniciar_pedido",
+      "entidades_esperadas": {
+        "categoria": "cazuela",
+        "criterio": "compartir"
+      },
+      "accion_esperada": "solicitar_datos_faltantes",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar cuál cazuela y número de personas."
+    },
+    {
+      "id": "caso_060",
+      "perfil_cliente_id": "cliente_03_padre_familia",
+      "mensaje": "Listo, gracias por la información.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    },
+    {
+      "id": "caso_061",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "Mijo, quisiera un pescadito que no sea tan grasoso.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "criterio": "no_grasoso"
+      },
+      "accion_esperada": "recomendar_con_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Sugerir preparaciones no fritas sin hacer afirmaciones médicas."
+    },
+    {
+      "id": "caso_062",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Cuál preparan sin apanado?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_preparacion",
+      "entidades_esperadas": {
+        "restriccion": "sin_apanar"
+      },
+      "accion_esperada": "filtrar_productos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar opciones compatibles."
+    },
+    {
+      "id": "caso_063",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Tienen algo a la plancha?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_preparacion",
+      "entidades_esperadas": {
+        "preparacion": "a_la_plancha"
+      },
+      "accion_esperada": "listar_productos_por_preparacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar productos a la plancha."
+    },
+    {
+      "id": "caso_064",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Ese salmón viene con qué?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "salmon",
+        "atributo": "acompañamientos"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "La mención explícita salmón reemplaza el contexto."
+    },
+    {
+      "id": "caso_065",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Ustedes abren el domingo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_horario",
+      "entidades_esperadas": {
+        "dia": "domingo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar horario."
+    },
+    {
+      "id": "caso_066",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Me puede mandar la carta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_067",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Me puede mandar la carta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Recordar fecha y hora."
+    },
+    {
+      "id": "caso_068",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "Sí, mándemela de nuevo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_069",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Cuánto vale el bagre en salsa?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "bagre_en_salsa"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar precio específico."
+    },
+    {
+      "id": "caso_070",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Qué sopas tienen?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "sopas"
+      },
+      "accion_esperada": "listar_categoria_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Listar si existe categoría o aclarar."
+    },
+    {
+      "id": "caso_071",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿La trucha la hacen al vapor?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_preparacion_producto",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "preparacion": "al_vapor"
+      },
+      "accion_esperada": "validar_combinacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar solo si está permitida."
+    },
+    {
+      "id": "caso_072",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Qué es a la marinera?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_definicion_preparacion",
+      "entidades_esperadas": {
+        "preparacion": "a_la_marinera"
+      },
+      "accion_esperada": "explicar_preparacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Explicar de forma sencilla."
+    },
+    {
+      "id": "caso_073",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Cuál es más suave, el bagre o la trucha?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "comparar_productos",
+      "entidades_esperadas": {
+        "productos": [
+          "bagre",
+          "trucha"
+        ],
+        "criterio": "textura"
+      },
+      "accion_esperada": "comparar_con_datos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Responder solo si hay datos confiables."
+    },
+    {
+      "id": "caso_074",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Puedo pedir sin ajo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "solicitar_modificacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "modificacion": "sin_ajo"
+      },
+      "accion_esperada": "validar_modificacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Consultar si cocina permite la modificación."
+    },
+    {
+      "id": "caso_075",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿El domicilio llega hasta el Restrepo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "destino": "Restrepo",
+        "atributo": "cobertura"
+      },
+      "accion_esperada": "validar_cobertura",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No asumir cobertura fuera de la zona registrada."
+    },
+    {
+      "id": "caso_076",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Me reciben efectivo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "efectivo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_077",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Dónde están ubicados?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_ubicacion",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar dirección."
+    },
+    {
+      "id": "caso_078",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "Quiero reservar para el domingo al mediodía.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {
+        "dia": "domingo",
+        "franja": "mediodía"
+      },
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir número de personas y fecha."
+    },
+    {
+      "id": "caso_079",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "¿Tienen baño para clientes?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_instalacion",
+      "entidades_esperadas": {
+        "instalacion": "baño"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar."
+    },
+    {
+      "id": "caso_080",
+      "perfil_cliente_id": "cliente_04_adulta_mayor",
+      "mensaje": "Muy amable, gracias.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    },
+    {
+      "id": "caso_081",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Hoy sí tienen mapará?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_disponibilidad_producto",
+      "entidades_esperadas": {
+        "producto": "mapara",
+        "fecha_relativa": "hoy"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar disponibilidad actual o sujeción a inventario."
+    },
+    {
+      "id": "caso_082",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "Deme el mismo de la vez pasada.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "repetir_pedido",
+      "entidades_esperadas": {
+        "referencia": "pedido_anterior"
+      },
+      "accion_esperada": "solicitar_aclaracion_por_falta_historial",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No asumir historial si no existe."
+    },
+    {
+      "id": "caso_083",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿La cazuela especial sigue a treinta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "cazuela_especial",
+        "precio_referenciado": 30000
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar precio vigente y corregir con tacto."
+    },
+    {
+      "id": "caso_084",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Me lo manda para la misma dirección?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "usar_direccion_previa",
+      "entidades_esperadas": {
+        "referencia": "direccion_anterior"
+      },
+      "accion_esperada": "confirmar_dato_sensible",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar dirección exacta antes de usarla."
+    },
+    {
+      "id": "caso_085",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Ya abrieron?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_horario",
+      "entidades_esperadas": {
+        "momento": "ahora"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Responder según fecha y hora."
+    },
+    {
+      "id": "caso_086",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "Pásame el menú actualizado.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-06-28T11:20:00-05:00",
+        "version_menu_enviada": "2026-06-15",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {
+        "version": "actualizada"
+      },
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar porque hay versión más reciente."
+    },
+    {
+      "id": "caso_087",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Me mandas la carta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mencionar envío reciente."
+    },
+    {
+      "id": "caso_088",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "Sí, otra vez.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_089",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Cuánto está el pargo rojo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "pargo_rojo"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Explicar precio según tamaño."
+    },
+    {
+      "id": "caso_090",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Qué tienen de mariscos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "mariscos"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar solo mariscos."
+    },
+    {
+      "id": "caso_091",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "Mándeme dos mojarras fritas.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agregar_productos_pedido",
+      "entidades_esperadas": {
+        "items": [
+          {
+            "producto": "mojarra_frita",
+            "cantidad": 2
+          }
+        ]
+      },
+      "accion_esperada": "registrar_y_solicitar_datos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Registrar y pedir dirección/pago."
+    },
+    {
+      "id": "caso_092",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "La de siempre, pero sin salsa.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "solicitar_modificacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "modificacion": "sin_salsa"
+      },
+      "accion_esperada": "validar_modificacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Usar contexto solo si es inequívoco."
+    },
+    {
+      "id": "caso_093",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Todavía reciben Nequi?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "Nequi"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar medio vigente."
+    },
+    {
+      "id": "caso_094",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Cuánto se está demorando el domicilio?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "tiempo_actual"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Diferenciar tiempo estándar de tiempo operativo actual."
+    },
+    {
+      "id": "caso_095",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Hay sancocho de bagre?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_disponibilidad_producto",
+      "entidades_esperadas": {
+        "producto": "sancocho_de_bagre"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_096",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Me reserva la mesa de siempre?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {
+        "referencia": "mesa_anterior"
+      },
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha, hora, personas y aclarar que no se identifica mesa previa."
+    },
+    {
+      "id": "caso_097",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿Qué cambió del menú?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-06-28T11:20:00-05:00",
+        "version_menu_enviada": "2026-06-15",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_cambios_menu",
+      "entidades_esperadas": {
+        "version_anterior": "2026-06-15",
+        "version_actual": "2026-07-01"
+      },
+      "accion_esperada": "comparar_versiones",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar cambios si existe historial de versiones."
+    },
+    {
+      "id": "caso_098",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "¿La dirección es la misma?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_ubicacion",
+      "entidades_esperadas": {
+        "atributo": "vigencia"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar dirección vigente."
+    },
+    {
+      "id": "caso_099",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "Anote un arroz con camarón.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agregar_producto_pedido",
+      "entidades_esperadas": {
+        "producto": "arroz_con_camaron",
+        "cantidad": 1
+      },
+      "accion_esperada": "registrar_y_solicitar_datos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Agregar al pedido."
+    },
+    {
+      "id": "caso_100",
+      "perfil_cliente_id": "cliente_05_habitual",
+      "mensaje": "Bueno, gracias.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    },
+    {
+      "id": "caso_101",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Cuál es el pescado más fresco que tienen?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "criterio": "frescura"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No afirmar frescura relativa sin dato operativo."
+    },
+    {
+      "id": "caso_102",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Qué plato especial recomienda?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "categoria": "especiales"
+      },
+      "accion_esperada": "recomendar_productos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar especialidades registradas."
+    },
+    {
+      "id": "caso_103",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Tienen langostinos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_producto",
+      "entidades_esperadas": {
+        "producto": "langostinos"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar presentaciones disponibles."
+    },
+    {
+      "id": "caso_104",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "Quiero reservar para seis personas.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {
+        "numero_personas": 6
+      },
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha, hora y nombre."
+    },
+    {
+      "id": "caso_105",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Pueden organizar un almuerzo empresarial?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_eventos",
+      "entidades_esperadas": {
+        "tipo_evento": "almuerzo_empresarial"
+      },
+      "accion_esperada": "responder_y_solicitar_datos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar servicio para eventos y pedir detalles."
+    },
+    {
+      "id": "caso_106",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "Compárteme el menú completo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_107",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "Compárteme el menú completo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Indicar fecha y hora."
+    },
+    {
+      "id": "caso_108",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "Reenvíamelo, por favor.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_109",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Cuál es el precio de los langostinos al ajillo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "langostinos_al_ajillo"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar precio puntual."
+    },
+    {
+      "id": "caso_110",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Qué opciones premium tienen?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "premium"
+      },
+      "accion_esperada": "listar_categoria_por_criterio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Definir criterio o listar productos de mayor precio."
+    },
+    {
+      "id": "caso_111",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿La cazuela central qué ingredientes contiene?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "cazuela_central",
+        "atributo": "ingredientes"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar ingredientes registrados."
+    },
+    {
+      "id": "caso_112",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Qué vino recomiendan con el salmón?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion",
+      "entidades_esperadas": {
+        "producto": "salmon",
+        "criterio": "maridaje"
+      },
+      "accion_esperada": "responder_fuera_de_alcance",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar oferta de vinos."
+    },
+    {
+      "id": "caso_113",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Puedo reservar un espacio privado?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_reserva",
+      "entidades_esperadas": {
+        "atributo": "espacio_privado"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No asumir disponibilidad."
+    },
+    {
+      "id": "caso_114",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Cuál es la capacidad máxima para eventos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_eventos",
+      "entidades_esperadas": {
+        "atributo": "capacidad"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar capacidad para 50 personas."
+    },
+    {
+      "id": "caso_115",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Aceptan tarjeta de crédito?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "tarjeta_credito"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_116",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿El parqueadero tiene costo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_parqueadero",
+      "entidades_esperadas": {
+        "atributo": "costo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar gratuidad para clientes."
+    },
+    {
+      "id": "caso_117",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Pueden adaptar un plato sin camarón?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_modificacion",
+      "entidades_esperadas": {
+        "modificacion": "sin_camarón"
+      },
+      "accion_esperada": "validar_modificacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir producto y validar cocina."
+    },
+    {
+      "id": "caso_118",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "Necesito propuesta para veinte personas.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_evento",
+      "entidades_esperadas": {
+        "numero_personas": 20
+      },
+      "accion_esperada": "solicitar_datos_evento",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha, presupuesto y formato."
+    },
+    {
+      "id": "caso_119",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "¿Manejan factura electrónica?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_facturacion",
+      "entidades_esperadas": {
+        "tipo": "electronica"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar."
+    },
+    {
+      "id": "caso_120",
+      "perfil_cliente_id": "cliente_06_profesional",
+      "mensaje": "Gracias por la precisión.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    },
+    {
+      "id": "caso_121",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "cuanto balen la mojarra",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "mojarra"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Normalizar 'balen' a 'valen'."
+    },
+    {
+      "id": "caso_122",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "tiene domisilio",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Normalizar 'domisilio'."
+    },
+    {
+      "id": "caso_123",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "donde quedan",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_ubicacion",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar dirección."
+    },
+    {
+      "id": "caso_124",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "pago nequi",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "Nequi"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar Nequi."
+    },
+    {
+      "id": "caso_125",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "quiero pesacado frito",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "iniciar_pedido",
+      "entidades_esperadas": {
+        "categoria": "pescado",
+        "preparacion": "frito"
+      },
+      "accion_esperada": "solicitar_datos_faltantes",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar qué pescado."
+    },
+    {
+      "id": "caso_126",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "mande menu",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_127",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "mande menu",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Indicar envío previo."
+    },
+    {
+      "id": "caso_128",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "mandelo otra bes",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Normalizar y reenviar."
+    },
+    {
+      "id": "caso_129",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "bagre cuanto",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "bagre"
+      },
+      "accion_esperada": "responder_producto_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Aclarar presentación porque hay varios precios."
+    },
+    {
+      "id": "caso_130",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "que arroces ay",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "arroces"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar arroces."
+    },
+    {
+      "id": "caso_131",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "tiene camaron",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_producto",
+      "entidades_esperadas": {
+        "producto": "camarón"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mostrar platos con camarón."
+    },
+    {
+      "id": "caso_132",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "uno de esos",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "agregar_producto_pedido",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "cantidad": 1
+      },
+      "accion_esperada": "confirmar_referencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar preparación antes de agregar."
+    },
+    {
+      "id": "caso_133",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "lo quiero en salsa",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "seleccionar_preparacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "preparacion": "en_salsa"
+      },
+      "accion_esperada": "validar_combinacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Usar contexto."
+    },
+    {
+      "id": "caso_134",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "abre domingo",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_horario",
+      "entidades_esperadas": {
+        "dia": "domingo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar horario."
+    },
+    {
+      "id": "caso_135",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "domicilio cuanto demora",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "tiempo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar tiempo estimado."
+    },
+    {
+      "id": "caso_136",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "reserba mesa",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {},
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Normalizar y pedir datos."
+    },
+    {
+      "id": "caso_137",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "tarjeta si",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "tarjeta"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_138",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "parquiadero",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_parqueadero",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Normalizar y responder."
+    },
+    {
+      "id": "caso_139",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "quiero dos mojaras",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agregar_producto_pedido",
+      "entidades_esperadas": {
+        "producto": "mojarra",
+        "cantidad": 2
+      },
+      "accion_esperada": "solicitar_datos_faltantes",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar preparación/presentación."
+    },
+    {
+      "id": "caso_140",
+      "perfil_cliente_id": "cliente_07_baja_alfabetizacion_digital",
+      "mensaje": "grasias",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Normalizar y agradecer."
+    },
+    {
+      "id": "caso_141",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "menú",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_142",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "menú",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mencionar envío previo."
+    },
+    {
+      "id": "caso_143",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "otra vez",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar según contexto."
+    },
+    {
+      "id": "caso_144",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "precios",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precios_generales",
+      "entidades_esperadas": {},
+      "accion_esperada": "hacer_pregunta_aclaracion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar categoría o producto."
+    },
+    {
+      "id": "caso_145",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "qué hay",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_menu_general",
+      "entidades_esperadas": {},
+      "accion_esperada": "resumir_menu_y_ofrecer_pdf",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar resumen breve y ofrecer PDF."
+    },
+    {
+      "id": "caso_146",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "el de camarón",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "consultar_producto",
+      "entidades_esperadas": {
+        "ingrediente": "camarón"
+      },
+      "accion_esperada": "hacer_pregunta_aclaracion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "La referencia no es suficiente; listar opciones con camarón."
+    },
+    {
+      "id": "caso_147",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "uno frito",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "seleccionar_preparacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "cantidad": 1,
+        "preparacion": "frito"
+      },
+      "accion_esperada": "validar_combinacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Validar preparación."
+    },
+    {
+      "id": "caso_148",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "domi?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {},
+      "accion_esperada": "resumir_servicio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar cobertura, mínimo, costo y tiempo."
+    },
+    {
+      "id": "caso_149",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "nequi?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "Nequi"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_150",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "mojarra?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_producto",
+      "entidades_esperadas": {
+        "producto": "mojarra"
+      },
+      "accion_esperada": "responder_producto_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Mostrar presentaciones y preguntar cuál."
+    },
+    {
+      "id": "caso_151",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "cuánto",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "trucha"
+      },
+      "accion_esperada": "responder_producto_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Usar contexto y aclarar preparación si cambia precio."
+    },
+    {
+      "id": "caso_152",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "la frita",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "seleccionar_preparacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "preparacion": "frita"
+      },
+      "accion_esperada": "validar_combinacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Resolver referencia."
+    },
+    {
+      "id": "caso_153",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "2",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "indicar_cantidad",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "cantidad": 2
+      },
+      "accion_esperada": "actualizar_pedido",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Usar contexto."
+    },
+    {
+      "id": "caso_154",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "dónde",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_ubicacion",
+      "entidades_esperadas": {},
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar dirección."
+    },
+    {
+      "id": "caso_155",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "hoy abren?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_horario",
+      "entidades_esperadas": {
+        "fecha_relativa": "hoy"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Responder según fecha."
+    },
+    {
+      "id": "caso_156",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "qué es marinera",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_definicion_preparacion",
+      "entidades_esperadas": {
+        "preparacion": "a_la_marinera"
+      },
+      "accion_esperada": "explicar_preparacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Explicar."
+    },
+    {
+      "id": "caso_157",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "sin picante se puede?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "solicitar_modificacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "modificacion": "sin_picante"
+      },
+      "accion_esperada": "validar_modificacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Validar."
+    },
+    {
+      "id": "caso_158",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "reserva 4",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {
+        "numero_personas": 4
+      },
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha y hora."
+    },
+    {
+      "id": "caso_159",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "pago qr",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "QR"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_160",
+      "perfil_cliente_id": "cliente_08_adolescente",
+      "mensaje": "grx",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reconocer abreviación."
+    },
+    {
+      "id": "caso_161",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿La cazuela tiene leche o crema?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_alergenos",
+      "entidades_esperadas": {
+        "producto": "cazuela",
+        "ingredientes_consultados": [
+          "leche",
+          "crema"
+        ]
+      },
+      "accion_esperada": "responder_con_datos_y_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No responder si los ingredientes no están formalizados."
+    },
+    {
+      "id": "caso_162",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Pueden prepararlo sin ajo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "solicitar_modificacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "modificacion": "sin_ajo"
+      },
+      "accion_esperada": "validar_modificacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Validar con cocina."
+    },
+    {
+      "id": "caso_163",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Qué opción no es frita?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_preparacion",
+      "entidades_esperadas": {
+        "restriccion": "no_frita"
+      },
+      "accion_esperada": "filtrar_productos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar opciones no fritas."
+    },
+    {
+      "id": "caso_164",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿El arroz tiene mariscos mixtos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "arroz",
+        "atributo": "ingredientes",
+        "ingrediente": "mariscos_mixtos"
+      },
+      "accion_esperada": "hacer_pregunta_aclaracion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Preguntar cuál arroz."
+    },
+    {
+      "id": "caso_165",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "Soy alérgica al camarón, ¿qué puedo pedir?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion_por_alergia",
+      "entidades_esperadas": {
+        "alergeno": "camarón"
+      },
+      "accion_esperada": "advertir_y_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No garantizar seguridad sin datos de contaminación cruzada."
+    },
+    {
+      "id": "caso_166",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "Quiero revisar el menú completo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_167",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "Quiero revisar el menú completo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Mencionar envío previo."
+    },
+    {
+      "id": "caso_168",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "Sí, envíamelo nuevamente.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {},
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_169",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Qué ingredientes tiene el ceviche de camarón?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_detalle_producto",
+      "entidades_esperadas": {
+        "producto": "ceviche_de_camaron",
+        "atributo": "ingredientes"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar ingredientes registrados."
+    },
+    {
+      "id": "caso_170",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Qué platos tienen sin mariscos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria_por_restriccion",
+      "entidades_esperadas": {
+        "restriccion": "sin_mariscos"
+      },
+      "accion_esperada": "filtrar_productos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Solo filtrar si el catálogo tiene ingredientes completos."
+    },
+    {
+      "id": "caso_171",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿La salsa marinera contiene lácteos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_alergenos",
+      "entidades_esperadas": {
+        "preparacion": "salsa_marinera",
+        "alergeno": "lácteos"
+      },
+      "accion_esperada": "responder_con_datos_y_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar."
+    },
+    {
+      "id": "caso_172",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Pueden usar utensilios separados?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_contaminacion_cruzada",
+      "entidades_esperadas": {},
+      "accion_esperada": "escalar_a_personal",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Requiere confirmación operativa."
+    },
+    {
+      "id": "caso_173",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Cuál plato no lleva gluten?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_recomendacion_por_restriccion",
+      "entidades_esperadas": {
+        "restriccion": "sin_gluten"
+      },
+      "accion_esperada": "advertir_y_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No certificar sin información."
+    },
+    {
+      "id": "caso_174",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿La mojarra se puede hacer a la plancha?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_preparacion_producto",
+      "entidades_esperadas": {
+        "producto": "mojarra",
+        "preparacion": "a_la_plancha"
+      },
+      "accion_esperada": "validar_combinacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar si está permitida."
+    },
+    {
+      "id": "caso_175",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Puedo quitarle la salsa?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01",
+        "producto_activo": "trucha",
+        "preparacion_activa": null,
+        "ultima_intencion": "consultar_producto"
+      },
+      "intencion_esperada": "solicitar_modificacion",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "modificacion": "sin_salsa"
+      },
+      "accion_esperada": "validar_modificacion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Validar."
+    },
+    {
+      "id": "caso_176",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Qué acompañamientos tienen huevo?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_alergenos",
+      "entidades_esperadas": {
+        "alergeno": "huevo",
+        "tipo": "acompañamiento"
+      },
+      "accion_esperada": "responder_con_datos_y_advertencia",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Requiere catálogo de ingredientes."
+    },
+    {
+      "id": "caso_177",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿El aceite se comparte con productos apanados?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_contaminacion_cruzada",
+      "entidades_esperadas": {
+        "elemento": "aceite"
+      },
+      "accion_esperada": "escalar_a_personal",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Requiere confirmación de cocina."
+    },
+    {
+      "id": "caso_178",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "¿Tienen una opción vegetariana?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria_por_restriccion",
+      "entidades_esperadas": {
+        "restriccion": "vegetariana"
+      },
+      "accion_esperada": "responder_o_aclarar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar oferta."
+    },
+    {
+      "id": "caso_179",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "Quiero pedir la trucha sin ajo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "iniciar_pedido",
+      "entidades_esperadas": {
+        "producto": "trucha",
+        "modificacion": "sin_ajo"
+      },
+      "accion_esperada": "validar_modificacion_y_continuar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Validar antes de confirmar."
+    },
+    {
+      "id": "caso_180",
+      "perfil_cliente_id": "cliente_09_restricciones",
+      "mensaje": "Gracias por no asumir.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    },
+    {
+      "id": "caso_181",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Necesito almuerzo para doce personas.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "iniciar_pedido_grupal",
+      "entidades_esperadas": {
+        "cantidad_personas": 12
+      },
+      "accion_esperada": "solicitar_datos_pedido_grupal",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha, presupuesto, opciones y dirección."
+    },
+    {
+      "id": "caso_182",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Pueden entregar todos los pedidos marcados?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_empaque",
+      "entidades_esperadas": {
+        "tipo": "marcado_individual"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar operación."
+    },
+    {
+      "id": "caso_183",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Manejan factura electrónica?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_facturacion",
+      "entidades_esperadas": {
+        "tipo": "electronica"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No inventar."
+    },
+    {
+      "id": "caso_184",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Cuál es el mínimo para domicilio?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "monto_minimo"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Informar $25.000."
+    },
+    {
+      "id": "caso_185",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Puedo programarlo para la una?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_pedido_programado",
+      "entidades_esperadas": {
+        "hora": "13:00"
+      },
+      "accion_esperada": "validar_capacidad",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar según operación."
+    },
+    {
+      "id": "caso_186",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Envíame el menú para compartirlo con el equipo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {
+        "proposito": "compartir"
+      },
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Enviar PDF."
+    },
+    {
+      "id": "caso_187",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Envíame el menú para compartirlo con el equipo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_menu",
+      "entidades_esperadas": {
+        "proposito": "compartir"
+      },
+      "accion_esperada": "referenciar_envio_previo_y_ofrecer_reenvio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": true,
+        "requiere_confirmacion_reenvio": true
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Indicar fecha/hora y ofrecer."
+    },
+    {
+      "id": "caso_188",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Sí, necesito reenviarlo al grupo.",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "reenviar_menu",
+      "entidades_esperadas": {
+        "proposito": "compartir"
+      },
+      "accion_esperada": "enviar_menu_pdf",
+      "politica_menu": {
+        "enviar_pdf": true,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Reenviar."
+    },
+    {
+      "id": "caso_189",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Cuánto cuesta la cazuela especial?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_precio_producto",
+      "entidades_esperadas": {
+        "producto": "cazuela_especial"
+      },
+      "accion_esperada": "responder_producto",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Dar precio."
+    },
+    {
+      "id": "caso_190",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Qué ejecutivos tienen?",
+      "contexto_previo": {
+        "menu_enviado_previamente": true,
+        "fecha_ultimo_envio": "2026-07-09T14:35:00-05:00",
+        "version_menu_enviada": "2026-07-01",
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_categoria",
+      "entidades_esperadas": {
+        "categoria": "almuerzos_ejecutivos"
+      },
+      "accion_esperada": "listar_categoria",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Listar categoría."
+    },
+    {
+      "id": "caso_191",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Necesito seis bagres y seis arroces con camarón.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agregar_productos_pedido",
+      "entidades_esperadas": {
+        "items": [
+          {
+            "producto": "bagre",
+            "cantidad": 6
+          },
+          {
+            "producto": "arroz_con_camaron",
+            "cantidad": 6
+          }
+        ]
+      },
+      "accion_esperada": "solicitar_aclaracion_y_datos",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Aclarar presentación del bagre."
+    },
+    {
+      "id": "caso_192",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Pueden poner el nombre de cada persona?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_empaque",
+      "entidades_esperadas": {
+        "tipo": "etiquetado_por_nombre"
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Confirmar operación."
+    },
+    {
+      "id": "caso_193",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Cuál es el tiempo de entrega para doce pedidos?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio_grupal",
+      "entidades_esperadas": {
+        "cantidad": 12,
+        "atributo": "tiempo"
+      },
+      "accion_esperada": "validar_capacidad",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No usar automáticamente el tiempo estándar."
+    },
+    {
+      "id": "caso_194",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Aceptan transferencia bancaria?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_medio_pago",
+      "entidades_esperadas": {
+        "medio_pago": "transferencia"
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar."
+    },
+    {
+      "id": "caso_195",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿El domicilio sería gratis por el monto?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "atributo": "gratuidad_por_monto"
+      },
+      "accion_esperada": "calcular_condicion",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Evaluar total del pedido frente a $80.000."
+    },
+    {
+      "id": "caso_196",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Pueden entregar en dos direcciones?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_domicilio",
+      "entidades_esperadas": {
+        "numero_direcciones": 2
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Requiere validación operativa y costos."
+    },
+    {
+      "id": "caso_197",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Necesito reservar para una reunión de quince.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "solicitar_reserva",
+      "entidades_esperadas": {
+        "numero_personas": 15,
+        "tipo_evento": "reunión"
+      },
+      "accion_esperada": "solicitar_datos_reserva",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": true,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "Pedir fecha, hora y requerimientos."
+    },
+    {
+      "id": "caso_198",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Tienen capacidad para cincuenta personas?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_eventos",
+      "entidades_esperadas": {
+        "numero_personas": 50
+      },
+      "accion_esperada": "responder_dato_negocio",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Confirmar capacidad registrada."
+    },
+    {
+      "id": "caso_199",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "¿Puedo pagar una parte por transferencia y otra con tarjeta?",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "consultar_pago_mixto",
+      "entidades_esperadas": {
+        "medios_pago": [
+          "transferencia",
+          "tarjeta"
+        ]
+      },
+      "accion_esperada": "responder_o_escalar",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": true,
+      "respuesta_esperada_resumen": "No asumir pago mixto."
+    },
+    {
+      "id": "caso_200",
+      "perfil_cliente_id": "cliente_10_administrativo",
+      "mensaje": "Quedo atento, gracias.",
+      "contexto_previo": {
+        "menu_enviado_previamente": false,
+        "fecha_ultimo_envio": null,
+        "version_menu_enviada": null,
+        "version_menu_actual": "2026-07-01"
+      },
+      "intencion_esperada": "agradecer",
+      "entidades_esperadas": {},
+      "accion_esperada": "cerrar_cordialmente",
+      "politica_menu": {
+        "enviar_pdf": false,
+        "ofrecer_pdf": false,
+        "mencionar_envio_previo": false,
+        "requiere_confirmacion_reenvio": false
+      },
+      "requiere_aclaracion": false,
+      "respuesta_esperada_resumen": "Agradecer."
+    }
+  ]
+}

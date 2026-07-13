@@ -9,7 +9,7 @@ def cargar_json(nombre_archivo):
     """
     # Obtener la ruta del directorio actual
     directorio_actual = os.path.dirname(os.path.abspath(__file__))
-    ruta = os.path.join(directorio_actual, "..", "datos", nombre_archivo)
+    ruta = os.path.join(directorio_actual, "..", "data", nombre_archivo)
     
     try:
         with open(ruta, 'r', encoding='utf-8') as archivo:

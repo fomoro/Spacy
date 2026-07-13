@@ -1,0 +1,201 @@
+id,perfil_cliente_id,mensaje,intencion_esperada,entidades_esperadas,accion_esperada,enviar_pdf,ofrecer_pdf,mencionar_envio_previo,requiere_aclaracion,respuesta_esperada_resumen
+caso_001,cliente_01_estudiante,"Parce, ¿qué almuerzo tienen barato?",solicitar_recomendacion_por_presupuesto,"{""presupuesto"": ""bajo"", ""categoria"": ""almuerzos_ejecutivos""}",listar_opciones_relevantes,False,True,False,False,"Mostrar ejecutivos económicos, con precio, sin desplegar todo el menú."
+caso_002,cliente_01_estudiante,¿Hay ejecutivo hoy?,consultar_categoria,"{""categoria"": ""almuerzos_ejecutivos"", ""fecha_relativa"": ""hoy""}",listar_categoria,False,True,False,False,Listar ejecutivos disponibles hoy.
+caso_003,cliente_01_estudiante,¿Qué puedo pedir con veinte lucas?,solicitar_recomendacion_por_presupuesto,"{""presupuesto_maximo"": 20000}",filtrar_por_precio,False,True,False,False,Mostrar productos dentro del presupuesto o explicar si no hay.
+caso_004,cliente_01_estudiante,¿Reciben Nequi?,consultar_medio_pago,"{""medio_pago"": ""Nequi""}",responder_dato_negocio,False,False,False,False,Confirmar Nequi.
+caso_005,cliente_01_estudiante,¿El domi cuánto vale?,consultar_domicilio,"{""atributo"": ""costo""}",responder_dato_negocio,False,False,False,False,"Informar costo, mínimo y condición de gratuidad."
+caso_006,cliente_01_estudiante,Pásame el menú,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF porque nunca se ha enviado.
+caso_007,cliente_01_estudiante,Pásame el menú,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Decir fecha y hora del último envío y preguntar si desea recibirlo otra vez.
+caso_008,cliente_01_estudiante,Mándamelo otra vez,reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar sin pedir confirmación.
+caso_009,cliente_01_estudiante,¿Cuánto vale la mojarra frita?,consultar_precio_producto,"{""producto"": ""mojarra_frita"", ""preparacion"": ""frita""}",responder_producto,False,False,False,False,Dar precio e información puntual; no reenviar el menú.
+caso_010,cliente_01_estudiante,¿Qué arroces tienen?,consultar_categoria,"{""categoria"": ""arroces""}",listar_categoria,False,False,False,False,Listar únicamente arroces.
+caso_011,cliente_01_estudiante,¿Hay algo con camarón que no sea tan caro?,solicitar_recomendacion,"{""ingrediente"": ""camarón"", ""criterio"": ""económico""}",filtrar_productos,False,True,False,False,Mostrar opciones con camarón ordenadas por precio.
+caso_012,cliente_01_estudiante,Quiero una mojarra,iniciar_pedido,"{""producto"": ""mojarra""}",solicitar_datos_faltantes,False,False,False,True,"Preguntar preparación, tamaño o presentación."
+caso_013,cliente_01_estudiante,Una frita,seleccionar_preparacion,"{""producto"": ""trucha"", ""preparacion"": ""frita""}",validar_combinacion,False,False,False,False,Usar contexto y validar si existe esa preparación.
+caso_014,cliente_01_estudiante,¿El arroz con camarón viene con bebida?,consultar_detalle_producto,"{""producto"": ""arroz_con_camaron"", ""atributo"": ""acompañamientos""}",responder_producto,False,True,False,False,Responder solo sobre el producto y sus acompañamientos.
+caso_015,cliente_01_estudiante,¿Atienden hoy?,consultar_horario,"{""fecha_relativa"": ""hoy""}",responder_dato_negocio,False,False,False,False,Responder según el día actual y horario.
+caso_016,cliente_01_estudiante,¿Hasta dónde llega el domicilio?,consultar_domicilio,"{""atributo"": ""cobertura""}",responder_dato_negocio,False,False,False,False,Informar zona de cobertura.
+caso_017,cliente_01_estudiante,¿Se puede pagar cuando llegue?,consultar_medio_pago,"{""modalidad"": ""contra_entrega""}",responder_o_aclarar,False,False,False,True,Confirmar medios disponibles al recibir o pedir precisión.
+caso_018,cliente_01_estudiante,¿Qué plato llena más?,solicitar_recomendacion,"{""criterio"": ""porción""}",recomendar_con_advertencia,False,True,False,False,Recomendar según porciones registradas.
+caso_019,cliente_01_estudiante,¿Tienen ceviche pequeño?,consultar_producto,"{""producto"": ""ceviche"", ""tamaño"": ""pequeño""}",responder_producto_o_aclarar,False,True,False,True,Informar tamaños disponibles o pedir confirmación.
+caso_020,cliente_01_estudiante,"Gracias, era eso",agradecer,{},cerrar_cordialmente,False,False,False,False,Responder agradecimiento breve.
+caso_021,cliente_02_oficinista,¿Qué menú ejecutivo tienen hoy?,consultar_categoria,"{""categoria"": ""almuerzos_ejecutivos"", ""fecha_relativa"": ""hoy""}",listar_categoria,False,True,False,False,Listar ejecutivos disponibles.
+caso_022,cliente_02_oficinista,Necesito pedir para tres personas.,iniciar_pedido_grupal,"{""cantidad_personas"": 3}",solicitar_productos,False,True,False,True,Preguntar selección o preferencias.
+caso_023,cliente_02_oficinista,¿Cuánto demora el domicilio a Ciudad Montes?,consultar_domicilio,"{""destino"": ""Ciudad Montes"", ""atributo"": ""tiempo""}",responder_dato_negocio,False,False,False,False,Informar tiempo estimado y cobertura.
+caso_024,cliente_02_oficinista,¿Me envían factura?,consultar_facturacion,{},responder_o_escalar,False,False,False,True,Responder según información confirmada; no inventar.
+caso_025,cliente_02_oficinista,¿Puedo pagar con tarjeta?,consultar_medio_pago,"{""medio_pago"": ""tarjeta""}",responder_dato_negocio,False,False,False,False,Confirmar tarjeta débito/crédito.
+caso_026,cliente_02_oficinista,Envíame la carta en PDF.,solicitar_menu,"{""formato"": ""pdf""}",enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_027,cliente_02_oficinista,Envíame la carta en PDF.,solicitar_menu,"{""formato"": ""pdf""}",referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Indicar fecha y hora y ofrecer reenvío.
+caso_028,cliente_02_oficinista,"Sí, reenvíala.",reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_029,cliente_02_oficinista,¿Qué trae la cazuela mixta?,consultar_detalle_producto,"{""producto"": ""cazuela_mixta"", ""atributo"": ""ingredientes""}",responder_producto,False,False,False,False,Dar descripción puntual.
+caso_030,cliente_02_oficinista,¿Qué cazuelas manejan?,consultar_categoria,"{""categoria"": ""cazuelas""}",listar_categoria,False,False,False,False,Listar cazuelas con precio.
+caso_031,cliente_02_oficinista,Quiero dos arroces con camarón y una cazuela.,agregar_productos_pedido,"{""items"": [{""producto"": ""arroz_con_camaron"", ""cantidad"": 2}, {""categoria"": ""cazuela"", ""cantidad"": 1}]}",solicitar_datos_faltantes,False,False,False,True,Registrar arroces y preguntar cuál cazuela.
+caso_032,cliente_02_oficinista,¿Pueden llegar a la una en punto?,consultar_pedido_programado,"{""hora"": ""13:00""}",validar_capacidad,False,False,False,True,Validar disponibilidad operativa.
+caso_033,cliente_02_oficinista,¿Cuál plato sale más rápido?,solicitar_recomendacion,"{""criterio"": ""tiempo_preparacion""}",responder_o_escalar,False,True,False,True,No inventar tiempos no registrados.
+caso_034,cliente_02_oficinista,¿La trucha a la plancha está disponible?,consultar_disponibilidad_producto,"{""producto"": ""trucha_a_la_plancha""}",responder_producto,False,True,False,False,Confirmar disponibilidad registrada y aclarar sujeción a inventario.
+caso_035,cliente_02_oficinista,¿El precio incluye el domicilio?,consultar_domicilio,"{""atributo"": ""inclusion_en_precio""}",responder_dato_negocio,False,False,False,False,Explicar costo aparte y condiciones.
+caso_036,cliente_02_oficinista,¿Me separan cada pedido?,consultar_empaque,"{""tipo"": ""individual""}",responder_o_escalar,False,False,False,True,Confirmar solo si está documentado.
+caso_037,cliente_02_oficinista,¿Dónde quedan exactamente?,consultar_ubicacion,{},responder_dato_negocio,False,False,False,False,Dar dirección.
+caso_038,cliente_02_oficinista,¿Tienen parqueadero?,consultar_parqueadero,{},responder_dato_negocio,False,False,False,False,Confirmar disponibilidad y condiciones.
+caso_039,cliente_02_oficinista,Necesito una recomendación para una reunión corta.,solicitar_recomendacion,"{""contexto_consumo"": ""reunión corta""}",hacer_pregunta_aclaracion,False,True,False,True,"Preguntar cantidad, presupuesto y preferencias."
+caso_040,cliente_02_oficinista,"Perfecto, muchas gracias.",agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
+caso_041,cliente_03_padre_familia,¿Qué plato me recomienda para un niño?,solicitar_recomendacion,"{""destinatario"": ""niño""}",recomendar_con_advertencia,False,True,False,False,Recomendar solo con datos registrados.
+caso_042,cliente_03_padre_familia,¿La mojarra tiene muchas espinas?,consultar_detalle_producto,"{""producto"": ""mojarra"", ""atributo"": ""espinas""}",responder_o_aclarar,False,True,False,True,Responder con precaución; no garantizar ausencia.
+caso_043,cliente_03_padre_familia,¿Qué alcanza para compartir?,solicitar_recomendacion,"{""criterio"": ""compartir""}",filtrar_por_porciones,False,True,False,False,Mostrar platos según porciones registradas.
+caso_044,cliente_03_padre_familia,"Somos cuatro, ¿qué nos recomienda?",solicitar_recomendacion,"{""cantidad_personas"": 4}",hacer_pregunta_aclaracion,False,True,False,True,Pedir presupuesto y preferencias.
+caso_045,cliente_03_padre_familia,¿Tienen parqueadero?,consultar_parqueadero,{},responder_dato_negocio,False,False,False,False,Confirmar parqueadero.
+caso_046,cliente_03_padre_familia,Quiero ver todo el menú.,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_047,cliente_03_padre_familia,Quiero ver todo el menú.,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Mencionar envío previo.
+caso_048,cliente_03_padre_familia,"Vuelva y me lo manda, por favor.",reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_049,cliente_03_padre_familia,¿Cuánto cuesta el salmón?,consultar_precio_producto,"{""producto"": ""salmon""}",responder_producto,False,False,False,False,Dar precio puntual.
+caso_050,cliente_03_padre_familia,¿Qué pescados tienen?,consultar_categoria,"{""categoria"": ""pescados""}",listar_categoria,False,False,False,False,Listar categoría de pescados.
+caso_051,cliente_03_padre_familia,¿El arroz a la marinera alcanza para dos?,consultar_detalle_producto,"{""producto"": ""arroz_a_la_marinera"", ""atributo"": ""porciones""}",responder_o_aclarar,False,True,False,True,Responder según dato de porciones.
+caso_052,cliente_03_padre_familia,¿Tienen menú infantil?,consultar_servicio,"{""servicio"": ""menu_infantil""}",responder_dato_negocio,False,False,False,False,Confirmar y pedir disponibilidad.
+caso_053,cliente_03_padre_familia,¿Cuál pescado tiene menos espinas?,solicitar_recomendacion,"{""criterio"": ""menos_espinas""}",recomendar_con_advertencia,False,True,False,False,No prometer ausencia total de espinas.
+caso_054,cliente_03_padre_familia,¿Qué viene con la mojarra frita?,consultar_detalle_producto,"{""producto"": ""mojarra_frita"", ""atributo"": ""acompañamientos""}",responder_producto,False,True,False,False,Dar acompañamientos registrados.
+caso_055,cliente_03_padre_familia,¿Puedo reservar una mesa para cinco?,solicitar_reserva,"{""numero_personas"": 5}",solicitar_datos_reserva,False,False,False,True,"Pedir fecha, hora y nombre."
+caso_056,cliente_03_padre_familia,¿La reserva cuesta?,consultar_reserva,"{""atributo"": ""costo""}",responder_dato_negocio,False,False,False,False,Informar que no tiene costo adicional.
+caso_057,cliente_03_padre_familia,¿Abren el domingo?,consultar_horario,"{""dia"": ""domingo""}",responder_dato_negocio,False,False,False,False,Dar horario de domingo.
+caso_058,cliente_03_padre_familia,¿Aceptan Daviplata?,consultar_medio_pago,"{""medio_pago"": ""Daviplata""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_059,cliente_03_padre_familia,Quiero una cazuela para compartir.,iniciar_pedido,"{""categoria"": ""cazuela"", ""criterio"": ""compartir""}",solicitar_datos_faltantes,False,True,False,True,Preguntar cuál cazuela y número de personas.
+caso_060,cliente_03_padre_familia,"Listo, gracias por la información.",agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
+caso_061,cliente_04_adulta_mayor,"Mijo, quisiera un pescadito que no sea tan grasoso.",solicitar_recomendacion,"{""criterio"": ""no_grasoso""}",recomendar_con_advertencia,False,True,False,True,Sugerir preparaciones no fritas sin hacer afirmaciones médicas.
+caso_062,cliente_04_adulta_mayor,¿Cuál preparan sin apanado?,consultar_preparacion,"{""restriccion"": ""sin_apanar""}",filtrar_productos,False,True,False,False,Mostrar opciones compatibles.
+caso_063,cliente_04_adulta_mayor,¿Tienen algo a la plancha?,consultar_preparacion,"{""preparacion"": ""a_la_plancha""}",listar_productos_por_preparacion,False,True,False,False,Listar productos a la plancha.
+caso_064,cliente_04_adulta_mayor,¿Ese salmón viene con qué?,consultar_detalle_producto,"{""producto"": ""salmon"", ""atributo"": ""acompañamientos""}",responder_producto,False,True,False,False,La mención explícita salmón reemplaza el contexto.
+caso_065,cliente_04_adulta_mayor,¿Ustedes abren el domingo?,consultar_horario,"{""dia"": ""domingo""}",responder_dato_negocio,False,False,False,False,Dar horario.
+caso_066,cliente_04_adulta_mayor,¿Me puede mandar la carta?,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_067,cliente_04_adulta_mayor,¿Me puede mandar la carta?,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Recordar fecha y hora.
+caso_068,cliente_04_adulta_mayor,"Sí, mándemela de nuevo.",reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_069,cliente_04_adulta_mayor,¿Cuánto vale el bagre en salsa?,consultar_precio_producto,"{""producto"": ""bagre_en_salsa""}",responder_producto,False,False,False,False,Dar precio específico.
+caso_070,cliente_04_adulta_mayor,¿Qué sopas tienen?,consultar_categoria,"{""categoria"": ""sopas""}",listar_categoria_o_aclarar,False,False,False,True,Listar si existe categoría o aclarar.
+caso_071,cliente_04_adulta_mayor,¿La trucha la hacen al vapor?,consultar_preparacion_producto,"{""producto"": ""trucha"", ""preparacion"": ""al_vapor""}",validar_combinacion,False,True,False,False,Confirmar solo si está permitida.
+caso_072,cliente_04_adulta_mayor,¿Qué es a la marinera?,consultar_definicion_preparacion,"{""preparacion"": ""a_la_marinera""}",explicar_preparacion,False,False,False,False,Explicar de forma sencilla.
+caso_073,cliente_04_adulta_mayor,"¿Cuál es más suave, el bagre o la trucha?",comparar_productos,"{""productos"": [""bagre"", ""trucha""], ""criterio"": ""textura""}",comparar_con_datos,False,True,False,True,Responder solo si hay datos confiables.
+caso_074,cliente_04_adulta_mayor,¿Puedo pedir sin ajo?,solicitar_modificacion,"{""producto"": ""trucha"", ""modificacion"": ""sin_ajo""}",validar_modificacion,False,False,False,True,Consultar si cocina permite la modificación.
+caso_075,cliente_04_adulta_mayor,¿El domicilio llega hasta el Restrepo?,consultar_domicilio,"{""destino"": ""Restrepo"", ""atributo"": ""cobertura""}",validar_cobertura,False,False,False,True,No asumir cobertura fuera de la zona registrada.
+caso_076,cliente_04_adulta_mayor,¿Me reciben efectivo?,consultar_medio_pago,"{""medio_pago"": ""efectivo""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_077,cliente_04_adulta_mayor,¿Dónde están ubicados?,consultar_ubicacion,{},responder_dato_negocio,False,False,False,False,Dar dirección.
+caso_078,cliente_04_adulta_mayor,Quiero reservar para el domingo al mediodía.,solicitar_reserva,"{""dia"": ""domingo"", ""franja"": ""mediodía""}",solicitar_datos_reserva,False,False,False,True,Pedir número de personas y fecha.
+caso_079,cliente_04_adulta_mayor,¿Tienen baño para clientes?,consultar_instalacion,"{""instalacion"": ""baño""}",responder_o_escalar,False,False,False,True,No inventar.
+caso_080,cliente_04_adulta_mayor,"Muy amable, gracias.",agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
+caso_081,cliente_05_habitual,¿Hoy sí tienen mapará?,consultar_disponibilidad_producto,"{""producto"": ""mapara"", ""fecha_relativa"": ""hoy""}",responder_producto,False,True,False,False,Confirmar disponibilidad actual o sujeción a inventario.
+caso_082,cliente_05_habitual,Deme el mismo de la vez pasada.,repetir_pedido,"{""referencia"": ""pedido_anterior""}",solicitar_aclaracion_por_falta_historial,False,False,False,True,No asumir historial si no existe.
+caso_083,cliente_05_habitual,¿La cazuela especial sigue a treinta?,consultar_precio_producto,"{""producto"": ""cazuela_especial"", ""precio_referenciado"": 30000}",responder_producto,False,True,False,False,Informar precio vigente y corregir con tacto.
+caso_084,cliente_05_habitual,¿Me lo manda para la misma dirección?,usar_direccion_previa,"{""referencia"": ""direccion_anterior""}",confirmar_dato_sensible,False,False,False,True,Confirmar dirección exacta antes de usarla.
+caso_085,cliente_05_habitual,¿Ya abrieron?,consultar_horario,"{""momento"": ""ahora""}",responder_dato_negocio,False,False,False,False,Responder según fecha y hora.
+caso_086,cliente_05_habitual,Pásame el menú actualizado.,solicitar_menu,"{""version"": ""actualizada""}",enviar_menu_pdf,True,False,False,False,Enviar porque hay versión más reciente.
+caso_087,cliente_05_habitual,¿Me mandas la carta?,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Mencionar envío reciente.
+caso_088,cliente_05_habitual,"Sí, otra vez.",reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_089,cliente_05_habitual,¿Cuánto está el pargo rojo?,consultar_precio_producto,"{""producto"": ""pargo_rojo""}",responder_producto,False,False,False,False,Explicar precio según tamaño.
+caso_090,cliente_05_habitual,¿Qué tienen de mariscos?,consultar_categoria,"{""categoria"": ""mariscos""}",listar_categoria,False,False,False,False,Listar solo mariscos.
+caso_091,cliente_05_habitual,Mándeme dos mojarras fritas.,agregar_productos_pedido,"{""items"": [{""producto"": ""mojarra_frita"", ""cantidad"": 2}]}",registrar_y_solicitar_datos,False,False,False,True,Registrar y pedir dirección/pago.
+caso_092,cliente_05_habitual,"La de siempre, pero sin salsa.",solicitar_modificacion,"{""producto"": ""trucha"", ""modificacion"": ""sin_salsa""}",validar_modificacion,False,False,False,True,Usar contexto solo si es inequívoco.
+caso_093,cliente_05_habitual,¿Todavía reciben Nequi?,consultar_medio_pago,"{""medio_pago"": ""Nequi""}",responder_dato_negocio,False,False,False,False,Confirmar medio vigente.
+caso_094,cliente_05_habitual,¿Cuánto se está demorando el domicilio?,consultar_domicilio,"{""atributo"": ""tiempo_actual""}",responder_o_escalar,False,False,False,True,Diferenciar tiempo estándar de tiempo operativo actual.
+caso_095,cliente_05_habitual,¿Hay sancocho de bagre?,consultar_disponibilidad_producto,"{""producto"": ""sancocho_de_bagre""}",responder_producto,False,True,False,False,Confirmar.
+caso_096,cliente_05_habitual,¿Me reserva la mesa de siempre?,solicitar_reserva,"{""referencia"": ""mesa_anterior""}",solicitar_datos_reserva,False,False,False,True,"Pedir fecha, hora, personas y aclarar que no se identifica mesa previa."
+caso_097,cliente_05_habitual,¿Qué cambió del menú?,consultar_cambios_menu,"{""version_anterior"": ""2026-06-15"", ""version_actual"": ""2026-07-01""}",comparar_versiones,False,True,False,False,Mostrar cambios si existe historial de versiones.
+caso_098,cliente_05_habitual,¿La dirección es la misma?,consultar_ubicacion,"{""atributo"": ""vigencia""}",responder_dato_negocio,False,False,False,False,Confirmar dirección vigente.
+caso_099,cliente_05_habitual,Anote un arroz con camarón.,agregar_producto_pedido,"{""producto"": ""arroz_con_camaron"", ""cantidad"": 1}",registrar_y_solicitar_datos,False,False,False,True,Agregar al pedido.
+caso_100,cliente_05_habitual,"Bueno, gracias.",agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
+caso_101,cliente_06_profesional,¿Cuál es el pescado más fresco que tienen?,solicitar_recomendacion,"{""criterio"": ""frescura""}",responder_o_escalar,False,True,False,True,No afirmar frescura relativa sin dato operativo.
+caso_102,cliente_06_profesional,¿Qué plato especial recomienda?,solicitar_recomendacion,"{""categoria"": ""especiales""}",recomendar_productos,False,True,False,False,Mostrar especialidades registradas.
+caso_103,cliente_06_profesional,¿Tienen langostinos?,consultar_producto,"{""producto"": ""langostinos""}",responder_producto,False,True,False,False,Mostrar presentaciones disponibles.
+caso_104,cliente_06_profesional,Quiero reservar para seis personas.,solicitar_reserva,"{""numero_personas"": 6}",solicitar_datos_reserva,False,False,False,True,"Pedir fecha, hora y nombre."
+caso_105,cliente_06_profesional,¿Pueden organizar un almuerzo empresarial?,consultar_eventos,"{""tipo_evento"": ""almuerzo_empresarial""}",responder_y_solicitar_datos,False,True,False,True,Confirmar servicio para eventos y pedir detalles.
+caso_106,cliente_06_profesional,Compárteme el menú completo.,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_107,cliente_06_profesional,Compárteme el menú completo.,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Indicar fecha y hora.
+caso_108,cliente_06_profesional,"Reenvíamelo, por favor.",reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_109,cliente_06_profesional,¿Cuál es el precio de los langostinos al ajillo?,consultar_precio_producto,"{""producto"": ""langostinos_al_ajillo""}",responder_producto,False,False,False,False,Dar precio puntual.
+caso_110,cliente_06_profesional,¿Qué opciones premium tienen?,consultar_categoria,"{""categoria"": ""premium""}",listar_categoria_por_criterio,False,False,False,True,Definir criterio o listar productos de mayor precio.
+caso_111,cliente_06_profesional,¿La cazuela central qué ingredientes contiene?,consultar_detalle_producto,"{""producto"": ""cazuela_central"", ""atributo"": ""ingredientes""}",responder_producto,False,True,False,False,Dar ingredientes registrados.
+caso_112,cliente_06_profesional,¿Qué vino recomiendan con el salmón?,solicitar_recomendacion,"{""producto"": ""salmon"", ""criterio"": ""maridaje""}",responder_fuera_de_alcance,False,False,False,True,No inventar oferta de vinos.
+caso_113,cliente_06_profesional,¿Puedo reservar un espacio privado?,consultar_reserva,"{""atributo"": ""espacio_privado""}",responder_o_escalar,False,False,False,True,No asumir disponibilidad.
+caso_114,cliente_06_profesional,¿Cuál es la capacidad máxima para eventos?,consultar_eventos,"{""atributo"": ""capacidad""}",responder_dato_negocio,False,False,False,False,Informar capacidad para 50 personas.
+caso_115,cliente_06_profesional,¿Aceptan tarjeta de crédito?,consultar_medio_pago,"{""medio_pago"": ""tarjeta_credito""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_116,cliente_06_profesional,¿El parqueadero tiene costo?,consultar_parqueadero,"{""atributo"": ""costo""}",responder_dato_negocio,False,False,False,False,Informar gratuidad para clientes.
+caso_117,cliente_06_profesional,¿Pueden adaptar un plato sin camarón?,solicitar_modificacion,"{""modificacion"": ""sin_camarón""}",validar_modificacion,False,True,False,True,Pedir producto y validar cocina.
+caso_118,cliente_06_profesional,Necesito propuesta para veinte personas.,solicitar_evento,"{""numero_personas"": 20}",solicitar_datos_evento,False,True,False,True,"Pedir fecha, presupuesto y formato."
+caso_119,cliente_06_profesional,¿Manejan factura electrónica?,consultar_facturacion,"{""tipo"": ""electronica""}",responder_o_escalar,False,False,False,True,No inventar.
+caso_120,cliente_06_profesional,Gracias por la precisión.,agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
+caso_121,cliente_07_baja_alfabetizacion_digital,cuanto balen la mojarra,consultar_precio_producto,"{""producto"": ""mojarra""}",responder_producto,False,True,False,False,Normalizar 'balen' a 'valen'.
+caso_122,cliente_07_baja_alfabetizacion_digital,tiene domisilio,consultar_domicilio,{},responder_dato_negocio,False,False,False,False,Normalizar 'domisilio'.
+caso_123,cliente_07_baja_alfabetizacion_digital,donde quedan,consultar_ubicacion,{},responder_dato_negocio,False,False,False,False,Dar dirección.
+caso_124,cliente_07_baja_alfabetizacion_digital,pago nequi,consultar_medio_pago,"{""medio_pago"": ""Nequi""}",responder_dato_negocio,False,False,False,False,Confirmar Nequi.
+caso_125,cliente_07_baja_alfabetizacion_digital,quiero pesacado frito,iniciar_pedido,"{""categoria"": ""pescado"", ""preparacion"": ""frito""}",solicitar_datos_faltantes,False,True,False,True,Preguntar qué pescado.
+caso_126,cliente_07_baja_alfabetizacion_digital,mande menu,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_127,cliente_07_baja_alfabetizacion_digital,mande menu,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Indicar envío previo.
+caso_128,cliente_07_baja_alfabetizacion_digital,mandelo otra bes,reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Normalizar y reenviar.
+caso_129,cliente_07_baja_alfabetizacion_digital,bagre cuanto,consultar_precio_producto,"{""producto"": ""bagre""}",responder_producto_o_aclarar,False,False,False,True,Aclarar presentación porque hay varios precios.
+caso_130,cliente_07_baja_alfabetizacion_digital,que arroces ay,consultar_categoria,"{""categoria"": ""arroces""}",listar_categoria,False,False,False,False,Listar arroces.
+caso_131,cliente_07_baja_alfabetizacion_digital,tiene camaron,consultar_producto,"{""producto"": ""camarón""}",responder_producto,False,True,False,False,Mostrar platos con camarón.
+caso_132,cliente_07_baja_alfabetizacion_digital,uno de esos,agregar_producto_pedido,"{""producto"": ""trucha"", ""cantidad"": 1}",confirmar_referencia,False,False,False,True,Confirmar preparación antes de agregar.
+caso_133,cliente_07_baja_alfabetizacion_digital,lo quiero en salsa,seleccionar_preparacion,"{""producto"": ""trucha"", ""preparacion"": ""en_salsa""}",validar_combinacion,False,False,False,False,Usar contexto.
+caso_134,cliente_07_baja_alfabetizacion_digital,abre domingo,consultar_horario,"{""dia"": ""domingo""}",responder_dato_negocio,False,False,False,False,Dar horario.
+caso_135,cliente_07_baja_alfabetizacion_digital,domicilio cuanto demora,consultar_domicilio,"{""atributo"": ""tiempo""}",responder_dato_negocio,False,False,False,False,Dar tiempo estimado.
+caso_136,cliente_07_baja_alfabetizacion_digital,reserba mesa,solicitar_reserva,{},solicitar_datos_reserva,False,False,False,True,Normalizar y pedir datos.
+caso_137,cliente_07_baja_alfabetizacion_digital,tarjeta si,consultar_medio_pago,"{""medio_pago"": ""tarjeta""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_138,cliente_07_baja_alfabetizacion_digital,parquiadero,consultar_parqueadero,{},responder_dato_negocio,False,False,False,False,Normalizar y responder.
+caso_139,cliente_07_baja_alfabetizacion_digital,quiero dos mojaras,agregar_producto_pedido,"{""producto"": ""mojarra"", ""cantidad"": 2}",solicitar_datos_faltantes,False,False,False,True,Preguntar preparación/presentación.
+caso_140,cliente_07_baja_alfabetizacion_digital,grasias,agradecer,{},cerrar_cordialmente,False,False,False,False,Normalizar y agradecer.
+caso_141,cliente_08_adolescente,menú,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_142,cliente_08_adolescente,menú,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Mencionar envío previo.
+caso_143,cliente_08_adolescente,otra vez,reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar según contexto.
+caso_144,cliente_08_adolescente,precios,consultar_precios_generales,{},hacer_pregunta_aclaracion,False,True,False,True,Preguntar categoría o producto.
+caso_145,cliente_08_adolescente,qué hay,consultar_menu_general,{},resumir_menu_y_ofrecer_pdf,False,True,False,False,Dar resumen breve y ofrecer PDF.
+caso_146,cliente_08_adolescente,el de camarón,consultar_producto,"{""ingrediente"": ""camarón""}",hacer_pregunta_aclaracion,False,True,False,True,La referencia no es suficiente; listar opciones con camarón.
+caso_147,cliente_08_adolescente,uno frito,seleccionar_preparacion,"{""producto"": ""trucha"", ""cantidad"": 1, ""preparacion"": ""frito""}",validar_combinacion,False,False,False,True,Validar preparación.
+caso_148,cliente_08_adolescente,domi?,consultar_domicilio,{},resumir_servicio,False,False,False,False,"Dar cobertura, mínimo, costo y tiempo."
+caso_149,cliente_08_adolescente,nequi?,consultar_medio_pago,"{""medio_pago"": ""Nequi""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_150,cliente_08_adolescente,mojarra?,consultar_producto,"{""producto"": ""mojarra""}",responder_producto_o_aclarar,False,True,False,True,Mostrar presentaciones y preguntar cuál.
+caso_151,cliente_08_adolescente,cuánto,consultar_precio_producto,"{""producto"": ""trucha""}",responder_producto_o_aclarar,False,False,False,True,Usar contexto y aclarar preparación si cambia precio.
+caso_152,cliente_08_adolescente,la frita,seleccionar_preparacion,"{""producto"": ""trucha"", ""preparacion"": ""frita""}",validar_combinacion,False,False,False,True,Resolver referencia.
+caso_153,cliente_08_adolescente,2,indicar_cantidad,"{""producto"": ""trucha"", ""cantidad"": 2}",actualizar_pedido,False,False,False,False,Usar contexto.
+caso_154,cliente_08_adolescente,dónde,consultar_ubicacion,{},responder_dato_negocio,False,False,False,False,Dar dirección.
+caso_155,cliente_08_adolescente,hoy abren?,consultar_horario,"{""fecha_relativa"": ""hoy""}",responder_dato_negocio,False,False,False,False,Responder según fecha.
+caso_156,cliente_08_adolescente,qué es marinera,consultar_definicion_preparacion,"{""preparacion"": ""a_la_marinera""}",explicar_preparacion,False,False,False,False,Explicar.
+caso_157,cliente_08_adolescente,sin picante se puede?,solicitar_modificacion,"{""producto"": ""trucha"", ""modificacion"": ""sin_picante""}",validar_modificacion,False,False,False,True,Validar.
+caso_158,cliente_08_adolescente,reserva 4,solicitar_reserva,"{""numero_personas"": 4}",solicitar_datos_reserva,False,False,False,True,Pedir fecha y hora.
+caso_159,cliente_08_adolescente,pago qr,consultar_medio_pago,"{""medio_pago"": ""QR""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_160,cliente_08_adolescente,grx,agradecer,{},cerrar_cordialmente,False,False,False,False,Reconocer abreviación.
+caso_161,cliente_09_restricciones,¿La cazuela tiene leche o crema?,consultar_alergenos,"{""producto"": ""cazuela"", ""ingredientes_consultados"": [""leche"", ""crema""]}",responder_con_datos_y_advertencia,False,True,False,True,No responder si los ingredientes no están formalizados.
+caso_162,cliente_09_restricciones,¿Pueden prepararlo sin ajo?,solicitar_modificacion,"{""producto"": ""trucha"", ""modificacion"": ""sin_ajo""}",validar_modificacion,False,False,False,True,Validar con cocina.
+caso_163,cliente_09_restricciones,¿Qué opción no es frita?,consultar_preparacion,"{""restriccion"": ""no_frita""}",filtrar_productos,False,True,False,False,Listar opciones no fritas.
+caso_164,cliente_09_restricciones,¿El arroz tiene mariscos mixtos?,consultar_detalle_producto,"{""producto"": ""arroz"", ""atributo"": ""ingredientes"", ""ingrediente"": ""mariscos_mixtos""}",hacer_pregunta_aclaracion,False,True,False,True,Preguntar cuál arroz.
+caso_165,cliente_09_restricciones,"Soy alérgica al camarón, ¿qué puedo pedir?",solicitar_recomendacion_por_alergia,"{""alergeno"": ""camarón""}",advertir_y_escalar,False,True,False,True,No garantizar seguridad sin datos de contaminación cruzada.
+caso_166,cliente_09_restricciones,Quiero revisar el menú completo.,solicitar_menu,{},enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_167,cliente_09_restricciones,Quiero revisar el menú completo.,solicitar_menu,{},referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Mencionar envío previo.
+caso_168,cliente_09_restricciones,"Sí, envíamelo nuevamente.",reenviar_menu,{},enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_169,cliente_09_restricciones,¿Qué ingredientes tiene el ceviche de camarón?,consultar_detalle_producto,"{""producto"": ""ceviche_de_camaron"", ""atributo"": ""ingredientes""}",responder_producto,False,False,False,False,Dar ingredientes registrados.
+caso_170,cliente_09_restricciones,¿Qué platos tienen sin mariscos?,consultar_categoria_por_restriccion,"{""restriccion"": ""sin_mariscos""}",filtrar_productos,False,False,False,True,Solo filtrar si el catálogo tiene ingredientes completos.
+caso_171,cliente_09_restricciones,¿La salsa marinera contiene lácteos?,consultar_alergenos,"{""preparacion"": ""salsa_marinera"", ""alergeno"": ""lácteos""}",responder_con_datos_y_advertencia,False,False,False,True,No inventar.
+caso_172,cliente_09_restricciones,¿Pueden usar utensilios separados?,consultar_contaminacion_cruzada,{},escalar_a_personal,False,False,False,True,Requiere confirmación operativa.
+caso_173,cliente_09_restricciones,¿Cuál plato no lleva gluten?,solicitar_recomendacion_por_restriccion,"{""restriccion"": ""sin_gluten""}",advertir_y_escalar,False,True,False,True,No certificar sin información.
+caso_174,cliente_09_restricciones,¿La mojarra se puede hacer a la plancha?,consultar_preparacion_producto,"{""producto"": ""mojarra"", ""preparacion"": ""a_la_plancha""}",validar_combinacion,False,True,False,False,Confirmar si está permitida.
+caso_175,cliente_09_restricciones,¿Puedo quitarle la salsa?,solicitar_modificacion,"{""producto"": ""trucha"", ""modificacion"": ""sin_salsa""}",validar_modificacion,False,False,False,True,Validar.
+caso_176,cliente_09_restricciones,¿Qué acompañamientos tienen huevo?,consultar_alergenos,"{""alergeno"": ""huevo"", ""tipo"": ""acompañamiento""}",responder_con_datos_y_advertencia,False,True,False,True,Requiere catálogo de ingredientes.
+caso_177,cliente_09_restricciones,¿El aceite se comparte con productos apanados?,consultar_contaminacion_cruzada,"{""elemento"": ""aceite""}",escalar_a_personal,False,False,False,True,Requiere confirmación de cocina.
+caso_178,cliente_09_restricciones,¿Tienen una opción vegetariana?,consultar_categoria_por_restriccion,"{""restriccion"": ""vegetariana""}",responder_o_aclarar,False,True,False,True,No inventar oferta.
+caso_179,cliente_09_restricciones,Quiero pedir la trucha sin ajo.,iniciar_pedido,"{""producto"": ""trucha"", ""modificacion"": ""sin_ajo""}",validar_modificacion_y_continuar,False,False,False,True,Validar antes de confirmar.
+caso_180,cliente_09_restricciones,Gracias por no asumir.,agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
+caso_181,cliente_10_administrativo,Necesito almuerzo para doce personas.,iniciar_pedido_grupal,"{""cantidad_personas"": 12}",solicitar_datos_pedido_grupal,False,True,False,True,"Pedir fecha, presupuesto, opciones y dirección."
+caso_182,cliente_10_administrativo,¿Pueden entregar todos los pedidos marcados?,consultar_empaque,"{""tipo"": ""marcado_individual""}",responder_o_escalar,False,False,False,True,Confirmar operación.
+caso_183,cliente_10_administrativo,¿Manejan factura electrónica?,consultar_facturacion,"{""tipo"": ""electronica""}",responder_o_escalar,False,False,False,True,No inventar.
+caso_184,cliente_10_administrativo,¿Cuál es el mínimo para domicilio?,consultar_domicilio,"{""atributo"": ""monto_minimo""}",responder_dato_negocio,False,False,False,False,Informar $25.000.
+caso_185,cliente_10_administrativo,¿Puedo programarlo para la una?,consultar_pedido_programado,"{""hora"": ""13:00""}",validar_capacidad,False,False,False,True,Confirmar según operación.
+caso_186,cliente_10_administrativo,Envíame el menú para compartirlo con el equipo.,solicitar_menu,"{""proposito"": ""compartir""}",enviar_menu_pdf,True,False,False,False,Enviar PDF.
+caso_187,cliente_10_administrativo,Envíame el menú para compartirlo con el equipo.,solicitar_menu,"{""proposito"": ""compartir""}",referenciar_envio_previo_y_ofrecer_reenvio,False,False,True,False,Indicar fecha/hora y ofrecer.
+caso_188,cliente_10_administrativo,"Sí, necesito reenviarlo al grupo.",reenviar_menu,"{""proposito"": ""compartir""}",enviar_menu_pdf,True,False,False,False,Reenviar.
+caso_189,cliente_10_administrativo,¿Cuánto cuesta la cazuela especial?,consultar_precio_producto,"{""producto"": ""cazuela_especial""}",responder_producto,False,False,False,False,Dar precio.
+caso_190,cliente_10_administrativo,¿Qué ejecutivos tienen?,consultar_categoria,"{""categoria"": ""almuerzos_ejecutivos""}",listar_categoria,False,False,False,False,Listar categoría.
+caso_191,cliente_10_administrativo,Necesito seis bagres y seis arroces con camarón.,agregar_productos_pedido,"{""items"": [{""producto"": ""bagre"", ""cantidad"": 6}, {""producto"": ""arroz_con_camaron"", ""cantidad"": 6}]}",solicitar_aclaracion_y_datos,False,False,False,True,Aclarar presentación del bagre.
+caso_192,cliente_10_administrativo,¿Pueden poner el nombre de cada persona?,consultar_empaque,"{""tipo"": ""etiquetado_por_nombre""}",responder_o_escalar,False,False,False,True,Confirmar operación.
+caso_193,cliente_10_administrativo,¿Cuál es el tiempo de entrega para doce pedidos?,consultar_domicilio_grupal,"{""cantidad"": 12, ""atributo"": ""tiempo""}",validar_capacidad,False,False,False,True,No usar automáticamente el tiempo estándar.
+caso_194,cliente_10_administrativo,¿Aceptan transferencia bancaria?,consultar_medio_pago,"{""medio_pago"": ""transferencia""}",responder_dato_negocio,False,False,False,False,Confirmar.
+caso_195,cliente_10_administrativo,¿El domicilio sería gratis por el monto?,consultar_domicilio,"{""atributo"": ""gratuidad_por_monto""}",calcular_condicion,False,False,False,True,Evaluar total del pedido frente a $80.000.
+caso_196,cliente_10_administrativo,¿Pueden entregar en dos direcciones?,consultar_domicilio,"{""numero_direcciones"": 2}",responder_o_escalar,False,False,False,True,Requiere validación operativa y costos.
+caso_197,cliente_10_administrativo,Necesito reservar para una reunión de quince.,solicitar_reserva,"{""numero_personas"": 15, ""tipo_evento"": ""reunión""}",solicitar_datos_reserva,False,True,False,True,"Pedir fecha, hora y requerimientos."
+caso_198,cliente_10_administrativo,¿Tienen capacidad para cincuenta personas?,consultar_eventos,"{""numero_personas"": 50}",responder_dato_negocio,False,False,False,False,Confirmar capacidad registrada.
+caso_199,cliente_10_administrativo,¿Puedo pagar una parte por transferencia y otra con tarjeta?,consultar_pago_mixto,"{""medios_pago"": [""transferencia"", ""tarjeta""]}",responder_o_escalar,False,False,False,True,No asumir pago mixto.
+caso_200,cliente_10_administrativo,"Quedo atento, gracias.",agradecer,{},cerrar_cordialmente,False,False,False,False,Agradecer.
