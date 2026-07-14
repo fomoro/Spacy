@@ -1,7 +1,0 @@
-[
-  "Aplicar primero frases completas y luego palabras.",
-  "Usar límites de palabra para evitar reemplazos parciales.",
-  "No corregir automáticamente términos no registrados.",
-  "No eliminar negaciones.",
-  "Conservar el texto original y registrar cada transformación."
-]

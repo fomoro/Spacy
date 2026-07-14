@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0.0",
+  "resource_type": "conversation_profiles",
+  "language": "es-CO",
+  "domain": "restaurante colombiano de comida de mar",
+  "purpose": "Definir estilos conversacionales observables para diseñar y evaluar cobertura lingüística, contexto y aclaraciones.",
+  "profile_count": 15,
+  "contains_cases": false,
+  "runtime_policy": {
+    "use_in_runtime_resolution": false,
+    "infer_profile_from_message": false,
+    "modify_business_rules_by_profile": false,
+    "description": "Son un recurso de diseño y evaluación; no se envían al IntentResolver ni cambian intenciones, seguridad o acceso."
+  },
+  "governance": {
+    "unit_of_description": "rasgos lingüísticos e interactivos observables",
+    "excluded_attributes": [
+      "edad",
+      "género",
+      "orientación sexual",
+      "etnia",
+      "religión",
+      "discapacidad",
+      "estrato socioeconómico",
+      "procedencia usada como sustituto de nivel social"
+    ],
+    "principles": [
+      "No confundir registro lingüístico con capacidad cognitiva o poder adquisitivo.",
+      "No degradar la atención por ortografía, brevedad, formalidad o variedad regional.",
+      "Mantener iguales reglas de intención, seguridad alimentaria y confirmación transaccional.",
+      "Usar los perfiles para hallar vacíos de cobertura, no para personalizar precios o disponibilidad."
+    ]
+  },
+  "profiles": [
+    {
+      "id": "perfil_01_coloquial_presupuesto",
+      "name": "Registro coloquial con presupuesto explícito",
+      "description": "Interacción informal que prioriza cuánto alcanza con un monto y compara opciones económicas.",
+      "linguistic_features": ["tratamientos coloquiales colombianos", "jerga monetaria", "elipsis", "peticiones breves"],
+      "frequent_needs": ["consultar precio", "recomendar dentro de presupuesto", "consultar medios de pago"],
+      "clarification_focus": ["monto ambiguo", "producto omitido", "consulta de precio frente a pedido"]
+    },
+    {
+      "id": "perfil_02_directo_tiempo_limitado",
+      "name": "Comunicación directa con tiempo limitado",
+      "description": "Mensajes orientados a resolver rápidamente disponibilidad, tiempos, entrega o recogida.",
+      "linguistic_features": ["frases telegráficas", "abreviaturas operativas", "poca cortesía explícita", "marcadores de urgencia"],
+      "frequent_needs": ["consultar tiempo de entrega", "confirmar disponibilidad", "pedir para recoger"],
+      "clarification_focus": ["hora objetivo", "modalidad de entrega", "producto y cantidad faltantes"]
+    },
+    {
+      "id": "perfil_03_compra_familiar",
+      "name": "Compra para grupo familiar",
+      "description": "Combina varias porciones, preferencias y restricciones dentro de un mismo pedido.",
+      "linguistic_features": ["varios productos coordinados", "cantidades distribuidas", "pronombres referenciales", "preferencias múltiples"],
+      "frequent_needs": ["armar pedido múltiple", "comparar tamaños", "solicitar modificaciones"],
+      "clarification_focus": ["asociar cantidades con productos", "alcance de cada restricción", "confirmar pedido consolidado"]
+    },
+    {
+      "id": "perfil_04_cortes_explicativo",
+      "name": "Registro cortés y explicativo",
+      "description": "Formula solicitudes completas con tratamientos de cortesía y contexto narrativo adicional.",
+      "linguistic_features": ["fórmulas de cortesía", "oraciones extensas", "tratamientos respetuosos", "contexto previo"],
+      "frequent_needs": ["conocer la carta", "entender preparaciones", "confirmar condiciones del servicio"],
+      "clarification_focus": ["separar contexto y solicitud", "resolver descripciones sin nombre exacto", "no confundir cortesía con intención"]
+    },
+    {
+      "id": "perfil_05_habitual_contextual",
+      "name": "Cliente habitual con referencias contextuales",
+      "description": "Da por compartido el historial y usa expresiones como lo mismo, el de siempre o la dirección anterior.",
+      "linguistic_features": ["anáforas", "elipsis del producto", "demostrativos", "referencias al historial"],
+      "frequent_needs": ["repetir pedido", "reutilizar dirección", "modificar una orden anterior"],
+      "clarification_focus": ["antecedente inexistente o múltiple", "vigencia de datos previos", "confirmación transaccional"]
+    },
+    {
+      "id": "perfil_06_formal_orientado_calidad",
+      "name": "Registro formal orientado a calidad",
+      "description": "Busca detalles de preparación, composición y presentación antes de decidir.",
+      "linguistic_features": ["vocabulario formal", "preguntas subordinadas", "comparaciones explícitas", "precisión terminológica"],
+      "frequent_needs": ["comparar platos", "consultar ingredientes", "pedir recomendación argumentada"],
+      "clarification_focus": ["criterio de comparación", "preferencia frente a restricción", "atributos no documentados"]
+    },
+    {
+      "id": "perfil_07_escritura_no_estandar",
+      "name": "Escritura digital no estándar",
+      "description": "Presenta variación gráfica y segmentación irregular sin que ello reduzca la complejidad de la necesidad.",
+      "linguistic_features": ["errores ortográficos", "segmentación irregular", "ausencia de puntuación", "variantes fonográficas"],
+      "frequent_needs": ["consultar la carta", "consultar medios de pago", "iniciar o modificar pedido"],
+      "clarification_focus": ["corregir solo variantes inequívocas", "preservar nombres y direcciones", "desambiguar productos plausibles"]
+    },
+    {
+      "id": "perfil_08_digital_ultrabreve",
+      "name": "Interacción digital ultrabreve",
+      "description": "Usa mensajes mínimos, abreviaturas, emojis o respuestas fragmentadas a turnos anteriores.",
+      "linguistic_features": ["pocas palabras", "abreviaturas de chat", "emojis pragmáticos", "respuestas elípticas"],
+      "frequent_needs": ["consultar precio", "elegir entre opciones", "confirmar o negar"],
+      "clarification_focus": ["usar contexto sin sobreinferir", "confirmación frente a nuevo pedido", "producto ausente"]
+    },
+    {
+      "id": "perfil_09_preferencias_alimentarias",
+      "name": "Preferencias y restricciones alimentarias",
+      "description": "Busca opciones compatibles con ingredientes que desea evitar, sin declarar necesariamente una alergia.",
+      "linguistic_features": ["construcciones con sin", "listas de ingredientes", "negación de alcance variable", "preguntas sobre sustitución"],
+      "frequent_needs": ["consultar ingredientes", "solicitar modificación", "recibir recomendación compatible"],
+      "clarification_focus": ["preferencia frente a alergia", "alcance de negación", "sustituciones no documentadas"]
+    },
+    {
+      "id": "perfil_10_operativo_pedido_grupal",
+      "name": "Coordinación operativa de pedido grupal",
+      "description": "Gestiona pedidos de equipos con cantidades, factura, entrega y condiciones logísticas.",
+      "linguistic_features": ["listas estructuradas", "abreviaturas administrativas", "cantidades altas", "condiciones múltiples"],
+      "frequent_needs": ["solicitar cotización", "consultar factura", "coordinar entrega programada"],
+      "clarification_focus": ["cotización frente a pedido", "datos fiscales", "fecha, hora, dirección y cantidad"]
+    },
+    {
+      "id": "perfil_11_dictado_por_voz",
+      "name": "Mensaje proveniente de dictado por voz",
+      "description": "Texto transcrito con repeticiones, autocorrecciones y posibles confusiones fonéticas.",
+      "linguistic_features": ["autocorrecciones", "repeticiones", "puntuación automática", "confusiones fonéticas"],
+      "frequent_needs": ["consultar o pedir productos", "indicar dirección", "corregir una selección"],
+      "clarification_focus": ["priorizar corrección reciente", "confirmar platos fonéticamente cercanos", "preservar direcciones"]
+    },
+    {
+      "id": "perfil_12_hablante_no_local",
+      "name": "Hablante no familiarizado con la carta local",
+      "description": "Desconoce nombres regionales o preparaciones y formula equivalencias con vocabulario general.",
+      "linguistic_features": ["paráfrasis", "preguntas metalingüísticas", "equivalencias culinarias", "pocos regionalismos"],
+      "frequent_needs": ["entender platos y especies", "comparar preparaciones", "consultar tamaños y acompañamientos"],
+      "clarification_focus": ["explicar sin asumir conocimiento local", "especie frente a preparación", "evitar equivalencias falsas"]
+    },
+    {
+      "id": "perfil_13_indeciso_comparativo",
+      "name": "Decisión mediante comparación",
+      "description": "Expresa alternativas y necesita una recomendación basada en preferencias explícitas.",
+      "linguistic_features": ["preguntas disyuntivas", "comparativos", "reformulaciones", "modalizadores de duda"],
+      "frequent_needs": ["comparar platos", "recibir recomendación", "consultar precio y tamaño"],
+      "clarification_focus": ["criterio decisivo", "alternativas frente a selección final", "recomendación frente a pedido"]
+    },
+    {
+      "id": "perfil_14_planificacion_evento",
+      "name": "Planificación de evento o consumo futuro",
+      "description": "Consulta anticipadamente capacidad, horario, reserva, menú y condiciones para una ocasión futura.",
+      "linguistic_features": ["fechas", "condicionales", "estimación de asistentes", "preguntas encadenadas"],
+      "frequent_needs": ["reservar mesa", "consultar horarios y capacidad", "solicitar cotización"],
+      "clarification_focus": ["fecha y hora", "número de personas", "consulta exploratoria frente a reserva"]
+    },
+    {
+      "id": "perfil_15_seguridad_alimentaria",
+      "name": "Consulta crítica de seguridad alimentaria",
+      "description": "Declara alergia, intolerancia o preocupación por contaminación cruzada y exige validación conservadora.",
+      "linguistic_features": ["declaraciones de alergia", "preguntas sobre trazas", "negación preventiva", "consecuencias de salud"],
+      "frequent_needs": ["consultar alérgenos", "confirmar ingredientes", "solicitar validación de cocina"],
+      "clarification_focus": ["identificar alérgeno y plato", "no inferir seguridad", "escalar a confirmación humana"]
+    }
+  ]
+}

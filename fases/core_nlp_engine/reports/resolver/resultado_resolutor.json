@@ -1,0 +1,16 @@
+{
+  "casos_evaluados": 105,
+  "intencion_correcta": 62,
+  "subintencion_correcta": 42,
+  "aclaracion_correcta": 60,
+  "precision_intencion_sobre_contrato": 0.5905,
+  "precision_subintencion_sobre_contrato": 0.4,
+  "precision_aclaracion_sobre_contrato": 0.5714,
+  "estados": {
+    "resolved": 61,
+    "ambiguous_or_clarification": 24,
+    "unknown": 20
+  },
+  "errores": 0,
+  "nota": "Métrica sobre contrato compacto heredado de Fase 6; no reemplaza validación con conversaciones reales."
+}

@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "schema_version": "2.0.0",
+    "resource_group": "nlp",
+    "component": "IntentResolver",
+    "language": "es-CO",
+    "strategy": "weighted_evidence_with_priority_rules",
+    "base_phase": 7,
+    "decision_policy": "resolve_or_request_clarification",
+    "taxonomy": "intent_taxonomy.json",
+    "ownership": "ponderacion_prioridades_y_evidencia"
+  },
+  "thresholds": {
+    "minimum_score": 0.18,
+    "clarification_margin": 0.15,
+    "high_confidence_score": 0.75,
+    "medium_confidence_score": 0.45,
+    "maximum_confidence": 0.99
+  },
+  "source_multipliers": {
+    "matcher": 1.0,
+    "lemma_spacy": 0.9,
+    "lemma_catalog_fallback": 0.8,
+    "lemma_surface": 0.45,
+    "phrase": 1.0,
+    "context": 1.0,
+    "priority_rule": 1.0
+  },
+  "phrase_evidence": {
+    "PRODUCTO_ESPECIFICO": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_producto",
+        "weight": 0.14
+      }
+    ],
+    "PRODUCTO_BASE": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_producto",
+        "weight": 0.12
+      }
+    ],
+    "CATEGORIA": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_categoria",
+        "weight": 0.18
+      }
+    ],
+    "PREPARACION": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_preparacion",
+        "weight": 0.1
+      }
+    ],
+    "MEDIO_PAGO": [
+      {
+        "intent": "pago",
+        "subintent": "consultar_medio_pago",
+        "weight": 0.28
+      }
+    ],
+    "ALERGENO": [],
+    "INGREDIENTE": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_detalle_producto",
+        "weight": 0.06
+      }
+    ]
+  },
+  "service_entity_map": {
+    "menu_pdf": {
+      "intent": "menu",
+      "subintent": "solicitar_menu",
+      "weight": 0.3
+    },
+    "domicilio": {
+      "intent": "domicilio",
+      "subintent": "consultar_domicilio",
+      "weight": 0.26
+    },
+    "reserva": {
+      "intent": "reserva_evento",
+      "subintent": "solicitar_reserva",
+      "weight": 0.24
+    },
+    "eventos": {
+      "intent": "reserva_evento",
+      "subintent": "consultar_eventos",
+      "weight": 0.22
+    },
+    "factura_electronica": {
+      "intent": "operacion",
+      "subintent": "consultar_facturacion",
+      "weight": 0.26
+    },
+    "empaque_individual": {
+      "intent": "operacion",
+      "subintent": "consultar_empaque",
+      "weight": 0.24
+    },
+    "etiquetado_nombre": {
+      "intent": "operacion",
+      "subintent": "consultar_empaque",
+      "weight": 0.24
+    },
+    "pedido_programado": {
+      "intent": "operacion",
+      "subintent": "consultar_pedido_programado",
+      "weight": 0.24
+    },
+    "parqueadero": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_parqueadero",
+      "weight": 0.24
+    },
+    "menu_infantil": {
+      "intent": "operacion",
+      "subintent": "consultar_servicio",
+      "weight": 0.22
+    }
+  },
+  "intent_priorities": {
+    "seguridad_alimentaria": 100,
+    "precio": 95,
+    "pedido": 90,
+    "menu": 80,
+    "domicilio": 75,
+    "pago": 75,
+    "reserva_evento": 75,
+    "catalogo": 70,
+    "recomendacion": 65,
+    "horario_ubicacion": 60,
+    "operacion": 55,
+    "social": 10
+  },
+  "entity_ruler_evidence": {
+    "DIA_SEMANA": [
+      {
+        "intent": "horario_ubicacion",
+        "subintent": "consultar_horario",
+        "weight": 0.06
+      }
+    ],
+    "FECHA_RELATIVA": [],
+    "MOMENTO_DIA": [],
+    "REFERENCIA_CONTEXTUAL": []
+  }
+}

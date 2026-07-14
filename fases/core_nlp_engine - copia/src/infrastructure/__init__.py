@@ -1,0 +1,38 @@
+from src.infrastructure.nlp import (
+    TextNormalizer,
+    NormalizationResult,
+    PhraseMatcherService,
+    PhraseEntity,
+    PhraseMatchResult,
+    MatcherService,
+    MatcherEvidence,
+    StructuredExtraction,
+    MatcherResult,
+    # Lemas
+    LemmaService,
+    LemmaToken,
+    LemmaEvidence,
+    LemmaAnalysisResult,
+    EntityRulerEntity,
+    EntityRulerResult,
+    EntityRulerService,
+)
+
+__all__ = [
+    "TextNormalizer",
+    "NormalizationResult",
+    "PhraseMatcherService",
+    "PhraseEntity",
+    "PhraseMatchResult",
+    "MatcherService",
+    "MatcherEvidence",
+    "StructuredExtraction",
+    "MatcherResult",
+    "LemmaService",
+    "LemmaToken",
+    "LemmaEvidence",
+    "LemmaAnalysisResult",
+    "EntityRulerEntity",
+    "EntityRulerResult",
+    "EntityRulerService",
+]

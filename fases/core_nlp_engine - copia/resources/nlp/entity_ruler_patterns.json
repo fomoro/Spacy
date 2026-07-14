@@ -1,0 +1,177 @@
+{
+  "metadata": {
+    "schema_version": "2.0.0",
+    "resource_group": "nlp",
+    "component": "spacy.pipeline.EntityRuler",
+    "language": "es-CO",
+    "ownership": "tiempo_y_referencias_que_requieren_contexto_conversacional",
+    "excludes": [
+      "productos",
+      "ingredientes",
+      "negacion_sintactica",
+      "intenciones"
+    ]
+  },
+  "patterns": [
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "lunes",
+      "id": "lunes"
+    },
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "martes",
+      "id": "martes"
+    },
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "miércoles",
+      "id": "miércoles"
+    },
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "jueves",
+      "id": "jueves"
+    },
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "viernes",
+      "id": "viernes"
+    },
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "sábado",
+      "id": "sábado"
+    },
+    {
+      "label": "DIA_SEMANA",
+      "pattern": "domingo",
+      "id": "domingo"
+    },
+    {
+      "label": "FECHA_RELATIVA",
+      "pattern": "hoy",
+      "id": "hoy"
+    },
+    {
+      "label": "FECHA_RELATIVA",
+      "pattern": "mañana",
+      "id": "manana"
+    },
+    {
+      "label": "FECHA_RELATIVA",
+      "pattern": "pasado mañana",
+      "id": "pasado_manana"
+    },
+    {
+      "label": "FECHA_RELATIVA",
+      "pattern": "este fin de semana",
+      "id": "fin_semana"
+    },
+    {
+      "label": "MOMENTO_DIA",
+      "pattern": "al mediodía",
+      "id": "mediodia"
+    },
+    {
+      "label": "MOMENTO_DIA",
+      "pattern": "en la mañana",
+      "id": "manana"
+    },
+    {
+      "label": "MOMENTO_DIA",
+      "pattern": "en la tarde",
+      "id": "tarde"
+    },
+    {
+      "label": "MOMENTO_DIA",
+      "pattern": "en la noche",
+      "id": "noche"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "ese",
+      "id": "ultimo_producto"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "esa",
+      "id": "ultimo_producto"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "el mismo",
+      "id": "ultimo_producto"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "la misma",
+      "id": "ultimo_producto"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "uno de esos",
+      "id": "ultimo_producto"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "lo de siempre",
+      "id": "pedido_previo"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "la de siempre",
+      "id": "pedido_previo"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "pedido anterior",
+      "id": "pedido_previo"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "vez pasada",
+      "id": "pedido_previo"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "misma dirección",
+      "id": "direccion_previa"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "dirección de siempre",
+      "id": "direccion_previa"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "otra vez",
+      "id": "ultimo_elemento"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "de nuevo",
+      "id": "ultimo_elemento"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "nuevamente",
+      "id": "ultimo_elemento"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "la frita",
+      "id": "preparacion_contextual"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "la de ajillo",
+      "id": "preparacion_contextual"
+    },
+    {
+      "label": "REFERENCIA_CONTEXTUAL",
+      "pattern": "la de salsa",
+      "id": "preparacion_contextual"
+    }
+  ]
+}

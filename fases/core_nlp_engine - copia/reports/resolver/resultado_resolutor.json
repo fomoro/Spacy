@@ -1,0 +1,33 @@
+{
+  "casos_evaluados": 105,
+  "intencion_correcta": 95,
+  "subintencion_correcta": 93,
+  "aclaracion_correcta": 97,
+  "precision_intencion_sobre_contrato": 0.9048,
+  "precision_subintencion_sobre_contrato": 0.8857,
+  "precision_aclaracion_sobre_contrato": 0.9238,
+  "metricas_aclaracion": {
+    "precision": 0.9767,
+    "recall": 0.8571,
+    "specificity": 0.9821,
+    "f1": 0.913,
+    "true_positive": 42,
+    "false_positive": 1,
+    "false_negative": 7,
+    "true_negative": 55
+  },
+  "estados": {
+    "resolved": 62,
+    "ambiguous_or_clarification": 39,
+    "unknown": 4
+  },
+  "modos_intervencion": {
+    "needs_business_lookup": 11,
+    "needs_human_safety_validation": 6,
+    "needs_transaction_confirmation": 7,
+    "needs_user_clarification": 19,
+    "resolved": 62
+  },
+  "errores": 0,
+  "nota": "Métrica sobre contrato compacto heredado de Fase 6; no reemplaza validación con conversaciones reales."
+}

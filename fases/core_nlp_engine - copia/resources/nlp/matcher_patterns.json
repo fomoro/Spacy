@@ -1,0 +1,2230 @@
+{
+  "metadata": {
+    "schema_version": "2.0.0",
+    "resource_group": "nlp",
+    "component": "spacy.matcher.Matcher",
+    "language": "es",
+    "purpose": "Detectar estructuras de intención y extraer evidencia, no resolver la intención final.",
+    "sources": [
+      "Fases 1-5 consolidadas"
+    ],
+    "entity_precondition": "PhraseMatcherService debe asignar doc.ents antes del Matcher.",
+    "taxonomy": "intent_taxonomy.json",
+    "ownership": "estructuras_tokenizadas_y_extraccion_sintactica"
+  },
+  "patterns": [
+    {
+      "id": "PRICE_Q_WH",
+      "intent": "precio",
+      "subintent": "consultar_precio_producto",
+      "weight": 0.55,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cuánto",
+              "cuanto",
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "OP": "?",
+          "LOWER": {
+            "IN": [
+              "costar",
+              "costo",
+              "costó",
+              "cuesta",
+              "cuestan",
+              "sale",
+              "salen",
+              "salir",
+              "vale",
+              "valen",
+              "valer",
+              "valía"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "vale",
+              "cuesta",
+              "precio",
+              "está",
+              "esta"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "el",
+              "la",
+              "los",
+              "las",
+              "un",
+              "una"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PRICE_PRODUCT_TRAILING",
+      "intent": "precio",
+      "subintent": "consultar_precio_producto",
+      "weight": 0.52,
+      "pattern": [
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "cuánto",
+              "cuanto",
+              "precio",
+              "valor"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "PRICE_BUDGET",
+      "intent": "precio",
+      "subintent": "solicitar_recomendacion_por_presupuesto",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "con",
+              "hasta",
+              "máximo",
+              "maximo"
+            ]
+          }
+        },
+        {
+          "LIKE_NUM": true
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "lucas",
+              "mil",
+              "pesos"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "MENU_REQUEST",
+      "intent": "menu",
+      "subintent": "solicitar_menu",
+      "weight": 0.55,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "comparte",
+              "comparteme",
+              "compartir",
+              "compárteme",
+              "enviame",
+              "enviar",
+              "envie",
+              "envía",
+              "envíame",
+              "manda",
+              "mandame",
+              "mandar",
+              "mande",
+              "mandeme",
+              "mostrar",
+              "muestra",
+              "muestrame",
+              "muéstrame",
+              "mándame",
+              "mándeme",
+              "pasa",
+              "pasame",
+              "pasar",
+              "pásame"
+            ]
+          }
+        },
+        {
+          "ENT_ID": "menu_pdf",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "MENU_RETRY",
+      "intent": "menu",
+      "subintent": "reenviar_menu",
+      "weight": 0.65,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "reenvíalo",
+              "reenvíamela",
+              "reenvíamelo",
+              "reenviarlo",
+              "reenviar",
+              "mándamelo",
+              "mandamelo",
+              "mándela",
+              "mandela",
+              "reenvíala",
+              "reenvíame"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "otra",
+              "nuevo",
+              "nuevamente"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "vez",
+              "menú",
+              "menu",
+              "carta"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "CATEGORY_QUERY",
+      "intent": "catalogo",
+      "subintent": "consultar_categoria",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que",
+              "cuáles",
+              "cuales"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": "CATEGORIA",
+          "OP": "+"
+        },
+        {
+          "OP": "?",
+          "LOWER": {
+            "IN": [
+              "haber",
+              "hay",
+              "maneja",
+              "manejan",
+              "manejar",
+              "ofrece",
+              "ofrecen",
+              "ofrecer",
+              "tener",
+              "tengo",
+              "tiene",
+              "tienen"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "AVAILABILITY_PRODUCT",
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.52,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "disponible",
+              "disponibles",
+              "queda",
+              "quedan"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "el",
+              "la",
+              "los",
+              "las"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PRODUCT_DETAIL_WHAT_HAS",
+      "intent": "catalogo",
+      "subintent": "consultar_detalle_producto",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "tener",
+              "tengo",
+              "tiene",
+              "tienen",
+              "trae",
+              "traen",
+              "traer",
+              "venir",
+              "viene",
+              "vienen"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "PREPARATION_PRODUCT",
+      "intent": "catalogo",
+      "subintent": "consultar_preparacion_producto",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "OP": "?",
+          "LOWER": {
+            "IN": [
+              "hace",
+              "hacen",
+              "hacer",
+              "prepara",
+              "preparan",
+              "preparar",
+              "tener",
+              "tengo",
+              "tiene",
+              "tienen"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": "PREPARACION",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ORDER_WANT_PRODUCT",
+      "intent": "pedido",
+      "subintent": "iniciar_pedido",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "dame",
+              "dar",
+              "deme",
+              "manda",
+              "mandame",
+              "mandar",
+              "mande",
+              "mandeme",
+              "mándame",
+              "mándeme",
+              "necesita",
+              "necesitar",
+              "necesito",
+              "pedido",
+              "pedir",
+              "pido",
+              "querer",
+              "quiere",
+              "quiero",
+              "quisiera"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "el",
+              "la",
+              "los",
+              "las",
+              "un",
+              "una",
+              "unos",
+              "unas"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LIKE_NUM": true,
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ORDER_MULTI_PRODUCT",
+      "intent": "pedido",
+      "subintent": "agregar_productos_pedido",
+      "weight": 0.64,
+      "pattern": [
+        {
+          "LIKE_NUM": true
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "y",
+              ","
+            ]
+          }
+        },
+        {
+          "LIKE_NUM": true,
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "MODIFICATION_REMOVE",
+      "intent": "pedido",
+      "subintent": "solicitar_modificacion",
+      "weight": 0.62,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "sin",
+              "quitar",
+              "quítele",
+              "quite",
+              "retirar"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "INGREDIENTE",
+              "ALERGENO",
+              "PREPARACION"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "MODIFICATION_ADD",
+      "intent": "pedido",
+      "subintent": "solicitar_modificacion",
+      "weight": 0.6,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "adiciona",
+              "adicionar",
+              "adicionarle",
+              "agrega",
+              "agregar",
+              "agregarle",
+              "poner",
+              "ponerle",
+              "ponga"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "INGREDIENTE",
+              "PRODUCTO_BASE",
+              "PRODUCTO_ESPECIFICO"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "QUANTITY_ONLY",
+      "intent": "pedido",
+      "subintent": "indicar_cantidad",
+      "weight": 0.38,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LIKE_NUM": true
+        }
+      ],
+      "full_text_only": true
+    },
+    {
+      "id": "PAYMENT_QUERY",
+      "intent": "pago",
+      "subintent": "consultar_medio_pago",
+      "weight": 0.55,
+      "pattern": [
+        {
+          "OP": "?",
+          "LOWER": {
+            "IN": [
+              "acepta",
+              "aceptan",
+              "aceptar",
+              "paga",
+              "pagar",
+              "pago",
+              "recibe",
+              "reciben",
+              "recibir"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": "MEDIO_PAGO",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "DELIVERY_QUERY",
+      "intent": "domicilio",
+      "subintent": "consultar_domicilio",
+      "weight": 0.54,
+      "pattern": [
+        {
+          "ENT_ID": "domicilio",
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "cuánto",
+              "cuanto",
+              "demora",
+              "vale",
+              "llega",
+              "mínimo",
+              "minimo",
+              "cobertura"
+            ]
+          },
+          "OP": "*"
+        }
+      ]
+    },
+    {
+      "id": "RESERVATION_REQUEST",
+      "intent": "reserva_evento",
+      "subintent": "solicitar_reserva",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "reserva",
+              "reservar",
+              "reservar una",
+              "separar",
+              "separe"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "mesa",
+              "espacio"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": "para",
+          "OP": "?"
+        },
+        {
+          "LIKE_NUM": true,
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "EVENT_QUERY",
+      "intent": "reserva_evento",
+      "subintent": "consultar_eventos",
+      "weight": 0.52,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "hace",
+              "hacen",
+              "hacer",
+              "organiza",
+              "organizan",
+              "organizar",
+              "tener",
+              "tengo",
+              "tiene",
+              "tienen"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "evento",
+              "eventos",
+              "reunión",
+              "reunion",
+              "almuerzo"
+            ]
+          }
+        },
+        {
+          "LOWER": "empresarial",
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "SCHEDULE_QUERY",
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_horario",
+      "weight": 0.52,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "abre",
+              "abren",
+              "abrieron",
+              "abrir",
+              "atender",
+              "atiende",
+              "atienden",
+              "cerrar",
+              "cierra",
+              "cierran"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "DIA_SEMANA",
+              "FECHA_RELATIVA"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "LOCATION_QUERY",
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_ubicacion",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "dónde",
+              "donde"
+            ]
+          }
+        },
+        {
+          "OP": "?",
+          "LOWER": {
+            "IN": [
+              "esta",
+              "estan",
+              "estar",
+              "está",
+              "están",
+              "queda",
+              "quedan",
+              "quedar",
+              "ubicado",
+              "ubicados",
+              "ubicar"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RECOMMENDATION_QUERY",
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "recomendar",
+              "recomienda",
+              "recomiendan",
+              "sugerir",
+              "sugiere",
+              "sugieren"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_BASE",
+              "CATEGORIA",
+              "PREPARACION"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "ALLERGY_QUERY",
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_alergenos",
+      "weight": 0.8,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "alérgico",
+              "alérgica",
+              "alergia",
+              "intolerante"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "a",
+              "al"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "ALERGENO",
+              "INGREDIENTE",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "CROSS_CONTAMINATION",
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_contaminacion_cruzada",
+      "weight": 0.82,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "utensilios",
+              "aceite",
+              "superficies",
+              "contaminación",
+              "contaminacion"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "separados",
+              "compartido",
+              "compartidos",
+              "cruzada"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "THANKS",
+      "intent": "social",
+      "subintent": "agradecer",
+      "weight": 0.7,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "gracias",
+              "grasias",
+              "grx",
+              "agradezco"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "CATALOG_PRODUCT_OFFER",
+      "intent": "catalogo",
+      "subintent": "consultar_producto",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "hay",
+              "maneja",
+              "manejan",
+              "ofrece",
+              "ofrecen",
+              "tiene",
+              "tienen"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "el",
+              "la",
+              "los",
+              "las",
+              "algo",
+              "algún",
+              "algun"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "AVAILABILITY_TEMPORAL",
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "hoy",
+              "ahora",
+              "todavía",
+              "todavia"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "hay",
+              "queda",
+              "quedan",
+              "tiene",
+              "tienen"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "AVAILABILITY_PRODUCT_TRAILING",
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.76,
+      "pattern": [
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "está",
+              "esta",
+              "están",
+              "estan"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "disponible",
+              "disponibles",
+              "queda",
+              "quedan"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "AVAILABILITY_SPECIFIC_EXISTENCE",
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.7,
+      "pattern": [
+        {
+          "LOWER": "hay"
+        },
+        {
+          "ENT_TYPE": "PRODUCTO_ESPECIFICO",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PREPARATION_SEARCH",
+      "intent": "catalogo",
+      "subintent": "consultar_preparacion",
+      "weight": 0.54,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cuál",
+              "cual",
+              "cuáles",
+              "cuales",
+              "qué",
+              "que",
+              "algo"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "ENT_TYPE": "PREPARACION",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PREPARATION_DEFINITION",
+      "intent": "catalogo",
+      "subintent": "consultar_definicion_preparacion",
+      "weight": 0.6,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "es",
+              "significa",
+              "quiere"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": "decir",
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": "PREPARACION",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PRODUCT_COMPARISON",
+      "intent": "catalogo",
+      "subintent": "comparar_productos",
+      "weight": 0.78,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cuál",
+              "cual",
+              "compare",
+              "comparar"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "o",
+              "y",
+              "con"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PRODUCT_DETAIL_CONTENT",
+      "intent": "catalogo",
+      "subintent": "consultar_detalle_producto",
+      "weight": 0.62,
+      "pattern": [
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "contiene",
+              "trae",
+              "tiene",
+              "viene",
+              "lleva"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "acompañamiento",
+              "acompañamientos",
+              "bebida",
+              "espina",
+              "espinas"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "PREPARATION_PRODUCT_VERBAL",
+      "intent": "catalogo",
+      "subintent": "consultar_preparacion_producto",
+      "weight": 0.7,
+      "pattern": [
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "la",
+              "lo",
+              "se"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "hace",
+              "hacen",
+              "prepara",
+              "preparan",
+              "puede",
+              "pueden"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "hacer",
+              "preparar"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": "PREPARACION",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "CATEGORY_DIETARY_RESTRICTION",
+      "intent": "catalogo",
+      "subintent": "consultar_categoria_por_restriccion",
+      "weight": 0.82,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que",
+              "cuál",
+              "cual",
+              "tienen",
+              "hay"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "sin",
+              "vegetariano",
+              "vegetariana",
+              "vegano",
+              "vegana"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "ALERGENO",
+              "INGREDIENTE",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "*"
+        }
+      ]
+    },
+    {
+      "id": "MENU_GENERAL",
+      "intent": "menu",
+      "subintent": "consultar_menu_general",
+      "weight": 0.48,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "hay",
+              "ofrecen"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "MENU_CHANGES",
+      "intent": "menu",
+      "subintent": "consultar_cambios_menu",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "cambió",
+              "cambio",
+              "cambiaron",
+              "nuevo",
+              "nueva"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "del",
+              "en"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "menú",
+              "menu",
+              "carta"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "MENU_RETRY_PERIPHRASTIC",
+      "intent": "menu",
+      "subintent": "reenviar_menu",
+      "weight": 0.62,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "vuelva",
+              "vuelvan"
+            ]
+          }
+        },
+        {
+          "LOWER": "y"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "me",
+              "lo",
+              "la"
+            ]
+          },
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "manda",
+              "mande",
+              "mandan",
+              "envía",
+              "envie"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ORDER_ADD_SINGLE",
+      "intent": "pedido",
+      "subintent": "agregar_producto_pedido",
+      "weight": 0.63,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "agrega",
+              "agregue",
+              "anota",
+              "anote",
+              "añada",
+              "adicione"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "el",
+              "la",
+              "un",
+              "una"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LIKE_NUM": true,
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ORDER_QUANTIFIED_PRODUCT",
+      "intent": "pedido",
+      "subintent": "agregar_productos_pedido",
+      "weight": 0.72,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "dame",
+              "deme",
+              "manda",
+              "mande",
+              "necesito",
+              "quiero"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "dos",
+              "tres",
+              "cuatro",
+              "cinco",
+              "seis",
+              "siete",
+              "ocho",
+              "nueve",
+              "diez",
+              "doce"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ORDER_GROUP_START",
+      "intent": "pedido",
+      "subintent": "iniciar_pedido_grupal",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "necesito",
+              "quiero",
+              "requiero"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": "para"
+        },
+        {
+          "LIKE_NUM": true
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "personas",
+              "platos",
+              "almuerzos",
+              "pedidos"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ORDER_REPEAT",
+      "intent": "pedido",
+      "subintent": "repetir_pedido",
+      "weight": 0.66,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "deme",
+              "dame",
+              "quiero",
+              "repita",
+              "repíteme",
+              "repite"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "mismo",
+              "misma",
+              "siempre",
+              "anterior",
+              "pasada"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ORDER_SELECT_PREPARATION",
+      "intent": "pedido",
+      "subintent": "seleccionar_preparacion",
+      "weight": 0.6,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "lo",
+              "la",
+              "uno",
+              "una"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "quiero",
+              "deme",
+              "dame"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": "PREPARACION",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ORDER_SELECT_PREPARATION_COMMAND",
+      "intent": "pedido",
+      "subintent": "seleccionar_preparacion",
+      "weight": 0.6,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "quiero",
+              "deme",
+              "dame"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": "PREPARACION",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PRICE_GENERAL",
+      "intent": "precio",
+      "subintent": "consultar_precios_generales",
+      "weight": 0.5,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "precios",
+              "precio",
+              "tarifas",
+              "valores"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "PAYMENT_MIXED",
+      "intent": "pago",
+      "subintent": "consultar_pago_mixto",
+      "weight": 1.25,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "parte",
+              "mitad"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "ENT_TYPE": "MEDIO_PAGO",
+          "OP": "+"
+        },
+        {
+          "LOWER": "y"
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "ENT_TYPE": "MEDIO_PAGO",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "DELIVERY_GROUP",
+      "intent": "domicilio",
+      "subintent": "consultar_domicilio_grupal",
+      "weight": 0.72,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "tiempo",
+              "demora",
+              "entrega",
+              "domicilio"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LIKE_NUM": true
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedidos",
+              "almuerzos",
+              "personas"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "DELIVERY_PREVIOUS_ADDRESS",
+      "intent": "domicilio",
+      "subintent": "usar_direccion_previa",
+      "weight": 0.72,
+      "requires_context": true,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "manda",
+              "mande",
+              "envía",
+              "envie"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "misma",
+              "anterior"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "dirección",
+              "direccion"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "INVOICE_QUERY",
+      "intent": "operacion",
+      "subintent": "consultar_facturacion",
+      "weight": 0.6,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "envían",
+              "envian",
+              "expiden",
+              "manejan",
+              "necesito",
+              "requiere",
+              "requiero"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_ID": "factura_electronica",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "PACKAGING_QUERY",
+      "intent": "operacion",
+      "subintent": "consultar_empaque",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "empacar",
+              "empacan",
+              "marcar",
+              "marcan",
+              "separar",
+              "separan"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedido",
+              "pedidos",
+              "nombre",
+              "nombres"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "SCHEDULED_ORDER",
+      "intent": "operacion",
+      "subintent": "consultar_pedido_programado",
+      "weight": 0.6,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "programar",
+              "programarlo",
+              "entregar",
+              "llegar",
+              "lleguen"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "hora",
+              "una",
+              "dos",
+              "mediodía",
+              "mediodia"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "PARKING_QUERY",
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_parqueadero",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "hay",
+              "tiene",
+              "tienen",
+              "costo",
+              "cuesta"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_ID": "parqueadero",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "INSTALLATION_QUERY",
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_instalacion",
+      "weight": 0.55,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "hay",
+              "tiene",
+              "tienen"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "baño",
+              "bano",
+              "baños",
+              "banos",
+              "rampa",
+              "terraza"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "LOCATION_ADDRESS_REFERENCE",
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_ubicacion",
+      "weight": 0.52,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "dirección",
+              "direccion",
+              "ubicación",
+              "ubicacion"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "es",
+              "queda"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "misma",
+              "igual",
+              "siempre"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "RECOMMENDATION_QUALITY",
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion",
+      "weight": 0.56,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que",
+              "cuál",
+              "cual"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "plato",
+              "opción",
+              "opcion"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "llena",
+              "rinde",
+              "rápido",
+              "rapido",
+              "suave",
+              "recomendable"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RECOMMENDATION_BY_ALLERGY",
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion_por_alergia",
+      "weight": 0.92,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "alérgico",
+              "alérgica",
+              "alergico",
+              "alergica",
+              "intolerante"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "LOWER": "puedo"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedir",
+              "comer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RECOMMENDATION_BY_RESTRICTION",
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion_por_restriccion",
+      "weight": 0.86,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cuál",
+              "cual",
+              "qué",
+              "que"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "plato",
+              "opción",
+              "opcion"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "no",
+              "sin"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "lleva",
+              "tiene",
+              "contiene"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "ALERGENO",
+              "INGREDIENTE",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ALLERGEN_CONTENT",
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_alergenos",
+      "weight": 0.82,
+      "pattern": [
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "PRODUCTO_ESPECIFICO",
+              "PRODUCTO_BASE",
+              "PREPARACION",
+              "INGREDIENTE"
+            ]
+          },
+          "OP": "+"
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "contiene",
+              "trae",
+              "tiene",
+              "lleva"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "ENT_TYPE": "ALERGENO",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "ALLERGEN_OPEN_QUERY",
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_alergenos",
+      "weight": 0.72,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "qué",
+              "que",
+              "cuál",
+              "cual"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "tiene",
+              "tienen",
+              "lleva",
+              "llevan",
+              "contiene",
+              "contienen"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": "ALERGENO",
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "MODIFICATION_ADAPT",
+      "intent": "pedido",
+      "subintent": "solicitar_modificacion",
+      "weight": 0.7,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "adaptar",
+              "adapta",
+              "adapten",
+              "cambiar",
+              "cambie"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "sin",
+              "con"
+            ]
+          }
+        },
+        {
+          "ENT_TYPE": {
+            "IN": [
+              "ALERGENO",
+              "INGREDIENTE",
+              "PRODUCTO_BASE"
+            ]
+          },
+          "OP": "+"
+        }
+      ]
+    },
+    {
+      "id": "RESERVATION_CONDITIONS",
+      "intent": "reserva_evento",
+      "subintent": "consultar_reserva",
+      "weight": 0.58,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "reserva",
+              "reservar"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "cuesta",
+              "costo",
+              "disponible",
+              "privado",
+              "privada"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "EVENT_PROPOSAL",
+      "intent": "reserva_evento",
+      "subintent": "solicitar_evento",
+      "weight": 0.62,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "necesito",
+              "quiero",
+              "solicito"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "cotización",
+              "cotizacion",
+              "propuesta",
+              "evento",
+              "almuerzo"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": "para"
+        },
+        {
+          "LIKE_NUM": true
+        },
+        {
+          "LOWER": "personas"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "total_casos": 105,
+  "con_alguna_evidencia": 68,
+  "coincidencia_exacta_subintencion": 35,
+  "sin_coincidencia_exacta": 70,
+  "errores": 0,
+  "cobertura_exacta_pct": 33.33,
+  "nota": "El Matcher de Intenciones sirve como extractor de evidencia lógica por reglas."
+}
