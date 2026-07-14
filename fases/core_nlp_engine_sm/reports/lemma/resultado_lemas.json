@@ -1,0 +1,13 @@
+{
+  "casos_evaluados": 450,
+  "casos_con_evidencia_de_lemas": 413,
+  "casos_donde_lemas_apoyan_subintencion_esperada": 134,
+  "errores": 0,
+  "modelo_con_lematizador": true,
+  "fuentes_de_lema": {
+    "spacy": 7504,
+    "catalog_fallback": 871,
+    "surface": 0
+  },
+  "nota": "La evidencia por lemas es secundaria. No se interpreta su cobertura aislada como precisión final del chatbot."
+}

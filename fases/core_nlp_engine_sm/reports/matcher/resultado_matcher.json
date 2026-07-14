@@ -1,0 +1,9 @@
+{
+  "total_casos": 450,
+  "con_alguna_evidencia": 316,
+  "coincidencia_exacta_subintencion": 219,
+  "sin_coincidencia_exacta": 231,
+  "errores": 0,
+  "cobertura_exacta_pct": 48.67,
+  "nota": "Cobertura de evidencia sintáctica sobre los 450 casos; no equivale a precisión final."
+}

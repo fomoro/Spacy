@@ -1,0 +1,35 @@
+{
+  "casos_evaluados": 450,
+  "intencion_correcta": 306,
+  "subintencion_correcta": 228,
+  "aclaracion_correcta": 348,
+  "modo_intervencion_correcto": 316,
+  "precision_intencion_sobre_dataset": 0.68,
+  "precision_subintencion_sobre_dataset": 0.5067,
+  "precision_aclaracion_sobre_dataset": 0.7733,
+  "precision_modo_intervencion_sobre_dataset": 0.7022,
+  "metricas_aclaracion": {
+    "precision": 0.7373,
+    "recall": 0.7805,
+    "specificity": 0.7673,
+    "f1": 0.7583,
+    "true_positive": 160,
+    "false_positive": 57,
+    "false_negative": 45,
+    "true_negative": 188
+  },
+  "estados": {
+    "resolved": 233,
+    "ambiguous_or_clarification": 185,
+    "unknown": 32
+  },
+  "modos_intervencion": {
+    "needs_business_lookup": 36,
+    "needs_human_safety_validation": 21,
+    "needs_transaction_confirmation": 22,
+    "needs_user_clarification": 138,
+    "resolved": 233
+  },
+  "errores": 0,
+  "nota": "Métrica sobre 450 casos sintéticos; no reemplaza validación con conversaciones reales."
+}
