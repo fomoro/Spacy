@@ -31,7 +31,7 @@ class NormalizationResult:
         return data
 
 
-class TextNormalizer:
+class TextNormalizerService:
     """Normalización controlada para español colombiano.
 
     Responsabilidad: reducir variaciones superficiales sin inferir intención,

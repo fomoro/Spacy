@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 class EntityRulerServiceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.service = EntityRulerService(ROOT / "resources" / "nlp" / "entity_ruler_patterns.json")
+        cls.service = EntityRulerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json")
 
     def test_detects_weekday_and_context_reference(self):
         result = self.service.analyze("el lunes mándamelo otra vez")

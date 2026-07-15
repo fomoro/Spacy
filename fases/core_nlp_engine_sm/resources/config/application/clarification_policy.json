@@ -1,7 +1,7 @@
 {
   "metadata": {
     "schema_version": "1.0.0",
-    "resource_group": "dialogue",
+    "resource_group": "application",
     "component": "IntentResolver",
     "language": "es-CO",
     "domain": "restaurante_colombiano_de_comida_de_mar",

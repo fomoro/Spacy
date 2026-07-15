@@ -3,7 +3,7 @@
 from pathlib import Path
 import unittest
 
-from src.infrastructure import EntityRulerService, LemmaService, MatcherService, PhraseMatcherService, TextNormalizer
+from src.infrastructure import EntityRulerService, LemmaService, MatcherService, PhraseMatcherService, TextNormalizerService
 from src.application import LinguisticParser
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -12,11 +12,17 @@ ROOT = Path(__file__).resolve().parents[2]
 class LinguisticParserTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        normalizer = TextNormalizer(ROOT / "resources" / "nlp" / "normalizer_config.json")
-        phrase = PhraseMatcherService(ROOT / "resources" / "menu" / "menu_catalog.json")
-        matcher = MatcherService(ROOT / "resources" / "nlp" / "matcher_patterns.json", phrase)
-        lemmas = LemmaService(ROOT / "resources" / "nlp" / "lemma_signals.json")
-        ruler = EntityRulerService(ROOT / "resources" / "nlp" / "entity_ruler_patterns.json")
+        normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
+        phrase = PhraseMatcherService(
+            ROOT
+            / "resources"
+            / "config"
+            / "infrastructure_nlp"
+            / "phrase_matcher_service_config.json"
+        )
+        matcher = MatcherService(ROOT / "resources" / "config" / "infrastructure_nlp" / "matcher_service_config.json", phrase)
+        lemmas = LemmaService(ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json")
+        ruler = EntityRulerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json")
         cls.pipeline = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
 
     def test_integrated_price_analysis(self):

@@ -6,7 +6,7 @@ El motor separa extracción lingüística y resolución de negocio. Los servicio
 
 ```mermaid
 flowchart LR
-    A[Mensaje] --> B[TextNormalizer]
+    A[Mensaje] --> B[TextNormalizerService]
     B --> C[LinguisticParser]
     C --> D[PhraseMatcherService]
     C --> E[MatcherService]
@@ -28,16 +28,17 @@ flowchart LR
 
 Cada responsabilidad tiene un recurso auditable:
 
-- `nlp/intent_taxonomy.json`: contrato canónico de intenciones y subintenciones.
-- `nlp/normalizer_config.json`: variación gráfica, alias y jerga.
-- `nlp/matcher_patterns.json`: estructuras tokenizadas y extracciones sintácticas.
-- `nlp/lemma_signals.json`: lemas y formas como evidencia secundaria.
-- `nlp/entity_ruler_patterns.json`: tiempo y referencias contextuales.
-- `nlp/resolver_config.json`: pesos, prioridades y fuentes de evidencia.
-- `dialogue/clarification_policy.json`: completitud, modos de intervención, slots faltantes y preguntas mínimas.
-- `menu/menu_catalog.json`: vocabulario comercial estable de la carta.
-- `menu/menu_offerings.json`: precios y presentaciones enlazados por `product_id`.
-- `profiles/conversation_profiles.json`: 15 estilos conversacionales para diseño y evaluación, fuera del runtime.
+- `config/intent_taxonomy.json`: contrato canónico compartido de intenciones y subintenciones.
+- `config/infrastructure_nlp/text_normalizer_service_config.json`: variación gráfica, alias y jerga.
+- `config/infrastructure_nlp/phrase_matcher_service_config.json`: vocabulario comercial estable reconocido por `PhraseMatcherService`.
+- `config/infrastructure_nlp/matcher_service_config.json`: estructuras tokenizadas y extracciones sintácticas.
+- `config/infrastructure_nlp/lemma_service_config.json`: lemas y formas como evidencia secundaria.
+- `config/infrastructure_nlp/entity_ruler_service_config.json`: tiempo y referencias contextuales.
+- `config/application/intent_resolver_config.json`: pesos, prioridades y fuentes de evidencia.
+- `config/application/clarification_policy.json`: completitud, modos de intervención, slots faltantes y preguntas mínimas.
+- `data/menu/menu_offerings.json`: precios y presentaciones enlazados por `product_id`.
+- `corpus/profiles/conversation_profiles.json`: 15 estilos conversacionales para diseño y evaluación, fuera del runtime.
+- `corpus/datasets/intent_benchmark/`: benchmark conversacional conocido de 450 casos.
 
 La política completa se documenta en `resources/README.md`. Cada servicio carga de forma autónoma su archivo o un diccionario. `IntentResolver` carga por separado sus puntajes y la política conversacional. Los perfiles no se inyectan al parser ni al resolutor. `tests/contract/test_resource_contract.py` verifica referencias contra la taxonomía, cobertura, preguntas, slots, duplicados y fronteras de propiedad.
 
@@ -45,7 +46,7 @@ La política completa se documenta en `resources/README.md`. Cada servicio carga
 
 Los servicios lingüísticos viven en `src/infrastructure/nlp/`.
 
-- `TextNormalizer`: normalización Unicode, reemplazos deterministas, espacios y jerga monetaria.
+- `TextNormalizerService`: normalización Unicode, reemplazos deterministas, espacios y jerga monetaria.
 - `PhraseMatcherService`: vocabulario estable de negocio y resolución de solapamientos.
 - `MatcherService`: patrones sintácticos, evidencias, cantidades, dinero y negación.
 - `LemmaService`: lematización de spaCy con fallback controlado de formas.

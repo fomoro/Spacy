@@ -6,7 +6,7 @@ import unittest
 
 from src.infrastructure import (
     EntityRulerService,
-    TextNormalizer,
+    TextNormalizerService,
     PhraseMatcherService,
     MatcherService,
     LemmaService,
@@ -23,13 +23,19 @@ ROOT = Path(__file__).resolve().parents[2]
 class IntentResolverTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        normalizer = TextNormalizer(ROOT / "resources" / "nlp" / "normalizer_config.json")
-        phrase = PhraseMatcherService(ROOT / "resources" / "menu" / "menu_catalog.json")
-        matcher = MatcherService(ROOT / "resources" / "nlp" / "matcher_patterns.json", phrase)
-        lemmas = LemmaService(ROOT / "resources" / "nlp" / "lemma_signals.json")
-        ruler = EntityRulerService(ROOT / "resources" / "nlp" / "entity_ruler_patterns.json")
+        normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
+        phrase = PhraseMatcherService(
+            ROOT
+            / "resources"
+            / "config"
+            / "infrastructure_nlp"
+            / "phrase_matcher_service_config.json"
+        )
+        matcher = MatcherService(ROOT / "resources" / "config" / "infrastructure_nlp" / "matcher_service_config.json", phrase)
+        lemmas = LemmaService(ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json")
+        ruler = EntityRulerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json")
         parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
-        resolver = IntentResolver(ROOT / "resources" / "nlp" / "resolver_config.json")
+        resolver = IntentResolver(ROOT / "resources" / "config" / "application" / "intent_resolver_config.json")
         cls.pipeline = IntentEngine(parser, resolver)
 
     def resolve(self, text, context=None):
@@ -122,10 +128,10 @@ class IntentResolverTests(unittest.TestCase):
 
     def test_accepts_configuration_dictionaries(self):
         config = json.loads(
-            (ROOT / "resources" / "nlp" / "resolver_config.json").read_text(encoding="utf-8")
+            (ROOT / "resources" / "config" / "application" / "intent_resolver_config.json").read_text(encoding="utf-8")
         )
         clarification = json.loads(
-            (ROOT / "resources" / "dialogue" / "clarification_policy.json").read_text(encoding="utf-8")
+            (ROOT / "resources" / "config" / "application" / "clarification_policy.json").read_text(encoding="utf-8")
         )
         resolver = IntentResolver(config, clarification)
         self.assertIn("thresholds", resolver.config)

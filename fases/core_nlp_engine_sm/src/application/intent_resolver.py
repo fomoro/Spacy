@@ -117,7 +117,7 @@ class IntentResolver:
         selected = source
         if selected is None and isinstance(resolver_source, (str, Path)):
             resolver_path = Path(resolver_source)
-            candidate = resolver_path.parent.parent / "dialogue" / "clarification_policy.json"
+            candidate = resolver_path.parent / "clarification_policy.json"
             if candidate.is_file():
                 selected = candidate
 

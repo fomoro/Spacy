@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from src.infrastructure.nlp.normalizer_service import TextNormalizer
+from src.infrastructure.nlp.text_normalizer_service import TextNormalizerService
 from src.infrastructure.nlp.phrase_matcher_service import PhraseMatcherService
 from src.infrastructure.nlp.matcher_service import MatcherService
 from src.infrastructure.nlp.lemma_service import LemmaService
@@ -38,7 +38,7 @@ class LinguisticParser:
 
     def __init__(
         self,
-        normalizer: TextNormalizer,
+        normalizer: TextNormalizerService,
         phrase_matcher: PhraseMatcherService,
         matcher: MatcherService,
         lemma_service: LemmaService,

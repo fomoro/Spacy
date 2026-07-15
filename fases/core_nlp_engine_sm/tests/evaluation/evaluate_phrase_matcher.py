@@ -8,15 +8,17 @@ import json
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.infrastructure import TextNormalizer, PhraseMatcherService
+from src.infrastructure import TextNormalizerService, PhraseMatcherService
 
 
-DATASET = ROOT / "data" / "dataset_clientes.json"
+DATASET = ROOT / "resources" / "corpus" / "datasets" / "intent_benchmark" / "casos_intenciones_clientes.json"
 OUTPUT = ROOT / "reports" / "phrase_matcher" / "evaluacion_phrase_matcher.csv"
 SUMMARY = ROOT / "reports" / "phrase_matcher" / "resultado_phrase_matcher.json"
 
-normalizer = TextNormalizer(ROOT / "resources" / "nlp" / "normalizer_config.json")
-matcher = PhraseMatcherService(ROOT / "resources" / "menu" / "menu_catalog.json")
+normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
+matcher = PhraseMatcherService(
+    ROOT / "resources" / "config" / "infrastructure_nlp" / "phrase_matcher_service_config.json"
+)
 
 with DATASET.open(encoding="utf-8") as file:
     dataset = json.load(file)

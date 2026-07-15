@@ -3,7 +3,7 @@ from pathlib import Path
 
 import unittest
 
-from src.infrastructure import TextNormalizer, PhraseMatcherService
+from src.infrastructure import TextNormalizerService, PhraseMatcherService
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -12,9 +12,13 @@ ROOT = Path(__file__).resolve().parents[2]
 class PhraseMatcherServiceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.normalizer = TextNormalizer(ROOT / "resources" / "nlp" / "normalizer_config.json")
+        cls.normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
         cls.matcher = PhraseMatcherService(
-            ROOT / "resources" / "menu" / "menu_catalog.json"
+            ROOT
+            / "resources"
+            / "config"
+            / "infrastructure_nlp"
+            / "phrase_matcher_service_config.json"
         )
 
     def entities(self, text: str):

@@ -1,18 +1,18 @@
 from pathlib import Path
-"""Pruebas unitarias de TextNormalizer."""
+"""Pruebas unitarias de TextNormalizerService."""
 
 import unittest
 
-from src.infrastructure import TextNormalizer
+from src.infrastructure import TextNormalizerService
 
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-class TextNormalizerTests(unittest.TestCase):
+class TextNormalizerServiceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.normalizer = TextNormalizer(ROOT / "resources" / "nlp" / "normalizer_config.json")
+        cls.normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
 
     def test_typo_domicilio(self) -> None:
         result = self.normalizer.normalize("tiene domi")

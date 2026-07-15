@@ -1,23 +1,24 @@
-# Dataset conversacional
+# Corpus conversacional
 
-Este directorio contiene el corpus de evaluación de `core_nlp_engine` para español colombiano conversacional en el dominio de un restaurante de comida de mar. Evalúa reconocimiento lingüístico, resolución de intención y necesidad de intervención; no contiene configuración de producción.
+Este directorio contiene perfiles y conjuntos lingüísticos de `core_nlp_engine` para español colombiano conversacional en el dominio de un restaurante de comida de mar. Su contenido sirve para desarrollar y medir componentes; no contiene configuración de producción.
 
 ## Archivos y autoridad
 
 | Archivo | Función |
 |---|---|
-| `dataset_clientes.json` | Fuente canónica con metadatos, contexto y anotaciones estructuradas. |
-| `dataset_clientes.csv` | Proyección tabular del JSON para inspección y análisis. No se edita de manera independiente. |
+| `profiles/conversation_profiles.json` | Perfiles conversacionales para diseñar y segmentar cobertura. |
+| `datasets/intent_benchmark/casos_intenciones_clientes.json` | Fuente canónica con metadatos, contexto y anotaciones estructuradas. |
+| `datasets/intent_benchmark/casos_intenciones_clientes.csv` | Proyección tabular del JSON para inspección y análisis. No se edita de manera independiente. |
 
 Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 
-- Perfiles: `resources/profiles/conversation_profiles.json`.
-- Intenciones y subintenciones: `resources/nlp/intent_taxonomy.json`.
-- Entidades comerciales: `resources/menu/menu_catalog.json`.
-- Entidades contextuales: `resources/nlp/entity_ruler_patterns.json`.
-- Completitud y preguntas: `resources/dialogue/clarification_policy.json`.
+- Perfiles: `resources/corpus/profiles/conversation_profiles.json`.
+- Intenciones y subintenciones: `resources/config/intent_taxonomy.json`.
+- Entidades comerciales: `resources/config/infrastructure_nlp/phrase_matcher_service_config.json`.
+- Entidades contextuales: `resources/config/infrastructure_nlp/entity_ruler_service_config.json`.
+- Completitud y preguntas: `resources/config/application/clarification_policy.json`.
 
-Si cambia alguno de esos contratos, el dataset debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro de `data/`.
+Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro de un dataset.
 
 ## Diseño actual
 
@@ -29,6 +30,16 @@ Si cambia alguno de esos contratos, el dataset debe revisarse; no se deben redef
 - Los mensajes son casos sintéticos de evaluación, no conversaciones reales ni datos personales.
 
 Los perfiles sirven para comparar cobertura y desempeño entre estilos comunicativos. No deben inferirse a partir del mensaje ni enviarse al motor durante la ejecución en producción.
+
+## Futuro corpus de TextCategorizer
+
+El benchmark conocido no debe funcionar simultáneamente como evidencia final de calidad y como único material de entrenamiento. Cuando se implemente el clasificador, sus mensajes nuevos se separarán bajo `datasets/text_categorizer/` en:
+
+- `entrenamiento/`: aprendizaje del modelo.
+- `validacion/`: ajuste de hiperparámetros y umbrales.
+- `prueba/`: medición final sin usar durante el desarrollo.
+
+Estas carpetas se crearán cuando exista contenido real, curado y anonimizado para cada partición.
 
 ## Contrato de cada caso
 
@@ -67,11 +78,11 @@ Los perfiles sirven para comparar cobertura y desempeño entre estilos comunicat
 
 ## Criterios para agregar o modificar casos
 
-1. Editar primero `dataset_clientes.json`, que es la fuente de verdad.
+1. Editar primero `casos_intenciones_clientes.json`, que es la fuente de verdad.
 2. Mantener el mensaje natural para su perfil y anotar únicamente evidencia observable.
 3. Usar identificadores existentes en los recursos de referencia.
 4. Diferenciar ambigüedad lingüística, confirmación transaccional, consulta operativa y seguridad alimentaria.
-5. Actualizar la fila equivalente de `dataset_clientes.csv` sin alterar ni aplanar los valores JSON de sus columnas estructuradas.
+5. Actualizar la fila equivalente de `casos_intenciones_clientes.csv` sin alterar ni aplanar los valores JSON de sus columnas estructuradas.
 6. Conservar 30 casos por perfil, IDs únicos, numeración continua y cobertura equilibrada.
 7. Ejecutar todas las validaciones antes de aceptar el cambio.
 

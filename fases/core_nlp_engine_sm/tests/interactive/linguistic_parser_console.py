@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.infrastructure import EntityRulerService, LemmaService, MatcherService, PhraseMatcherService, TextNormalizer
+from src.infrastructure import EntityRulerService, LemmaService, MatcherService, PhraseMatcherService, TextNormalizerService
 from src.application import LinguisticParser
 
 
@@ -21,15 +21,21 @@ def print_header(title: str) -> None:
 
 
 def main() -> None:
-    normalizer_path = ROOT / "resources" / "nlp" / "normalizer_config.json"
-    matcher_path = ROOT / "resources" / "nlp" / "matcher_patterns.json"
-    lemma_path = ROOT / "resources" / "nlp" / "lemma_signals.json"
-    ruler_path = ROOT / "resources" / "nlp" / "entity_ruler_patterns.json"
-    menu_catalog_path = ROOT / "resources" / "menu" / "menu_catalog.json"
+    normalizer_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json"
+    matcher_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "matcher_service_config.json"
+    lemma_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json"
+    ruler_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json"
+    business_entity_catalog_path = (
+        ROOT
+        / "resources"
+        / "config"
+        / "infrastructure_nlp"
+        / "phrase_matcher_service_config.json"
+    )
 
     try:
-        normalizer = TextNormalizer(normalizer_path)
-        phrase_matcher = PhraseMatcherService(menu_catalog_path)
+        normalizer = TextNormalizerService(normalizer_path)
+        phrase_matcher = PhraseMatcherService(business_entity_catalog_path)
         matcher = MatcherService(matcher_path, phrase_matcher)
         lemmas = LemmaService(lemma_path)
         ruler = EntityRulerService(ruler_path)

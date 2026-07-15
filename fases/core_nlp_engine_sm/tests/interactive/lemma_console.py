@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.infrastructure import TextNormalizer, LemmaService
+from src.infrastructure import TextNormalizerService, LemmaService
 
 
 def print_header(title: str) -> None:
@@ -19,11 +19,11 @@ def print_header(title: str) -> None:
 
 
 def main() -> None:
-    normalizer_path = ROOT / "resources" / "nlp" / "normalizer_config.json"
-    lemma_path = ROOT / "resources" / "nlp" / "lemma_signals.json"
+    normalizer_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json"
+    lemma_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json"
 
     try:
-        normalizer = TextNormalizer(normalizer_path)
+        normalizer = TextNormalizerService(normalizer_path)
         lemmas = LemmaService(lemma_path)
     except Exception as exc:
         print(f"❌ Error cargando configuración: {exc}")

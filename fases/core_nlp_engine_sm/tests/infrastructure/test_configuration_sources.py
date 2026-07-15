@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import unittest
 
-from src.infrastructure import LemmaService, MatcherService, PhraseMatcherService, TextNormalizer
+from src.infrastructure import LemmaService, MatcherService, PhraseMatcherService, TextNormalizerService
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -13,15 +13,21 @@ ROOT = Path(__file__).resolve().parents[2]
 class ConfigurationSourceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.normalizer = json.loads((ROOT / "resources" / "nlp" / "normalizer_config.json").read_text(encoding="utf-8"))
-        cls.matcher = json.loads((ROOT / "resources" / "nlp" / "matcher_patterns.json").read_text(encoding="utf-8"))
-        cls.lemmas = json.loads((ROOT / "resources" / "nlp" / "lemma_signals.json").read_text(encoding="utf-8"))
+        cls.normalizer = json.loads((ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json").read_text(encoding="utf-8"))
+        cls.matcher = json.loads((ROOT / "resources" / "config" / "infrastructure_nlp" / "matcher_service_config.json").read_text(encoding="utf-8"))
+        cls.lemmas = json.loads((ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json").read_text(encoding="utf-8"))
         cls.menu = json.loads(
-            (ROOT / "resources" / "menu" / "menu_catalog.json").read_text(encoding="utf-8")
+            (
+                ROOT
+                / "resources"
+                / "config"
+                / "infrastructure_nlp"
+                / "phrase_matcher_service_config.json"
+            ).read_text(encoding="utf-8")
         )
 
     def test_services_accept_section_dictionaries(self):
-        normalizer = TextNormalizer(self.normalizer)
+        normalizer = TextNormalizerService(self.normalizer)
         phrase = PhraseMatcherService(self.menu)
         matcher = MatcherService(self.matcher, phrase)
         lemmas = LemmaService(self.lemmas)

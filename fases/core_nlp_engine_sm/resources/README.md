@@ -1,6 +1,16 @@
 # Gobernanza de recursos
 
-Este directorio contiene la configuración lingüística y comercial de `core_nlp_engine`. Su objetivo es que cada dato tenga un único propietario, pueda auditarse y cambie sin afectar responsabilidades ajenas.
+Este directorio reúne los archivos no Python de `core_nlp_engine`. Su objetivo es que cada elemento tenga un único propietario, pueda auditarse y cambie sin afectar responsabilidades ajenas.
+
+## Organización
+
+- `config/`: reglas, taxonomías y políticas.
+- `data/`: datos reales del dominio suministrados para el funcionamiento de la aplicación.
+- `corpus/`: material lingüístico para desarrollo y experimentación.
+- `corpus/datasets/`: conjuntos para entrenar, validar, probar y medir.
+- `trained_models/`: artefactos entrenados consumidos por la aplicación; se creará cuando exista el primer modelo.
+
+`config` participa en el runtime actual. Los archivos de `data` conservan la información suministrada por el usuario y deben superar su contrato antes de utilizarse. El contenido de `corpus` no se inyecta al motor en producción.
 
 ## Criterios del dominio
 
@@ -12,29 +22,30 @@ Principios obligatorios:
 2. Preferir reglas deterministas y evaluables; no aplicar corrección aproximada irrestricta.
 3. Conservar nombres propios, direcciones, especies y expresiones que no puedan normalizarse sin ambigüedad.
 4. No deducir disponibilidad, composición ni seguridad alimentaria a partir del nombre de un plato.
-5. Confirmar con una fuente autorizada los precios temporales y cualquier condición operativa del restaurante.
+5. No convertir formatos monetarios de manera implícita; el usuario debe suministrar valores explícitos en COP.
 
 ## Mapa de responsabilidades
 
 | Recurso | Propietario de | No debe contener |
 |---|---|---|
-| `nlp/intent_taxonomy.json` | Identificadores y definiciones de intenciones y subintenciones | Patrones, pesos o respuestas |
-| `nlp/normalizer_config.json` | Errores inequívocos, abreviaturas, variación gráfica y jerga monetaria | Intenciones, entidades o precios |
-| `nlp/matcher_patterns.json` | Estructuras sintácticas de intención, cantidades, dinero y negación | Inventarios de platos |
-| `nlp/lemma_signals.json` | Formas morfológicas y evidencia secundaria de bajo peso | Decisiones finales |
-| `nlp/entity_ruler_patterns.json` | Tiempo y referencias que requieren contexto conversacional | Productos, ingredientes, precios o negación |
-| `nlp/resolver_config.json` | Pesos, umbrales, prioridades y evidencia | Requisitos, preguntas, carta o precios |
-| `dialogue/clarification_policy.json` | Slots obligatorios, modos de intervención y preguntas mínimas | Puntajes de intención o respuestas comerciales |
-| `menu/menu_catalog.json` | Vocabulario estable de productos, preparaciones, categorías, servicios, pagos, ingredientes y alérgenos | Precios o disponibilidad diaria |
-| `menu/menu_offerings.json` | Secciones, presentaciones y precios asociados por `product_id` | Alias y reglas lingüísticas |
-| `profiles/conversation_profiles.json` | Estilos conversacionales para diseño y evaluación de cobertura | Casos, datos personales o reglas de producción |
+| `config/intent_taxonomy.json` | Identificadores compartidos y definiciones de intenciones y subintenciones | Patrones, pesos o respuestas |
+| `config/infrastructure_nlp/text_normalizer_service_config.json` | Errores inequívocos, abreviaturas, variación gráfica y jerga monetaria | Intenciones, entidades o precios |
+| `config/infrastructure_nlp/phrase_matcher_service_config.json` | Vocabulario estable de productos, preparaciones, categorías, servicios, pagos, ingredientes y alérgenos reconocido por `PhraseMatcherService` | Precios o disponibilidad diaria |
+| `config/infrastructure_nlp/matcher_service_config.json` | Estructuras sintácticas de intención, cantidades, dinero y negación | Inventarios de platos |
+| `config/infrastructure_nlp/lemma_service_config.json` | Formas morfológicas y evidencia secundaria de bajo peso | Decisiones finales |
+| `config/infrastructure_nlp/entity_ruler_service_config.json` | Tiempo y referencias que requieren contexto conversacional | Productos, ingredientes, precios o negación |
+| `config/application/intent_resolver_config.json` | Pesos, umbrales, prioridades y evidencia | Requisitos, preguntas, carta o precios |
+| `config/application/clarification_policy.json` | Slots obligatorios, modos de intervención y preguntas mínimas | Puntajes de intención o respuestas comerciales |
+| `data/menu/menu_offerings.json` | Productos únicos con sus nombres, secciones, presentaciones y precios suministrados por el usuario | Alias, reglas lingüísticas o conversiones implícitas de precios |
+| `corpus/profiles/conversation_profiles.json` | Estilos conversacionales para diseño y evaluación de cobertura | Casos, datos personales o reglas de producción |
+| `corpus/datasets/intent_benchmark/` | Casos sintéticos y anotaciones de referencia | Configuración de producción o datos de entrenamiento futuros |
 
 ## Cómo decidir el propietario
 
 | Expresión o necesidad | Propietario | Criterio |
 |---|---|---|
 | `neky → nequi` | Normalizer | Corrección gráfica inequívoca |
-| `nequi`, `mojarra frita`, `al ajillo` | PhraseMatcher mediante `menu_catalog.json` | Entidad comercial estable |
+| `nequi`, `mojarra frita`, `al ajillo` | PhraseMatcher mediante `phrase_matcher_service_config.json` | Entidad comercial estable |
 | `¿reciben Nequi?` | Matcher | Estructura que expresa un acto comunicativo |
 | `pagar`, `pago`, `pagando` | Lemmas | Variación morfológica con evidencia secundaria |
 | `mañana`, `el domingo`, `ese mismo` | EntityRuler | Tiempo o referencia dependiente del contexto |
@@ -83,7 +94,7 @@ Toda intención o subintención debe:
 4. Tener al menos una ruta de evidencia en Matcher, Lemmas, PhraseMatcher, EntityRuler o Resolver.
 5. Incluir pruebas positivas, ambiguas y negativas.
 
-Una aclaración debe indicar qué falta o qué resulta ambiguo. `dialogue/clarification_policy.json` distingue cuatro modos: información que debe aportar el usuario, confirmación transaccional, consulta comercial y validación humana de seguridad. Mantiene separados `missing_slots`, `question_key` y el texto mostrado por compatibilidad. No se debe usar una pregunta genérica cuando el motor conoce la causa.
+Una aclaración debe indicar qué falta o qué resulta ambiguo. `config/application/clarification_policy.json` distingue cuatro modos: información que debe aportar el usuario, confirmación transaccional, consulta comercial y validación humana de seguridad. Mantiene separados `missing_slots`, `question_key` y el texto mostrado por compatibilidad. No se debe usar una pregunta genérica cuando el motor conoce la causa.
 
 ## Perfiles conversacionales
 
@@ -93,11 +104,11 @@ Los 15 perfiles describen estilos de interacción observables; no clasifican per
 - No variar por perfil precios, disponibilidad, seguridad, prioridades ni acceso a funciones.
 - Definir perfiles mediante registro, longitud, ortografía, elipsis, referencias, negación y estructura del turno.
 - Excluir edad, género, etnia, religión, discapacidad, estrato y procedencia social.
-- Mantener los casos de evaluación en `data/` o `tests/`, nunca dentro del recurso de perfiles.
+- Mantener los casos de referencia en `corpus/datasets/`, nunca dentro del archivo de perfiles.
 
 ## Precios y disponibilidad
 
-- Los precios viven en `menu/menu_offerings.json` o en una fuente comercial externa.
+- Los precios viven en `data/menu/menu_offerings.json` o en una fuente comercial externa.
 - `fixed` representa un valor único; `range`, un intervalo; `by_size`, los tamaños `pequeno`, `mediano` y `grande`.
 - Todo precio con `temporary: true` debe declarar `requires_confirmation: true`.
 - Reconocer un producto no significa que esté disponible.
@@ -107,9 +118,9 @@ Los 15 perfiles describen estilos de interacción observables; no clasifican per
 
 ### Producto u oferta
 
-1. Crear un ID estable y sus frases reales en `menu_catalog.json`.
+1. Crear un ID estable y sus frases reales en `config/infrastructure_nlp/phrase_matcher_service_config.json`.
 2. Evitar frases asignadas a dos IDs del mismo tipo.
-3. Crear la oferta correspondiente en `menu_offerings.json` usando el mismo `product_id`.
+3. Crear o actualizar el bloque del producto en `data/menu/menu_offerings.json` usando el mismo `product_id`.
 4. Añadir pruebas de detección, solapamiento y precio cuando corresponda.
 
 ### Alias, patrón o lema
@@ -144,7 +155,7 @@ Los 15 perfiles describen estilos de interacción observables; no clasifican per
 
 - No usar un `rules_config.json` único: mezcla responsabilidades y aumenta el acoplamiento.
 - No usar loaders compartidos: cada servicio valida y carga su propio recurso.
-- No guardar precios en `menu_catalog.json`: el vocabulario es más estable que la oferta comercial.
+- No guardar precios en `phrase_matcher_service_config.json`: el vocabulario es más estable que la oferta comercial.
 - No registrar productos en EntityRuler: duplica PhraseMatcher.
 - No representar `sin` como entidad: es negación sintáctica.
 - No duplicar un producto por aparecer en carta general y menú ejecutivo; se modelan ofertas distintas, salvo que también cambie la identidad culinaria.

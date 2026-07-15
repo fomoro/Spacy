@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.infrastructure import TextNormalizer, PhraseMatcherService
+from src.infrastructure import TextNormalizerService, PhraseMatcherService
 
 
 def print_header(title: str) -> None:
@@ -19,11 +19,17 @@ def print_header(title: str) -> None:
 
 
 def main() -> None:
-    normalizer_path = ROOT / "resources" / "nlp" / "normalizer_config.json"
-    catalog_path = ROOT / "resources" / "menu" / "menu_catalog.json"
+    normalizer_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json"
+    catalog_path = (
+        ROOT
+        / "resources"
+        / "config"
+        / "infrastructure_nlp"
+        / "phrase_matcher_service_config.json"
+    )
     
     try:
-        normalizer = TextNormalizer(normalizer_path)
+        normalizer = TextNormalizerService(normalizer_path)
         matcher = PhraseMatcherService(catalog_path)
     except Exception as exc:
         print(f"❌ Error cargando configuración: {exc}")

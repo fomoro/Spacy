@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 class LemmaServiceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.service = LemmaService(ROOT / "resources" / "nlp" / "lemma_signals.json")
+        cls.service = LemmaService(ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json")
 
     def test_price_inflection_uses_canonical_lemma(self):
         result = self.service.analyze("¿Cuánto cuesta la mojarra?")

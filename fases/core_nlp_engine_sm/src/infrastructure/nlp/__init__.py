@@ -1,5 +1,5 @@
-from src.infrastructure.nlp.normalizer_service import (
-    TextNormalizer,
+from src.infrastructure.nlp.text_normalizer_service import (
+    TextNormalizerService,
     NormalizationResult,
 )
 from src.infrastructure.nlp.phrase_matcher_service import (
@@ -26,7 +26,7 @@ from src.infrastructure.nlp.entity_ruler_service import (
 )
 
 __all__ = [
-    "TextNormalizer",
+    "TextNormalizerService",
     "NormalizationResult",
     "PhraseMatcherService",
     "PhraseEntity",

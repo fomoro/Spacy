@@ -1,4 +1,4 @@
-"""Consola manual para TextNormalizer."""
+"""Consola manual para TextNormalizerService."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.infrastructure import TextNormalizer
+from src.infrastructure import TextNormalizerService
 
 
 def print_header(title: str) -> None:
@@ -19,9 +19,9 @@ def print_header(title: str) -> None:
 
 
 def main() -> None:
-    config_path = ROOT / "resources" / "nlp" / "normalizer_config.json"
+    config_path = ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json"
     try:
-        normalizer = TextNormalizer(config_path)
+        normalizer = TextNormalizerService(config_path)
     except Exception as exc:
         print(f"❌ Error cargando configuración desde {config_path}: {exc}")
         sys.exit(1)

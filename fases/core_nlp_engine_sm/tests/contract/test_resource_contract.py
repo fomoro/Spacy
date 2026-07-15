@@ -12,19 +12,22 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 RESOURCES = ROOT / "resources"
-DATASET_JSON = ROOT / "data" / "dataset_clientes.json"
-DATASET_CSV = ROOT / "data" / "dataset_clientes.csv"
+DATASET_ROOT = RESOURCES / "corpus" / "datasets" / "intent_benchmark"
+DATASET_JSON = DATASET_ROOT / "casos_intenciones_clientes.json"
+DATASET_CSV = DATASET_ROOT / "casos_intenciones_clientes.csv"
 RESOURCE_PATHS = {
-    "intent_taxonomy.json": RESOURCES / "nlp" / "intent_taxonomy.json",
-    "normalizer_config.json": RESOURCES / "nlp" / "normalizer_config.json",
-    "matcher_patterns.json": RESOURCES / "nlp" / "matcher_patterns.json",
-    "lemma_signals.json": RESOURCES / "nlp" / "lemma_signals.json",
-    "entity_ruler_patterns.json": RESOURCES / "nlp" / "entity_ruler_patterns.json",
-    "resolver_config.json": RESOURCES / "nlp" / "resolver_config.json",
-    "clarification_policy.json": RESOURCES / "dialogue" / "clarification_policy.json",
-    "menu_catalog.json": RESOURCES / "menu" / "menu_catalog.json",
-    "menu_offerings.json": RESOURCES / "menu" / "menu_offerings.json",
-    "conversation_profiles.json": RESOURCES / "profiles" / "conversation_profiles.json",
+    "intent_taxonomy.json": RESOURCES / "config" / "intent_taxonomy.json",
+    "text_normalizer_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json",
+    "matcher_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "matcher_service_config.json",
+    "lemma_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "lemma_service_config.json",
+    "entity_ruler_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json",
+    "intent_resolver_config.json": RESOURCES / "config" / "application" / "intent_resolver_config.json",
+    "clarification_policy.json": RESOURCES / "config" / "application" / "clarification_policy.json",
+    "phrase_matcher_service_config.json": (
+        RESOURCES / "config" / "infrastructure_nlp" / "phrase_matcher_service_config.json"
+    ),
+    "menu_offerings.json": RESOURCES / "data" / "menu" / "menu_offerings.json",
+    "conversation_profiles.json": RESOURCES / "corpus" / "profiles" / "conversation_profiles.json",
 }
 
 
@@ -54,26 +57,26 @@ def validate() -> list[str]:
         return [f"Faltan recursos: {', '.join(missing)}"]
 
     taxonomy = load("intent_taxonomy.json")
-    menu = load("menu_catalog.json")
+    menu = load("phrase_matcher_service_config.json")
     offerings = load("menu_offerings.json")
-    normalizer = load("normalizer_config.json")
-    matcher = load("matcher_patterns.json")
-    lemmas = load("lemma_signals.json")
-    ruler = load("entity_ruler_patterns.json")
-    resolver = load("resolver_config.json")
+    normalizer = load("text_normalizer_service_config.json")
+    matcher = load("matcher_service_config.json")
+    lemmas = load("lemma_service_config.json")
+    ruler = load("entity_ruler_service_config.json")
+    resolver = load("intent_resolver_config.json")
     clarification = load("clarification_policy.json")
     profiles = load("conversation_profiles.json")
     valid_pairs = taxonomy_pairs(taxonomy)
     covered_pairs: set[str] = set()
 
     if not isinstance(normalizer.get("options"), dict):
-        errors.append("normalizer_config.json: falta 'options'.")
+        errors.append("text_normalizer_service_config.json: falta 'options'.")
 
     pattern_ids: set[str] = set()
     for pattern in matcher.get("patterns", []):
         rule_id = str(pattern.get("id", ""))
         if not rule_id:
-            errors.append("matcher_patterns.json: hay una regla sin id.")
+            errors.append("matcher_service_config.json: hay una regla sin id.")
         elif rule_id in pattern_ids:
             errors.append(f"Matcher: id duplicado '{rule_id}'.")
         pattern_ids.add(rule_id)
@@ -198,60 +201,100 @@ def validate() -> list[str]:
         for item in group.get("items", []):
             entity_id = str(item.get("id", ""))
             if entity_id in ids:
-                errors.append(f"Menú {entity_type}: id duplicado '{entity_id}'.")
+                errors.append(
+                    f"Catálogo PhraseMatcher {entity_type}: id duplicado '{entity_id}'."
+                )
             ids.add(entity_id)
             if entity_type in {"PRODUCTO_ESPECIFICO", "PRODUCTO_BASE"}:
                 product_ids.add(entity_id)
             for raw_phrase in item.get("phrases", []):
                 phrase = " ".join(str(raw_phrase).casefold().split())
                 if not phrase:
-                    errors.append(f"Menú {entity_type}/{entity_id}: frase vacía.")
+                    errors.append(
+                        f"Catálogo PhraseMatcher {entity_type}/{entity_id}: frase vacía."
+                    )
                     continue
                 previous = phrase_owner.get(phrase)
                 if previous and previous != entity_id:
                     errors.append(
-                        f"Menú {entity_type}: frase '{phrase}' pertenece a '{previous}' y '{entity_id}'."
+                        f"Catálogo PhraseMatcher {entity_type}: frase '{phrase}' "
+                        f"pertenece a '{previous}' y '{entity_id}'."
                     )
                 phrase_owner[phrase] = entity_id
                 menu_phrases.add(phrase)
 
+    offering_metadata = offerings.get("metadata", {})
+    if offering_metadata.get("currency") != "COP":
+        errors.append("Ofertas: metadata.currency debe ser 'COP'.")
+    if set(offering_metadata.get("allowed_types", [])) != {"fixed", "by_size"}:
+        errors.append("Ofertas: metadata.allowed_types debe declarar fixed y by_size.")
+
     offering_ids: set[str] = set()
-    valid_price_types = {"fixed", "range", "by_size", "unknown"}
-    for offering in offerings.get("offerings", []):
-        offering_id = str(offering.get("offering_id", ""))
-        product_id = str(offering.get("product_id", ""))
-        if not offering_id:
-            errors.append("Ofertas: existe una oferta sin offering_id.")
-        elif offering_id in offering_ids:
-            errors.append(f"Ofertas: offering_id duplicado '{offering_id}'.")
-        offering_ids.add(offering_id)
+    offering_product_ids: set[str] = set()
+    valid_price_types = {"fixed", "by_size"}
+    forbidden_price_fields = {
+        "source_value",
+        "temporary",
+        "requires_confirmation",
+        "minimum",
+        "maximum",
+    }
+    for product in offerings.get("products", []):
+        product_id = str(product.get("product_id", ""))
+        if not product_id:
+            errors.append("Ofertas: existe un producto sin product_id.")
+        elif product_id in offering_product_ids:
+            errors.append(f"Ofertas: product_id duplicado '{product_id}'.")
+        offering_product_ids.add(product_id)
         if product_id not in product_ids:
             errors.append(f"Ofertas: product_id desconocido '{product_id}'.")
-        price = offering.get("price", {})
-        price_type = price.get("type")
-        if price.get("temporary") is True and price.get("requires_confirmation") is not True:
-            errors.append(f"Ofertas {offering_id}: un precio temporal debe requerir confirmación.")
-        if price_type not in valid_price_types:
-            errors.append(f"Ofertas {offering_id}: tipo de precio inválido '{price_type}'.")
-        elif price_type == "fixed" and not isinstance(price.get("amount"), int):
-            errors.append(f"Ofertas {offering_id}: un precio fijo requiere amount entero.")
-        elif price_type == "range":
-            minimum, maximum = price.get("minimum"), price.get("maximum")
-            if not isinstance(minimum, int) or not isinstance(maximum, int) or minimum > maximum:
-                errors.append(f"Ofertas {offering_id}: rango de precio inválido.")
-        elif price_type == "by_size":
-            sizes = price.get("sizes", {})
-            expected_sizes = {"pequeno", "mediano", "grande"}
-            if set(sizes) != expected_sizes:
-                errors.append(f"Ofertas {offering_id}: debe declarar pequeño, mediano y grande.")
-            elif not all(isinstance(value, int) and value > 0 for value in sizes.values()):
-                errors.append(f"Ofertas {offering_id}: los precios por tamaño deben ser enteros positivos.")
-            elif not sizes["pequeno"] < sizes["mediano"] < sizes["grande"]:
-                errors.append(f"Ofertas {offering_id}: los precios por tamaño deben ser crecientes.")
-            if price.get("temporary") is not True or price.get("requires_confirmation") is not True:
-                errors.append(f"Ofertas {offering_id}: los valores temporales deben requerir confirmación.")
-        elif price_type == "unknown" and price.get("requires_confirmation") is not True:
-            errors.append(f"Ofertas {offering_id}: precio desconocido debe requerir confirmación.")
+
+        product_offerings = product.get("offerings", [])
+        if not isinstance(product_offerings, list) or not product_offerings:
+            errors.append(f"Ofertas {product_id}: debe contener al menos una oferta.")
+            continue
+        for offering in product_offerings:
+            offering_id = str(offering.get("offering_id", ""))
+            if not offering_id:
+                errors.append("Ofertas: existe una oferta sin offering_id.")
+            elif offering_id in offering_ids:
+                errors.append(f"Ofertas: offering_id duplicado '{offering_id}'.")
+            offering_ids.add(offering_id)
+
+            price = offering.get("price", {})
+            unexpected = forbidden_price_fields.intersection(price)
+            if unexpected:
+                errors.append(
+                    f"Ofertas {offering_id}: campos de precio no permitidos "
+                    + ", ".join(sorted(unexpected))
+                    + "."
+                )
+            price_type = price.get("type")
+            if price_type not in valid_price_types:
+                errors.append(f"Ofertas {offering_id}: tipo de precio inválido '{price_type}'.")
+            elif price_type == "fixed":
+                amount = price.get("amount")
+                if not isinstance(amount, int) or amount <= 0:
+                    errors.append(
+                        f"Ofertas {offering_id}: un precio fijo requiere amount entero positivo."
+                    )
+            elif price_type == "by_size":
+                sizes = price.get("sizes", {})
+                expected_sizes = {"pequeno", "mediano", "grande"}
+                if set(sizes) != expected_sizes:
+                    errors.append(
+                        f"Ofertas {offering_id}: debe declarar pequeño, mediano y grande."
+                    )
+                elif not all(
+                    isinstance(value, int) and value > 0 for value in sizes.values()
+                ):
+                    errors.append(
+                        f"Ofertas {offering_id}: los precios por tamaño deben ser enteros positivos."
+                    )
+                elif not sizes["pequeno"] < sizes["mediano"] < sizes["grande"]:
+                    errors.append(
+                        f"Ofertas {offering_id}: los precios por tamaño deben ser crecientes."
+                    )
 
     ruler_keys: set[tuple[str, str]] = set()
     for pattern in ruler.get("patterns", []):
@@ -327,7 +370,10 @@ def validate() -> list[str]:
             )
 
     if not DATASET_JSON.is_file() or not DATASET_CSV.is_file():
-        errors.append("Dataset: faltan dataset_clientes.json o dataset_clientes.csv.")
+        errors.append(
+            "Dataset: faltan casos_intenciones_clientes.json o "
+            "casos_intenciones_clientes.csv."
+        )
     else:
         dataset = json.loads(DATASET_JSON.read_text(encoding="utf-8"))
         dataset_cases = dataset.get("cases", []) if isinstance(dataset, dict) else []

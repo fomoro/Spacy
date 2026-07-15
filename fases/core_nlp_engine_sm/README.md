@@ -24,26 +24,22 @@ El procesador está diseñado bajo una estricta separación de responsabilidades
 ```text
 core_nlp_engine/
 │
-├── data/                          # Corpus de evaluación y su contrato documental
+├── resources/                         # Archivos no Python y su gobernanza
 │   ├── README.md
-│   ├── dataset_clientes.json      # Fuente canónica: 15 perfiles × 30 casos
-│   └── dataset_clientes.csv       # Proyección tabular sincronizada
-├── resources/
-│   ├── README.md                  # Gobernanza y mantenimiento de recursos
-│   ├── nlp/                       # Taxonomía y configuración lingüística
-│   │   ├── intent_taxonomy.json
-│   │   ├── normalizer_config.json
-│   │   ├── matcher_patterns.json
-│   │   ├── lemma_signals.json
-│   │   ├── entity_ruler_patterns.json
-│   │   └── resolver_config.json
-│   ├── dialogue/                  # Completitud e intervención conversacional
-│   │   └── clarification_policy.json
-│   ├── menu/                      # Vocabulario, ofertas y precios
-│   │   ├── menu_catalog.json
-│   │   └── menu_offerings.json
-│   └── profiles/                  # Cobertura conversacional para diseño y evaluación
-│       └── conversation_profiles.json
+│   ├── config/                    # Reglas, taxonomías y políticas
+│   │   ├── intent_taxonomy.json    # Contrato compartido
+│   │   ├── infrastructure_nlp/     # Configuración de servicios NLP
+│   │   └── application/            # Resolución y aclaración
+│   ├── data/
+│   │   └── menu/                  # Ofertas y precios suministrados por el usuario
+│   └── corpus/                    # Material lingüístico de desarrollo y medición
+│       ├── README.md
+│       ├── profiles/
+│       │   └── conversation_profiles.json
+│       └── datasets/
+│           └── intent_benchmark/
+│               ├── casos_intenciones_clientes.json
+│               └── casos_intenciones_clientes.csv
 ├── src/                           # Código fuente
 │   ├── application/               # Parser, resolutor y fachada IntentEngine
 │   └── infrastructure/nlp/        # Servicios lingüísticos autónomos con spaCy
@@ -65,11 +61,11 @@ core_nlp_engine/
 
 ## Dataset conversacional
 
-`data/dataset_clientes.json` es la fuente canónica de 450 casos. `data/dataset_clientes.csv` es una proyección tabular sincronizada. Cada uno de los 15 perfiles aporta 30 casos y cubre los cinco modos de intervención; los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
+`resources/corpus/datasets/intent_benchmark/casos_intenciones_clientes.json` es la fuente canónica de 450 casos. El archivo CSV del mismo directorio es una proyección tabular sincronizada. Cada uno de los 15 perfiles aporta 30 casos y cubre los cinco modos de intervención; los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
 
 El comando `python -X utf8 tests/contract/test_resource_contract.py` comprueba conteos, unicidad, cobertura de las 47 subintenciones, referencias al menú, slots, modos de intervención y equivalencia entre JSON y CSV.
 
-El contrato de anotación, los criterios de mantenimiento y el alcance correcto de las métricas están documentados en [`data/README.md`](data/README.md).
+El contrato de anotación, los criterios de mantenimiento y el alcance correcto de las métricas están documentados en [`resources/corpus/README.md`](resources/corpus/README.md).
 
 ---
 
@@ -107,7 +103,7 @@ python tests/evaluation/evaluate_normalizer.py
 #### 3. Pruebas unitarias del Normalizador
 Para validar de forma automatizada las aserciones de código del normalizador:
 ```bash
-python -m unittest tests.infrastructure.test_normalizer_service
+python -m unittest tests.infrastructure.test_text_normalizer_service
 ```
 
 ---
@@ -184,7 +180,7 @@ python -m unittest tests.infrastructure.test_matcher_service
 
 ## Tema 4: Analizador de Lemas (LemmaService)
 
-**Foco Principal**: Lematizar términos en español y generar evidencias secundarias de intención a partir de las raíces de las palabras (lemas). Funciona de forma híbrida: si el modelo en español `es_core_news_sm` está disponible, usa su motor de lematización y resuelve conflictos; si no está, recurre a `lemma_signals.json` como fallback controlado. Adicionalmente, prioriza las formas del catálogo para garantizar que la jerga del restaurante (ej: "gracias" -> "agradecer", "alérgica" -> "alérgico") se asocie correctamente.
+**Foco Principal**: Lematizar términos en español y generar evidencias secundarias de intención a partir de las raíces de las palabras (lemas). Funciona de forma híbrida: si el modelo en español `es_core_news_sm` está disponible, usa su motor de lematización y resuelve conflictos; si no está, recurre a `lemma_service_config.json` como fallback controlado. Adicionalmente, prioriza las formas del catálogo para garantizar que la jerga del restaurante (ej: "gracias" -> "agradecer", "alérgica" -> "alérgico") se asocie correctamente.
 
 ### ¿Cómo probar el LemmaService?
 

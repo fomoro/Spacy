@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.infrastructure import (
     EntityRulerService,
-    TextNormalizer,
+    TextNormalizerService,
     PhraseMatcherService,
     MatcherService,
     LemmaService,
@@ -21,19 +21,21 @@ from src.application import (
     LinguisticParser,
 )
 
-CASES = ROOT / "data" / "dataset_clientes.json"
+CASES = ROOT / "resources" / "corpus" / "datasets" / "intent_benchmark" / "casos_intenciones_clientes.json"
 OUTPUT = ROOT / "reports" / "resolver" / "evaluacion_resolutor_dataset.csv"
 SUMMARY = ROOT / "reports" / "resolver" / "resultado_resolutor.json"
 
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
-normalizer = TextNormalizer(ROOT / "resources" / "nlp" / "normalizer_config.json")
-phrase = PhraseMatcherService(ROOT / "resources" / "menu" / "menu_catalog.json")
-matcher = MatcherService(ROOT / "resources" / "nlp" / "matcher_patterns.json", phrase)
-lemmas = LemmaService(ROOT / "resources" / "nlp" / "lemma_signals.json")
-ruler = EntityRulerService(ROOT / "resources" / "nlp" / "entity_ruler_patterns.json")
+normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
+phrase = PhraseMatcherService(
+    ROOT / "resources" / "config" / "infrastructure_nlp" / "phrase_matcher_service_config.json"
+)
+matcher = MatcherService(ROOT / "resources" / "config" / "infrastructure_nlp" / "matcher_service_config.json", phrase)
+lemmas = LemmaService(ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json")
+ruler = EntityRulerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json")
 parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
-resolver = IntentResolver(ROOT / "resources" / "nlp" / "resolver_config.json")
+resolver = IntentResolver(ROOT / "resources" / "config" / "application" / "intent_resolver_config.json")
 pipeline = IntentEngine(parser, resolver)
 
 payload = json.loads(CASES.read_text(encoding="utf-8"))

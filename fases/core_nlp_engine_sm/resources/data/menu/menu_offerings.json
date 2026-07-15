@@ -1,0 +1,749 @@
+{
+  "metadata": {
+    "schema_version": "2.0.0",
+    "purpose": "Registrar los productos, nombres, secciones y precios tal como los suministra el usuario, conservando su lenguaje y estructurando sus valores.",
+    "currency": "COP",
+    "allowed_types": [
+      "fixed",
+      "by_size"
+    ]
+  },
+  "products": [
+    {
+      "product_id": "arroz_a_la_marinera",
+      "name": "Arroz a la marinera",
+      "offerings": [
+        {
+          "offering_id": "arroz_a_la_marinera__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 35000
+          }
+        },
+        {
+          "offering_id": "arroz_a_la_marinera__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 23500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "arroz_mixto",
+      "name": "Arroz mixto",
+      "offerings": [
+        {
+          "offering_id": "arroz_mixto__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 32000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "arroz_con_camaron",
+      "name": "Arroz con camarón",
+      "offerings": [
+        {
+          "offering_id": "arroz_con_camaron__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 38000
+          }
+        },
+        {
+          "offering_id": "arroz_con_camaron__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "arroz_de_langostino",
+      "name": "Arroz de langostino",
+      "offerings": [
+        {
+          "offering_id": "arroz_de_langostino__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 50000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "cazuela_de_camaron",
+      "name": "Cazuela de camarón",
+      "offerings": [
+        {
+          "offering_id": "cazuela_de_camaron__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 40000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "cazuela_mixta",
+      "name": "Cazuela mixta",
+      "offerings": [
+        {
+          "offering_id": "cazuela_mixta__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 36000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "cazuela_central",
+      "name": "Cazuela Central",
+      "offerings": [
+        {
+          "offering_id": "cazuela_central__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 49000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "cazuela_de_mariscos",
+      "name": "Cazuela de mariscos",
+      "offerings": [
+        {
+          "offering_id": "cazuela_de_mariscos__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 33000
+          }
+        },
+        {
+          "offering_id": "cazuela_de_mariscos__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 23500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "cazuela_de_langostino",
+      "name": "Cazuela de langostino",
+      "offerings": [
+        {
+          "offering_id": "cazuela_de_langostino__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 51000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "ceviche_de_camaron",
+      "name": "Ceviche de camarón",
+      "offerings": [
+        {
+          "offering_id": "ceviche_de_camaron__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 26000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "mojarra_en_salsa",
+      "name": "Mojarra en salsa",
+      "offerings": [
+        {
+          "offering_id": "mojarra_en_salsa__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 37000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "mojarra_frita",
+      "name": "Mojarra frita",
+      "offerings": [
+        {
+          "offering_id": "mojarra_frita__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 37000
+          }
+        },
+        {
+          "offering_id": "mojarra_frita__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "salmon",
+      "name": "Salmón",
+      "offerings": [
+        {
+          "offering_id": "salmon__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 56000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "sierra_frita_especial",
+      "name": "Sierra frita especial",
+      "offerings": [
+        {
+          "offering_id": "sierra_frita_especial__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 36000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "pargo_rojo_frito_o_salsa",
+      "name": "Pargo rojo frito o en salsa",
+      "offerings": [
+        {
+          "offering_id": "pargo_rojo_frito_o_salsa__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 40000,
+              "mediano": 50000,
+              "grande": 60000
+            }
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "robalo_frito_o_salsa",
+      "name": "Róbalo frito o en salsa",
+      "offerings": [
+        {
+          "offering_id": "robalo_frito_o_salsa__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 42000,
+              "mediano": 52000,
+              "grande": 62000
+            }
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "viudo_de_capaz",
+      "name": "Viudo de capaz",
+      "offerings": [
+        {
+          "offering_id": "viudo_de_capaz__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 39000,
+              "mediano": 49000,
+              "grande": 59000
+            }
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "viudo_de_mapara",
+      "name": "Viudo de mapará",
+      "offerings": [
+        {
+          "offering_id": "viudo_de_mapara__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 33000,
+              "mediano": 42000,
+              "grande": 51000
+            }
+          }
+        },
+        {
+          "offering_id": "viudo_de_mapara__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "bocachico_frito_o_salsa",
+      "name": "Bocachico frito o en salsa",
+      "offerings": [
+        {
+          "offering_id": "bocachico_frito_o_salsa__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 31000,
+              "mediano": 39000,
+              "grande": 47000
+            }
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "bagre_frito_o_salsa",
+      "name": "Bagre frito o en salsa",
+      "offerings": [
+        {
+          "offering_id": "bagre_frito_o_salsa__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 38000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "langostinos_al_ajillo",
+      "name": "Langostinos al ajillo",
+      "offerings": [
+        {
+          "offering_id": "langostinos_al_ajillo__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 50000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "pargo_rojo_a_la_marinera",
+      "name": "Pargo rojo a la marinera",
+      "offerings": [
+        {
+          "offering_id": "pargo_rojo_a_la_marinera__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 47000,
+              "mediano": 57000,
+              "grande": 67000
+            }
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "robalo_a_la_marinera",
+      "name": "Róbalo a la marinera",
+      "offerings": [
+        {
+          "offering_id": "robalo_a_la_marinera__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "by_size",
+            "sizes": {
+              "pequeno": 49000,
+              "mediano": 59000,
+              "grande": 69000
+            }
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "filete_a_la_marinera",
+      "name": "Filete a la marinera",
+      "offerings": [
+        {
+          "offering_id": "filete_a_la_marinera__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 37000
+          }
+        },
+        {
+          "offering_id": "filete_a_la_marinera__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 23500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "bagre_a_la_marinera",
+      "name": "Bagre a la marinera",
+      "offerings": [
+        {
+          "offering_id": "bagre_a_la_marinera__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 42000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "bagre_al_ajillo",
+      "name": "Bagre al ajillo",
+      "offerings": [
+        {
+          "offering_id": "bagre_al_ajillo__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 39000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "filete_al_ajillo",
+      "name": "Filete al ajillo",
+      "offerings": [
+        {
+          "offering_id": "filete_al_ajillo__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 34000
+          }
+        },
+        {
+          "offering_id": "filete_al_ajillo__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "trucha_a_la_marinera",
+      "name": "Trucha a la marinera",
+      "offerings": [
+        {
+          "offering_id": "trucha_a_la_marinera__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 41000
+          }
+        },
+        {
+          "offering_id": "trucha_a_la_marinera__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 35500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "trucha_al_ajillo",
+      "name": "Trucha al ajillo",
+      "offerings": [
+        {
+          "offering_id": "trucha_al_ajillo__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 37000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "trucha_en_salsa_de_camaron",
+      "name": "Trucha en salsa de camarón",
+      "offerings": [
+        {
+          "offering_id": "trucha_en_salsa_de_camaron__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 50000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "sancocho_de_bagre",
+      "name": "Sancocho de bagre",
+      "offerings": [
+        {
+          "offering_id": "sancocho_de_bagre__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 35000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "filete_o_bagre_en_salsa",
+      "name": "Filete o bagre en salsa de camarones",
+      "offerings": [
+        {
+          "offering_id": "filete_o_bagre_en_salsa__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 45000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "camaron_al_ajillo",
+      "name": "Camarón al ajillo",
+      "offerings": [
+        {
+          "offering_id": "camaron_al_ajillo__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 39000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "camaron_bbq",
+      "name": "Camarón BBQ",
+      "offerings": [
+        {
+          "offering_id": "camaron_bbq__carta",
+          "menu_section": "carta",
+          "price": {
+            "type": "fixed",
+            "amount": 39000
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "bagre_frito",
+      "name": "Bagre frito",
+      "offerings": [
+        {
+          "offering_id": "bagre_frito__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "bagre_en_salsa",
+      "name": "Bagre en salsa",
+      "offerings": [
+        {
+          "offering_id": "bagre_en_salsa__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "cazuela_especial",
+      "name": "Cazuela especial",
+      "offerings": [
+        {
+          "offering_id": "cazuela_especial__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 30500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "filete_sin_apanar",
+      "name": "Filete sin apanar",
+      "offerings": [
+        {
+          "offering_id": "filete_sin_apanar__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "filete_apanado",
+      "name": "Filete apanado",
+      "offerings": [
+        {
+          "offering_id": "filete_apanado__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "filete_al_vapor",
+      "name": "Filete al vapor",
+      "offerings": [
+        {
+          "offering_id": "filete_al_vapor__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 21500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "sierra_frita",
+      "name": "Sierra frita",
+      "offerings": [
+        {
+          "offering_id": "sierra_frita__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 24500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "lenguado",
+      "name": "Lenguado",
+      "offerings": [
+        {
+          "offering_id": "lenguado__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 24500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "mapara_frito",
+      "name": "Mapará frito",
+      "offerings": [
+        {
+          "offering_id": "mapara_frito__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 18500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "mapara_en_salsa",
+      "name": "Mapará en salsa",
+      "offerings": [
+        {
+          "offering_id": "mapara_en_salsa__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 18500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "trucha_a_la_plancha",
+      "name": "Trucha a la plancha",
+      "offerings": [
+        {
+          "offering_id": "trucha_a_la_plancha__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 27500
+          }
+        }
+      ]
+    },
+    {
+      "product_id": "churrasco",
+      "name": "Churrasco",
+      "offerings": [
+        {
+          "offering_id": "churrasco__ejecutivo",
+          "menu_section": "almuerzo_ejecutivo",
+          "price": {
+            "type": "fixed",
+            "amount": 27500
+          }
+        }
+      ]
+    }
+  ]
+}
