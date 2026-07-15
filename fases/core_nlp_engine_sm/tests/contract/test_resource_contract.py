@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import json
 import unittest
 from pathlib import Path
@@ -12,9 +11,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 RESOURCES = ROOT / "resources"
-DATASET_ROOT = RESOURCES / "corpus" / "datasets" / "intent_benchmark"
-DATASET_JSON = DATASET_ROOT / "casos_intenciones_clientes.json"
-DATASET_CSV = DATASET_ROOT / "casos_intenciones_clientes.csv"
+DATASET_JSON = RESOURCES / "corpus" / "datasets" / "customer_intent_benchmark.json"
 RESOURCE_PATHS = {
     "intent_taxonomy.json": RESOURCES / "config" / "intent_taxonomy.json",
     "text_normalizer_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json",
@@ -314,22 +311,16 @@ def validate() -> list[str]:
         errors.append("Perfiles: 'profiles' debe ser una lista.")
         profile_items = []
     declared_count = profiles.get("profile_count")
-    if declared_count != 15 or len(profile_items) != 15:
+    if declared_count != 20 or len(profile_items) != 20:
         errors.append(
-            f"Perfiles: se esperaban 15 perfiles; hay {len(profile_items)} "
+            f"Perfiles: se esperaban 20 perfiles; hay {len(profile_items)} "
             f"y profile_count declara {declared_count!r}."
         )
     if profiles.get("contains_cases") is not False:
         errors.append("Perfiles: 'contains_cases' debe ser false.")
 
-    runtime_policy = profiles.get("runtime_policy", {})
-    for policy_key in (
-        "use_in_runtime_resolution",
-        "infer_profile_from_message",
-        "modify_business_rules_by_profile",
-    ):
-        if runtime_policy.get(policy_key) is not False:
-            errors.append(f"Perfiles: runtime_policy.{policy_key} debe ser false.")
+    if not str(profiles.get("usage_note", "")).strip():
+        errors.append("Perfiles: falta 'usage_note'.")
 
     profile_ids: set[str] = set()
     required_profile_lists = (
@@ -369,31 +360,35 @@ def validate() -> list[str]:
                 + ", ".join(sorted(forbidden))
             )
 
-    if not DATASET_JSON.is_file() or not DATASET_CSV.is_file():
-        errors.append(
-            "Dataset: faltan casos_intenciones_clientes.json o "
-            "casos_intenciones_clientes.csv."
-        )
+    if not DATASET_JSON.is_file():
+        errors.append("Dataset: falta customer_intent_benchmark.json.")
     else:
         dataset = json.loads(DATASET_JSON.read_text(encoding="utf-8"))
         dataset_cases = dataset.get("cases", []) if isinstance(dataset, dict) else []
         metadata = dataset.get("metadata", {}) if isinstance(dataset, dict) else {}
+        if not isinstance(dataset, dict) or set(dataset) != {"metadata", "cases"}:
+            errors.append("Dataset JSON: la raíz debe contener solo metadata y cases.")
         if not isinstance(dataset_cases, list):
             errors.append("Dataset JSON: 'cases' debe ser una lista.")
             dataset_cases = []
-        if len(dataset_cases) != 450 or metadata.get("total_cases") != 450:
-            errors.append(
-                f"Dataset: se esperaban 450 casos; hay {len(dataset_cases)} "
-                f"y metadata declara {metadata.get('total_cases')!r}."
-            )
-        if metadata.get("total_profiles") != 15 or metadata.get("cases_per_profile") != 30:
-            errors.append("Dataset: metadata debe declarar 15 perfiles y 30 casos por perfil.")
+        expected_metadata_fields = {
+            "schema_version", "purpose", "language", "domain",
+            "profiles_reference", "taxonomy_reference",
+        }
+        if set(metadata) != expected_metadata_fields:
+            errors.append("Dataset: metadata no coincide con el contrato mínimo canónico.")
+        if not str(metadata.get("purpose", "")).strip():
+            errors.append("Dataset: metadata.purpose debe explicar el uso del benchmark.")
+        if metadata.get("language") != "es-CO":
+            errors.append("Dataset: metadata.language debe ser 'es-CO'.")
+        if len(dataset_cases) != 600:
+            errors.append(f"Dataset: se esperaban 600 casos; hay {len(dataset_cases)}.")
 
         canonical_profile_ids = {str(profile.get("id")) for profile in profile_items}
         dataset_ids: set[str] = set()
         normalized_messages: set[str] = set()
         cases_by_profile: dict[str, int] = {}
-        profile_numbers: dict[str, set[int]] = {}
+        contexts_by_profile: dict[str, int] = {}
         modes_by_profile: dict[str, set[str]] = {}
         pair_counts: dict[str, int] = {}
         dataset_pairs: set[str] = set()
@@ -415,6 +410,14 @@ def validate() -> list[str]:
             if not isinstance(case, dict):
                 errors.append(f"Dataset: el caso en posición {position} no es un objeto.")
                 continue
+            expected_case_fields = {
+                "id", "profile_id", "message", "context", "expected",
+                "expected_entities", "annotation",
+            }
+            if set(case) != expected_case_fields:
+                errors.append(
+                    f"Dataset: el caso en posición {position} no coincide con el esquema mínimo."
+                )
             case_id = str(case.get("id", ""))
             expected_id = f"caso_{position:03d}"
             if case_id != expected_id:
@@ -427,13 +430,43 @@ def validate() -> list[str]:
             if profile_id not in canonical_profile_ids:
                 errors.append(f"Dataset {case_id}: perfil desconocido '{profile_id}'.")
             cases_by_profile[profile_id] = cases_by_profile.get(profile_id, 0) + 1
-            case_number = case.get("profile_case_number")
-            if not isinstance(case_number, int):
-                errors.append(f"Dataset {case_id}: profile_case_number debe ser entero.")
-            else:
-                profile_numbers.setdefault(profile_id, set()).add(case_number)
 
-            message = " ".join(str(case.get("message", "")).casefold().split())
+            context = case.get("context", {})
+            allowed_context_keys = {
+                "producto_activo", "pedido_activo", "pedido_anterior",
+                "direccion_previa", "menu_enviado_previamente",
+                "menu_pdf_ultima_fecha_envio",
+            }
+            if not isinstance(context, dict):
+                errors.append(f"Dataset {case_id}: context debe ser un objeto.")
+                context = {}
+            else:
+                unknown_context_keys = set(context) - allowed_context_keys
+                if unknown_context_keys:
+                    errors.append(
+                        f"Dataset {case_id}: claves de contexto desconocidas: "
+                        + ", ".join(sorted(unknown_context_keys))
+                    )
+                if context:
+                    contexts_by_profile[profile_id] = contexts_by_profile.get(profile_id, 0) + 1
+                active_product = context.get("producto_activo")
+                if active_product is not None and active_product not in product_ids:
+                    errors.append(
+                        f"Dataset {case_id}: producto_activo desconocido '{active_product}'."
+                    )
+                for boolean_key in ("pedido_activo", "menu_enviado_previamente"):
+                    if boolean_key in context and not isinstance(context[boolean_key], bool):
+                        errors.append(
+                            f"Dataset {case_id}: context.{boolean_key} debe ser booleano."
+                        )
+                menu_date = context.get("menu_pdf_ultima_fecha_envio")
+                if menu_date is not None and not isinstance(menu_date, str):
+                    errors.append(
+                        f"Dataset {case_id}: menu_pdf_ultima_fecha_envio debe ser texto."
+                    )
+
+            raw_message = str(case.get("message", ""))
+            message = " ".join(raw_message.casefold().split())
             if not message:
                 errors.append(f"Dataset {case_id}: mensaje vacío.")
             elif message in normalized_messages:
@@ -441,6 +474,13 @@ def validate() -> list[str]:
             normalized_messages.add(message)
 
             expected = case.get("expected", {})
+            expected_fields = {
+                "intent", "subintent", "intervention_mode", "missing_slots",
+                "question_key",
+            }
+            if not isinstance(expected, dict) or set(expected) != expected_fields:
+                errors.append(f"Dataset {case_id}: expected no coincide con el esquema mínimo.")
+                expected = expected if isinstance(expected, dict) else {}
             pair = f"{expected.get('intent')}.{expected.get('subintent')}"
             dataset_pairs.add(pair)
             if pair not in valid_pairs:
@@ -450,11 +490,6 @@ def validate() -> list[str]:
                 errors.append(f"Dataset {case_id}: modo desconocido '{mode}'.")
             modes_by_profile.setdefault(profile_id, set()).add(str(mode))
             pair_counts[pair] = pair_counts.get(pair, 0) + 1
-            should_clarify = mode != "resolved"
-            if expected.get("requires_clarification") is not should_clarify:
-                errors.append(
-                    f"Dataset {case_id}: requires_clarification no coincide con '{mode}'."
-                )
             missing_slots = expected.get("missing_slots", [])
             if not isinstance(missing_slots, list):
                 errors.append(f"Dataset {case_id}: missing_slots debe ser una lista.")
@@ -467,11 +502,36 @@ def validate() -> list[str]:
             if question_key is not None and question_key not in valid_question_keys:
                 errors.append(f"Dataset {case_id}: question_key desconocida '{question_key}'.")
 
-            phenomena = case.get("phenomena")
-            if not isinstance(phenomena, list) or not phenomena:
-                errors.append(f"Dataset {case_id}: phenomena debe ser una lista no vacía.")
-            if case.get("difficulty") not in {"easy", "medium", "hard"}:
-                errors.append(f"Dataset {case_id}: dificultad inválida.")
+            annotation = case.get("annotation", {})
+            expected_annotation_fields = {
+                "target_evidence", "disambiguating_evidence", "excluded_readings",
+                "expected_action",
+            }
+            if not isinstance(annotation, dict) or set(annotation) != expected_annotation_fields:
+                errors.append(f"Dataset {case_id}: annotation no coincide con el contrato.")
+            else:
+                for field in (
+                    "target_evidence", "disambiguating_evidence", "expected_action",
+                ):
+                    if not isinstance(annotation.get(field), str) or not annotation[field].strip():
+                        errors.append(f"Dataset {case_id}: annotation.{field} debe ser texto.")
+                if annotation.get("target_evidence") not in raw_message:
+                    errors.append(f"Dataset {case_id}: target_evidence no aparece en el mensaje.")
+                if annotation.get("disambiguating_evidence") not in raw_message:
+                    errors.append(
+                        f"Dataset {case_id}: disambiguating_evidence no aparece en el mensaje."
+                    )
+                excluded = annotation.get("excluded_readings")
+                if not isinstance(excluded, list) or not all(
+                    isinstance(value, str) and value.strip() for value in excluded
+                ):
+                    errors.append(
+                        f"Dataset {case_id}: annotation.excluded_readings debe ser una lista de textos."
+                    )
+                elif any(value not in valid_pairs for value in excluded):
+                    errors.append(
+                        f"Dataset {case_id}: excluded_readings contiene lecturas no canónicas."
+                    )
 
             for entity in case.get("expected_entities", []):
                 entity_type = str(entity.get("entity_type", ""))
@@ -489,13 +549,20 @@ def validate() -> list[str]:
 
         if set(cases_by_profile) != canonical_profile_ids:
             errors.append("Dataset: los perfiles no coinciden exactamente con conversation_profiles.json.")
+        if sum(contexts_by_profile.values()) != 150:
+            errors.append(
+                f"Dataset: se esperaban 150 casos con contexto y hay "
+                f"{sum(contexts_by_profile.values())}."
+            )
         for profile_id in sorted(canonical_profile_ids):
             if cases_by_profile.get(profile_id) != 30:
                 errors.append(
                     f"Dataset: '{profile_id}' tiene {cases_by_profile.get(profile_id, 0)} casos; se esperaban 30."
                 )
-            if profile_numbers.get(profile_id, set()) != set(range(1, 31)):
-                errors.append(f"Dataset: numeración interna inválida para '{profile_id}'.")
+            if not 6 <= contexts_by_profile.get(profile_id, 0) <= 9:
+                errors.append(
+                    f"Dataset: '{profile_id}' debe tener entre 6 y 9 casos con contexto."
+                )
             if modes_by_profile.get(profile_id, set()) != valid_modes:
                 errors.append(
                     f"Dataset: '{profile_id}' debe cubrir los cinco modos de intervención."
@@ -506,69 +573,13 @@ def validate() -> list[str]:
                 "Dataset sin cobertura de subintenciones: " + ", ".join(uncovered_dataset_pairs)
             )
         underrepresented_pairs = sorted(
-            pair for pair, count in pair_counts.items() if count < 5
+            pair for pair, count in pair_counts.items() if count < 8
         )
         if underrepresented_pairs:
             errors.append(
-                "Dataset: subintenciones con menos de cinco casos: "
+                "Dataset: subintenciones con menos de ocho casos: "
                 + ", ".join(underrepresented_pairs)
             )
-
-        with DATASET_CSV.open(encoding="utf-8", newline="") as file:
-            reader = csv.DictReader(file)
-            csv_rows = list(reader)
-            expected_headers = {
-                "id", "profile_id", "profile_case_number", "message", "context_json",
-                "intent", "subintent", "intervention_mode", "requires_clarification",
-                "clarification_reason", "missing_slots_json", "question_key",
-                "expected_entities_json", "difficulty", "phenomena_json", "scenario",
-            }
-            if set(reader.fieldnames or []) != expected_headers:
-                errors.append("Dataset CSV: las columnas no coinciden con el esquema canónico.")
-        if len(csv_rows) != len(dataset_cases):
-            errors.append(
-                f"Dataset CSV: hay {len(csv_rows)} filas y el JSON contiene {len(dataset_cases)} casos."
-            )
-        csv_by_id = {row.get("id", ""): row for row in csv_rows}
-        if len(csv_by_id) != len(csv_rows):
-            errors.append("Dataset CSV: existen IDs duplicados.")
-        for case in dataset_cases:
-            case_id = str(case.get("id", ""))
-            row = csv_by_id.get(case_id)
-            if row is None:
-                errors.append(f"Dataset CSV: falta '{case_id}'.")
-                continue
-            expected = case["expected"]
-            scalar_checks = {
-                "profile_id": case["profile_id"],
-                "profile_case_number": str(case["profile_case_number"]),
-                "message": case["message"],
-                "intent": expected["intent"],
-                "subintent": expected["subintent"],
-                "intervention_mode": expected["intervention_mode"],
-                "requires_clarification": str(expected["requires_clarification"]),
-                "clarification_reason": expected["clarification_reason"] or "",
-                "question_key": expected["question_key"] or "",
-                "difficulty": case["difficulty"],
-                "scenario": case["scenario"],
-            }
-            for field, expected_value in scalar_checks.items():
-                if row.get(field) != expected_value:
-                    errors.append(f"Dataset CSV {case_id}: '{field}' no coincide con JSON.")
-            json_checks = {
-                "context_json": case["context"],
-                "missing_slots_json": expected["missing_slots"],
-                "expected_entities_json": case["expected_entities"],
-                "phenomena_json": case["phenomena"],
-            }
-            for field, expected_value in json_checks.items():
-                try:
-                    actual_value = json.loads(row.get(field, ""))
-                except json.JSONDecodeError:
-                    errors.append(f"Dataset CSV {case_id}: '{field}' no contiene JSON válido.")
-                    continue
-                if actual_value != expected_value:
-                    errors.append(f"Dataset CSV {case_id}: '{field}' no coincide con JSON.")
 
     return errors
 

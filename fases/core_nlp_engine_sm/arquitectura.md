@@ -37,8 +37,8 @@ Cada responsabilidad tiene un recurso auditable:
 - `config/application/intent_resolver_config.json`: pesos, prioridades y fuentes de evidencia.
 - `config/application/clarification_policy.json`: completitud, modos de intervención, slots faltantes y preguntas mínimas.
 - `data/menu/menu_offerings.json`: precios y presentaciones enlazados por `product_id`.
-- `corpus/profiles/conversation_profiles.json`: 15 estilos conversacionales para diseño y evaluación, fuera del runtime.
-- `corpus/datasets/intent_benchmark/`: benchmark conversacional conocido de 450 casos.
+- `corpus/profiles/conversation_profiles.json`: 20 estilos conversacionales para diseño y evaluación, fuera del runtime.
+- `corpus/datasets/customer_intent_benchmark.json`: benchmark conversacional conocido de 600 casos.
 
 La política completa se documenta en `resources/README.md`. Cada servicio carga de forma autónoma su archivo o un diccionario. `IntentResolver` carga por separado sus puntajes y la política conversacional. Los perfiles no se inyectan al parser ni al resolutor. `tests/contract/test_resource_contract.py` verifica referencias contra la taxonomía, cobertura, preguntas, slots, duplicados y fronteras de propiedad.
 

@@ -7,8 +7,7 @@ Este directorio contiene perfiles y conjuntos lingüísticos de `core_nlp_engine
 | Archivo | Función |
 |---|---|
 | `profiles/conversation_profiles.json` | Perfiles conversacionales para diseñar y segmentar cobertura. |
-| `datasets/intent_benchmark/casos_intenciones_clientes.json` | Fuente canónica con metadatos, contexto y anotaciones estructuradas. |
-| `datasets/intent_benchmark/casos_intenciones_clientes.csv` | Proyección tabular del JSON para inspección y análisis. No se edita de manera independiente. |
+| `datasets/customer_intent_benchmark.json` | Fuente canónica con metadatos, contexto y anotaciones estructuradas. |
 
 Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 
@@ -22,10 +21,11 @@ Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben red
 
 ## Diseño actual
 
-- 450 casos únicos: 15 perfiles conversacionales por 30 casos.
+- 600 casos únicos: 20 perfiles conversacionales por 30 casos.
 - Cobertura de las 47 combinaciones de intención y subintención.
-- Mínimo de 6 casos por combinación.
+- Mínimo de 8 casos por combinación.
 - Los cinco modos de intervención aparecen en cada perfil.
+- 150 casos contienen contexto conversacional; cada perfil aporta entre 6 y 9.
 - Los perfiles representan registros y fenómenos observables; no edad, género, estrato, discapacidad ni otros atributos sensibles.
 - Los mensajes son casos sintéticos de evaluación, no conversaciones reales ni datos personales.
 
@@ -47,22 +47,21 @@ Estas carpetas se crearán cuando exista contenido real, curado y anonimizado pa
 |---|---|
 | `id` | Identificador secuencial `caso_NNN`. |
 | `profile_id` | Perfil de evaluación al que pertenece el caso. |
-| `profile_case_number` | Posición del 1 al 30 dentro del perfil. |
 | `message` | Texto original del cliente; no debe pre-normalizarse. |
 | `context` | Información previa disponible para resolver referencias entre turnos. |
 | `expected.intent` | Intención canónica esperada. |
 | `expected.subintent` | Subintención canónica esperada. |
 | `expected.intervention_mode` | Resultado conversacional esperado. |
-| `expected.requires_clarification` | Indica si el flujo necesita intervención antes de responder o ejecutar. |
-| `expected.clarification_reason` | Causa estructurada de la intervención; `null` cuando el caso está resuelto. |
 | `expected.missing_slots` | Datos que todavía debe aportar o confirmar el cliente. |
 | `expected.question_key` | Pregunta mínima definida por la política de aclaración. |
 | `expected_entities` | Entidades y valores que deberían reconocerse en el mensaje. |
-| `difficulty` | Complejidad lingüística: `easy`, `medium` o `hard`. |
-| `phenomena` | Rasgos que justifican el caso y permiten segmentar errores. |
-| `scenario` | Familia funcional del caso. |
+| `annotation` | Evidencia lingüística que explica la lectura esperada, descarta falsos positivos y orienta la acción. |
 
 `expected_entities` representa evidencia explícita en el texto, no inferencias comerciales. La ausencia de un alérgeno en el nombre de un plato nunca permite afirmar que el plato sea seguro.
+
+`context` conserva únicamente estado previo que puede usar el resolver, como `producto_activo`, `pedido_activo`, `pedido_anterior`, `direccion_previa` o el historial de envío del menú. Un objeto vacío significa que el caso debe resolverse solo con el mensaje actual.
+
+`annotation` contiene `target_evidence`, `disambiguating_evidence`, `excluded_readings` y `expected_action`. Las dos evidencias deben aparecer literalmente en el mensaje; las lecturas excluidas deben pertenecer a la taxonomía y sirven para analizar falsos positivos.
 
 ## Modos de intervención
 
@@ -74,19 +73,18 @@ Estas carpetas se crearán cuando exista contenido real, curado y anonimizado pa
 | `needs_business_lookup` | La respuesta depende de disponibilidad, precio variable u otro dato operativo. |
 | `needs_human_safety_validation` | Existe una consulta alimentaria que requiere verificación humana segura. |
 
-`requires_clarification` es `false` únicamente para `resolved`. En los demás modos significa que el motor no debe presentar el caso como definitivamente resuelto; la intervención concreta depende del modo.
+La necesidad de aclaración no se almacena como un segundo dato: se deriva de `expected.intervention_mode`. Es falsa únicamente para `resolved`; en los demás modos el motor no debe presentar el caso como definitivamente resuelto.
 
 ## Criterios para agregar o modificar casos
 
-1. Editar primero `casos_intenciones_clientes.json`, que es la fuente de verdad.
+1. Editar primero `customer_intent_benchmark.json`, que es la fuente de verdad.
 2. Mantener el mensaje natural para su perfil y anotar únicamente evidencia observable.
 3. Usar identificadores existentes en los recursos de referencia.
 4. Diferenciar ambigüedad lingüística, confirmación transaccional, consulta operativa y seguridad alimentaria.
-5. Actualizar la fila equivalente de `casos_intenciones_clientes.csv` sin alterar ni aplanar los valores JSON de sus columnas estructuradas.
-6. Conservar 30 casos por perfil, IDs únicos, numeración continua y cobertura equilibrada.
-7. Ejecutar todas las validaciones antes de aceptar el cambio.
+5. Conservar 30 casos por perfil, IDs únicos, numeración continua y cobertura equilibrada.
+6. Ejecutar todas las validaciones antes de aceptar el cambio.
 
-No se debe editar solo el CSV, duplicar un mensaje cambiando palabras superficiales, agregar información personal identificable ni ajustar la etiqueta para favorecer la salida actual del motor. Cuando el motor y el caso difieran, primero se auditan la taxonomía, la evidencia lingüística y la política de aclaración.
+No se debe duplicar un mensaje cambiando palabras superficiales, agregar información personal identificable ni ajustar la etiqueta para favorecer la salida actual del motor. Cuando el motor y el caso difieran, primero se auditan la taxonomía, la evidencia lingüística y la política de aclaración.
 
 ## Validación y evaluación
 
@@ -100,10 +98,10 @@ python -X utf8 tests/evaluation/evaluate_phrase_matcher.py
 python -X utf8 tests/evaluation/evaluate_resolver.py
 ```
 
-`tests/contract/test_resource_contract.py` comprueba la equivalencia entre JSON y CSV, conteos, IDs, unicidad de mensajes, perfiles, taxonomía, slots, preguntas, entidades y cobertura. Los evaluadores generan resultados en `reports/`; esos archivos son salidas derivadas y no forman parte de la verdad anotada.
+`tests/contract/test_resource_contract.py` comprueba el JSON canónico, sus metadatos mínimos, conteos, IDs, unicidad de mensajes, perfiles, taxonomía, slots, preguntas, entidades, cobertura y evidencia lingüística de las anotaciones. Los evaluadores generan resultados en `reports/`; esos archivos son salidas derivadas y no forman parte de la verdad anotada.
 
-Los cinco evaluadores de `tests/evaluation/` recorren este mismo dataset de 450 casos. No existen contratos JSON alternativos dentro de `tests/`.
+Los cinco evaluadores de `tests/evaluation/` recorren este mismo dataset de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
 
 ## Alcance de las métricas
 
-Este corpus es un conjunto de referencia sintético. Haber validado su estructura no significa que el motor acierte los 450 casos. Las métricas deben calcularse con un evaluador que compare predicción y anotación, informarse por intención, subintención, modo de intervención y perfil, y acompañarse del número de casos evaluados.
+Este corpus es un conjunto de referencia sintético. Haber validado su estructura no significa que el motor acierte los 600 casos. Las métricas deben calcularse con un evaluador que compare predicción y anotación, informarse por intención, subintención, modo de intervención y perfil, y acompañarse del número de casos evaluados.

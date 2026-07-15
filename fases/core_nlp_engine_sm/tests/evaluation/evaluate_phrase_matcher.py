@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 from src.infrastructure import TextNormalizerService, PhraseMatcherService
 
 
-DATASET = ROOT / "resources" / "corpus" / "datasets" / "intent_benchmark" / "casos_intenciones_clientes.json"
+DATASET = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "phrase_matcher" / "evaluacion_phrase_matcher.csv"
 SUMMARY = ROOT / "reports" / "phrase_matcher" / "resultado_phrase_matcher.json"
 

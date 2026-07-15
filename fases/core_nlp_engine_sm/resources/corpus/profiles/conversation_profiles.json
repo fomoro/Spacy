@@ -1,156 +1,837 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "3.0.0",
   "resource_type": "conversation_profiles",
   "language": "es-CO",
   "domain": "restaurante colombiano de comida de mar",
-  "purpose": "Definir estilos conversacionales observables para diseñar y evaluar cobertura lingüística, contexto y aclaraciones.",
-  "profile_count": 15,
+  "purpose": "Definir estilos conversacionales observables para diseñar y evaluar cobertura lingüística, contexto, aclaraciones y robustez del procesamiento NLP.",
+  "profile_count": 20,
   "contains_cases": false,
-  "runtime_policy": {
-    "use_in_runtime_resolution": false,
-    "infer_profile_from_message": false,
-    "modify_business_rules_by_profile": false,
-    "description": "Son un recurso de diseño y evaluación; no se envían al IntentResolver ni cambian intenciones, seguridad o acceso."
-  },
-  "governance": {
-    "unit_of_description": "rasgos lingüísticos e interactivos observables",
-    "excluded_attributes": [
-      "edad",
-      "género",
-      "orientación sexual",
-      "etnia",
-      "religión",
-      "discapacidad",
-      "estrato socioeconómico",
-      "procedencia usada como sustituto de nivel social"
-    ],
-    "principles": [
-      "No confundir registro lingüístico con capacidad cognitiva o poder adquisitivo.",
-      "No degradar la atención por ortografía, brevedad, formalidad o variedad regional.",
-      "Mantener iguales reglas de intención, seguridad alimentaria y confirmación transaccional.",
-      "Usar los perfiles para hallar vacíos de cobertura, no para personalizar precios o disponibilidad."
-    ]
-  },
+  "usage_note": "Los perfiles describen rasgos observables del mensaje para diseño y evaluación; no identifican tipos de persona ni se usan para modificar decisiones del runtime.",
   "profiles": [
     {
       "id": "perfil_01_coloquial_presupuesto",
       "name": "Registro coloquial con presupuesto explícito",
-      "description": "Interacción informal que prioriza cuánto alcanza con un monto y compara opciones económicas.",
-      "linguistic_features": ["tratamientos coloquiales colombianos", "jerga monetaria", "elipsis", "peticiones breves"],
-      "frequent_needs": ["consultar precio", "recomendar dentro de presupuesto", "consultar medios de pago"],
-      "clarification_focus": ["monto ambiguo", "producto omitido", "consulta de precio frente a pedido"]
+      "description": "Interacción informal que prioriza cuánto alcanza con un monto, cuánto rinde una opción y qué alternativas económicas existen.",
+      "distinctive_axis": "La restricción económica organiza el mensaje y se expresa mediante léxico monetario coloquial; no basta con que el mensaje sea informal o breve.",
+      "linguistic_features": [
+        "tratamientos coloquiales como 'parce', 'pana', 'llave' o 'vea'",
+        "jerga monetaria como 'lucas', 'mil', 'plata' o 'biyuyo'",
+        "elipsis y peticiones breves",
+        "construcciones de suficiencia como '¿qué me alcanza?', '¿qué rinde?' o '¿con cuánto voy?'",
+        "cantidades sin moneda explícita cuyo valor depende del contexto colombiano",
+        "comparativos que combinan precio, tamaño, cantidad de personas y rendimiento"
+      ],
+      "discourse_patterns": [
+        "presenta primero el monto y después solicita opciones",
+        "pregunta por un producto y luego ajusta la decisión al presupuesto",
+        "usa 'para dos', 'que llene' o 'que rinda' como criterio adicional al precio"
+      ],
+      "representative_utterances": [
+        "Tengo cuarenta lucas, ¿qué me alcanza para dos?",
+        "Parce, ¿cuál plato rinde más sin pasarme de cincuenta mil?",
+        "Voy con treinta mil; muéstreme algo de pescado que sí alcance."
+      ],
+      "frequent_needs": [
+        "consultar precio",
+        "recibir recomendación dentro de presupuesto",
+        "comparar precio, tamaño y rendimiento",
+        "consultar medios de pago"
+      ],
+      "contrast_with": [
+        "perfil_08_digital_ultrabreve: puede ser breve, pero aquí siempre debe existir una restricción económica reconocible",
+        "perfil_13_indeciso_comparativo: la comparación está gobernada por presupuesto o rendimiento, no por duda general entre platos",
+        "perfil_16_variacion_lexica_regional: los coloquialismos por sí solos no definen este perfil"
+      ],
+      "clarification_focus": [
+        "monto ambiguo",
+        "producto omitido",
+        "moneda o unidad no indicada",
+        "consulta de precio frente a pedido"
+      ]
     },
     {
       "id": "perfil_02_directo_tiempo_limitado",
       "name": "Comunicación directa con tiempo limitado",
-      "description": "Mensajes orientados a resolver rápidamente disponibilidad, tiempos, entrega o recogida.",
-      "linguistic_features": ["frases telegráficas", "abreviaturas operativas", "poca cortesía explícita", "marcadores de urgencia"],
-      "frequent_needs": ["consultar tiempo de entrega", "confirmar disponibilidad", "pedir para recoger"],
-      "clarification_focus": ["hora objetivo", "modalidad de entrega", "producto y cantidad faltantes"]
+      "description": "Mensajes concisos orientados a resolver rápidamente disponibilidad, precio, tiempos, entrega o recogida.",
+      "distinctive_axis": "La urgencia operativa y la necesidad de una respuesta accionable dominan el turno; no depende de ocupación, nivel social ni falta de cortesía.",
+      "linguistic_features": [
+        "frases telegráficas y preguntas de respuesta corta",
+        "abreviaturas operativas",
+        "cortesía mínima o implícita",
+        "marcadores como 'rápido', 'para llevar', 'ya' o 'en 15 minutos'",
+        "preguntas cerradas como '¿hay?', '¿cuánto demora?' o '¿alcanza a estar?'",
+        "secuencias de datos sin conectores: producto, cantidad, hora y modalidad"
+      ],
+      "discourse_patterns": [
+        "abre con una restricción temporal concreta",
+        "solicita disponibilidad y tiempo antes de confirmar",
+        "omite información social para concentrarse en datos operativos"
+      ],
+      "representative_utterances": [
+        "¿Hay mojarra? Una para recoger a la una.",
+        "Necesito dos almuerzos en veinte minutos, ¿sí alcanzan?",
+        "Precio y tiempo del salmón, por favor; voy de afán."
+      ],
+      "frequent_needs": [
+        "consultar tiempo de entrega",
+        "confirmar disponibilidad",
+        "consultar un precio concreto",
+        "pedir para recoger"
+      ],
+      "contrast_with": [
+        "perfil_08_digital_ultrabreve: la brevedad aquí está motivada por una ventana de tiempo o ejecución",
+        "perfil_10_operativo_pedido_grupal: maneja una operación inmediata y pequeña, no una coordinación logística compleja",
+        "perfil_14_planificacion_evento: trabaja con urgencia presente, no con planeación futura"
+      ],
+      "clarification_focus": [
+        "hora objetivo",
+        "modalidad de entrega",
+        "producto y cantidad faltantes",
+        "no asumir disponibilidad por la urgencia"
+      ]
     },
     {
       "id": "perfil_03_compra_familiar",
       "name": "Compra para grupo familiar",
-      "description": "Combina varias porciones, preferencias y restricciones dentro de un mismo pedido.",
-      "linguistic_features": ["varios productos coordinados", "cantidades distribuidas", "pronombres referenciales", "preferencias múltiples"],
-      "frequent_needs": ["armar pedido múltiple", "comparar tamaños", "solicitar modificaciones"],
-      "clarification_focus": ["asociar cantidades con productos", "alcance de cada restricción", "confirmar pedido consolidado"]
+      "description": "Combina porciones para personas con gustos o necesidades diferentes dentro de un mismo pedido.",
+      "distinctive_axis": "El reto central es distribuir productos, cantidades y preferencias entre integrantes de un grupo de consumo cercano, no identificar quién organiza la compra.",
+      "linguistic_features": [
+        "varios productos coordinados",
+        "cantidades distribuidas entre personas",
+        "referencias como 'para los niños', 'para compartir' o 'para todos'",
+        "preferencias, tamaños y modificaciones múltiples",
+        "posesivos y relaciones como 'para mi mamá', 'el de él' o 'a nosotros'",
+        "cuantificadores aproximados como 'una bandeja para cuatro' o 'algo que alcance para todos'"
+      ],
+      "discourse_patterns": [
+        "recorre persona por persona o subgrupo por subgrupo",
+        "combina una necesidad común con excepciones individuales",
+        "revisa porción, sabor y precio antes de consolidar"
+      ],
+      "representative_utterances": [
+        "Somos cinco: dos quieren pescado frito, uno sin picante y los niños algo suave.",
+        "¿Qué bandeja alcanza para cuatro y qué porción pequeña tienen?",
+        "Póngame dos mojarras para compartir y una sopa sin cebolla para mi mamá."
+      ],
+      "frequent_needs": [
+        "armar un pedido múltiple",
+        "comparar tamaños y porciones",
+        "consultar opciones infantiles o suaves",
+        "solicitar modificaciones"
+      ],
+      "contrast_with": [
+        "perfil_10_operativo_pedido_grupal: organiza gustos de un grupo cercano, no facturación ni logística empresarial",
+        "perfil_09_preferencias_alimentarias: aquí coexisten varias personas y asignaciones, no una sola restricción alimentaria",
+        "perfil_18_solicitud_multiobjetivo: puede contener varias acciones, pero todas forman un único pedido distribuido"
+      ],
+      "clarification_focus": [
+        "asociar cantidades con productos",
+        "alcance de cada preferencia o restricción",
+        "distinguir gusto de alergia",
+        "confirmar el pedido consolidado"
+      ]
     },
     {
       "id": "perfil_04_cortes_explicativo",
       "name": "Registro cortés y explicativo",
-      "description": "Formula solicitudes completas con tratamientos de cortesía y contexto narrativo adicional.",
-      "linguistic_features": ["fórmulas de cortesía", "oraciones extensas", "tratamientos respetuosos", "contexto previo"],
-      "frequent_needs": ["conocer la carta", "entender preparaciones", "confirmar condiciones del servicio"],
-      "clarification_focus": ["separar contexto y solicitud", "resolver descripciones sin nombre exacto", "no confundir cortesía con intención"]
+      "description": "Formula solicitudes completas mediante cortesía, contexto previo y explicaciones que acompañan la necesidad principal.",
+      "distinctive_axis": "Se distingue por la gestión interpersonal del turno —saludos, mitigación, agradecimiento y explicación—, no por buscar necesariamente información técnica o de calidad.",
+      "linguistic_features": [
+        "fórmulas como 'quisiera', 'por favor' o 'me podría indicar'",
+        "oraciones completas y subordinadas",
+        "tratamientos respetuosos",
+        "contexto previo antes de formular la pregunta",
+        "peticiones mitigadas mediante condicionales y expresiones de consideración",
+        "cierres como 'muchas gracias', 'quedo atento' o 'qué pena molestarlo'"
+      ],
+      "discourse_patterns": [
+        "saludo y justificación antes de la solicitud",
+        "petición indirecta en lugar de orden",
+        "agradecimiento o disculpa que no debe convertirse en intención principal"
+      ],
+      "representative_utterances": [
+        "Buenas tardes, ¿sería tan amable de indicarme qué incluye la cazuela?",
+        "Qué pena molestarlo; quisiera saber si todavía reciben reservas para esta noche.",
+        "Por favor, ¿me podría explicar la diferencia entre el bagre y el bocachico? Muchas gracias."
+      ],
+      "frequent_needs": [
+        "conocer la carta",
+        "entender preparaciones",
+        "hacer reservas",
+        "confirmar condiciones del servicio"
+      ],
+      "contrast_with": [
+        "perfil_06_formal_orientado_calidad: este perfil se define por cortesía y mitigación, no por precisión técnica sobre el producto",
+        "perfil_17_narrativo_extenso: puede aportar contexto, pero no necesita digresiones ni una narración prolongada",
+        "perfil_16_variacion_lexica_regional: una forma de tratamiento regional no implica por sí sola este registro cortés"
+      ],
+      "clarification_focus": [
+        "separar contexto y solicitud",
+        "resolver descripciones sin nombre exacto",
+        "no confundir cortesía con indecisión",
+        "identificar preguntas encadenadas"
+      ]
     },
     {
       "id": "perfil_05_habitual_contextual",
       "name": "Cliente habitual con referencias contextuales",
-      "description": "Da por compartido el historial y usa expresiones como lo mismo, el de siempre o la dirección anterior.",
-      "linguistic_features": ["anáforas", "elipsis del producto", "demostrativos", "referencias al historial"],
-      "frequent_needs": ["repetir pedido", "reutilizar dirección", "modificar una orden anterior"],
-      "clarification_focus": ["antecedente inexistente o múltiple", "vigencia de datos previos", "confirmación transaccional"]
+      "description": "Da por compartido el historial y utiliza expresiones como 'lo mismo', 'el de siempre' o 'la dirección anterior'.",
+      "distinctive_axis": "La interpretación depende de recuperar un antecedente conversacional o histórico que no está nombrado en el turno actual.",
+      "linguistic_features": [
+        "anáforas y demostrativos",
+        "elipsis del producto o del pedido",
+        "referencias a turnos, compras o direcciones anteriores",
+        "confirmaciones breves dependientes del contexto",
+        "expresiones definidas como 'el otro', 'la anterior', 'ese mismo' o 'como siempre'",
+        "presuposición de memoria compartida mediante artículos definidos y posesivos"
+      ],
+      "discourse_patterns": [
+        "reactiva una selección o transacción previa",
+        "modifica solo una parte de un pedido que da por conocido",
+        "responde a opciones anteriores sin repetir sus nombres"
+      ],
+      "representative_utterances": [
+        "Mándeme lo mismo de la vez pasada, pero a la otra dirección.",
+        "De esos dos, el segundo; agréguele una limonada.",
+        "El de siempre, solo que hoy sin cebolla."
+      ],
+      "frequent_needs": [
+        "repetir un pedido",
+        "reutilizar una dirección",
+        "modificar una orden anterior",
+        "confirmar una opción previamente presentada"
+      ],
+      "contrast_with": [
+        "perfil_08_digital_ultrabreve: puede ser corto, pero lo decisivo es la referencia a un antecedente",
+        "perfil_19_reparacion_conversacional: modifica información previa sin necesariamente corregir un error",
+        "perfil_11_dictado_por_voz: la elipsis contextual no es un artefacto de transcripción"
+      ],
+      "clarification_focus": [
+        "antecedente inexistente o múltiple",
+        "vigencia de los datos previos",
+        "alcance de expresiones como 'ese' o 'lo mismo'",
+        "confirmación transaccional"
+      ]
     },
     {
       "id": "perfil_06_formal_orientado_calidad",
       "name": "Registro formal orientado a calidad",
-      "description": "Busca detalles de preparación, composición y presentación antes de decidir.",
-      "linguistic_features": ["vocabulario formal", "preguntas subordinadas", "comparaciones explícitas", "precisión terminológica"],
-      "frequent_needs": ["comparar platos", "consultar ingredientes", "pedir recomendación argumentada"],
-      "clarification_focus": ["criterio de comparación", "preferencia frente a restricción", "atributos no documentados"]
+      "description": "Busca detalles precisos de preparación, composición, presentación y diferencias entre alternativas antes de decidir.",
+      "distinctive_axis": "La precisión descriptiva y la evaluación de atributos del producto son más importantes que la cortesía, la urgencia o el precio.",
+      "linguistic_features": [
+        "vocabulario formal y precisión terminológica",
+        "preguntas subordinadas y completas",
+        "comparaciones explícitas",
+        "expresiones como 'me permito consultar' o 'quisiera conocer la diferencia'",
+        "adjetivos sensoriales y técnicos sobre textura, cocción, presentación o composición",
+        "solicitudes de explicación causal como '¿en qué se diferencia?' o '¿por qué lo recomienda?'"
+      ],
+      "discourse_patterns": [
+        "define uno o más criterios antes de solicitar una recomendación",
+        "contrasta atributos documentables de varias opciones",
+        "pospone la selección hasta obtener suficiente detalle"
+      ],
+      "representative_utterances": [
+        "¿Cuál preparación conserva mejor la textura del pescado y qué acompañamiento incluye?",
+        "Quisiera comparar el salmón y la trucha por sabor, tipo de cocción y presentación.",
+        "¿Podría recomendarme una opción de sabor delicado y explicar por qué sería la más adecuada?"
+      ],
+      "frequent_needs": [
+        "comparar platos",
+        "consultar ingredientes y preparación",
+        "conocer presentación y acompañamientos",
+        "pedir una recomendación argumentada"
+      ],
+      "contrast_with": [
+        "perfil_04_cortes_explicativo: puede ser cortés, pero su señal exclusiva es la demanda de precisión sobre calidad y composición",
+        "perfil_13_indeciso_comparativo: compara para evaluar atributos, no porque carezca de un criterio de decisión",
+        "perfil_12_hablante_no_local: busca detalle fino, no una explicación básica de términos desconocidos"
+      ],
+      "clarification_focus": [
+        "criterio de comparación",
+        "preferencia frente a restricción",
+        "atributos no documentados",
+        "consulta detallada frente a intención de compra"
+      ]
     },
     {
       "id": "perfil_07_escritura_no_estandar",
       "name": "Escritura digital no estándar",
-      "description": "Presenta variación gráfica y segmentación irregular sin que ello reduzca la complejidad de la necesidad.",
-      "linguistic_features": ["errores ortográficos", "segmentación irregular", "ausencia de puntuación", "variantes fonográficas"],
-      "frequent_needs": ["consultar la carta", "consultar medios de pago", "iniciar o modificar pedido"],
-      "clarification_focus": ["corregir solo variantes inequívocas", "preservar nombres y direcciones", "desambiguar productos plausibles"]
+      "description": "Presenta variación gráfica, abreviación y segmentación irregular sin que ello reduzca la complejidad de la necesidad.",
+      "distinctive_axis": "El contenido se expresa mediante convenciones ortográficas o gráficas no estándar; el perfil describe la forma escrita, no la competencia del usuario.",
+      "linguistic_features": [
+        "errores ortográficos y omisión de tildes",
+        "formas como 'xq', 'pq', 'kiero', 'xfa' o 'pa'",
+        "ausencia de puntuación y mayúsculas",
+        "palabras unidas, separadas o representadas fonográficamente",
+        "repetición expresiva de letras y signos como 'holaaa' o '???'",
+        "sustituciones gráficas que pueden producir varias palabras plausibles"
+      ],
+      "discourse_patterns": [
+        "conserva una solicitud completa pese al ruido ortográfico",
+        "concatena varias unidades sin puntuación",
+        "mezcla formas estándar y no estándar en el mismo turno"
+      ],
+      "representative_utterances": [
+        "ola kiero saver si ay mojarra y cuanto bale",
+        "xfa me manda 2casuelas sin sevolla",
+        "reciven nequi o solo efetivo???"
+      ],
+      "frequent_needs": [
+        "consultar la carta",
+        "consultar medios de pago",
+        "iniciar un pedido",
+        "modificar un pedido"
+      ],
+      "contrast_with": [
+        "perfil_08_digital_ultrabreve: aquí puede haber mensajes largos; la señal es la escritura no estándar, no la mínima extensión",
+        "perfil_11_dictado_por_voz: los errores son gráficos, no marcas o confusiones propias de transcripción oral",
+        "perfil_16_variacion_lexica_regional: las formas dialectales válidas no deben corregirse como errores"
+      ],
+      "clarification_focus": [
+        "corregir solo variantes inequívocas",
+        "preservar nombres, direcciones y códigos",
+        "desambiguar productos plausibles",
+        "no interpretar el error como falta de información"
+      ]
     },
     {
       "id": "perfil_08_digital_ultrabreve",
       "name": "Interacción digital ultrabreve",
-      "description": "Usa mensajes mínimos, abreviaturas, emojis o respuestas fragmentadas a turnos anteriores.",
-      "linguistic_features": ["pocas palabras", "abreviaturas de chat", "emojis pragmáticos", "respuestas elípticas"],
-      "frequent_needs": ["consultar precio", "elegir entre opciones", "confirmar o negar"],
-      "clarification_focus": ["usar contexto sin sobreinferir", "confirmación frente a nuevo pedido", "producto ausente"]
+      "description": "Usa mensajes mínimos, emojis, números aislados o respuestas fragmentadas a turnos anteriores.",
+      "distinctive_axis": "La extrema compresión deja la intención o sus argumentos dependientes del turno anterior; escribir correctamente o usar jerga es secundario.",
+      "linguistic_features": [
+        "monosílabos y respuestas como 'sí', 'no', 'ok' o 'listo'",
+        "abreviaturas de chat",
+        "emojis pragmáticos como ✅, ❌, 😋 o 💰",
+        "referencias elípticas como 'eso', 'ese' o '2'",
+        "mensajes nominales sin verbo como 'precio mojarra'",
+        "secuencias mínimas de producto, cantidad o confirmación"
+      ],
+      "discourse_patterns": [
+        "responde a una pregunta del sistema con un único valor",
+        "selecciona una alternativa mediante número, demostrativo o emoji",
+        "divide una solicitud completa en varios turnos sucesivos"
+      ],
+      "representative_utterances": [
+        "La 2 ✅",
+        "2 mojarras",
+        "¿Domicilio?",
+        "Ese no."
+      ],
+      "frequent_needs": [
+        "consultar precio",
+        "elegir entre opciones",
+        "indicar una cantidad",
+        "confirmar o negar"
+      ],
+      "contrast_with": [
+        "perfil_07_escritura_no_estandar: un mensaje ultrabreve puede estar perfectamente escrito",
+        "perfil_05_habitual_contextual: la dependencia suele ser del turno inmediato, no de historial o hábitos anteriores",
+        "perfil_02_directo_tiempo_limitado: la compresión no implica urgencia temporal"
+      ],
+      "clarification_focus": [
+        "usar el contexto sin sobreinferir",
+        "distinguir confirmación de nuevo pedido",
+        "producto ausente",
+        "significado contextual de números y emojis"
+      ]
     },
     {
       "id": "perfil_09_preferencias_alimentarias",
       "name": "Preferencias y restricciones alimentarias",
       "description": "Busca opciones compatibles con ingredientes que desea evitar, sin declarar necesariamente una alergia.",
-      "linguistic_features": ["construcciones con sin", "listas de ingredientes", "negación de alcance variable", "preguntas sobre sustitución"],
-      "frequent_needs": ["consultar ingredientes", "solicitar modificación", "recibir recomendación compatible"],
-      "clarification_focus": ["preferencia frente a alergia", "alcance de negación", "sustituciones no documentadas"]
+      "distinctive_axis": "El usuario expresa una elección alimentaria o sensorial modificable; no hay por defecto una declaración de riesgo clínico.",
+      "linguistic_features": [
+        "construcciones como 'sin', 'que no tenga' o 'prefiero evitar'",
+        "listas de ingredientes",
+        "negación de alcance variable como 'sin eso'",
+        "preguntas como '¿lo pueden cambiar?' o '¿hay otra opción?'",
+        "preferencias de sabor, textura, preparación o patrón alimentario",
+        "modalizadores no clínicos como 'no me gusta', 'prefiero' o 'estoy evitando'"
+      ],
+      "discourse_patterns": [
+        "presenta primero lo que desea excluir y después pide opciones",
+        "aplica una modificación a un producto mencionado o contextual",
+        "combina varias exclusiones cuyo alcance puede ser distinto"
+      ],
+      "representative_utterances": [
+        "¿Qué me recomienda sin picante y con poca salsa?",
+        "Al arroz con camarón quítele la cebolla, por favor.",
+        "No como carne roja; ¿qué opciones de pescado a la plancha tienen?"
+      ],
+      "frequent_needs": [
+        "consultar ingredientes",
+        "solicitar una modificación",
+        "recibir una recomendación compatible",
+        "consultar sustituciones"
+      ],
+      "contrast_with": [
+        "perfil_15_seguridad_alimentaria: no se activa escalamiento de seguridad sin alergia, intolerancia o riesgo explícito",
+        "perfil_03_compra_familiar: aquí la organización gira alrededor de una restricción, no de asignar productos a varias personas",
+        "perfil_13_indeciso_comparativo: descarta o limita opciones por preferencia, no solo por indecisión"
+      ],
+      "clarification_focus": [
+        "preferencia frente a alergia",
+        "alcance de la negación",
+        "producto al que se aplica la modificación",
+        "sustituciones no documentadas"
+      ]
     },
     {
       "id": "perfil_10_operativo_pedido_grupal",
       "name": "Coordinación operativa de pedido grupal",
-      "description": "Gestiona pedidos de equipos con cantidades, factura, entrega y condiciones logísticas.",
-      "linguistic_features": ["listas estructuradas", "abreviaturas administrativas", "cantidades altas", "condiciones múltiples"],
-      "frequent_needs": ["solicitar cotización", "consultar factura", "coordinar entrega programada"],
-      "clarification_focus": ["cotización frente a pedido", "datos fiscales", "fecha, hora, dirección y cantidad"]
+      "description": "Gestiona pedidos de equipos o grupos con cantidades, factura, entrega y varias condiciones logísticas.",
+      "distinctive_axis": "La complejidad proviene de coordinar una operación colectiva con trazabilidad, entrega y eventualmente facturación; no de preferencias familiares.",
+      "linguistic_features": [
+        "listas estructuradas y numeradas",
+        "abreviaturas administrativas como 'NIT' o 'RUT'",
+        "cantidades altas y distribución por destinatarios",
+        "condiciones como 'con entrega', 'sin cubiertos' o 'factura electrónica'",
+        "vocabulario como 'cotización', 'responsable', 'sede', 'soporte' o 'pedido consolidado'",
+        "tablas o bloques semiestructurados copiados desde otro medio"
+      ],
+      "discourse_patterns": [
+        "enumera productos, cantidades y destinatarios",
+        "separa solicitud comercial de confirmación del pedido",
+        "añade requisitos de entrega, facturación y contacto"
+      ],
+      "representative_utterances": [
+        "Cotíceme 12 almuerzos: 5 mojarras, 4 cazuelas y 3 salmones, entrega a las doce.",
+        "Necesitamos factura electrónica y pedidos separados por área, pero una sola entrega.",
+        "Son veinte personas; envíeme propuesta con porciones, transporte y valor total."
+      ],
+      "frequent_needs": [
+        "solicitar cotización",
+        "consultar factura",
+        "coordinar entrega programada",
+        "consolidar productos y cantidades"
+      ],
+      "contrast_with": [
+        "perfil_03_compra_familiar: aquí importan logística y trazabilidad, no gustos de un grupo cercano",
+        "perfil_14_planificacion_evento: puede no existir evento ni reserva; el objeto es el pedido colectivo",
+        "perfil_18_solicitud_multiobjetivo: las múltiples condiciones pertenecen a una sola operación grupal"
+      ],
+      "clarification_focus": [
+        "cotización frente a pedido confirmado",
+        "datos fiscales estrictamente necesarios",
+        "fecha, hora, dirección y cantidad",
+        "asociación entre condiciones y productos"
+      ]
     },
     {
       "id": "perfil_11_dictado_por_voz",
       "name": "Mensaje proveniente de dictado por voz",
-      "description": "Texto transcrito con repeticiones, autocorrecciones y posibles confusiones fonéticas.",
-      "linguistic_features": ["autocorrecciones", "repeticiones", "puntuación automática", "confusiones fonéticas"],
-      "frequent_needs": ["consultar o pedir productos", "indicar dirección", "corregir una selección"],
-      "clarification_focus": ["priorizar corrección reciente", "confirmar platos fonéticamente cercanos", "preservar direcciones"]
+      "description": "Texto transcrito con repeticiones, marcas de dictado, autocorrecciones y posibles confusiones fonéticas.",
+      "distinctive_axis": "La variación procede del canal de entrada oral y de la transcripción automática; no se define por ortografía, extensión ni intención.",
+      "linguistic_features": [
+        "autocorrecciones como 'no, digo' o 'mejor dicho'",
+        "repeticiones y falsos comienzos",
+        "puntuación automática o palabras como 'punto' y 'coma'",
+        "confusiones fonéticas entre nombres similares",
+        "oraciones largas segmentadas en lugares inesperados",
+        "números, direcciones y nombres propios transcritos de manera inestable"
+      ],
+      "discourse_patterns": [
+        "repite el inicio mientras planifica el resto del enunciado",
+        "reemplaza explícitamente una palabra recién dictada",
+        "incluye instrucciones al sistema de voz como si fueran contenido"
+      ],
+      "representative_utterances": [
+        "Quiero una mojarra, no, una trucha, mejor dicho, dos truchas.",
+        "Envíelo a la carrera quince número treinta y dos ocho, punto, llamar al llegar.",
+        "Necesito arroz con camarón coma sin cebolla y una limonada punto."
+      ],
+      "frequent_needs": [
+        "consultar o pedir productos",
+        "indicar una dirección",
+        "corregir una selección",
+        "dictar cantidades"
+      ],
+      "contrast_with": [
+        "perfil_07_escritura_no_estandar: los fenómenos nacen de transcripción oral, no de convenciones gráficas de chat",
+        "perfil_19_reparacion_conversacional: puede autocorregirse, pero aquí aparecen además huellas sistemáticas del canal de voz",
+        "perfil_17_narrativo_extenso: una frase larga de dictado no implica relato ni digresión"
+      ],
+      "clarification_focus": [
+        "priorizar la corrección más reciente",
+        "confirmar productos fonéticamente cercanos",
+        "preservar direcciones y números",
+        "ignorar marcas de dictado sin borrar contenido"
+      ]
     },
     {
       "id": "perfil_12_hablante_no_local",
-      "name": "Hablante no familiarizado con la carta local",
-      "description": "Desconoce nombres regionales o preparaciones y formula equivalencias con vocabulario general.",
-      "linguistic_features": ["paráfrasis", "preguntas metalingüísticas", "equivalencias culinarias", "pocos regionalismos"],
-      "frequent_needs": ["entender platos y especies", "comparar preparaciones", "consultar tamaños y acompañamientos"],
-      "clarification_focus": ["explicar sin asumir conocimiento local", "especie frente a preparación", "evitar equivalencias falsas"]
+      "name": "Usuario no familiarizado con la carta local",
+      "description": "Desconoce nombres regionales o preparaciones y busca comprender o explorar la oferta mediante vocabulario general.",
+      "distinctive_axis": "El vacío principal es de conocimiento del dominio culinario local, no de dominio del idioma ni de procedencia geográfica inferida.",
+      "linguistic_features": [
+        "paráfrasis como 'ese pescado que se prepara...'",
+        "preguntas como '¿qué es?', '¿cómo se llama?' o '¿qué es típico?'",
+        "comparaciones con preparaciones conocidas",
+        "expresiones como 'es la primera vez' o 'quiero probar algo nuevo'",
+        "hiperónimos como 'pescado', 'sopa' o 'plato' cuando desconoce el nombre específico",
+        "solicitudes de definición, equivalencia o explicación cultural"
+      ],
+      "discourse_patterns": [
+        "pregunta por el significado antes de evaluar o pedir",
+        "describe un producto por apariencia, ingrediente o preparación",
+        "solicita una opción representativa sin conocer las categorías de la carta"
+      ],
+      "representative_utterances": [
+        "Es mi primera vez aquí, ¿qué diferencia hay entre bagre y bocachico?",
+        "¿Cómo se llama el pescado que sirven entero y frito?",
+        "Quiero probar algo típico, pero explíqueme primero qué trae la cazuela."
+      ],
+      "frequent_needs": [
+        "entender platos y especies",
+        "conocer preparaciones locales",
+        "recibir recomendaciones de exploración",
+        "consultar tamaños y acompañamientos"
+      ],
+      "contrast_with": [
+        "perfil_13_indeciso_comparativo: aquí falta conocimiento para formar alternativas; no solo existe duda entre opciones conocidas",
+        "perfil_06_formal_orientado_calidad: solicita explicación básica del dominio, no evaluación técnica fina",
+        "perfil_16_variacion_lexica_regional: desconocer un término regional no permite inferir la variedad lingüística del usuario"
+      ],
+      "clarification_focus": [
+        "explicar sin asumir conocimiento local",
+        "especie frente a preparación",
+        "curiosidad frente a pedido",
+        "evitar equivalencias falsas"
+      ]
     },
     {
       "id": "perfil_13_indeciso_comparativo",
       "name": "Decisión mediante comparación",
-      "description": "Expresa alternativas y necesita una recomendación basada en preferencias explícitas.",
-      "linguistic_features": ["preguntas disyuntivas", "comparativos", "reformulaciones", "modalizadores de duda"],
-      "frequent_needs": ["comparar platos", "recibir recomendación", "consultar precio y tamaño"],
-      "clarification_focus": ["criterio decisivo", "alternativas frente a selección final", "recomendación frente a pedido"]
+      "description": "Expresa alternativas y necesita comparar atributos o recibir una recomendación basada en preferencias explícitas.",
+      "distinctive_axis": "El turno presenta dos o más alternativas reconocibles y una decisión todavía abierta que requiere un criterio de comparación.",
+      "linguistic_features": [
+        "preguntas como '¿este o aquel?' o '¿cuál es mejor?'",
+        "comparativos como 'más suave', 'menos grasoso' o 'más grande'",
+        "reformulaciones como 'o sea' o 'me refiero a'",
+        "modalizadores como 'quizás', 'tal vez' o 'no sé'",
+        "estructuras disyuntivas con 'o' y construcciones como 'estoy entre'",
+        "cambios provisionales de preferencia sin confirmación final"
+      ],
+      "discourse_patterns": [
+        "presenta alternativas antes de decir qué atributo importa",
+        "descarta y recupera opciones durante el mismo turno",
+        "solicita recomendación para cerrar una decisión"
+      ],
+      "representative_utterances": [
+        "Estoy entre la trucha y el salmón; ¿cuál tiene sabor más suave?",
+        "No sé si pedir cazuela o sancocho, ¿cuál es más grande?",
+        "Tal vez el bagre... aunque si la mojarra es menos grasosa prefiero esa."
+      ],
+      "frequent_needs": [
+        "comparar platos",
+        "recibir una recomendación",
+        "consultar precio y tamaño",
+        "seleccionar entre alternativas"
+      ],
+      "contrast_with": [
+        "perfil_06_formal_orientado_calidad: el objetivo es cerrar una decisión abierta, no obtener una descripción exhaustiva",
+        "perfil_01_coloquial_presupuesto: el criterio no tiene que ser económico",
+        "perfil_19_reparacion_conversacional: cambiar provisionalmente de opinión no equivale a corregir un dato anterior"
+      ],
+      "clarification_focus": [
+        "criterio decisivo",
+        "alternativas frente a selección final",
+        "preferencia mencionada frente a restricción",
+        "recomendación frente a pedido"
+      ]
     },
     {
       "id": "perfil_14_planificacion_evento",
       "name": "Planificación de evento o consumo futuro",
       "description": "Consulta anticipadamente capacidad, horario, reserva, menú y condiciones para una ocasión futura.",
-      "linguistic_features": ["fechas", "condicionales", "estimación de asistentes", "preguntas encadenadas"],
-      "frequent_needs": ["reservar mesa", "consultar horarios y capacidad", "solicitar cotización"],
-      "clarification_focus": ["fecha y hora", "número de personas", "consulta exploratoria frente a reserva"]
+      "distinctive_axis": "La conversación modela un escenario futuro —fecha, hora, asistentes y condiciones— que puede seguir siendo exploratorio y no constituye todavía una reserva.",
+      "linguistic_features": [
+        "fechas y horarios explícitos",
+        "condicionales como 'si es posible'",
+        "estimaciones como 'unas 20 personas'",
+        "preguntas encadenadas con 'además' o 'también'",
+        "marcadores prospectivos como 'para el sábado', 'estamos organizando' o 'más adelante'",
+        "distinción entre datos aproximados, opciones y compromisos confirmados"
+      ],
+      "discourse_patterns": [
+        "explora capacidad y condiciones antes de aportar todos los datos",
+        "refina progresivamente fecha, asistentes y menú",
+        "alterna preguntas informativas con una posible solicitud de reserva"
+      ],
+      "representative_utterances": [
+        "Estamos organizando un almuerzo para unas 25 personas el próximo mes, ¿qué opciones manejan?",
+        "Si fuera el sábado a las siete, ¿tendrían espacio y menú para quince?",
+        "Quiero conocer capacidad y costos antes de confirmar la reserva."
+      ],
+      "frequent_needs": [
+        "reservar una mesa",
+        "consultar horarios y capacidad",
+        "solicitar una cotización",
+        "coordinar menú y logística"
+      ],
+      "contrast_with": [
+        "perfil_10_operativo_pedido_grupal: aquí el centro es una ocasión futura y su reserva, no despachar un pedido colectivo",
+        "perfil_18_solicitud_multiobjetivo: las preguntas múltiples pertenecen a un único escenario de planificación",
+        "perfil_02_directo_tiempo_limitado: la temporalidad es prospectiva y negociable, no urgencia inmediata"
+      ],
+      "clarification_focus": [
+        "fecha y hora",
+        "número de personas",
+        "datos aproximados frente a datos confirmados",
+        "consulta exploratoria frente a reserva"
+      ]
     },
     {
       "id": "perfil_15_seguridad_alimentaria",
       "name": "Consulta crítica de seguridad alimentaria",
-      "description": "Declara alergia, intolerancia o preocupación por contaminación cruzada y exige validación conservadora.",
-      "linguistic_features": ["declaraciones de alergia", "preguntas sobre trazas", "negación preventiva", "consecuencias de salud"],
-      "frequent_needs": ["consultar alérgenos", "confirmar ingredientes", "solicitar validación de cocina"],
-      "clarification_focus": ["identificar alérgeno y plato", "no inferir seguridad", "escalar a confirmación humana"]
+      "description": "Declara alergia, intolerancia o preocupación por contaminación cruzada y exige una respuesta conservadora.",
+      "distinctive_axis": "Existe riesgo de salud explícito o razonablemente indicado; por eso la respuesta no puede basarse solo en coincidencias de ingredientes ni en recomendaciones automáticas.",
+      "linguistic_features": [
+        "declaraciones como 'soy alérgico' o 'soy intolerante'",
+        "preguntas sobre trazas y utensilios compartidos",
+        "negación preventiva como 'sin absolutamente nada de'",
+        "consecuencias de salud y solicitudes de confirmación con cocina",
+        "distinciones entre ingrediente visible, derivado y contaminación cruzada",
+        "intensificadores como 'por favor confirme', 'es grave' o 'ni siquiera trazas'"
+      ],
+      "discourse_patterns": [
+        "declara la condición antes de preguntar por un producto",
+        "solicita evidencia sobre preparación y superficies compartidas",
+        "rechaza respuestas probabilísticas y pide validación humana"
+      ],
+      "representative_utterances": [
+        "Soy alérgico a los crustáceos; ¿pueden confirmar con cocina si usan los mismos utensilios?",
+        "No es una preferencia: la soya me produce una reacción fuerte. ¿La cazuela contiene algo derivado?",
+        "¿Tienen alguna opción sin gluten y sin riesgo de contaminación cruzada?"
+      ],
+      "frequent_needs": [
+        "consultar alérgenos",
+        "confirmar ingredientes",
+        "consultar contaminación cruzada",
+        "solicitar validación de cocina"
+      ],
+      "contrast_with": [
+        "perfil_09_preferencias_alimentarias: aquí hay riesgo declarado y debe activarse validación conservadora",
+        "perfil_06_formal_orientado_calidad: el detalle solicitado es de seguridad, no de apreciación gastronómica",
+        "perfil_12_hablante_no_local: pedir explicación de ingredientes no basta para clasificar una consulta como crítica"
+      ],
+      "clarification_focus": [
+        "identificar alérgeno y producto",
+        "distinguir alergia, intolerancia y preferencia",
+        "no inferir seguridad",
+        "escalar a confirmación humana"
+      ]
+    },
+    {
+      "id": "perfil_16_variacion_lexica_regional",
+      "name": "Variación léxica y pragmática regional",
+      "description": "Contiene formas regionales observables del español colombiano sin atribuir procedencia, personalidad o capacidad al usuario.",
+      "distinctive_axis": "La señal es una forma léxica, pronominal, verbal o pragmática documentada en variedades colombianas; estas formas pueden coexistir y nunca autorizan a inferir origen.",
+      "linguistic_features": [
+        "vocativos como 'parce', 'llave', 'socio', 'mi rey', 'compadre' o 'sumercé'",
+        "marcadores como 'ajá', 'pues', '¿no ve?' o '¿cierto?'",
+        "alternancia entre tú, usted, vos y sumercé",
+        "diminutivos y variantes léxicas regionales",
+        "formas verbales de voseo como 'tenés', 'querés' o 'podés'",
+        "formas fonográficas que representan pronunciación coloquial sin ser simples errores",
+        "movilidad entre tratamientos según cercanía, respeto, tono y situación comunicativa"
+      ],
+      "discourse_patterns": [
+        "abre o cierra la solicitud con vocativos y marcadores de contacto",
+        "combina una petición estándar con tratamiento regional",
+        "alterna formas de segunda persona dentro de una misma conversación"
+      ],
+      "representative_utterances": [
+        "Ajá, mi llave, ¿qué pescado tienen hoy?",
+        "Sumercé, ¿me confirma cuánto vale la trucha?",
+        "¿Vos tenés cazuela para llevar o toca pedirla con tiempo?",
+        "Vea pues, socio, póngame una mojarra y una limonada."
+      ],
+      "frequent_needs": [
+        "realizar consultas con trato cercano",
+        "preguntar por disponibilidad y precio",
+        "pedir recomendaciones",
+        "iniciar o confirmar pedidos"
+      ],
+      "contrast_with": [
+        "perfil_07_escritura_no_estandar: voseo, sumercedeo y léxico regional son variación lingüística, no errores que deban corregirse",
+        "perfil_01_coloquial_presupuesto: el uso de 'parce' o 'llave' no implica que exista una restricción económica",
+        "perfil_04_cortes_explicativo: tratamientos como 'sumercé' o 'mi rey' no determinan por sí solos formalidad o cortesía elaborada"
+      ],
+      "clarification_focus": [
+        "separar vocativos del contenido solicitado",
+        "resolver variantes mediante evidencia lingüística",
+        "no inferir origen geográfico",
+        "no confundir afectividad o confianza con confirmación"
+      ]
+    },
+    {
+      "id": "perfil_17_narrativo_extenso",
+      "name": "Contexto narrativo extenso",
+      "description": "Proporciona anécdotas, antecedentes y detalles abundantes antes o después de formular la necesidad principal.",
+      "distinctive_axis": "La dificultad consiste en separar una intención central de material narrativo abundante; la longitud por sí sola no basta si cada segmento contiene una tarea distinta.",
+      "linguistic_features": [
+        "oraciones largas y varios segmentos discursivos",
+        "digresiones como 'el otro día' o 'resulta que'",
+        "repeticiones y reformulaciones",
+        "pregunta principal ubicada al final",
+        "información útil mezclada con contexto no operativo",
+        "marcadores narrativos como 'entonces', 'la cuestión es que' o 'para no alargarle'",
+        "antecedentes personales que explican una única necesidad actual"
+      ],
+      "discourse_patterns": [
+        "relata una experiencia antes de formular la consulta",
+        "intercala detalles relevantes e irrelevantes",
+        "retoma o resume la solicitud después de una digresión"
+      ],
+      "representative_utterances": [
+        "El otro día mi hermana pidió una cazuela que le gustó mucho, pero no recuerda el nombre; en fin, quisiera saber cuál podría ser.",
+        "Resulta que vienen mis papás, ellos comen poco picante y casi siempre prefieren pescado; ¿qué me recomienda para los tres?",
+        "Yo había pensado recogerlo, después cambiaron la reunión de lugar y, para no alargarle, necesito saber si hacen domicilio hasta allá."
+      ],
+      "frequent_needs": [
+        "solicitar recomendaciones contextualizadas",
+        "explicar antecedentes de un pedido",
+        "consultar opciones con varias preferencias",
+        "formular pedidos acompañados de contexto"
+      ],
+      "contrast_with": [
+        "perfil_04_cortes_explicativo: una solicitud cortés y completa puede ser breve y no contener narración",
+        "perfil_18_solicitud_multiobjetivo: aquí suele existir una intención central, no varias tareas autónomas",
+        "perfil_11_dictado_por_voz: longitud y repetición no se atribuyen al canal si faltan huellas de transcripción"
+      ],
+      "clarification_focus": [
+        "extraer la solicitud principal",
+        "conservar restricciones y datos operativos",
+        "no convertir cada detalle en una intención",
+        "responder de forma concisa sin ignorar el contexto"
+      ]
+    },
+    {
+      "id": "perfil_18_solicitud_multiobjetivo",
+      "name": "Solicitud con múltiples objetivos",
+      "description": "Incluye dos o más consultas o acciones relacionadas dentro del mismo mensaje.",
+      "distinctive_axis": "Cada segmento puede resolverse como una intención o subintención autónoma; el sistema debe conservarlas y entender sus dependencias.",
+      "linguistic_features": [
+        "coordinaciones con 'y', 'también', 'además' o 'pero'",
+        "varias preguntas en un solo turno",
+        "combinación de consulta y acción",
+        "dependencias entre precio, disponibilidad, modificación y pedido",
+        "cambios de acto de habla: preguntar, solicitar, condicionar y confirmar",
+        "pronombres o elipsis que enlazan el segundo objetivo con el primero"
+      ],
+      "discourse_patterns": [
+        "consulta una condición y añade una acción condicionada al resultado",
+        "formula varias preguntas paralelas sobre el mismo producto",
+        "combina necesidades de dominios distintos como menú, pago y entrega"
+      ],
+      "representative_utterances": [
+        "¿Cuánto vale la mojarra, está disponible y cuánto tarda el domicilio?",
+        "Muéstreme las cazuelas y, si reciben Nequi, pídame una sin cebolla.",
+        "Quiero reservar para seis; además, necesito saber si hay menú infantil y parqueadero."
+      ],
+      "frequent_needs": [
+        "consultar disponibilidad y precio",
+        "pedir un producto con modificaciones",
+        "coordinar reserva, menú y horario",
+        "consultar y luego confirmar una acción"
+      ],
+      "contrast_with": [
+        "perfil_17_narrativo_extenso: varias oraciones no implican varios objetivos; aquí cada objetivo conserva valor operativo",
+        "perfil_10_operativo_pedido_grupal: una lista de condiciones de un mismo pedido no siempre constituye multiintención",
+        "perfil_14_planificacion_evento: preguntas encadenadas sobre un único evento pueden resolverse como una sola planificación"
+      ],
+      "clarification_focus": [
+        "detectar todas las necesidades sin fusionarlas",
+        "determinar la intención principal y las secundarias",
+        "identificar qué parte requiere aclaración",
+        "no ejecutar una acción por resolver solamente la consulta"
+      ]
+    },
+    {
+      "id": "perfil_19_reparacion_conversacional",
+      "name": "Corrección y reparación conversacional",
+      "description": "Rectifica información previamente escrita o dicha mediante cancelaciones, sustituciones y reformulaciones explícitas.",
+      "distinctive_axis": "Existe evidencia explícita de que un valor anterior deja de ser vigente y es reemplazado, cancelado o limitado por otro.",
+      "linguistic_features": [
+        "marcadores como 'no, mejor', 'perdón', 'quise decir' o 'cámbielo por'",
+        "contraste entre una opción descartada y otra vigente",
+        "correcciones de cantidad, producto, preparación, fecha o dirección",
+        "referencias a mensajes o selecciones anteriores",
+        "negación metalingüística que corrige el enunciado y no el producto",
+        "alcance parcial expresado mediante 'solo', 'el resto igual' o 'eso sí déjelo'"
+      ],
+      "discourse_patterns": [
+        "cancela una entidad y la sustituye inmediatamente",
+        "corrige un dato en un turno posterior",
+        "mantiene parte de la transacción y modifica únicamente un argumento"
+      ],
+      "representative_utterances": [
+        "No, perdón, no eran tres mojarras sino dos.",
+        "Cámbieme la cazuela por el sancocho; la limonada sí déjela.",
+        "Quise decir para mañana a las siete, no para hoy."
+      ],
+      "frequent_needs": [
+        "cambiar un producto",
+        "corregir una cantidad",
+        "actualizar datos de entrega o reserva",
+        "cancelar una modificación anterior"
+      ],
+      "contrast_with": [
+        "perfil_11_dictado_por_voz: la reparación puede ocurrir por cualquier canal y no requiere marcas de transcripción",
+        "perfil_13_indeciso_comparativo: una alternativa provisional no debe tratarse como corrección hasta que se descarte explícitamente",
+        "perfil_05_habitual_contextual: referirse a algo previo no significa necesariamente reemplazarlo"
+      ],
+      "clarification_focus": [
+        "identificar el dato reemplazado y el vigente",
+        "determinar el alcance de la corrección",
+        "preservar las partes no modificadas",
+        "solicitar confirmación transaccional cuando corresponda"
+      ]
+    },
+    {
+      "id": "perfil_20_lenguaje_mixto_digital",
+      "name": "Lenguaje mixto de comercio digital",
+      "description": "Combina español con anglicismos, nombres de canales, siglas y términos habituales de pedidos digitales.",
+      "distinctive_axis": "El mensaje alterna repertorios lingüísticos o convenciones de plataformas digitales manteniendo una tarea comercial reconocible.",
+      "linguistic_features": [
+        "términos como 'delivery', 'pickup', 'takeout', 'combo' o 'link'",
+        "referencias a WhatsApp, QR, app, chat o transferencia",
+        "siglas, códigos y nombres comerciales",
+        "alternancia breve de idioma dentro de una oración",
+        "verbos adaptados como 'escanear', 'chatear' o 'confirmar por WhatsApp'",
+        "secuencias copiadas de interfaces: código, estado, número de orden o enlace"
+      ],
+      "discourse_patterns": [
+        "inserta términos digitales en una estructura sintáctica española",
+        "remite a una acción realizada en otro canal",
+        "combina identificadores técnicos con lenguaje conversacional"
+      ],
+      "representative_utterances": [
+        "¿Tienen delivery o hago pickup en el local?",
+        "Ya pagué por el link; ¿me confirman la order 284 por WhatsApp?",
+        "Escaneé el QR pero el combo no aparece en la app.",
+        "Necesito takeout de dos cazuelas y pago por Nequi."
+      ],
+      "frequent_needs": [
+        "consultar modalidad de entrega",
+        "pedir enlaces o instrucciones de pago",
+        "usar códigos o promociones",
+        "confirmar pedidos realizados por canales digitales"
+      ],
+      "contrast_with": [
+        "perfil_07_escritura_no_estandar: los préstamos, marcas y códigos no son errores ortográficos",
+        "perfil_08_digital_ultrabreve: puede ser detallado; lo distintivo es la mezcla de repertorios y canales",
+        "perfil_02_directo_tiempo_limitado: 'pickup' o 'delivery' describen modalidad, no necesariamente urgencia"
+      ],
+      "clarification_focus": [
+        "normalizar términos conocidos sin traducir nombres propios",
+        "preservar códigos, enlaces e identificadores",
+        "distinguir canal de entrega y medio de pago",
+        "aclarar anglicismos ambiguos"
+      ]
     }
   ]
 }

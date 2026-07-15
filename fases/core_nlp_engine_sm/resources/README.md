@@ -38,7 +38,7 @@ Principios obligatorios:
 | `config/application/clarification_policy.json` | Slots obligatorios, modos de intervención y preguntas mínimas | Puntajes de intención o respuestas comerciales |
 | `data/menu/menu_offerings.json` | Productos únicos con sus nombres, secciones, presentaciones y precios suministrados por el usuario | Alias, reglas lingüísticas o conversiones implícitas de precios |
 | `corpus/profiles/conversation_profiles.json` | Estilos conversacionales para diseño y evaluación de cobertura | Casos, datos personales o reglas de producción |
-| `corpus/datasets/intent_benchmark/` | Casos sintéticos y anotaciones de referencia | Configuración de producción o datos de entrenamiento futuros |
+| `corpus/datasets/customer_intent_benchmark.json` | Casos sintéticos y anotaciones de referencia | Configuración de producción o datos de entrenamiento futuros |
 
 ## Cómo decidir el propietario
 
@@ -98,7 +98,7 @@ Una aclaración debe indicar qué falta o qué resulta ambiguo. `config/applicat
 
 ## Perfiles conversacionales
 
-Los 15 perfiles describen estilos de interacción observables; no clasifican personas. Una misma persona puede usar varios estilos durante una conversación.
+Los 20 perfiles describen estilos de interacción observables; no clasifican personas. Una misma persona puede usar varios estilos durante una conversación.
 
 - No inferir, almacenar ni enviar el perfil al `LinguisticParser` o al `IntentResolver`.
 - No variar por perfil precios, disponibilidad, seguridad, prioridades ni acceso a funciones.

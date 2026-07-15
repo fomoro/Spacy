@@ -37,9 +37,7 @@ core_nlp_engine/
 │       ├── profiles/
 │       │   └── conversation_profiles.json
 │       └── datasets/
-│           └── intent_benchmark/
-│               ├── casos_intenciones_clientes.json
-│               └── casos_intenciones_clientes.csv
+│           └── customer_intent_benchmark.json
 ├── src/                           # Código fuente
 │   ├── application/               # Parser, resolutor y fachada IntentEngine
 │   └── infrastructure/nlp/        # Servicios lingüísticos autónomos con spaCy
@@ -48,7 +46,7 @@ core_nlp_engine/
 │   ├── infrastructure/            # Pruebas unitarias de servicios lingüísticos
 │   ├── application/               # Parser, resolutor y fachada
 │   ├── contract/                  # Coherencia de recursos y dataset
-│   ├── evaluation/                # Evaluaciones masivas sobre 450 casos
+│   ├── evaluation/                # Evaluaciones masivas sobre 600 casos
 │   └── interactive/               # Consolas manuales
 └── reports/                       # Reportes generados automáticamente por tema
     ├── normalizer/
@@ -61,9 +59,9 @@ core_nlp_engine/
 
 ## Dataset conversacional
 
-`resources/corpus/datasets/intent_benchmark/casos_intenciones_clientes.json` es la fuente canónica de 450 casos. El archivo CSV del mismo directorio es una proyección tabular sincronizada. Cada uno de los 15 perfiles aporta 30 casos y cubre los cinco modos de intervención; los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
+`resources/corpus/datasets/customer_intent_benchmark.json` es la única fuente canónica de 600 casos. Cada uno de los 20 perfiles aporta 30 casos y cubre los cinco modos de intervención; 150 casos incluyen contexto conversacional. Los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
 
-El comando `python -X utf8 tests/contract/test_resource_contract.py` comprueba conteos, unicidad, cobertura de las 47 subintenciones, referencias al menú, slots, modos de intervención y equivalencia entre JSON y CSV.
+El comando `python -X utf8 tests/contract/test_resource_contract.py` comprueba conteos, unicidad, cobertura de las 47 subintenciones, referencias al menú, slots, modos de intervención y anotaciones lingüísticas.
 
 El contrato de anotación, los criterios de mantenimiento y el alcance correcto de las métricas están documentados en [`resources/corpus/README.md`](resources/corpus/README.md).
 
@@ -92,7 +90,7 @@ python tests/interactive/normalizer_console.py
 *   `tengo 25 lucas` *(Extrae montos monetarios colombianos como $25,000 en el campo de valores)*
 
 #### 2. Evaluación de calidad en lote (Simulación masiva)
-Para procesar los 450 casos de prueba y generar reportes de calidad detallados:
+Para procesar los 600 casos de prueba y generar reportes de calidad detallados:
 ```bash
 python tests/evaluation/evaluate_normalizer.py
 ```
@@ -127,7 +125,7 @@ python tests/interactive/phrase_matcher_console.py
 *   `¿Reciben nequi?` *(Detecta "nequi" como método de pago)*
 
 #### 2. Evaluación de calidad en lote (Simulación masiva)
-Para procesar los 450 casos de prueba midiendo la precisión de la extracción:
+Para procesar los 600 casos de prueba midiendo la precisión de la extracción:
 ```bash
 python tests/evaluation/evaluate_phrase_matcher.py
 ```
@@ -162,7 +160,7 @@ python tests/interactive/matcher_console.py
 *   `Quiero la trucha pero sin ajo` *(Detecta solicitud de modificación y registra que hay una negación)*
 
 #### 2. Evaluación de calidad en lote
-Para medir la cobertura de evidencia sintáctica sobre los 450 casos:
+Para medir la cobertura de evidencia sintáctica sobre los 600 casos:
 ```bash
 python tests/evaluation/evaluate_matcher.py
 ```
@@ -197,7 +195,7 @@ python tests/interactive/lemma_console.py
 *   `Hola, buenas` *(Lematiza saludo con intención social/saludar)*
 
 #### 2. Evaluación de lemas en lote
-Para procesar los 450 casos evaluando la cobertura de lemas:
+Para procesar los 600 casos evaluando la cobertura de lemas:
 ```bash
 python -X utf8 tests/evaluation/evaluate_lemma.py
 ```
@@ -254,7 +252,7 @@ python -m unittest tests.application.test_intent_resolver
 ### ¿Cómo evaluar la calidad del Resolutor?
 
 #### 1. Evaluación de calidad en lote
-Para procesar los 450 casos evaluando intención, subintención, aclaración y modo de intervención:
+Para procesar los 600 casos evaluando intención, subintención, aclaración y modo de intervención:
 ```bash
 python -X utf8 tests/evaluation/evaluate_resolver.py
 ```

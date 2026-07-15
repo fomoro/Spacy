@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.infrastructure import TextNormalizerService, PhraseMatcherService, MatcherService
 
-DATASET = ROOT / "resources" / "corpus" / "datasets" / "intent_benchmark" / "casos_intenciones_clientes.json"
+DATASET = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "matcher" / "evaluacion_matcher.csv"
 SUMMARY = ROOT / "reports" / "matcher" / "resultado_matcher.json"
 
@@ -97,7 +97,7 @@ def main() -> None:
         "sin_coincidencia_exacta": len(rows) - exact_matches,
         "errores": errors,
         "cobertura_exacta_pct": round((exact_matches / len(rows)) * 100, 2) if rows else 0.0,
-        "nota": "Cobertura de evidencia sintáctica sobre los 450 casos; no equivale a precisión final."
+        "nota": "Cobertura de evidencia sintáctica sobre los 600 casos; no equivale a precisión final."
     }
 
     SUMMARY.write_text(

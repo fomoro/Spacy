@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT))
 from src.infrastructure import EntityRulerService, LemmaService, MatcherService, PhraseMatcherService, TextNormalizerService
 from src.application import LinguisticParser
 
-CASES = ROOT / "resources" / "corpus" / "datasets" / "intent_benchmark" / "casos_intenciones_clientes.json"
+CASES = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "lemma" / "evaluacion_lemas_dataset.csv"
 SUMMARY = ROOT / "reports" / "lemma" / "resultado_lemas.json"
 

@@ -21,8 +21,7 @@ def main() -> None:
             / "resources"
             / "corpus"
             / "datasets"
-            / "intent_benchmark"
-            / "casos_intenciones_clientes.json"
+            / "customer_intent_benchmark.json"
         ).read_text(encoding="utf-8")
     )
     rows = []

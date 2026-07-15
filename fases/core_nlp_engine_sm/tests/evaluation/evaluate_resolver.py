@@ -21,7 +21,7 @@ from src.application import (
     LinguisticParser,
 )
 
-CASES = ROOT / "resources" / "corpus" / "datasets" / "intent_benchmark" / "casos_intenciones_clientes.json"
+CASES = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "resolver" / "evaluacion_resolutor_dataset.csv"
 SUMMARY = ROOT / "reports" / "resolver" / "resultado_resolutor.json"
 
@@ -61,7 +61,7 @@ for case in cases:
         result = pipeline.analyze(case["message"], case.get("context", {})).resolution
         intent_ok = result.intent == expected["intent"]
         subintent_ok = result.subintent == expected["subintent"]
-        expected_clarification = bool(expected["requires_clarification"])
+        expected_clarification = expected["intervention_mode"] != "resolved"
         clarification_ok = result.requires_clarification == expected_clarification
         intervention_mode_ok = result.intervention_mode == expected["intervention_mode"]
         intent_hits += int(intent_ok)
@@ -86,7 +86,7 @@ for case in cases:
             "subintencion_resuelta": result.subintent or "",
             "confianza": result.confidence,
             "estado": result.status,
-            "requiere_aclaracion_esperado": expected["requires_clarification"],
+            "requiere_aclaracion_esperado": expected_clarification,
             "requiere_aclaracion_resuelto": result.requires_clarification,
             "modo_intervencion_esperado": expected["intervention_mode"],
             "modo_intervencion_resuelto": result.intervention_mode,
@@ -110,7 +110,8 @@ for case in cases:
             "intencion_esperada": expected.get("intent", ""),
             "subintencion_esperada": expected.get("subintent", ""),
             "intencion_resuelta": "", "subintencion_resuelta": "", "confianza": 0,
-            "estado": "error", "requiere_aclaracion_esperado": expected.get("requires_clarification", False),
+            "estado": "error",
+            "requiere_aclaracion_esperado": expected.get("intervention_mode") != "resolved",
             "requiere_aclaracion_resuelto": True, "intencion_correcta": False,
             "modo_intervencion_esperado": expected.get("intervention_mode", ""),
             "modo_intervencion_resuelto": "error", "modo_intervencion_correcto": False,
@@ -153,7 +154,7 @@ summary = {
     "estados": {"resolved": resolved, "ambiguous_or_clarification": ambiguous, "unknown": unknown},
     "modos_intervencion": dict(sorted(intervention_modes.items())),
     "errores": errors,
-    "nota": "Métrica sobre 450 casos sintéticos; no reemplaza validación con conversaciones reales."
+    "nota": "Métrica sobre 600 casos sintéticos; no reemplaza validación con conversaciones reales."
 }
 SUMMARY.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 print(json.dumps(summary, ensure_ascii=False, indent=2))
