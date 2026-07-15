@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "purpose": "Conservar información real del restaurante utilizada para construir respuestas sin mezclarla con plantillas lingüísticas.",
+    "language": "es-CO",
+    "domain": "restaurante_colombiano_de_comida_de_mar"
+  },
+  "restaurant": {
+    "name": "Mar Azul del Pacífico",
+    "description": "un restaurante especializado en pescados y mariscos con más de veinte años de tradición.",
+    "address": {
+      "street": "Calle 9a # 32a-11 Sur",
+      "neighborhood": "Ciudad Montes",
+      "city": "Bogotá",
+      "country": "Colombia"
+    },
+    "timezone": "America/Bogota",
+    "opening_hours": {
+      "monday": {"open": "11:00", "close": "21:00"},
+      "tuesday": {"closed": true},
+      "wednesday": {"open": "11:00", "close": "21:00"},
+      "thursday": {"open": "11:00", "close": "21:00"},
+      "friday": {"open": "11:00", "close": "21:00"},
+      "saturday": {"open": "11:00", "close": "21:00"},
+      "sunday": {"open": "11:00", "close": "18:00"}
+    },
+    "payment_methods": [
+      "efectivo",
+      "tarjeta",
+      "nequi",
+      "daviplata",
+      "transferencia_bancaria",
+      "pago_qr"
+    ],
+    "featured_product_ids": [
+      "mojarra_frita",
+      "arroz_con_camaron"
+    ]
+  }
+}

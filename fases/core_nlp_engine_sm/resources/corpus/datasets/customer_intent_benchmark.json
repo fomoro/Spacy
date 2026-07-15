@@ -1,12 +1,13 @@
 {
   "metadata": {
-    "schema_version": "6.0.0",
+    "schema_version": "10.0.0",
     "purpose": "Evaluar la detección de intenciones, subintenciones, entidades, contexto y modos de intervención en español colombiano sin utilizar este corpus como material de entrenamiento.",
     "language": "es-CO",
     "domain": "restaurante_colombiano_de_comida_de_mar",
     "profiles_reference": "resources/corpus/profiles/conversation_profiles.json",
     "taxonomy_reference": "resources/config/domain/intent_taxonomy.json",
-    "slots_reference": "resources/config/domain/slot_catalog.json"
+    "slots_reference": "resources/config/domain/slot_catalog.json",
+    "questions_reference": "resources/content/responses/es-CO/clarification_questions.json"
   },
   "cases": [
     {
@@ -17,9 +18,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -34,37 +35,37 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
       "id": "caso_002",
       "profile_id": "perfil_01_coloquial_presupuesto",
-      "message": "Mi llave, antes de decidir, quisiera saber cuál es el precio actual de filete a la marinera. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Parce, necesito saber esto: quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "filete_a_la_marinera"
+        "order_id": "benchmark_order_002"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "filete_a_la_marinera"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de filete a la marinera.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -89,7 +90,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -241,9 +242,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -258,30 +259,38 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
       "id": "caso_010",
       "profile_id": "perfil_01_coloquial_presupuesto",
-      "message": "Parce, estoy cuidando las lucas, pero ahora no pregunto por precios: muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Parce, necesito esto: quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la información y por ayudarme a revisar las opciones de la carta.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -440,9 +449,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -461,7 +470,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -587,11 +596,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -606,7 +613,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -668,9 +675,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -685,7 +692,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -719,9 +726,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -736,7 +743,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -865,9 +872,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -882,7 +889,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -923,9 +930,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -944,7 +951,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -1068,31 +1075,31 @@
     {
       "id": "caso_038",
       "profile_id": "perfil_02_directo_tiempo_limitado",
-      "message": "Necesito una respuesta puntual: antes de decidir, quisiera saber cuál es el precio actual de sancocho de bagre. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Rápido: quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "sancocho_de_bagre"
+        "order_id": "benchmark_order_038"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de sancocho de bagre.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -1126,24 +1133,32 @@
     {
       "id": "caso_040",
       "profile_id": "perfil_02_directo_tiempo_limitado",
-      "message": "Voy de afán: muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Voy de afán: quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la información y por ayudarme a revisar las opciones de la carta.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -1207,11 +1222,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -1226,7 +1239,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -1260,9 +1273,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -1277,7 +1290,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -1311,9 +1324,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -1328,7 +1341,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -1591,7 +1604,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -1602,11 +1615,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -1621,7 +1632,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -1685,7 +1696,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -1738,7 +1749,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -1802,7 +1813,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -1868,9 +1879,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -1885,7 +1896,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -2001,7 +2012,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -2012,9 +2023,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -2029,7 +2040,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -2328,11 +2339,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -2347,7 +2356,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -2387,31 +2396,31 @@
     {
       "id": "caso_084",
       "profile_id": "perfil_03_compra_familiar",
-      "message": "Para dejar claro este punto del almuerzo: antes de decidir, quisiera saber cuál es el precio actual de filete a la marinera. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Estamos pendientes en familia: quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "filete_a_la_marinera"
+        "order_id": "benchmark_order_084"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "filete_a_la_marinera"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de filete a la marinera.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -2436,7 +2445,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -2503,9 +2512,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -2515,7 +2524,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -2526,9 +2535,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -2543,7 +2552,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -2573,7 +2582,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -2727,9 +2736,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -2744,7 +2753,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -2829,24 +2838,32 @@
     {
       "id": "caso_100",
       "profile_id": "perfil_04_cortes_explicativo",
-      "message": "Buenas tardes. Por favor, quisiera consultar lo siguiente: muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Muchas gracias por la orientación. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Buenas tardes. Por favor, quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Muchas gracias por la orientación.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -2901,7 +2918,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -2912,11 +2929,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -2931,7 +2946,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -2995,37 +3010,37 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
       "id": "caso_106",
       "profile_id": "perfil_04_cortes_explicativo",
-      "message": "Buenas tardes. Por favor, quisiera consultar lo siguiente: antes de decidir, quisiera saber cuál es el precio actual de langostinos al ajillo. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Para separar esta consulta de las demás, quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "langostinos_al_ajillo"
+        "order_id": "benchmark_order_106"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "langostinos_al_ajillo"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de langostinos al ajillo.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -3050,7 +3065,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -3061,9 +3076,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -3078,7 +3093,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -3168,9 +3183,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -3180,7 +3195,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -3210,7 +3225,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -3241,7 +3256,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -3404,9 +3419,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -3425,7 +3440,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -3471,11 +3486,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -3490,7 +3503,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -3501,11 +3514,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -3520,7 +3531,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -3644,37 +3655,37 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
       "id": "caso_128",
       "profile_id": "perfil_05_habitual_contextual",
-      "message": "Sobre lo que veníamos revisando: antes de decidir, quisiera saber cuál es el precio actual de bagre a la marinera. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Retomando el pedido anterior: quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "bagre_a_la_marinera"
+        "order_id": "benchmark_order_128"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de bagre a la marinera.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -3687,9 +3698,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -3708,30 +3719,38 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
       "id": "caso_130",
       "profile_id": "perfil_05_habitual_contextual",
-      "message": "Retomando lo anterior: muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Retomando lo anterior: quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la información y por ayudarme a revisar las opciones de la carta.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -3821,9 +3840,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -3833,7 +3852,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -3844,9 +3863,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -3861,7 +3880,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -3891,7 +3910,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -3922,7 +3941,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -4231,9 +4250,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -4248,7 +4267,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -4452,31 +4471,31 @@
     {
       "id": "caso_156",
       "profile_id": "perfil_06_formal_orientado_calidad",
-      "message": "Para evaluar bien la opción: antes de decidir, quisiera saber cuál es el precio actual de langostinos al ajillo. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Agradezco una respuesta precisa: quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "langostinos_al_ajillo"
+        "order_id": "benchmark_order_156"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "langostinos_al_ajillo"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de langostinos al ajillo.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -4487,9 +4506,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -4504,7 +4523,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -4515,9 +4534,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -4527,7 +4546,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -4567,24 +4586,32 @@
     {
       "id": "caso_160",
       "profile_id": "perfil_06_formal_orientado_calidad",
-      "message": "Necesito una respuesta precisa: muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Necesito una respuesta precisa: quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la información y por ayudarme a revisar las opciones de la carta.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -4615,7 +4642,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -4712,9 +4739,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -4733,7 +4760,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -4802,9 +4829,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -4819,7 +4846,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -4853,11 +4880,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -4872,7 +4897,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -4934,9 +4959,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -4951,7 +4976,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -4985,9 +5010,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -5002,7 +5027,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -5212,31 +5237,31 @@
     {
       "id": "caso_183",
       "profile_id": "perfil_07_escritura_no_estandar",
-      "message": "oiga es solo esta pregunta antes de decidir, kisiera saber cual es el precio actual de sancocho de bagre. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "ola, quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "sancocho_de_bagre"
+        "order_id": "benchmark_order_183"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, kisiera saber cual es el precio actual de sancocho de bagre",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -5307,9 +5332,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -5324,7 +5349,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -5354,7 +5379,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -5385,7 +5410,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -5419,24 +5444,32 @@
     {
       "id": "caso_190",
       "profile_id": "perfil_07_escritura_no_estandar",
-      "message": "hola necesito saber esto muchas gracias por la informacion y por ayudarme a revisar las opciones de la carta. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "hola es esto quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la informacion y por ayudarme a revisar las opciones de la carta.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -5449,9 +5482,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -5470,7 +5503,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -5566,11 +5599,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -5585,7 +5616,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -5619,9 +5650,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -5636,7 +5667,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -5670,9 +5701,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -5687,7 +5718,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -6040,37 +6071,37 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
       "id": "caso_212",
       "profile_id": "perfil_08_digital_ultrabreve",
-      "message": "Puntual: ¿Cuánto vale sancocho de bagre? Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "¿Dónde va mi pedido? Ahora quiero consultar el estado del domicilio de mi pedido. Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
       "context": {
-        "producto_activo": "sancocho_de_bagre"
+        "order_id": "benchmark_order_212"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "domicilio",
+        "subintent": "consultar_estado_domicilio",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
         }
       ],
       "annotation": {
-        "target_evidence": "¿Cuánto vale sancocho de bagre?",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado del domicilio de mi pedido.",
+        "disambiguating_evidence": "Necesito seguimiento de una entrega ya creada, no conocer las condiciones generales del servicio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_domicilio",
+          "domicilio.solicitar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad antes de consultar el estado operativo del domicilio"
       }
     },
     {
@@ -6201,11 +6232,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -6220,7 +6249,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -6233,9 +6262,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -6254,7 +6283,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -6265,9 +6294,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -6282,30 +6311,38 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
       "id": "caso_220",
       "profile_id": "perfil_08_digital_ultrabreve",
-      "message": "Gracias por la ayuda. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Necesito esto: quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "Gracias por la ayuda.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -6316,9 +6353,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -6333,7 +6370,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -6367,9 +6404,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -6384,7 +6421,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -6707,7 +6744,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -6737,7 +6774,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -6748,9 +6785,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -6765,7 +6802,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -6855,9 +6892,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -6867,7 +6904,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -7043,7 +7080,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -7395,7 +7432,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -7406,11 +7443,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -7425,7 +7460,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -7512,7 +7547,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -7523,9 +7558,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -7540,7 +7575,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -7551,9 +7586,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -7563,7 +7598,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -7574,9 +7609,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -7591,7 +7626,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -7621,7 +7656,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -7652,30 +7687,38 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
       "id": "caso_268",
       "profile_id": "perfil_09_preferencias_alimentarias",
-      "message": "Tengo preferencias alimentarias, pero no aplican a esta solicitud: muchas gracias por la información y por ayudarme a revisar las opciones de la carta. Solo quería agradecer; no tengo una solicitud adicional.",
+      "message": "Mis preferencias alimentarias van aparte: quiero que envíen el pedido a domicilio. Todavía no he indicado cuál pedido ni la dirección de entrega.",
       "context": {},
       "expected": {
-        "intent": "social",
-        "subintent": "agradecer",
-        "intervention_mode": "resolved",
-        "missing_slots": [],
-        "question_key": null
-      },
-      "expected_entities": [],
-      "annotation": {
-        "target_evidence": "muchas gracias por la información y por ayudarme a revisar las opciones de la carta.",
-        "disambiguating_evidence": "Solo quería agradecer; no tengo una solicitud adicional.",
-        "excluded_readings": [
-          "menu.solicitar_menu",
-          "pedido.iniciar_pedido"
+        "intent": "domicilio",
+        "subintent": "solicitar_domicilio",
+        "intervention_mode": "needs_user_clarification",
+        "missing_slots": [
+          "order",
+          "delivery_address"
         ],
-        "expected_action": "responder al acto social sin iniciar una operación comercial"
+        "question_key": "missing_delivery_order"
+      },
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "domicilio"
+        }
+      ],
+      "annotation": {
+        "target_evidence": "quiero que envíen el pedido a domicilio.",
+        "disambiguating_evidence": "Todavía no he indicado cuál pedido ni la dirección de entrega.",
+        "excluded_readings": [
+          "domicilio.consultar_domicilio",
+          "domicilio.consultar_estado_domicilio"
+        ],
+        "expected_action": "solicitar los datos faltantes y confirmar el domicilio antes de ejecutar el envío"
       }
     },
     {
@@ -7871,7 +7914,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -7935,7 +7978,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -7998,7 +8041,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8009,9 +8052,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -8021,7 +8064,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -8051,7 +8094,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8106,7 +8149,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8117,9 +8160,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -8134,7 +8177,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -8224,9 +8267,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -8241,7 +8284,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -8485,9 +8528,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -8506,7 +8549,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -8690,7 +8733,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8701,11 +8744,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -8720,7 +8761,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8731,11 +8772,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -8750,7 +8789,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8867,7 +8906,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -8927,7 +8966,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -9171,9 +9210,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -9192,7 +9231,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -9265,9 +9304,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -9282,7 +9321,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -9367,9 +9406,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -9384,7 +9423,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -9418,9 +9457,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -9435,7 +9474,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -9774,9 +9813,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -9791,7 +9830,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -9825,11 +9864,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -9844,7 +9881,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -9906,9 +9943,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -9923,7 +9960,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -9934,9 +9971,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -9951,7 +9988,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -10406,9 +10443,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -10423,7 +10460,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -10607,9 +10644,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -10624,7 +10661,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -10658,9 +10695,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -10675,7 +10712,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -11033,7 +11070,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11044,11 +11081,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -11063,7 +11098,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11127,7 +11162,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11152,7 +11187,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11191,9 +11226,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -11203,7 +11238,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -11233,7 +11268,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -11244,9 +11279,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -11261,7 +11296,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -11292,7 +11327,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11414,9 +11449,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -11431,7 +11466,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -11689,7 +11724,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11700,11 +11735,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -11719,7 +11752,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11783,7 +11816,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11838,7 +11871,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -11849,9 +11882,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -11866,7 +11899,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12206,7 +12239,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -12410,7 +12443,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -12421,11 +12454,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -12440,7 +12471,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -12529,7 +12560,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -12540,9 +12571,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -12557,7 +12588,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12591,9 +12622,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -12603,7 +12634,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12614,9 +12645,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -12631,7 +12662,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12661,7 +12692,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -12692,7 +12723,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -12793,9 +12824,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -12814,7 +12845,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12881,9 +12912,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -12898,7 +12929,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12909,9 +12940,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -12926,7 +12957,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -12981,7 +13012,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -13131,9 +13162,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -13148,7 +13179,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -13330,9 +13361,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -13351,7 +13382,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -13477,11 +13508,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -13496,7 +13525,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -13558,9 +13587,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -13575,7 +13604,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -13609,9 +13638,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -13626,7 +13655,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -13898,9 +13927,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -13915,7 +13944,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -14072,7 +14101,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14083,11 +14112,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -14102,7 +14129,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14166,7 +14193,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14221,7 +14248,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14232,9 +14259,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -14249,7 +14276,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -14339,9 +14366,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -14351,7 +14378,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -14381,7 +14408,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -14412,7 +14439,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14575,9 +14602,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -14596,7 +14623,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -14732,7 +14759,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14796,7 +14823,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -14859,7 +14886,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14870,9 +14897,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -14882,7 +14909,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -14912,7 +14939,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14967,7 +14994,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -14978,9 +15005,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -14995,7 +15022,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -15085,9 +15112,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_reserva",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "reservation_lookup"
       },
       "expected_entities": [
         {
@@ -15102,7 +15129,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -15346,9 +15373,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -15367,7 +15394,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -15551,7 +15578,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -15562,11 +15589,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "address"
-        ],
-        "question_key": "missing_previous_address"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -15581,7 +15606,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -15592,11 +15617,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -15611,7 +15634,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -15728,7 +15751,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -15788,7 +15811,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "solicitar la fecha del evento antes de derivar la gestión a una persona del restaurante"
       }
     },
     {
@@ -16032,9 +16055,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -16053,7 +16076,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16126,9 +16149,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -16143,7 +16166,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16228,9 +16251,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -16245,7 +16268,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16279,9 +16302,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -16296,7 +16319,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16344,7 +16367,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -16505,11 +16528,9 @@
       "expected": {
         "intent": "pedido",
         "subintent": "repetir_pedido",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "order"
-        ],
-        "question_key": "missing_previous_order"
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
@@ -16524,7 +16545,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -16537,9 +16558,9 @@
       "expected": {
         "intent": "catalogo",
         "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "product_availability_lookup"
       },
       "expected_entities": [
         {
@@ -16558,7 +16579,7 @@
           "pedido.iniciar_pedido",
           "menu.solicitar_menu"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16569,9 +16590,9 @@
       "expected": {
         "intent": "domicilio",
         "subintent": "consultar_domicilio",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "delivery_lookup"
       },
       "expected_entities": [
         {
@@ -16586,7 +16607,7 @@
           "pedido.iniciar_pedido",
           "horario_ubicacion.consultar_ubicacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16620,9 +16641,9 @@
       "expected": {
         "intent": "horario_ubicacion",
         "subintent": "consultar_parqueadero",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "parking_lookup"
       },
       "expected_entities": [
         {
@@ -16637,7 +16658,7 @@
           "domicilio.consultar_domicilio",
           "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -16671,9 +16692,9 @@
       "expected": {
         "intent": "menu",
         "subintent": "consultar_cambios_menu",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "menu_changes_lookup"
       },
       "expected_entities": [
         {
@@ -16688,7 +16709,7 @@
           "catalogo.consultar_producto",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -17013,7 +17034,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -17043,7 +17064,7 @@
           "catalogo.consultar_disponibilidad_producto",
           "precio.consultar_precio_producto"
         ],
-        "expected_action": "preguntar únicamente por los slots faltantes sin completar información por inferencia"
+        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
       }
     },
     {
@@ -17054,9 +17075,9 @@
       "expected": {
         "intent": "precio",
         "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "budget_recommendation_lookup"
       },
       "expected_entities": [
         {
@@ -17071,7 +17092,7 @@
           "pedido.iniciar_pedido",
           "recomendacion.solicitar_recomendacion"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     },
     {
@@ -17161,9 +17182,9 @@
       "expected": {
         "intent": "reserva_evento",
         "subintent": "consultar_eventos",
-        "intervention_mode": "resolved",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "events_lookup"
       },
       "expected_entities": [],
       "annotation": {
@@ -17173,7 +17194,7 @@
           "domicilio.consultar_domicilio_grupal",
           "operacion.consultar_pedido_programado"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
       }
     }
   ]

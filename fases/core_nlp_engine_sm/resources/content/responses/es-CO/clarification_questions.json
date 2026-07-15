@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "schema_version": "4.0.0",
+    "purpose": "Definir las preguntas en español colombiano que materializan las decisiones de la política de aclaración.",
+    "language": "es-CO",
+    "domain": "restaurante_colombiano_de_comida_de_mar"
+  },
+  "questions": {
+    "no_evidence": {
+      "template": "No pude identificar la solicitud. ¿Qué deseas consultar o pedir?"
+    },
+    "close_candidates": {
+      "template": "Puedo interpretar tu mensaje de dos maneras: {options}. ¿Cuál corresponde a lo que necesitas?",
+      "fallback": "Tu mensaje admite dos interpretaciones. ¿Qué deseas hacer?"
+    },
+    "missing_product_for_price": {
+      "template": "¿De cuál plato deseas conocer el precio?"
+    },
+    "missing_catalog_product": {
+      "template": "¿Sobre cuál plato deseas hacer la consulta?"
+    },
+    "missing_order_product": {
+      "template": "¿Qué plato deseas pedir?"
+    },
+    "missing_group_products": {
+      "template": "¿Qué platos necesitas para el grupo?"
+    },
+    "missing_quantity": {
+      "template": "¿Cuántas unidades necesitas?"
+    },
+    "missing_party_size": {
+      "template": "¿Para cuántas personas sería?"
+    },
+    "missing_preparation": {
+      "template": "¿Qué preparación prefieres para {product}?",
+      "fallback": "¿Qué preparación prefieres?"
+    },
+    "missing_product_reference": {
+      "template": "¿A cuál plato te refieres?"
+    },
+    "ambiguous_product_reference": {
+      "template": "¿Cuál de los productos anteriores deseas agregar?"
+    },
+    "missing_modification_target": {
+      "template": "¿Qué ingrediente o preparación deseas cambiar?"
+    },
+    "missing_modification_product": {
+      "template": "¿A cuál plato deseas hacerle ese cambio?"
+    },
+    "missing_previous_order": {
+      "template": "No encuentro un pedido anterior. ¿Qué deseas repetir?"
+    },
+    "missing_previous_address": {
+      "template": "No encuentro una dirección anterior. ¿A qué dirección debemos enviarlo?"
+    },
+    "missing_reservation_date": {
+      "template": "¿Para qué fecha necesitas la reserva?"
+    },
+    "missing_reservation_time": {
+      "template": "¿A qué hora necesitas la reserva?"
+    },
+    "missing_event_date": {
+      "template": "¿Para qué fecha estás planeando el evento?"
+    },
+    "missing_delivery_time": {
+      "template": "¿Para qué hora necesitas la entrega?"
+    },
+    "missing_restriction": {
+      "template": "¿Qué ingrediente o restricción debemos tener en cuenta?"
+    },
+    "missing_allergen": {
+      "template": "¿Cuál es el alérgeno o ingrediente sensible que debemos validar?"
+    },
+    "confirm_order": {
+      "template": "Entendí el pedido. ¿Deseas que lo confirme con esos productos y cantidades?"
+    },
+    "confirm_order_change": {
+      "template": "¿Confirmas que deseas agregar ese producto al pedido?"
+    },
+    "confirm_group_order": {
+      "template": "¿Confirmas el pedido grupal con las cantidades indicadas?"
+    },
+    "confirm_modification": {
+      "template": "¿Confirmas esa modificación para {product}?",
+      "fallback": "¿Confirmas esa modificación?"
+    },
+    "confirm_repeat_order": {
+      "template": "¿Confirmas que deseas repetir el pedido anterior?"
+    },
+    "confirm_reservation": {
+      "template": "¿Confirmas la solicitud de reserva con esos datos?"
+    },
+    "confirm_previous_address": {
+      "template": "¿Confirmas que debemos usar la dirección anterior?"
+    },
+    "invoice_business_lookup": {
+      "template": "Debo validar las condiciones de facturación con el restaurante."
+    },
+    "packaging_business_lookup": {
+      "template": "Debo confirmar con el restaurante si puede preparar el empaque solicitado."
+    },
+    "scheduled_order_lookup": {
+      "template": "Debo confirmar si el restaurante puede atender la hora solicitada."
+    },
+    "group_delivery_lookup": {
+      "template": "Debo validar el tiempo y las condiciones de entrega para ese pedido grupal."
+    },
+    "missing_delivery_order": {
+      "template": "¿Cuál pedido deseas enviar a domicilio?"
+    },
+    "missing_delivery_address": {
+      "template": "¿A qué dirección debemos enviar el pedido?"
+    },
+    "confirm_delivery": {
+      "template": "¿Confirmas que deseas enviar ese pedido a la dirección indicada?"
+    },
+    "missing_delivery_tracking_reference": {
+      "template": "¿Cuál es el número o pedido cuyo domicilio deseas consultar?"
+    },
+    "delivery_status_lookup": {
+      "template": "Consultaré el estado actualizado del domicilio asociado a ese pedido."
+    },
+    "mixed_payment_lookup": {
+      "template": "Debo confirmar si el restaurante permite combinar esos medios de pago."
+    },
+    "restriction_catalog_lookup": {
+      "template": "Debo validar cuáles opciones cumplen esa restricción."
+    },
+    "restriction_recommendation_lookup": {
+      "template": "Debo validar la composición de los platos antes de recomendar una opción."
+    },
+    "comparison_lookup": {
+      "template": "Debo consultar la información de los platos para compararlos con ese criterio."
+    },
+    "installation_lookup": {
+      "template": "Debo confirmar esa condición de las instalaciones con el restaurante."
+    },
+    "event_business_lookup": {
+      "template": "Debo validar capacidad, disponibilidad y condiciones para el evento."
+    },
+    "safety_validation": {
+      "template": "Por seguridad, debo validar ingredientes y preparación con el personal del restaurante."
+    },
+    "cross_contamination_validation": {
+      "template": "Por seguridad, debo confirmar con cocina el manejo de utensilios, aceite y superficies."
+    },
+    "missing_budget": {
+      "template": "¿Cuál es el presupuesto máximo que deseas destinar?"
+    },
+    "budget_recommendation_lookup": {
+      "template": "Debo consultar los precios vigentes para identificar opciones dentro de ese presupuesto."
+    },
+    "product_availability_lookup": {
+      "template": "Debo consultar la disponibilidad actual de ese producto con el restaurante."
+    },
+    "delivery_lookup": {
+      "template": "Debo validar la cobertura, el costo y el tiempo estimado del domicilio."
+    },
+    "parking_lookup": {
+      "template": "Debo confirmar la disponibilidad y las condiciones actuales del parqueadero."
+    },
+    "menu_changes_lookup": {
+      "template": "Debo consultar cuáles cambios de la carta se encuentran vigentes."
+    },
+    "events_lookup": {
+      "template": "Debo validar las condiciones actuales para realizar eventos en el restaurante."
+    },
+    "reservation_lookup": {
+      "template": "Debo validar disponibilidad, condiciones y posibles costos de la reserva."
+    },
+    "event_human_assistance": {
+      "template": "La solicitud del evento requiere que una persona del restaurante continúe la gestión contigo."
+    },
+    "identity_verification_required": {
+      "template": "Antes de consultar o reutilizar información de pedidos o direcciones anteriores, necesito que la aplicación verifique tu identidad."
+    },
+    "out_of_scope": {
+      "template": "No pude relacionar el mensaje con los servicios del restaurante. Puedo ayudarte con la carta, precios, pedidos, domicilios, reservas, pagos, ubicación y horarios."
+    }
+  }
+}

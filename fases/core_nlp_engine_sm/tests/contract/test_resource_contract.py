@@ -21,6 +21,13 @@ RESOURCE_PATHS = {
     "entity_ruler_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json",
     "intent_resolver_config.json": RESOURCES / "config" / "application" / "intent_resolver_config.json",
     "clarification_policy.json": RESOURCES / "config" / "application" / "clarification_policy.json",
+    "clarification_questions.json": (
+        RESOURCES / "content" / "responses" / "es-CO" / "clarification_questions.json"
+    ),
+    "response_templates.json": (
+        RESOURCES / "content" / "responses" / "es-CO" / "response_templates.json"
+    ),
+    "restaurant_profile.json": RESOURCES / "data" / "business" / "restaurant_profile.json",
     "phrase_matcher_service_config.json": (
         RESOURCES / "config" / "infrastructure_nlp" / "phrase_matcher_service_config.json"
     ),
@@ -64,6 +71,9 @@ def validate() -> list[str]:
     ruler = load("entity_ruler_service_config.json")
     resolver = load("intent_resolver_config.json")
     clarification = load("clarification_policy.json")
+    clarification_questions = load("clarification_questions.json")
+    response_templates = load("response_templates.json")
+    restaurant_profile = load("restaurant_profile.json")
     profiles = load("conversation_profiles.json")
     valid_pairs = taxonomy_pairs(taxonomy)
     covered_pairs: set[str] = set()
@@ -73,6 +83,9 @@ def validate() -> list[str]:
         ("intent_taxonomy.json", taxonomy),
         ("slot_catalog.json", slot_catalog),
         ("clarification_policy.json", clarification),
+        ("clarification_questions.json", clarification_questions),
+        ("response_templates.json", response_templates),
+        ("restaurant_profile.json", restaurant_profile),
     ):
         metadata = resource.get("metadata", {})
         if not isinstance(metadata, dict) or set(metadata) != minimal_metadata_fields:
@@ -122,7 +135,14 @@ def validate() -> list[str]:
     modes = clarification.get("intervention_modes", {})
     slots = slot_catalog.get("slots", {})
     policies = clarification.get("policies", {})
-    questions = clarification.get("questions", {})
+    questions = clarification_questions.get("questions", {})
+    expected_questions_reference = (
+        "resources/content/responses/es-CO/clarification_questions.json"
+    )
+    if clarification.get("questions_reference") != expected_questions_reference:
+        errors.append("Aclaraciones: questions_reference no apunta al recurso canónico.")
+    if "questions" in clarification:
+        errors.append("Aclaraciones: las preguntas no deben estar embebidas en la política.")
     for field, value in (
         ("intervention_modes", modes),
         ("policies", policies),
@@ -135,11 +155,44 @@ def validate() -> list[str]:
         errors.append("Slots: 'slots' debe ser un objeto no vacío.")
         slots = {}
     else:
+        valid_slot_fields = {"description", "classification", "collection_policy"}
+        valid_classifications = {
+            "operational", "personal_data", "sensitive_personal_data",
+            "financial_data", "linked_identifier", "tax_data",
+        }
+        privacy = slot_catalog.get("privacy", {})
+        redacted = set(privacy.get("redacted_classifications", []))
+        protected = valid_classifications - {"operational"}
+        if not isinstance(privacy, dict) or not privacy:
+            errors.append("Slots: falta el contrato de privacidad.")
+        if not protected <= redacted:
+            errors.append("Slots: todas las clasificaciones protegidas deben redactarse.")
+        for policy_field in ("logging_policy", "storage_policy"):
+            if not str(privacy.get(policy_field, "")).strip():
+                errors.append(f"Slots: privacy.{policy_field} debe ser texto no vacío.")
         for slot_id, definition in slots.items():
-            if not isinstance(definition, dict) or set(definition) != {"description"}:
-                errors.append(f"Slots: '{slot_id}' debe contener solo description.")
-            elif not str(definition.get("description", "")).strip():
+            if not isinstance(definition, dict):
+                errors.append(f"Slots: '{slot_id}' debe ser un objeto.")
+                continue
+            unexpected_fields = set(definition) - valid_slot_fields
+            if unexpected_fields:
+                errors.append(
+                    f"Slots: '{slot_id}' contiene campos desconocidos: "
+                    + ", ".join(sorted(unexpected_fields))
+                )
+            if not str(definition.get("description", "")).strip():
                 errors.append(f"Slots: '{slot_id}' requiere una descripción.")
+            classification = definition.get("classification")
+            if classification not in valid_classifications:
+                errors.append(
+                    f"Slots: '{slot_id}' usa clasificación desconocida '{classification}'."
+                )
+            if classification in {"personal_data", "tax_data"} and not str(
+                definition.get("collection_policy", "")
+            ).strip():
+                errors.append(
+                    f"Slots: '{slot_id}' requiere collection_policy por contener datos personales."
+                )
 
     allowed_placeholders = set(slots) | {"options"}
     for question_key, question in questions.items():
@@ -163,6 +216,18 @@ def validate() -> list[str]:
                     f"Aclaraciones: '{question_key}' usa slots desconocidos: "
                     + ", ".join(sorted(unknown))
                 )
+
+    templates = response_templates.get("templates", {})
+    if not isinstance(templates, dict) or not templates:
+        errors.append("Respuestas: 'templates' debe ser un objeto no vacío.")
+    else:
+        for template_key, template in templates.items():
+            if not isinstance(template, str) or not template.strip():
+                errors.append(f"Respuestas: template '{template_key}' debe ser texto no vacío.")
+
+    restaurant = restaurant_profile.get("restaurant", {})
+    if not isinstance(restaurant, dict) or not restaurant:
+        errors.append("Negocio: 'restaurant' debe ser un objeto no vacío.")
 
     for pair, policy in policies.items():
         if pair not in valid_pairs:
@@ -201,6 +266,23 @@ def validate() -> list[str]:
         referenced_questions = list(question_by_slot.values())
         if policy.get("complete_question"):
             referenced_questions.append(policy["complete_question"])
+        requires_identity = policy.get("requires_identity_verification")
+        if requires_identity is not None and not isinstance(requires_identity, bool):
+            errors.append(
+                f"Aclaraciones {pair}: requires_identity_verification debe ser booleano."
+            )
+        if requires_identity is True:
+            if "needs_identity_verification" not in modes:
+                errors.append(
+                    "Aclaraciones: falta declarar el modo needs_identity_verification."
+                )
+            identity_question = policy.get("identity_question")
+            if not identity_question:
+                errors.append(
+                    f"Aclaraciones {pair}: falta identity_question."
+                )
+            else:
+                referenced_questions.append(identity_question)
         for question_key in referenced_questions:
             if question_key not in questions:
                 errors.append(
@@ -215,6 +297,7 @@ def validate() -> list[str]:
 
     menu_phrases: set[str] = set()
     product_ids: set[str] = set()
+    payment_method_ids: set[str] = set()
     for entity_type, group in menu.get("entity_types", {}).items():
         ids: set[str] = set()
         phrase_owner: dict[str, str] = {}
@@ -227,6 +310,8 @@ def validate() -> list[str]:
             ids.add(entity_id)
             if entity_type in {"PRODUCTO_ESPECIFICO", "PRODUCTO_BASE"}:
                 product_ids.add(entity_id)
+            if entity_type == "MEDIO_PAGO":
+                payment_method_ids.add(entity_id)
             for raw_phrase in item.get("phrases", []):
                 phrase = " ".join(str(raw_phrase).casefold().split())
                 if not phrase:
@@ -242,6 +327,27 @@ def validate() -> list[str]:
                     )
                 phrase_owner[phrase] = entity_id
                 menu_phrases.add(phrase)
+
+    restaurant_payment_methods = set(restaurant.get("payment_methods", []))
+    unknown_payment_methods = restaurant_payment_methods - payment_method_ids
+    if unknown_payment_methods:
+        errors.append(
+            "Negocio: medios de pago fuera del catálogo PhraseMatcher: "
+            + ", ".join(sorted(unknown_payment_methods))
+        )
+    featured_product_ids = set(restaurant.get("featured_product_ids", []))
+    unknown_featured_products = featured_product_ids - product_ids
+    if unknown_featured_products:
+        errors.append(
+            "Negocio: productos destacados fuera del catálogo PhraseMatcher: "
+            + ", ".join(sorted(unknown_featured_products))
+        )
+    address = restaurant.get("address", {})
+    if not isinstance(address, dict) or not all(
+        str(address.get(field, "")).strip()
+        for field in ("street", "neighborhood", "city", "country")
+    ):
+        errors.append("Negocio: la dirección estructurada está incompleta.")
 
     offering_metadata = offerings.get("metadata", {})
     if offering_metadata.get("currency") != "COP":
@@ -397,6 +503,7 @@ def validate() -> list[str]:
         expected_metadata_fields = {
             "schema_version", "purpose", "language", "domain",
             "profiles_reference", "taxonomy_reference", "slots_reference",
+            "questions_reference",
         }
         if set(metadata) != expected_metadata_fields:
             errors.append("Dataset: metadata no coincide con el contrato mínimo canónico.")
@@ -408,6 +515,8 @@ def validate() -> list[str]:
             errors.append("Dataset: taxonomy_reference no apunta al recurso canónico.")
         if metadata.get("slots_reference") != "resources/config/domain/slot_catalog.json":
             errors.append("Dataset: slots_reference no apunta al recurso canónico.")
+        if metadata.get("questions_reference") != expected_questions_reference:
+            errors.append("Dataset: questions_reference no apunta al recurso canónico.")
         if len(dataset_cases) != 600:
             errors.append(f"Dataset: se esperaban 600 casos; hay {len(dataset_cases)}.")
 
@@ -420,6 +529,16 @@ def validate() -> list[str]:
         pair_counts: dict[str, int] = {}
         dataset_pairs: set[str] = set()
         valid_modes = {"resolved", *modes.keys()}
+        required_benchmark_modes = {
+            "resolved",
+            "needs_transaction_confirmation",
+            "needs_business_lookup",
+            "needs_human_safety_validation",
+        }
+        information_gathering_modes = {
+            "needs_user_clarification",
+            "needs_identity_verification",
+        }
         valid_question_keys = set(questions)
         menu_entity_ids = {
             entity_type: {
@@ -463,6 +582,9 @@ def validate() -> list[str]:
                 "producto_activo", "pedido_activo", "pedido_anterior",
                 "direccion_previa", "menu_enviado_previamente",
                 "menu_pdf_ultima_fecha_envio",
+                "budget", "delivery_zone", "customer_name", "phone",
+                "order_id", "reservation_id", "invoice_data",
+                "identity_verified",
             }
             if not isinstance(context, dict):
                 errors.append(f"Dataset {case_id}: context debe ser un objeto.")
@@ -481,7 +603,9 @@ def validate() -> list[str]:
                     errors.append(
                         f"Dataset {case_id}: producto_activo desconocido '{active_product}'."
                     )
-                for boolean_key in ("pedido_activo", "menu_enviado_previamente"):
+                for boolean_key in (
+                    "pedido_activo", "menu_enviado_previamente", "identity_verified"
+                ):
                     if boolean_key in context and not isinstance(context[boolean_key], bool):
                         errors.append(
                             f"Dataset {case_id}: context.{boolean_key} debe ser booleano."
@@ -528,6 +652,54 @@ def validate() -> list[str]:
             question_key = expected.get("question_key")
             if question_key is not None and question_key not in valid_question_keys:
                 errors.append(f"Dataset {case_id}: question_key desconocida '{question_key}'.")
+            policy = policies.get(pair, {})
+            identity_pending = (
+                isinstance(policy, dict)
+                and policy.get("requires_identity_verification") is True
+                and context.get("identity_verified") is not True
+            )
+            if identity_pending:
+                if mode != "needs_identity_verification":
+                    errors.append(
+                        f"Dataset {case_id}: la operación exige verificación de identidad."
+                    )
+                if missing_slots:
+                    errors.append(
+                        f"Dataset {case_id}: la verificación de identidad no debe exponerse como slot."
+                    )
+                expected_identity_question = policy.get("identity_question")
+                if question_key != expected_identity_question:
+                    errors.append(
+                        f"Dataset {case_id}: la pregunta de identidad debe ser "
+                        f"'{expected_identity_question}' y no '{question_key}'."
+                    )
+            elif missing_slots and isinstance(policy, dict):
+                expected_missing_mode = policy.get("on_missing")
+                if expected_missing_mode and mode != expected_missing_mode:
+                    errors.append(
+                        f"Dataset {case_id}: con slots faltantes, el modo debe ser "
+                        f"'{expected_missing_mode}' y no '{mode}'."
+                    )
+                first_missing = str(missing_slots[0])
+                expected_question = policy.get("question_by_slot", {}).get(first_missing)
+                if expected_question and question_key != expected_question:
+                    errors.append(
+                        f"Dataset {case_id}: para '{first_missing}' la pregunta debe ser "
+                        f"'{expected_question}' y no '{question_key}'."
+                    )
+            elif not missing_slots and isinstance(policy, dict):
+                expected_complete_mode = policy.get("on_complete")
+                if expected_complete_mode and mode != expected_complete_mode:
+                    errors.append(
+                        f"Dataset {case_id}: con slots completos, el modo debe ser "
+                        f"'{expected_complete_mode}' y no '{mode}'."
+                    )
+                expected_complete_question = policy.get("complete_question")
+                if expected_complete_question and question_key != expected_complete_question:
+                    errors.append(
+                        f"Dataset {case_id}: la pregunta completa debe ser "
+                        f"'{expected_complete_question}' y no '{question_key}'."
+                    )
 
             annotation = case.get("annotation", {})
             expected_annotation_fields = {
@@ -590,9 +762,20 @@ def validate() -> list[str]:
                 errors.append(
                     f"Dataset: '{profile_id}' debe tener entre 6 y 9 casos con contexto."
                 )
-            if modes_by_profile.get(profile_id, set()) != valid_modes:
+            missing_profile_modes = required_benchmark_modes - modes_by_profile.get(
+                profile_id, set()
+            )
+            if missing_profile_modes:
                 errors.append(
-                    f"Dataset: '{profile_id}' debe cubrir los cinco modos de intervención."
+                    f"Dataset: '{profile_id}' no cubre los modos base: "
+                    + ", ".join(sorted(missing_profile_modes))
+                )
+            if not modes_by_profile.get(profile_id, set()).intersection(
+                information_gathering_modes
+            ):
+                errors.append(
+                    f"Dataset: '{profile_id}' debe cubrir aclaración de datos "
+                    "o verificación de identidad."
                 )
         uncovered_dataset_pairs = sorted(valid_pairs - dataset_pairs)
         if uncovered_dataset_pairs:

@@ -16,19 +16,20 @@ Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 - Slots semánticos: `resources/config/domain/slot_catalog.json`.
 - Entidades comerciales: `resources/config/infrastructure_nlp/phrase_matcher_service_config.json`.
 - Entidades contextuales: `resources/config/infrastructure_nlp/entity_ruler_service_config.json`.
-- Completitud y preguntas: `resources/config/application/clarification_policy.json`.
+- Completitud y modos: `resources/config/application/clarification_policy.json`.
+- Textos de preguntas: `resources/content/responses/es-CO/clarification_questions.json`.
 
 Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro de un dataset.
 
 ## Diseño actual
 
 - 600 casos únicos: 20 perfiles conversacionales por 30 casos.
-- Cobertura de las 47 combinaciones de intención y subintención.
+- Cobertura de las 49 combinaciones de intención y subintención.
 - Mínimo de 8 casos por combinación.
-- Los cinco modos de intervención aparecen en cada perfil.
+- Cada perfil cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de aclaración o verificación; la asistencia humana se usa cuando el flujo debe escalarse.
 - 150 casos contienen contexto conversacional; cada perfil aporta entre 6 y 9.
 - Los perfiles representan registros y fenómenos observables; no edad, género, estrato, discapacidad ni otros atributos sensibles.
-- Los mensajes son casos sintéticos de evaluación, no conversaciones reales ni datos personales.
+- Los mensajes son casos sintéticos de evaluación, no conversaciones reales ni datos personales. Todo slot personal futuro debe usar valores ficticios o redactados.
 
 Los perfiles sirven para comparar cobertura y desempeño entre estilos comunicativos. No deben inferirse a partir del mensaje ni enviarse al motor durante la ejecución en producción.
 
@@ -60,7 +61,7 @@ Estas carpetas se crearán cuando exista contenido real, curado y anonimizado pa
 
 `expected_entities` representa evidencia explícita en el texto, no inferencias comerciales. La ausencia de un alérgeno en el nombre de un plato nunca permite afirmar que el plato sea seguro.
 
-`context` conserva únicamente estado previo que puede usar el resolver, como `producto_activo`, `pedido_activo`, `pedido_anterior`, `direccion_previa` o el historial de envío del menú. Un objeto vacío significa que el caso debe resolverse solo con el mensaje actual.
+`context` conserva únicamente estado previo que puede usar el resolver, como `producto_activo`, `pedido_activo`, `pedido_anterior`, `order_id`, `direccion_previa` o el historial de envío del menú. `identity_verified` solo representa una verificación ya realizada por la aplicación. Un objeto vacío significa que el caso debe resolverse solo con el mensaje actual.
 
 `annotation` contiene `target_evidence`, `disambiguating_evidence`, `excluded_readings` y `expected_action`. Las dos evidencias deben aparecer literalmente en el mensaje; las lecturas excluidas deben pertenecer a la taxonomía y sirven para analizar falsos positivos.
 
@@ -73,8 +74,11 @@ Estas carpetas se crearán cuando exista contenido real, curado y anonimizado pa
 | `needs_transaction_confirmation` | La acción tendría efecto transaccional y necesita confirmación explícita. |
 | `needs_business_lookup` | La respuesta depende de disponibilidad, precio variable u otro dato operativo. |
 | `needs_human_safety_validation` | Existe una consulta alimentaria que requiere verificación humana segura. |
+| `needs_human_assistance` | Una persona debe continuar una gestión que el motor no puede completar. |
+| `needs_identity_verification` | La aplicación debe verificar al cliente antes de consultar o reutilizar pedidos o direcciones anteriores. |
+| `out_of_scope` | El mensaje no corresponde a los servicios conocidos; no se fuerza una intención ni una aclaración falsa. |
 
-La necesidad de aclaración no se almacena como un segundo dato: se deriva de `expected.intervention_mode`. Es falsa únicamente para `resolved`; en los demás modos el motor no debe presentar el caso como definitivamente resuelto.
+La compatibilidad `requires_clarification` se deriva del modo declarado por la política. Es falsa para `resolved` y `out_of_scope`; los modos de recolección, verificación, confirmación, consulta o escalamiento detienen la resolución definitiva. La verificación la ejecuta la aplicación y solo comunica al resolutor el booleano confiable `context.identity_verified`.
 
 ## Criterios para agregar o modificar casos
 

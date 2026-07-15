@@ -36,6 +36,7 @@ class IntentResolverTests(unittest.TestCase):
         ruler = EntityRulerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json")
         parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
         resolver = IntentResolver(ROOT / "resources" / "config" / "application" / "intent_resolver_config.json")
+        cls.resolver = resolver
         cls.pipeline = IntentEngine(parser, resolver)
 
     def resolve(self, text, context=None):
@@ -83,10 +84,12 @@ class IntentResolverTests(unittest.TestCase):
         self.assertEqual(result.intent, "pedido")
         self.assertEqual(result.subintent, "solicitar_modificacion")
 
-    def test_unknown_requests_clarification(self):
+    def test_unknown_is_out_of_scope_without_false_clarification(self):
         result = self.resolve("xyzdesconocido")
-        self.assertTrue(result.requires_clarification)
+        self.assertFalse(result.requires_clarification)
         self.assertEqual(result.status, "unknown")
+        self.assertEqual(result.intervention_mode, "out_of_scope")
+        self.assertEqual(result.question_key, "out_of_scope")
 
     def test_quantity_requires_context(self):
         result = self.resolve("dos")
@@ -125,6 +128,154 @@ class IntentResolverTests(unittest.TestCase):
         result = self.resolve("¿El aceite se comparte con productos apanados?")
         self.assertEqual(result.intervention_mode, "needs_human_safety_validation")
         self.assertEqual(result.question_key, "cross_contamination_validation")
+
+    def test_event_request_requires_human_assistance_after_collecting_data(self):
+        result = self.resolve("Necesito un evento para veinte personas el viernes a las siete")
+        self.assertEqual(result.intent, "reserva_evento")
+        self.assertEqual(result.subintent, "solicitar_evento")
+        self.assertEqual(result.intervention_mode, "needs_human_assistance")
+        self.assertEqual(result.question_key, "event_human_assistance")
+
+    def test_previous_order_requires_identity_verification(self):
+        context = {"pedido_anterior": {"token": "pedido-tokenizado"}}
+        result = self.resolve("Deme lo mismo de la vez pasada", context)
+        self.assertEqual(result.intent, "pedido")
+        self.assertEqual(result.subintent, "repetir_pedido")
+        self.assertEqual(result.intervention_mode, "needs_identity_verification")
+        self.assertEqual(result.question_key, "identity_verification_required")
+        self.assertIn("POLICY_IDENTITY_VERIFICATION", result.applied_rules)
+
+    def test_first_menu_consultation_does_not_trigger_identity_verification(self):
+        result = self.resolve(
+            "Es mi primera consulta y quisiera conocer, en términos generales, "
+            "qué ofrece el restaurante; no quiero que reenvíen un documento anterior."
+        )
+        self.assertEqual(result.intent, "menu")
+        self.assertEqual(result.subintent, "consultar_menu_general")
+        self.assertEqual(result.intervention_mode, "resolved")
+
+    def test_verified_identity_allows_previous_order_confirmation(self):
+        context = {
+            "identity_verified": True,
+            "pedido_anterior": {"token": "pedido-tokenizado"},
+        }
+        result = self.resolve("Deme lo mismo de la vez pasada", context)
+        self.assertEqual(result.intervention_mode, "needs_transaction_confirmation")
+        self.assertEqual(result.question_key, "confirm_repeat_order")
+
+    def test_previous_address_requires_identity_verification(self):
+        context = {"direccion_previa": "direccion-tokenizada"}
+        result = self.resolve("Envíelo a la misma dirección de antes", context)
+        self.assertEqual(result.intent, "domicilio")
+        self.assertEqual(result.subintent, "usar_direccion_previa")
+        self.assertEqual(result.intervention_mode, "needs_identity_verification")
+
+    def test_verified_identity_allows_previous_address_confirmation(self):
+        context = {
+            "identity_verified": True,
+            "direccion_previa": "direccion-tokenizada",
+        }
+        result = self.resolve("Envíelo a la misma dirección de antes", context)
+        self.assertEqual(result.intervention_mode, "needs_transaction_confirmation")
+        self.assertEqual(result.question_key, "confirm_previous_address")
+
+    def test_delivery_request_collects_order_before_address(self):
+        result = self.resolve("Quiero que envíen el pedido a domicilio")
+        self.assertEqual(result.intent, "domicilio")
+        self.assertEqual(result.subintent, "solicitar_domicilio")
+        self.assertEqual(result.intervention_mode, "needs_user_clarification")
+        self.assertEqual(result.missing_slots, ("order", "delivery_address"))
+        self.assertEqual(result.question_key, "missing_delivery_order")
+
+    def test_delivery_request_with_active_order_asks_for_address(self):
+        result = self.resolve(
+            "Quiero que envíen el pedido a domicilio",
+            {"pedido_activo": True},
+        )
+        self.assertEqual(result.missing_slots, ("delivery_address",))
+        self.assertEqual(result.question_key, "missing_delivery_address")
+
+    def test_complete_delivery_request_requires_transaction_confirmation(self):
+        result = self.resolve(
+            "Quiero que envíen el pedido a domicilio",
+            {
+                "pedido_activo": True,
+                "delivery_address": "direccion-validada-tokenizada",
+            },
+        )
+        self.assertEqual(result.intervention_mode, "needs_transaction_confirmation")
+        self.assertEqual(result.question_key, "confirm_delivery")
+
+    def test_delivery_status_requires_identity_verification(self):
+        result = self.resolve("¿Dónde va mi pedido a domicilio?")
+        self.assertEqual(result.intent, "domicilio")
+        self.assertEqual(result.subintent, "consultar_estado_domicilio")
+        self.assertEqual(result.intervention_mode, "needs_identity_verification")
+        self.assertEqual(result.question_key, "identity_verification_required")
+
+    def test_verified_delivery_status_requires_order_reference(self):
+        result = self.resolve(
+            "¿Dónde va mi pedido a domicilio?",
+            {"identity_verified": True},
+        )
+        self.assertEqual(result.intervention_mode, "needs_user_clarification")
+        self.assertEqual(result.missing_slots, ("order_id|order",))
+        self.assertEqual(result.question_key, "missing_delivery_tracking_reference")
+
+    def test_verified_delivery_status_uses_business_lookup(self):
+        result = self.resolve(
+            "¿Dónde va mi pedido a domicilio?",
+            {
+                "identity_verified": True,
+                "order_id": "pedido-tokenizado",
+            },
+        )
+        self.assertEqual(result.intervention_mode, "needs_business_lookup")
+        self.assertEqual(result.question_key, "delivery_status_lookup")
+
+    def test_personal_slots_are_accepted_only_from_validated_context(self):
+        payload = {
+            "normalized_text": "mi nombre es ana y mi teléfono es 3001234567",
+            "phrase_matcher": {"entities": []},
+            "entity_ruler": {"entities": []},
+            "matcher": {"extraction": {"quantities": [], "monetary_values": []}},
+        }
+        without_context = self.resolver._available_slots(payload, {})
+        self.assertNotIn("customer_name", without_context)
+        self.assertNotIn("phone", without_context)
+
+        with_context = self.resolver._available_slots(
+            payload,
+            {
+                "customer_name": "Ana",
+                "phone": "[REDACTED]",
+                "order_id": "pedido-tokenizado",
+                "reservation_id": "reserva-tokenizada",
+                "invoice_data": {"status": "validated"},
+            },
+        )
+        self.assertTrue(
+            {"customer_name", "phone", "order_id", "reservation_id", "invoice_data"}
+            <= with_context
+        )
+
+    def test_budget_and_delivery_address_slots_use_structured_evidence(self):
+        payload = {
+            "normalized_text": "tengo cincuenta mil",
+            "phrase_matcher": {"entities": []},
+            "entity_ruler": {"entities": []},
+            "matcher": {
+                "extraction": {
+                    "quantities": [],
+                    "monetary_values": [{"value": 50000, "currency": "COP"}],
+                }
+            },
+        }
+        available = self.resolver._available_slots(
+            payload, {"direccion_previa": "direccion-tokenizada"}
+        )
+        self.assertIn("budget", available)
+        self.assertIn("delivery_address", available)
 
     def test_accepts_configuration_dictionaries(self):
         config = json.loads(

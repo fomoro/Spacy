@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "purpose": "Definir textos de respuesta neutrales para presentar datos ya validados por la aplicación sin duplicar información comercial.",
+    "language": "es-CO",
+    "domain": "restaurante_colombiano_de_comida_de_mar"
+  },
+  "templates": {
+    "greeting": "¡Hola! Bienvenido a {restaurant_name}. ¿En qué puedo ayudarte?",
+    "menu": "Esta es la información disponible de nuestra carta: {menu_summary}",
+    "product_information": "Sobre {product}: {product_details}",
+    "preparation": "Para {product}, la información de preparación disponible es: {preparation_details}",
+    "price": "El precio vigente de {product} es {price}.",
+    "order_review": "Entendí que deseas hacer un pedido. Revisemos los productos y cantidades antes de confirmarlo.",
+    "payment_methods": "Los medios de pago informados por el restaurante son: {payment_methods}.",
+    "location": "La dirección informada por el restaurante es {address}, {city}.",
+    "opening_hours": "El horario informado para {day} es {opening_hours}.",
+    "general_information": "{restaurant_name} es {restaurant_description}",
+    "recommendation": "Según el criterio indicado, estas son las opciones que puedo revisar contigo: {recommendations}.",
+    "thanks": "Con gusto. ¿Hay algo más en lo que pueda ayudarte?",
+    "farewell": "Gracias por comunicarte con {restaurant_name}. Hasta pronto.",
+    "human_handoff": "Una persona del restaurante debe continuar esta gestión contigo.",
+    "unknown": "No pude relacionar el mensaje con los servicios del restaurante. Puedes consultar la carta, precios, pedidos, domicilios, reservas, pagos, ubicación y horarios."
+  }
+}

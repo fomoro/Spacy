@@ -146,6 +146,32 @@ class IntentResolver:
         else:
             raise TypeError("clarification_policy debe ser una ruta, un diccionario o None")
 
+        questions = data.get("questions")
+        if not isinstance(questions, dict):
+            reference = data.get("questions_reference")
+            if not isinstance(reference, str) or not reference.strip():
+                raise ValueError(
+                    "La política de aclaración debe contener 'questions' o "
+                    "'questions_reference'."
+                )
+            reference_path = Path(reference)
+            candidates = [Path.cwd() / reference_path]
+            if isinstance(selected, (str, Path)):
+                policy_path = Path(selected).resolve()
+                candidates.extend(parent / reference_path for parent in policy_path.parents)
+            questions_path = next((item for item in candidates if item.is_file()), None)
+            if questions_path is None:
+                raise FileNotFoundError(
+                    f"No existe el catálogo de preguntas referenciado: {reference}"
+                )
+            questions_resource = json.loads(questions_path.read_text(encoding="utf-8"))
+            questions = questions_resource.get("questions", questions_resource)
+            if not isinstance(questions, dict):
+                raise TypeError(
+                    f"Se esperaba un catálogo de preguntas en {questions_path}"
+                )
+            data["questions"] = questions
+
         for key in ("intervention_modes", "policies", "questions"):
             if not isinstance(data.get(key), dict):
                 raise ValueError(f"La política de aclaración debe contener '{key}'.")
@@ -174,18 +200,18 @@ class IntentResolver:
         extraction = dict(payload.get("matcher", {}).get("extraction", {}))
 
         if not candidates or candidates[0].score < float(self._thresholds["minimum_score"]):
-            mode = "needs_user_clarification"
+            mode = "out_of_scope"
             return IntentResolution(
                 intent=None,
                 subintent=None,
                 confidence=0.0,
                 status="unknown",
                 requires_clarification=self._mode_requires_clarification(mode),
-                clarification_reason="no_evidence",
-                clarification_message=self._question("no_evidence", payload),
+                clarification_reason="out_of_scope",
+                clarification_message=self._question("out_of_scope", payload),
                 intervention_mode=mode,
                 missing_slots=(),
-                question_key="no_evidence",
+                question_key="out_of_scope",
                 candidates=tuple(candidates[:5]),
                 entities=entities,
                 extraction=extraction,
@@ -194,12 +220,38 @@ class IntentResolver:
 
         top = candidates[0]
         second = candidates[1] if len(candidates) > 1 else None
+        policy = self._policy(top)
         close = (
             second is not None
             and (top.intent, top.subintent) != (second.intent, second.subintent)
             and second.score >= float(self._thresholds["minimum_score"])
             and top.score - second.score < float(self._thresholds["clarification_margin"])
         )
+
+        identity_required = policy.get("requires_identity_verification") is True
+        identity_verified = context.get("identity_verified") is True
+        if identity_required and not identity_verified:
+            mode = "needs_identity_verification"
+            question_key = str(
+                policy.get("identity_question", "identity_verification_required")
+            )
+            applied_rules.append("POLICY_IDENTITY_VERIFICATION")
+            return IntentResolution(
+                intent=top.intent,
+                subintent=top.subintent,
+                confidence=self._confidence(top.score, second.score if second else 0.0),
+                status=mode,
+                requires_clarification=self._mode_requires_clarification(mode),
+                clarification_reason=mode,
+                clarification_message=self._question(question_key, payload),
+                intervention_mode=mode,
+                missing_slots=(),
+                question_key=question_key,
+                candidates=tuple(candidates[:5]),
+                entities=entities,
+                extraction=extraction,
+                applied_rules=tuple(applied_rules),
+            )
 
         missing_slots, missing_key = self._missing_slots(top, payload, context)
         if missing_slots:
@@ -241,7 +293,6 @@ class IntentResolver:
                 applied_rules=tuple(applied_rules),
             )
 
-        policy = self._policy(top)
         complete_mode = policy.get("on_complete")
         if complete_mode:
             question_key = policy.get("complete_question")
@@ -479,6 +530,72 @@ class IntentResolver:
             self._add(scores, reasons, "menu", "reenviar_menu", 0.58, "PriorityRule", "explicit_again_with_menu_history")
             applied_rules.append("PRIORITY_MENU_REENVIO")
 
+        delivery_status_markers = any(
+            marker in text
+            for marker in (
+                "estado del domicilio", "estado de mi pedido", "estado del pedido",
+                "seguimiento del pedido", "rastrear el pedido", "dónde va mi pedido",
+                "donde va mi pedido", "ya salió mi pedido", "ya salio mi pedido",
+            )
+        )
+        if delivery_status_markers:
+            self._add(
+                scores, reasons, "domicilio", "consultar_estado_domicilio", 0.86,
+                "PriorityRule", "explicit_delivery_status"
+            )
+            applied_rules.append("PRIORITY_DELIVERY_STATUS")
+
+        delivery_request = (
+            any(
+                marker in text
+                for marker in (
+                    "envíen el pedido", "envien el pedido", "manden el pedido",
+                    "mándeme el pedido", "mandeme el pedido", "lleven el pedido",
+                    "despachen el pedido", "solicitar el domicilio",
+                )
+            )
+            and not delivery_status_markers
+        )
+        if delivery_request:
+            self._add(
+                scores, reasons, "domicilio", "solicitar_domicilio", 0.78,
+                "PriorityRule", "explicit_delivery_request"
+            )
+            applied_rules.append("PRIORITY_DELIVERY_REQUEST")
+
+        if "direccion_previa" in entity_ids or any(
+            marker in text
+            for marker in (
+                "misma dirección", "misma direccion", "dirección anterior",
+                "direccion anterior",
+            )
+        ):
+            self._add(
+                scores, reasons, "domicilio", "usar_direccion_previa", 0.96,
+                "PriorityRule", "explicit_previous_address"
+            )
+            applied_rules.append("PRIORITY_PREVIOUS_ADDRESS")
+
+        if (
+            "primera consulta" in text
+            and any(marker in text for marker in ("qué ofrece", "que ofrece", "términos generales", "terminos generales"))
+        ):
+            self._add(
+                scores, reasons, "menu", "consultar_menu_general", 0.72,
+                "PriorityRule", "first_contact_general_menu"
+            )
+            applied_rules.append("PRIORITY_MENU_GENERAL_FIRST_CONTACT")
+
+        if (
+            any(marker in text for marker in ("repetir", "repita", "lo mismo"))
+            and any(marker in text for marker in ("pedido", "vez pasada", "pedido anterior"))
+        ):
+            self._add(
+                scores, reasons, "pedido", "repetir_pedido", 0.74,
+                "PriorityRule", "explicit_repeat_order"
+            )
+            applied_rules.append("PRIORITY_REPEAT_ORDER")
+
     def _build_candidates(self, scores, reasons) -> list[CandidateScore]:
         candidates = [
             CandidateScore(
@@ -556,11 +673,16 @@ class IntentResolver:
             available.add("time")
         if "MEDIO_PAGO" in types:
             available.add("payment_method")
+        if types.intersection({"ALERGENO", "INGREDIENTE"}):
+            available.add("allergen")
         if types.intersection({"ALERGENO", "INGREDIENTE"}) or any(
             marker in text
-            for marker in ("vegetarian", "vegan", "sin mariscos", "sin camarón", "sin camaron")
+            for marker in (
+                "vegetarian", "vegetariano", "vegetariana", "vegan", "vegano",
+                "vegana", "sin carne", "sin mariscos", "sin camarón", "sin camaron",
+            )
         ):
-            available.add("allergen")
+            available.add("dietary_restriction")
         if types.intersection({"INGREDIENTE", "ALERGENO", "PREPARACION"}) or (
             extraction.get("has_negation") and "PRODUCTO_BASE" in types
         ):
@@ -570,12 +692,27 @@ class IntentResolver:
             for marker in ("persona", "mesa", "reserva", "evento", "espacio", "almuerzo", "pedidos")
         ):
             available.add("party_size")
+        if extraction.get("monetary_values") or context.get("budget"):
+            available.add("budget")
         if context.get("producto_activo"):
             available.add("product")
         if context.get("pedido_anterior"):
             available.add("order")
+        if context.get("pedido_activo"):
+            available.add("order")
         if context.get("direccion_previa"):
-            available.add("address")
+            available.add("delivery_address")
+        for context_key, slot in (
+            ("delivery_address", "delivery_address"),
+            ("delivery_zone", "delivery_zone"),
+            ("customer_name", "customer_name"),
+            ("phone", "phone"),
+            ("order_id", "order_id"),
+            ("reservation_id", "reservation_id"),
+            ("invoice_data", "invoice_data"),
+        ):
+            if context.get(context_key):
+                available.add(slot)
         return available
 
     def _confidence(self, top_score: float, second_score: float) -> float:
@@ -635,7 +772,13 @@ class IntentResolver:
             return True
         if top.intent == "precio" and any(rule in applied_rules for rule in ("PRIORITY_PRICE_OVER_WANT", "PRIORITY_BUDGET")):
             return True
-        if top.intent == "menu" and "PRIORITY_MENU_REENVIO" in applied_rules:
+        if top.intent == "menu" and any(
+            rule in applied_rules
+            for rule in (
+                "PRIORITY_MENU_REENVIO",
+                "PRIORITY_MENU_GENERAL_FIRST_CONTACT",
+            )
+        ):
             return True
         if top.subintent == "consultar_reserva" and "PRIORITY_RESERVATION_CONDITIONS" in applied_rules:
             return True

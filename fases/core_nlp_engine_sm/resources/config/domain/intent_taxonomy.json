@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "schema_version": "1.0.0",
+    "schema_version": "2.0.0",
     "purpose": "Definir el vocabulario canónico de intenciones y subintenciones del dominio conversacional del restaurante.",
     "language": "es-CO",
     "domain": "restaurante_colombiano_de_comida_de_mar"
@@ -25,6 +25,8 @@
       "subintents": {
         "consultar_domicilio": "Consulta condiciones generales, cobertura, costo o tiempo del domicilio.",
         "consultar_domicilio_grupal": "Consulta logística de entrega para un pedido grupal.",
+        "consultar_estado_domicilio": "Consulta el estado o seguimiento de un domicilio asociado a un pedido existente.",
+        "solicitar_domicilio": "Solicita enviar a una dirección un pedido identificado.",
         "usar_direccion_previa": "Solicita usar una dirección registrada en el contexto conversacional."
       }
     },
@@ -116,6 +118,8 @@
   },
   "context_dependent_subintents": [
     "domicilio.usar_direccion_previa",
+    "domicilio.solicitar_domicilio",
+    "domicilio.consultar_estado_domicilio",
     "menu.reenviar_menu",
     "pedido.agregar_producto_pedido",
     "pedido.indicar_cantidad",

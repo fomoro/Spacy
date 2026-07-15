@@ -19,7 +19,7 @@ Comprueba responsabilidades lingüísticas aisladas: normalización, entidades d
 
 ### `application/`
 
-Comprueba la orquestación de evidencias, resolución de intención, modos de intervención y fachada pública. Puede integrar servicios reales cuando la interacción entre capas sea parte del comportamiento esperado.
+Comprueba la orquestación de evidencias, resolución de intención, slots, modos de intervención, composición de respuestas y fachada pública. Incluye el contrato de que los slots personales no se infieran desde texto arbitrario.
 
 ### `contract/`
 
@@ -27,7 +27,7 @@ Valida referencias y fronteras entre taxonomía, recursos, perfiles, menú y dat
 
 ### `evaluation/`
 
-Procesa los 600 casos sin formar parte de la suite unitaria. Cada archivo evalúa una etapa distinta y escribe resultados derivados en `reports/`; esos reportes no son fuentes de verdad.
+Procesa los 600 casos sin formar parte de la suite unitaria. El evaluador del resolutor mide intención, subintención, modo, slots faltantes, clave de pregunta y activación indebida de lecturas excluidas. Los reportes derivados no son fuentes de verdad y no deben contener datos personales reales.
 
 ### `interactive/`
 

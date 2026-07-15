@@ -622,6 +622,75 @@
       ]
     },
     {
+      "id": "DELIVERY_REQUEST",
+      "intent": "domicilio",
+      "subintent": "solicitar_domicilio",
+      "weight": 0.8,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "enviar",
+              "envíen",
+              "envien",
+              "mandar",
+              "manden",
+              "mándeme",
+              "mandeme",
+              "llevar",
+              "lleven",
+              "despachar",
+              "despachen"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedido",
+              "domicilio",
+              "entrega"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "DELIVERY_STATUS",
+      "intent": "domicilio",
+      "subintent": "consultar_estado_domicilio",
+      "weight": 0.84,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "estado",
+              "seguimiento",
+              "rastrear",
+              "rastreo",
+              "dónde",
+              "donde"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedido",
+              "domicilio",
+              "entrega"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "RESERVATION_REQUEST",
       "intent": "reserva_evento",
       "subintent": "solicitar_reserva",
@@ -1427,7 +1496,7 @@
       "id": "ORDER_QUANTIFIED_PRODUCT",
       "intent": "pedido",
       "subintent": "agregar_productos_pedido",
-      "weight": 0.72,
+      "weight": 0.78,
       "pattern": [
         {
           "LOWER": {
@@ -2188,7 +2257,7 @@
       "id": "EVENT_PROPOSAL",
       "intent": "reserva_evento",
       "subintent": "solicitar_evento",
-      "weight": 0.62,
+      "weight": 0.78,
       "pattern": [
         {
           "LOWER": {
@@ -2198,6 +2267,15 @@
               "solicito"
             ]
           }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "un",
+              "una"
+            ]
+          },
+          "OP": "?"
         },
         {
           "LOWER": {
@@ -2215,6 +2293,76 @@
         },
         {
           "LOWER": "para"
+        },
+        {
+          "LIKE_NUM": true
+        },
+        {
+          "LOWER": "personas"
+        }
+      ]
+    },
+    {
+      "id": "EVENT_PROPOSAL_FOR_GROUP",
+      "intent": "reserva_evento",
+      "subintent": "solicitar_evento",
+      "weight": 0.82,
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "necesito",
+              "quiero",
+              "solicito"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "un",
+              "una"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "cotización",
+              "cotizacion",
+              "propuesta"
+            ]
+          }
+        },
+        {
+          "LOWER": "para"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "un",
+              "una"
+            ]
+          },
+          "OP": "?"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "evento",
+              "almuerzo"
+            ]
+          }
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "de",
+              "para"
+            ]
+          },
+          "OP": "?"
         },
         {
           "LIKE_NUM": true
