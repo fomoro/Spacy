@@ -1,11 +1,9 @@
 {
   "metadata": {
     "schema_version": "1.0.0",
-    "resource_group": "application",
-    "component": "IntentResolver",
+    "purpose": "Definir cuándo intervenir y qué pregunta formular cuando una intención no está completa o requiere confirmación.",
     "language": "es-CO",
-    "domain": "restaurante_colombiano_de_comida_de_mar",
-    "purpose": "Definir completitud, modos de intervención y preguntas mínimas sin mezclar estas decisiones con los puntajes de intención."
+    "domain": "restaurante_colombiano_de_comida_de_mar"
   },
   "intervention_modes": {
     "needs_user_clarification": {
@@ -24,20 +22,6 @@
       "requires_clarification_compat": true,
       "description": "La respuesta requiere validación humana por seguridad alimentaria."
     }
-  },
-  "slots": {
-    "product": {"description": "Producto específico o producto base."},
-    "preparation": {"description": "Preparación culinaria identificada."},
-    "quantity": {"description": "Cantidad de unidades solicitadas."},
-    "party_size": {"description": "Número de personas de una reserva, evento o pedido grupal."},
-    "date": {"description": "Fecha absoluta, relativa o día de la semana."},
-    "time": {"description": "Hora o momento del día."},
-    "payment_method": {"description": "Medio de pago identificado."},
-    "allergen": {"description": "Alérgeno o ingrediente sensible."},
-    "modification_target": {"description": "Ingrediente, alérgeno o preparación que se desea modificar."},
-    "context_product": {"description": "Producto activo recuperable del contexto."},
-    "context_order": {"description": "Pedido anterior recuperable del contexto."},
-    "context_address": {"description": "Dirección previa recuperable del contexto."}
   },
   "policies": {
     "precio.consultar_precio_producto": {
@@ -71,10 +55,10 @@
       "complete_question": "confirm_order"
     },
     "pedido.agregar_producto_pedido": {
-      "required_any": [["product", "context_product"]],
+      "required_slots": ["product"],
       "on_missing": "needs_user_clarification",
       "on_complete": "needs_transaction_confirmation",
-      "question_by_slot": {"product|context_product": "ambiguous_product_reference"},
+      "question_by_slot": {"product": "ambiguous_product_reference"},
       "complete_question": "confirm_order_change"
     },
     "pedido.agregar_productos_pedido": {
@@ -98,38 +82,36 @@
       "complete_question": "confirm_group_order"
     },
     "pedido.solicitar_modificacion": {
-      "required_slots": ["modification_target"],
-      "required_any": [["product", "context_product"]],
+      "required_slots": ["modification_target", "product"],
       "on_missing": "needs_user_clarification",
       "on_complete": "needs_transaction_confirmation",
       "question_by_slot": {
         "modification_target": "missing_modification_target",
-        "product|context_product": "missing_modification_product"
+        "product": "missing_modification_product"
       },
       "complete_question": "confirm_modification"
     },
     "pedido.repetir_pedido": {
-      "required_slots": ["context_order"],
+      "required_slots": ["order"],
       "on_missing": "needs_user_clarification",
       "on_complete": "needs_transaction_confirmation",
-      "question_by_slot": {"context_order": "missing_previous_order"},
+      "question_by_slot": {"order": "missing_previous_order"},
       "complete_question": "confirm_repeat_order"
     },
     "pedido.seleccionar_preparacion": {
-      "required_slots": ["preparation"],
-      "required_any": [["product", "context_product"]],
+      "required_slots": ["preparation", "product"],
       "on_missing": "needs_user_clarification",
       "question_by_slot": {
         "preparation": "missing_preparation",
-        "product|context_product": "missing_context_product"
+        "product": "missing_product_reference"
       }
     },
     "pedido.indicar_cantidad": {
-      "required_slots": ["quantity", "context_product"],
+      "required_slots": ["quantity", "product"],
       "on_missing": "needs_user_clarification",
       "question_by_slot": {
         "quantity": "missing_quantity",
-        "context_product": "missing_context_product"
+        "product": "missing_product_reference"
       }
     },
     "reserva_evento.solicitar_reserva": {
@@ -176,10 +158,10 @@
       "complete_question": "group_delivery_lookup"
     },
     "domicilio.usar_direccion_previa": {
-      "required_slots": ["context_address"],
+      "required_slots": ["address"],
       "on_missing": "needs_user_clarification",
       "on_complete": "needs_transaction_confirmation",
-      "question_by_slot": {"context_address": "missing_previous_address"},
+      "question_by_slot": {"address": "missing_previous_address"},
       "complete_question": "confirm_previous_address"
     },
     "pago.consultar_pago_mixto": {
@@ -237,7 +219,7 @@
     "missing_quantity": {"template": "¿Cuántas unidades necesitas?"},
     "missing_party_size": {"template": "¿Para cuántas personas sería?"},
     "missing_preparation": {"template": "¿Qué preparación prefieres para {product}?", "fallback": "¿Qué preparación prefieres?"},
-    "missing_context_product": {"template": "¿A cuál plato te refieres?"},
+    "missing_product_reference": {"template": "¿A cuál plato te refieres?"},
     "ambiguous_product_reference": {"template": "¿Cuál de los productos anteriores deseas agregar?"},
     "missing_modification_target": {"template": "¿Qué ingrediente o preparación deseas cambiar?"},
     "missing_modification_product": {"template": "¿A cuál plato deseas hacerle ese cambio?"},

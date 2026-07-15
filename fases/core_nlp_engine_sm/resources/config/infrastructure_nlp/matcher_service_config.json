@@ -7,7 +7,7 @@
     "language": "es-CO",
     "purpose": "Detectar estructuras de intención y extraer evidencia, no resolver la intención final.",
     "entity_precondition": "PhraseMatcherService debe asignar doc.ents antes del Matcher.",
-    "taxonomy": "intent_taxonomy.json",
+    "taxonomy": "resources/config/domain/intent_taxonomy.json",
     "ownership": "estructuras_tokenizadas_y_extraccion_sintactica"
   },
   "patterns": [

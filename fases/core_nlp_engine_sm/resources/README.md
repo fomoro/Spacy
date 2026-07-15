@@ -5,6 +5,7 @@ Este directorio reúne los archivos no Python de `core_nlp_engine`. Su objetivo 
 ## Organización
 
 - `config/`: reglas, taxonomías y políticas.
+- `config/domain/`: vocabulario canónico de intenciones y slots del negocio conversacional.
 - `data/`: datos reales del dominio suministrados para el funcionamiento de la aplicación.
 - `corpus/`: material lingüístico para desarrollo y experimentación.
 - `corpus/datasets/`: conjuntos para entrenar, validar, probar y medir.
@@ -28,14 +29,15 @@ Principios obligatorios:
 
 | Recurso | Propietario de | No debe contener |
 |---|---|---|
-| `config/intent_taxonomy.json` | Identificadores compartidos y definiciones de intenciones y subintenciones | Patrones, pesos o respuestas |
+| `config/domain/intent_taxonomy.json` | Identificadores y definiciones canónicas de intenciones y subintenciones del dominio | Patrones, pesos o respuestas |
+| `config/domain/slot_catalog.json` | Datos semánticos que pueden requerir las intenciones | Reglas de extracción, fuentes contextuales o preguntas |
 | `config/infrastructure_nlp/text_normalizer_service_config.json` | Errores inequívocos, abreviaturas, variación gráfica y jerga monetaria | Intenciones, entidades o precios |
 | `config/infrastructure_nlp/phrase_matcher_service_config.json` | Vocabulario estable de productos, preparaciones, categorías, servicios, pagos, ingredientes y alérgenos reconocido por `PhraseMatcherService` | Precios o disponibilidad diaria |
 | `config/infrastructure_nlp/matcher_service_config.json` | Estructuras sintácticas de intención, cantidades, dinero y negación | Inventarios de platos |
 | `config/infrastructure_nlp/lemma_service_config.json` | Formas morfológicas y evidencia secundaria de bajo peso | Decisiones finales |
 | `config/infrastructure_nlp/entity_ruler_service_config.json` | Tiempo y referencias que requieren contexto conversacional | Productos, ingredientes, precios o negación |
 | `config/application/intent_resolver_config.json` | Pesos, umbrales, prioridades y evidencia | Requisitos, preguntas, carta o precios |
-| `config/application/clarification_policy.json` | Slots obligatorios, modos de intervención y preguntas mínimas | Puntajes de intención o respuestas comerciales |
+| `config/application/clarification_policy.json` | Slots requeridos por intención, modos de intervención y preguntas mínimas | Definiciones de slots, puntajes de intención o respuestas comerciales |
 | `data/menu/menu_offerings.json` | Productos únicos con sus nombres, secciones, presentaciones y precios suministrados por el usuario | Alias, reglas lingüísticas o conversiones implícitas de precios |
 | `corpus/profiles/conversation_profiles.json` | Estilos conversacionales para diseño y evaluación de cobertura | Casos, datos personales o reglas de producción |
 | `corpus/datasets/customer_intent_benchmark.json` | Casos sintéticos y anotaciones de referencia | Configuración de producción o datos de entrenamiento futuros |
@@ -90,11 +92,13 @@ Toda intención o subintención debe:
 
 1. Representar un acto comunicativo distinto y necesario.
 2. Tener un identificador `snake_case` y una definición que la diferencie de sus vecinas.
-3. Declararse primero en `intent_taxonomy.json`.
+3. Declararse primero en `config/domain/intent_taxonomy.json`.
 4. Tener al menos una ruta de evidencia en Matcher, Lemmas, PhraseMatcher, EntityRuler o Resolver.
 5. Incluir pruebas positivas, ambiguas y negativas.
 
 Una aclaración debe indicar qué falta o qué resulta ambiguo. `config/application/clarification_policy.json` distingue cuatro modos: información que debe aportar el usuario, confirmación transaccional, consulta comercial y validación humana de seguridad. Mantiene separados `missing_slots`, `question_key` y el texto mostrado por compatibilidad. No se debe usar una pregunta genérica cuando el motor conoce la causa.
+
+Un slot representa el dato requerido, no su procedencia. Por ejemplo, `product` puede satisfacerse con una entidad del mensaje o con `context.producto_activo`; `order`, con `context.pedido_anterior`; y `address`, con `context.direccion_previa`. Las fuentes contextuales pertenecen al resolver y no crean slots alternativos.
 
 ## Perfiles conversacionales
 
@@ -133,17 +137,18 @@ Los 20 perfiles describen estilos de interacción observables; no clasifican per
 
 ### Intención o subintención
 
-1. Definirla en `intent_taxonomy.json`.
+1. Definirla en `config/domain/intent_taxonomy.json`.
 2. Incorporar evidencia lingüística.
 3. Configurar requisitos, pesos o prioridades en el Resolver únicamente si son necesarios.
 4. Añadir casos contractuales y de aclaración.
 
 ### Política de aclaración
 
-1. Declarar los slots obligatorios o alternativos de la subintención.
-2. Elegir `on_missing` y, solo cuando corresponda, `on_complete`.
-3. Asociar cada slot faltante con una pregunta existente.
-4. Pedir un dato por turno, conservar lo ya comprendido y no prometer información comercial o alimentaria no validada.
+1. Definir primero cada dato semántico en `config/domain/slot_catalog.json`.
+2. Declarar en la política los slots obligatorios de la subintención.
+3. Elegir `on_missing` y, solo cuando corresponda, `on_complete`.
+4. Asociar cada slot faltante con una pregunta existente.
+5. Pedir un dato por turno, conservar lo ya comprendido y no prometer información comercial o alimentaria no validada.
 
 ### Perfil conversacional
 

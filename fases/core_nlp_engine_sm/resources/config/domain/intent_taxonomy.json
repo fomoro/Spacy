@@ -1,11 +1,9 @@
 {
   "metadata": {
     "schema_version": "1.0.0",
-    "resource_group": "shared",
+    "purpose": "Definir el vocabulario canónico de intenciones y subintenciones del dominio conversacional del restaurante.",
     "language": "es-CO",
-    "domain": "restaurante_colombiano_de_comida_de_mar",
-    "purpose": "Contrato canónico compartido por Matcher, Lemmas, Resolver y datasets",
-    "naming_policy": "snake_case; una acción comunicativa por subintención"
+    "domain": "restaurante_colombiano_de_comida_de_mar"
   },
   "intents": {
     "catalogo": {

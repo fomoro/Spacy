@@ -12,7 +12,8 @@ Este directorio contiene perfiles y conjuntos lingüísticos de `core_nlp_engine
 Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 
 - Perfiles: `resources/corpus/profiles/conversation_profiles.json`.
-- Intenciones y subintenciones: `resources/config/intent_taxonomy.json`.
+- Intenciones y subintenciones: `resources/config/domain/intent_taxonomy.json`.
+- Slots semánticos: `resources/config/domain/slot_catalog.json`.
 - Entidades comerciales: `resources/config/infrastructure_nlp/phrase_matcher_service_config.json`.
 - Entidades contextuales: `resources/config/infrastructure_nlp/entity_ruler_service_config.json`.
 - Completitud y preguntas: `resources/config/application/clarification_policy.json`.

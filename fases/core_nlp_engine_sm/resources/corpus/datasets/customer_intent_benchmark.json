@@ -1,11 +1,12 @@
 {
   "metadata": {
-    "schema_version": "5.0.0",
+    "schema_version": "6.0.0",
     "purpose": "Evaluar la detección de intenciones, subintenciones, entidades, contexto y modos de intervención en español colombiano sin utilizar este corpus como material de entrenamiento.",
     "language": "es-CO",
     "domain": "restaurante_colombiano_de_comida_de_mar",
     "profiles_reference": "resources/corpus/profiles/conversation_profiles.json",
-    "taxonomy_reference": "resources/config/intent_taxonomy.json"
+    "taxonomy_reference": "resources/config/domain/intent_taxonomy.json",
+    "slots_reference": "resources/config/domain/slot_catalog.json"
   },
   "cases": [
     {
@@ -588,7 +589,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -1208,7 +1209,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -1603,7 +1604,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -1667,7 +1668,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -1784,7 +1785,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -2329,7 +2330,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -2913,7 +2914,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -2977,7 +2978,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -3472,7 +3473,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -3502,7 +3503,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -3626,7 +3627,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -4854,7 +4855,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -5336,7 +5337,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -5567,7 +5568,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -6202,7 +6203,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -6719,7 +6720,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -7025,7 +7026,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -7407,7 +7408,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -8033,7 +8034,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -8672,7 +8673,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -8702,7 +8703,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -8732,7 +8733,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -9826,7 +9827,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -11045,7 +11046,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -11109,7 +11110,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -11701,7 +11702,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -11765,7 +11766,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -12188,7 +12189,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -12422,7 +12423,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -13478,7 +13479,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -14084,7 +14085,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -14148,7 +14149,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -14894,7 +14895,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -15533,7 +15534,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },
@@ -15563,7 +15564,7 @@
         "subintent": "usar_direccion_previa",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_address"
+          "address"
         ],
         "question_key": "missing_previous_address"
       },
@@ -15593,7 +15594,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -16506,7 +16507,7 @@
         "subintent": "repetir_pedido",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "context_order"
+          "order"
         ],
         "question_key": "missing_previous_order"
       },
@@ -17025,7 +17026,7 @@
         "subintent": "solicitar_modificacion",
         "intervention_mode": "needs_user_clarification",
         "missing_slots": [
-          "product|context_product"
+          "product"
         ],
         "question_key": "missing_modification_product"
       },

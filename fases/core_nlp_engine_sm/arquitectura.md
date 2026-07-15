@@ -28,14 +28,15 @@ flowchart LR
 
 Cada responsabilidad tiene un recurso auditable:
 
-- `config/intent_taxonomy.json`: contrato canónico compartido de intenciones y subintenciones.
+- `config/domain/intent_taxonomy.json`: vocabulario canónico de intenciones y subintenciones del dominio.
+- `config/domain/slot_catalog.json`: datos semánticos requeridos por las intenciones, sin importar si provienen del mensaje o del contexto.
 - `config/infrastructure_nlp/text_normalizer_service_config.json`: variación gráfica, alias y jerga.
 - `config/infrastructure_nlp/phrase_matcher_service_config.json`: vocabulario comercial estable reconocido por `PhraseMatcherService`.
 - `config/infrastructure_nlp/matcher_service_config.json`: estructuras tokenizadas y extracciones sintácticas.
 - `config/infrastructure_nlp/lemma_service_config.json`: lemas y formas como evidencia secundaria.
 - `config/infrastructure_nlp/entity_ruler_service_config.json`: tiempo y referencias contextuales.
 - `config/application/intent_resolver_config.json`: pesos, prioridades y fuentes de evidencia.
-- `config/application/clarification_policy.json`: completitud, modos de intervención, slots faltantes y preguntas mínimas.
+- `config/application/clarification_policy.json`: completitud, modos de intervención y preguntas mínimas basadas en los slots del dominio.
 - `data/menu/menu_offerings.json`: precios y presentaciones enlazados por `product_id`.
 - `corpus/profiles/conversation_profiles.json`: 20 estilos conversacionales para diseño y evaluación, fuera del runtime.
 - `corpus/datasets/customer_intent_benchmark.json`: benchmark conversacional conocido de 600 casos.

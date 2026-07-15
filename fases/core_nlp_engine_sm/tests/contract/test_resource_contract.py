@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[2]
 RESOURCES = ROOT / "resources"
 DATASET_JSON = RESOURCES / "corpus" / "datasets" / "customer_intent_benchmark.json"
 RESOURCE_PATHS = {
-    "intent_taxonomy.json": RESOURCES / "config" / "intent_taxonomy.json",
+    "intent_taxonomy.json": RESOURCES / "config" / "domain" / "intent_taxonomy.json",
+    "slot_catalog.json": RESOURCES / "config" / "domain" / "slot_catalog.json",
     "text_normalizer_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json",
     "matcher_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "matcher_service_config.json",
     "lemma_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "lemma_service_config.json",
@@ -54,6 +55,7 @@ def validate() -> list[str]:
         return [f"Faltan recursos: {', '.join(missing)}"]
 
     taxonomy = load("intent_taxonomy.json")
+    slot_catalog = load("slot_catalog.json")
     menu = load("phrase_matcher_service_config.json")
     offerings = load("menu_offerings.json")
     normalizer = load("text_normalizer_service_config.json")
@@ -65,6 +67,18 @@ def validate() -> list[str]:
     profiles = load("conversation_profiles.json")
     valid_pairs = taxonomy_pairs(taxonomy)
     covered_pairs: set[str] = set()
+
+    minimal_metadata_fields = {"schema_version", "purpose", "language", "domain"}
+    for resource_name, resource in (
+        ("intent_taxonomy.json", taxonomy),
+        ("slot_catalog.json", slot_catalog),
+        ("clarification_policy.json", clarification),
+    ):
+        metadata = resource.get("metadata", {})
+        if not isinstance(metadata, dict) or set(metadata) != minimal_metadata_fields:
+            errors.append(f"{resource_name}: metadata no coincide con el contrato mínimo.")
+        elif not str(metadata.get("purpose", "")).strip():
+            errors.append(f"{resource_name}: metadata.purpose debe ser texto no vacío.")
 
     if not isinstance(normalizer.get("options"), dict):
         errors.append("text_normalizer_service_config.json: falta 'options'.")
@@ -106,17 +120,26 @@ def validate() -> list[str]:
             )
 
     modes = clarification.get("intervention_modes", {})
-    slots = clarification.get("slots", {})
+    slots = slot_catalog.get("slots", {})
     policies = clarification.get("policies", {})
     questions = clarification.get("questions", {})
     for field, value in (
         ("intervention_modes", modes),
-        ("slots", slots),
         ("policies", policies),
         ("questions", questions),
     ):
         if not isinstance(value, dict) or not value:
             errors.append(f"Aclaraciones: '{field}' debe ser un objeto no vacío.")
+
+    if not isinstance(slots, dict) or not slots:
+        errors.append("Slots: 'slots' debe ser un objeto no vacío.")
+        slots = {}
+    else:
+        for slot_id, definition in slots.items():
+            if not isinstance(definition, dict) or set(definition) != {"description"}:
+                errors.append(f"Slots: '{slot_id}' debe contener solo description.")
+            elif not str(definition.get("description", "")).strip():
+                errors.append(f"Slots: '{slot_id}' requiere una descripción.")
 
     allowed_placeholders = set(slots) | {"options"}
     for question_key, question in questions.items():
@@ -373,7 +396,7 @@ def validate() -> list[str]:
             dataset_cases = []
         expected_metadata_fields = {
             "schema_version", "purpose", "language", "domain",
-            "profiles_reference", "taxonomy_reference",
+            "profiles_reference", "taxonomy_reference", "slots_reference",
         }
         if set(metadata) != expected_metadata_fields:
             errors.append("Dataset: metadata no coincide con el contrato mínimo canónico.")
@@ -381,6 +404,10 @@ def validate() -> list[str]:
             errors.append("Dataset: metadata.purpose debe explicar el uso del benchmark.")
         if metadata.get("language") != "es-CO":
             errors.append("Dataset: metadata.language debe ser 'es-CO'.")
+        if metadata.get("taxonomy_reference") != "resources/config/domain/intent_taxonomy.json":
+            errors.append("Dataset: taxonomy_reference no apunta al recurso canónico.")
+        if metadata.get("slots_reference") != "resources/config/domain/slot_catalog.json":
+            errors.append("Dataset: slots_reference no apunta al recurso canónico.")
         if len(dataset_cases) != 600:
             errors.append(f"Dataset: se esperaban 600 casos; hay {len(dataset_cases)}.")
 

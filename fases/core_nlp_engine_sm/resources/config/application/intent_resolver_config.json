@@ -7,7 +7,7 @@
     "strategy": "weighted_evidence_with_priority_rules",
     "base_phase": 7,
     "decision_policy": "resolve_or_request_clarification",
-    "taxonomy": "intent_taxonomy.json",
+    "taxonomy": "resources/config/domain/intent_taxonomy.json",
     "ownership": "ponderacion_prioridades_y_evidencia"
   },
   "thresholds": {

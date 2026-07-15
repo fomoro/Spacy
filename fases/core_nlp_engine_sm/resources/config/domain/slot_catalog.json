@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "purpose": "Definir los datos semánticos que pueden requerir las intenciones del dominio, independientemente de si provienen del mensaje o del contexto.",
+    "language": "es-CO",
+    "domain": "restaurante_colombiano_de_comida_de_mar"
+  },
+  "slots": {
+    "product": {
+      "description": "Producto específico o producto base."
+    },
+    "preparation": {
+      "description": "Preparación culinaria identificada."
+    },
+    "quantity": {
+      "description": "Cantidad de unidades solicitadas."
+    },
+    "party_size": {
+      "description": "Número de personas de una reserva, evento o pedido grupal."
+    },
+    "date": {
+      "description": "Fecha absoluta, relativa o día de la semana."
+    },
+    "time": {
+      "description": "Hora o momento del día."
+    },
+    "payment_method": {
+      "description": "Medio de pago identificado."
+    },
+    "allergen": {
+      "description": "Alérgeno o ingrediente sensible."
+    },
+    "modification_target": {
+      "description": "Ingrediente, alérgeno o preparación que se desea modificar."
+    },
+    "order": {
+      "description": "Pedido anterior o activo recuperable para continuar una operación."
+    },
+    "address": {
+      "description": "Dirección de entrega explícita o recuperable del contexto."
+    }
+  }
+}

@@ -27,7 +27,9 @@ core_nlp_engine/
 ├── resources/                         # Archivos no Python y su gobernanza
 │   ├── README.md
 │   ├── config/                    # Reglas, taxonomías y políticas
-│   │   ├── intent_taxonomy.json    # Contrato compartido
+│   │   ├── domain/                  # Intenciones y slots del dominio
+│   │   │   ├── intent_taxonomy.json
+│   │   │   └── slot_catalog.json
 │   │   ├── infrastructure_nlp/     # Configuración de servicios NLP
 │   │   └── application/            # Resolución y aclaración
 │   ├── data/

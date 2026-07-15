@@ -136,7 +136,6 @@ class IntentResolver:
                 "intervention_modes": {
                     "needs_user_clarification": {"requires_clarification_compat": True}
                 },
-                "slots": {},
                 "policies": {},
                 "questions": {
                     key: {"template": value}
@@ -147,7 +146,7 @@ class IntentResolver:
         else:
             raise TypeError("clarification_policy debe ser una ruta, un diccionario o None")
 
-        for key in ("intervention_modes", "slots", "policies", "questions"):
+        for key in ("intervention_modes", "policies", "questions"):
             if not isinstance(data.get(key), dict):
                 raise ValueError(f"La política de aclaración debe contener '{key}'.")
         return data
@@ -572,11 +571,11 @@ class IntentResolver:
         ):
             available.add("party_size")
         if context.get("producto_activo"):
-            available.add("context_product")
+            available.add("product")
         if context.get("pedido_anterior"):
-            available.add("context_order")
+            available.add("order")
         if context.get("direccion_previa"):
-            available.add("context_address")
+            available.add("address")
         return available
 
     def _confidence(self, top_score: float, second_score: float) -> float:

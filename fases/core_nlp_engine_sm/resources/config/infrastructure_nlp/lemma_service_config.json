@@ -18,7 +18,7 @@
       "No reemplazan Matcher, PhraseMatcher, contexto ni reglas de negocio.",
       "Las formas flexionadas del catálogo son fallback reproducible."
     ],
-    "taxonomy": "intent_taxonomy.json",
+    "taxonomy": "resources/config/domain/intent_taxonomy.json",
     "ownership": "lemas_y_formas_flexionadas_como_evidencia_secundaria"
   },
   "stop_lemmas": [
