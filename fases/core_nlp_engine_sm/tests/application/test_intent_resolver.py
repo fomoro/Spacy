@@ -281,12 +281,14 @@ class IntentResolverTests(unittest.TestCase):
         config = json.loads(
             (ROOT / "resources" / "config" / "application" / "intent_resolver_config.json").read_text(encoding="utf-8")
         )
-        clarification = json.loads(
-            (ROOT / "resources" / "config" / "application" / "clarification_policy.json").read_text(encoding="utf-8")
+        conversation_rules = json.loads(
+            (ROOT / "resources" / "config" / "application" / "conversation_action_rules.json").read_text(encoding="utf-8")
         )
-        resolver = IntentResolver(config, clarification)
+        resolver = IntentResolver(config, conversation_rules)
         self.assertIn("thresholds", resolver.config)
-        self.assertIn("policies", resolver.clarification_policy)
+        self.assertIn(
+            "rules_by_intent_and_subintent", resolver.conversation_action_rules
+        )
 
 
 if __name__ == "__main__":

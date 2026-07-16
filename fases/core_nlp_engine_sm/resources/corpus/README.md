@@ -2,12 +2,21 @@
 
 Este directorio contiene perfiles y conjuntos lingüísticos de `core_nlp_engine` para español colombiano conversacional en el dominio de un restaurante de comida de mar. Su contenido sirve para desarrollar y medir componentes; no contiene configuración de producción.
 
+## Organización
+
+- `benchmarks/`: medir el sistema con casos conocidos y anotaciones esperadas.
+- `conversations/`: simular flujos completos de mensajes conservando el estado entre turnos.
+- `datasets/`: entrenar, validar y probar modelos estadísticos con particiones separadas.
+- `profiles/`: diseñar cobertura lingüística y segmentar el análisis de resultados.
+
 ## Archivos y autoridad
 
 | Archivo | Función |
 |---|---|
 | `profiles/conversation_profiles.json` | Perfiles conversacionales para diseñar y segmentar cobertura. |
-| `datasets/customer_intent_benchmark.json` | Fuente canónica con metadatos, contexto y anotaciones estructuradas. |
+| `benchmarks/customer_intent_benchmark.json` | Fuente canónica con metadatos, contexto y anotaciones estructuradas para medir el sistema. |
+| `conversations/carlos.json` | Flujo sintético de cinco mensajes del cliente Carlos. |
+| `conversations/diego.json` | Flujo sintético de cinco mensajes del cliente Diego. |
 
 Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 
@@ -16,10 +25,11 @@ Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 - Slots semánticos: `resources/config/domain/slot_catalog.json`.
 - Entidades comerciales: `resources/config/infrastructure_nlp/phrase_matcher_service_config.json`.
 - Entidades contextuales: `resources/config/infrastructure_nlp/entity_ruler_service_config.json`.
-- Completitud y modos: `resources/config/application/clarification_policy.json`.
-- Textos de preguntas: `resources/content/responses/es-CO/clarification_questions.json`.
+- Acciones, reglas de completitud y preguntas: `resources/config/application/conversation_action_rules.json`.
 
-Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro de un dataset.
+Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro del benchmark.
+
+Los archivos de `conversations/` contienen exclusivamente listas de mensajes. No incluyen metadata, respuestas del bot, intenciones esperadas ni datos personales reales. Sirven para ejecutar una secuencia manual o automatizada conservando el estado entre turnos.
 
 ## Diseño actual
 
@@ -55,7 +65,7 @@ Estas carpetas se crearán cuando exista contenido real, curado y anonimizado pa
 | `expected.subintent` | Subintención canónica esperada. |
 | `expected.intervention_mode` | Resultado conversacional esperado. |
 | `expected.missing_slots` | Datos que todavía debe aportar o confirmar el cliente. |
-| `expected.question_key` | Pregunta mínima definida por la política de aclaración. |
+| `expected.question_key` | Pregunta seleccionada por las reglas de acción conversacional. |
 | `expected_entities` | Entidades y valores que deberían reconocerse en el mensaje. |
 | `annotation` | Evidencia lingüística que explica la lectura esperada, descarta falsos positivos y orienta la acción. |
 
@@ -82,14 +92,14 @@ La compatibilidad `requires_clarification` se deriva del modo declarado por la p
 
 ## Criterios para agregar o modificar casos
 
-1. Editar primero `customer_intent_benchmark.json`, que es la fuente de verdad.
+1. Editar primero `benchmarks/customer_intent_benchmark.json`, que es la fuente de verdad.
 2. Mantener el mensaje natural para su perfil y anotar únicamente evidencia observable.
 3. Usar identificadores existentes en los recursos de referencia.
 4. Diferenciar ambigüedad lingüística, confirmación transaccional, consulta operativa y seguridad alimentaria.
 5. Conservar 30 casos por perfil, IDs únicos, numeración continua y cobertura equilibrada.
 6. Ejecutar todas las validaciones antes de aceptar el cambio.
 
-No se debe duplicar un mensaje cambiando palabras superficiales, agregar información personal identificable ni ajustar la etiqueta para favorecer la salida actual del motor. Cuando el motor y el caso difieran, primero se auditan la taxonomía, la evidencia lingüística y la política de aclaración.
+No se debe duplicar un mensaje cambiando palabras superficiales, agregar información personal identificable ni ajustar la etiqueta para favorecer la salida actual del motor. Cuando el motor y el caso difieran, primero se auditan la taxonomía, la evidencia lingüística y las reglas de acción conversacional.
 
 ## Validación y evaluación
 
@@ -105,7 +115,7 @@ python -X utf8 tests/evaluation/evaluate_resolver.py
 
 `tests/contract/test_resource_contract.py` comprueba el JSON canónico, sus metadatos mínimos, conteos, IDs, unicidad de mensajes, perfiles, taxonomía, slots, preguntas, entidades, cobertura y evidencia lingüística de las anotaciones. Los evaluadores generan resultados en `reports/`; esos archivos son salidas derivadas y no forman parte de la verdad anotada.
 
-Los cinco evaluadores de `tests/evaluation/` recorren este mismo dataset de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
+Los cinco evaluadores de `tests/evaluation/` recorren este mismo benchmark de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
 
 ## Alcance de las métricas
 

@@ -1,4 +1,4 @@
-"""Evaluación de IntentEngine sobre el dataset canónico."""
+"""Evaluación de IntentEngine sobre el benchmark canónico."""
 
 import csv
 from collections import defaultdict
@@ -22,7 +22,7 @@ from src.application import (
     LinguisticParser,
 )
 
-CASES = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
+CASES = ROOT / "resources" / "corpus" / "benchmarks" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "resolver" / "evaluacion_resolutor_dataset.csv"
 SUMMARY = ROOT / "reports" / "resolver" / "resultado_resolutor.json"
 

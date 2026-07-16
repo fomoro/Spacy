@@ -1,11 +1,19 @@
 {
   "metadata": {
-    "schema_version": "2.0.0",
+    "schema_version": "3.0.0",
     "purpose": "Registrar los productos, nombres, secciones y precios tal como los suministra el usuario, conservando su lenguaje y estructurando sus valores.",
     "currency": "COP",
     "allowed_types": [
       "fixed",
       "by_size"
+    ]
+  },
+  "recommendations": {
+    "product_ids": [
+      "mojarra_frita",
+      "arroz_con_camaron",
+      "cazuela_de_mariscos",
+      "langostinos_al_ajillo"
     ]
   },
   "products": [

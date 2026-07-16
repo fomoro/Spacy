@@ -24,7 +24,7 @@
       "fechas_y_dias",
       "actos_de_habla_e_intenciones"
     ],
-    "linked_resource": "resources/data/menu/menu_offerings.json"
+    "linked_resource": "resources/business_data/menu/menu_offerings.json"
   },
   "entity_types": {
     "PRODUCTO_ESPECIFICO": {

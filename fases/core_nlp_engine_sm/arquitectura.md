@@ -36,10 +36,13 @@ Cada responsabilidad tiene un recurso auditable:
 - `config/infrastructure_nlp/lemma_service_config.json`: lemas y formas como evidencia secundaria.
 - `config/infrastructure_nlp/entity_ruler_service_config.json`: tiempo y referencias contextuales.
 - `config/application/intent_resolver_config.json`: pesos, prioridades y fuentes de evidencia.
-- `config/application/clarification_policy.json`: completitud, modos de intervención y preguntas mínimas basadas en los slots del dominio.
-- `data/menu/menu_offerings.json`: precios y presentaciones enlazados por `product_id`.
+- `config/application/conversation_action_rules.json`: acciones posibles, reglas por intención y subintención, y preguntas asociadas.
+- `business_data/menu/menu_offerings.json`: precios, presentaciones y recomendaciones enlazados por `product_id`.
+- `business_data/restaurant/restaurant_profile.json`: información estable del restaurante.
+- `corpus/benchmarks/customer_intent_benchmark.json`: benchmark conocido de 600 casos para medir el sistema.
+- `corpus/conversations/`: flujos sintéticos compuestos únicamente por mensajes de clientes.
+- `corpus/datasets/`: material futuro para entrenar, validar y probar modelos.
 - `corpus/profiles/conversation_profiles.json`: 20 estilos conversacionales para diseño y evaluación, fuera del runtime.
-- `corpus/datasets/customer_intent_benchmark.json`: benchmark conversacional conocido de 600 casos.
 
 La política completa se documenta en `resources/README.md`. Cada servicio carga de forma autónoma su archivo o un diccionario. `IntentResolver` carga por separado sus puntajes y la política conversacional. Los perfiles no se inyectan al parser ni al resolutor. `tests/contract/test_resource_contract.py` verifica referencias contra la taxonomía, cobertura, preguntas, slots, duplicados y fronteras de propiedad.
 

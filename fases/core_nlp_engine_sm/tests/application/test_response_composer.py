@@ -14,7 +14,7 @@ class ResponseComposerTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.composer = ResponseComposer(
             ROOT / "resources" / "content" / "responses" / "es-CO" / "response_templates.json",
-            ROOT / "resources" / "data" / "business" / "restaurant_profile.json",
+            ROOT / "resources" / "business_data" / "restaurant" / "restaurant_profile.json",
         )
 
     def test_uses_restaurant_profile_for_stable_business_data(self):

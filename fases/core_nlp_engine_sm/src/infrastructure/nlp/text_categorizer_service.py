@@ -7,7 +7,7 @@ class TextCategorizerService:
     La estrategia de datos prevista para implementar y evaluar el
     TextCategorizer debe mantener separados los siguientes conjuntos:
 
-    - ``resources/corpus/datasets/customer_intent_benchmark.json``:
+    - ``resources/corpus/benchmarks/customer_intent_benchmark.json``:
       conservar como benchmark conocido.
     - ``resources/corpus/datasets/text_categorizer/entrenamiento``: entrenar el
       TextCategorizer con mensajes nuevos.

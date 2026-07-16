@@ -31,17 +31,19 @@ core_nlp_engine/
 │   │   │   ├── intent_taxonomy.json
 │   │   │   └── slot_catalog.json
 │   │   ├── infrastructure_nlp/     # Configuración de servicios NLP
-│   │   └── application/            # Resolución y aclaración
-│   ├── content/responses/es-CO/     # Preguntas y plantillas de respuesta
-│   ├── data/
-│   │   ├── business/              # Perfil real del restaurante
-│   │   └── menu/                  # Ofertas y precios suministrados por el usuario
+│   │   └── application/            # Resolución y acciones conversacionales
+│   ├── content/responses/es-CO/     # Plantillas generales de respuesta
+│   ├── business_data/             # Información real consumida por la aplicación
+│   │   ├── restaurant/            # Perfil estable del restaurante
+│   │   └── menu/                  # Ofertas, precios y recomendaciones
 │   └── corpus/                    # Material lingüístico de desarrollo y medición
 │       ├── README.md
+│       ├── benchmarks/            # Casos etiquetados para medir el sistema
+│       │   └── customer_intent_benchmark.json
+│       ├── conversations/         # Flujos sintéticos con solo mensajes del cliente
+│       ├── datasets/              # Material para entrenar, validar y probar modelos
 │       ├── profiles/
 │       │   └── conversation_profiles.json
-│       └── datasets/
-│           └── customer_intent_benchmark.json
 ├── src/                           # Código fuente
 │   ├── application/               # Parser, resolutor y fachada IntentEngine
 │   └── infrastructure/nlp/        # Servicios lingüísticos autónomos con spaCy
@@ -61,9 +63,9 @@ core_nlp_engine/
 
 ---
 
-## Dataset conversacional
+## Benchmark de intenciones
 
-`resources/corpus/datasets/customer_intent_benchmark.json` es la única fuente canónica de 600 casos. Cada uno de los 20 perfiles aporta 30 casos y cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de obtención o verificación de información; 150 casos incluyen contexto conversacional. Los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
+`resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de 600 casos. Cada uno de los 20 perfiles aporta 30 casos y cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de obtención o verificación de información; 150 casos incluyen contexto conversacional. Los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
 
 El comando `python -X utf8 tests/contract/test_resource_contract.py` comprueba conteos, unicidad, cobertura de las 49 subintenciones, referencias al menú, slots, modos de intervención y anotaciones lingüísticas.
 

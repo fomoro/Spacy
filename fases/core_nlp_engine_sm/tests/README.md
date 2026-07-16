@@ -1,6 +1,6 @@
 # Pruebas y herramientas de calidad
 
-Esta carpeta separa las comprobaciones automáticas de las evaluaciones masivas y las consolas manuales. Los datos de referencia no viven aquí: `resources/corpus/datasets/customer_intent_benchmark.json` es la única fuente canónica de casos.
+Esta carpeta separa las comprobaciones automáticas de las evaluaciones masivas y las consolas manuales. Los datos de referencia no viven aquí: `resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de casos.
 
 ## Estructura
 
@@ -47,7 +47,7 @@ Todas las pruebas automatizadas:
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-Evaluaciones sobre el dataset canónico:
+Evaluaciones sobre el benchmark canónico:
 
 ```bash
 python -X utf8 tests/evaluation/evaluate_normalizer.py
@@ -73,6 +73,6 @@ python -X utf8 tests/interactive/linguistic_parser_console.py
 - Solo las evaluaciones masivas comienzan por `evaluate_`.
 - Las herramientas manuales terminan en `_console.py`.
 - Ninguna prueba redefine taxonomías, perfiles o entidades mediante JSON locales.
-- Toda evaluación usa `resources/corpus/datasets/customer_intent_benchmark.json` y conserva `profile_id` para segmentar resultados.
+- Toda evaluación usa `resources/corpus/benchmarks/customer_intent_benchmark.json` y conserva `profile_id` para segmentar resultados.
 - Una prueba unitaria debe ser determinista y no modificar `resources/`.
 - Un reporte puede regenerarse; una anotación del dataset requiere revisión lingüística y contractual.

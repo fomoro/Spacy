@@ -1,4 +1,4 @@
-"""Evaluación masiva de MatcherService sobre el dataset canónico."""
+"""Evaluación masiva de MatcherService sobre el benchmark canónico."""
 
 import csv
 import json
@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.infrastructure import TextNormalizerService, PhraseMatcherService, MatcherService
 
-DATASET = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
+DATASET = ROOT / "resources" / "corpus" / "benchmarks" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "matcher" / "evaluacion_matcher.csv"
 SUMMARY = ROOT / "reports" / "matcher" / "resultado_matcher.json"
 

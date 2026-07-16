@@ -11,7 +11,11 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 RESOURCES = ROOT / "resources"
-DATASET_JSON = RESOURCES / "corpus" / "datasets" / "customer_intent_benchmark.json"
+BENCHMARK_JSON = RESOURCES / "corpus" / "benchmarks" / "customer_intent_benchmark.json"
+CONVERSATION_PATHS = {
+    "carlos.json": RESOURCES / "corpus" / "conversations" / "carlos.json",
+    "diego.json": RESOURCES / "corpus" / "conversations" / "diego.json",
+}
 RESOURCE_PATHS = {
     "intent_taxonomy.json": RESOURCES / "config" / "domain" / "intent_taxonomy.json",
     "slot_catalog.json": RESOURCES / "config" / "domain" / "slot_catalog.json",
@@ -20,18 +24,17 @@ RESOURCE_PATHS = {
     "lemma_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "lemma_service_config.json",
     "entity_ruler_service_config.json": RESOURCES / "config" / "infrastructure_nlp" / "entity_ruler_service_config.json",
     "intent_resolver_config.json": RESOURCES / "config" / "application" / "intent_resolver_config.json",
-    "clarification_policy.json": RESOURCES / "config" / "application" / "clarification_policy.json",
-    "clarification_questions.json": (
-        RESOURCES / "content" / "responses" / "es-CO" / "clarification_questions.json"
+    "conversation_action_rules.json": (
+        RESOURCES / "config" / "application" / "conversation_action_rules.json"
     ),
     "response_templates.json": (
         RESOURCES / "content" / "responses" / "es-CO" / "response_templates.json"
     ),
-    "restaurant_profile.json": RESOURCES / "data" / "business" / "restaurant_profile.json",
+    "restaurant_profile.json": RESOURCES / "business_data" / "restaurant" / "restaurant_profile.json",
     "phrase_matcher_service_config.json": (
         RESOURCES / "config" / "infrastructure_nlp" / "phrase_matcher_service_config.json"
     ),
-    "menu_offerings.json": RESOURCES / "data" / "menu" / "menu_offerings.json",
+    "menu_offerings.json": RESOURCES / "business_data" / "menu" / "menu_offerings.json",
     "conversation_profiles.json": RESOURCES / "corpus" / "profiles" / "conversation_profiles.json",
 }
 
@@ -58,6 +61,9 @@ def evidence_pair(item: dict[str, Any]) -> str:
 def validate() -> list[str]:
     errors: list[str] = []
     missing = [name for name, path in RESOURCE_PATHS.items() if not path.is_file()]
+    missing.extend(
+        name for name, path in CONVERSATION_PATHS.items() if not path.is_file()
+    )
     if missing:
         return [f"Faltan recursos: {', '.join(missing)}"]
 
@@ -70,20 +76,40 @@ def validate() -> list[str]:
     lemmas = load("lemma_service_config.json")
     ruler = load("entity_ruler_service_config.json")
     resolver = load("intent_resolver_config.json")
-    clarification = load("clarification_policy.json")
-    clarification_questions = load("clarification_questions.json")
+    conversation_rules = load("conversation_action_rules.json")
     response_templates = load("response_templates.json")
     restaurant_profile = load("restaurant_profile.json")
     profiles = load("conversation_profiles.json")
     valid_pairs = taxonomy_pairs(taxonomy)
     covered_pairs: set[str] = set()
 
+    conversation_messages: set[str] = set()
+    for conversation_name, conversation_path in CONVERSATION_PATHS.items():
+        conversation = json.loads(conversation_path.read_text(encoding="utf-8"))
+        if not isinstance(conversation, list) or len(conversation) != 5:
+            errors.append(
+                f"Conversación {conversation_name}: debe ser una lista de cinco mensajes."
+            )
+            continue
+        if not all(isinstance(message, str) and message.strip() for message in conversation):
+            errors.append(
+                f"Conversación {conversation_name}: todos los elementos deben ser textos no vacíos."
+            )
+            continue
+        normalized = {" ".join(message.casefold().split()) for message in conversation}
+        if len(normalized) != 5:
+            errors.append(f"Conversación {conversation_name}: contiene mensajes duplicados.")
+        overlap = conversation_messages.intersection(normalized)
+        if overlap:
+            errors.append(
+                f"Conversación {conversation_name}: repite mensajes de otro flujo."
+            )
+        conversation_messages.update(normalized)
+
     minimal_metadata_fields = {"schema_version", "purpose", "language", "domain"}
     for resource_name, resource in (
         ("intent_taxonomy.json", taxonomy),
         ("slot_catalog.json", slot_catalog),
-        ("clarification_policy.json", clarification),
-        ("clarification_questions.json", clarification_questions),
         ("response_templates.json", response_templates),
         ("restaurant_profile.json", restaurant_profile),
     ):
@@ -129,27 +155,86 @@ def validate() -> list[str]:
     for legacy_key in ("required_entities", "clarification_messages"):
         if legacy_key in resolver:
             errors.append(
-                f"Resolver: '{legacy_key}' pertenece a clarification_policy.json."
+                f"Resolver: '{legacy_key}' pertenece a conversation_action_rules.json."
             )
 
-    modes = clarification.get("intervention_modes", {})
+    actions = conversation_rules.get("conversation_actions", {})
     slots = slot_catalog.get("slots", {})
-    policies = clarification.get("policies", {})
-    questions = clarification_questions.get("questions", {})
-    expected_questions_reference = (
-        "resources/content/responses/es-CO/clarification_questions.json"
-    )
-    if clarification.get("questions_reference") != expected_questions_reference:
-        errors.append("Aclaraciones: questions_reference no apunta al recurso canónico.")
-    if "questions" in clarification:
-        errors.append("Aclaraciones: las preguntas no deben estar embebidas en la política.")
+    rules = conversation_rules.get("rules_by_intent_and_subintent", {})
+    questions = conversation_rules.get("questions", {})
+    conversation_metadata = conversation_rules.get("metadata", {})
+    expected_conversation_metadata_fields = {
+        "schema_version",
+        "purpose",
+        "language",
+        "conversation_action_count",
+        "intent_subintent_rule_count",
+        "question_count",
+    }
+    if (
+        not isinstance(conversation_metadata, dict)
+        or set(conversation_metadata) != expected_conversation_metadata_fields
+    ):
+        errors.append(
+            "conversation_action_rules.json: metadata no coincide con el contrato mínimo."
+        )
+    else:
+        if not str(conversation_metadata.get("purpose", "")).strip():
+            errors.append(
+                "conversation_action_rules.json: metadata.purpose debe ser texto no vacío."
+            )
+        expected_counts = {
+            "conversation_action_count": len(actions),
+            "intent_subintent_rule_count": len(rules),
+            "question_count": len(questions),
+        }
+        for count_field, expected_count in expected_counts.items():
+            if conversation_metadata.get(count_field) != expected_count:
+                errors.append(
+                    "conversation_action_rules.json: "
+                    f"metadata.{count_field} debe ser {expected_count}."
+                )
     for field, value in (
-        ("intervention_modes", modes),
-        ("policies", policies),
+        ("conversation_actions", actions),
+        ("rules_by_intent_and_subintent", rules),
         ("questions", questions),
     ):
         if not isinstance(value, dict) or not value:
-            errors.append(f"Aclaraciones: '{field}' debe ser un objeto no vacío.")
+            errors.append(f"Acciones conversacionales: '{field}' debe ser un objeto no vacío.")
+
+    expected_action_categories = {
+        "resolved": "successful_resolution",
+        "needs_user_clarification": "clarification",
+        "needs_transaction_confirmation": "confirmation",
+        "needs_business_lookup": "operational_lookup",
+        "needs_human_safety_validation": "safety_escalation",
+        "needs_human_assistance": "human_escalation",
+        "needs_identity_verification": "identity_verification",
+        "out_of_scope": "terminal_result",
+    }
+    if set(actions) != set(expected_action_categories):
+        errors.append("Acciones conversacionales: el catálogo no coincide con el contrato.")
+    for action_id, expected_category in expected_action_categories.items():
+        action = actions.get(action_id, {})
+        if not isinstance(action, dict):
+            errors.append(f"Acciones conversacionales: '{action_id}' debe ser un objeto.")
+            continue
+        if set(action) != {"category", "requires_clarification_compat", "description"}:
+            errors.append(
+                f"Acciones conversacionales: '{action_id}' contiene campos inesperados."
+            )
+        if action.get("category") != expected_category:
+            errors.append(
+                f"Acciones conversacionales: categoría incorrecta en '{action_id}'."
+            )
+        if not isinstance(action.get("requires_clarification_compat"), bool):
+            errors.append(
+                f"Acciones conversacionales: '{action_id}' requiere compatibilidad booleana."
+            )
+        if not str(action.get("description", "")).strip():
+            errors.append(
+                f"Acciones conversacionales: '{action_id}' requiere una descripción."
+            )
 
     if not isinstance(slots, dict) or not slots:
         errors.append("Slots: 'slots' debe ser un objeto no vacío.")
@@ -197,7 +282,7 @@ def validate() -> list[str]:
     allowed_placeholders = set(slots) | {"options"}
     for question_key, question in questions.items():
         if not isinstance(question, dict) or not str(question.get("template", "")).strip():
-            errors.append(f"Aclaraciones: pregunta '{question_key}' sin template.")
+            errors.append(f"Acciones conversacionales: pregunta '{question_key}' sin template.")
             continue
         for text_field in ("template", "fallback"):
             text = question.get(text_field)
@@ -208,12 +293,14 @@ def validate() -> list[str]:
                     name for _, name, _, _ in Formatter().parse(str(text)) if name
                 }
             except ValueError as exc:
-                errors.append(f"Aclaraciones: formato inválido en '{question_key}': {exc}.")
+                errors.append(
+                    f"Acciones conversacionales: formato inválido en '{question_key}': {exc}."
+                )
                 continue
             unknown = placeholders - allowed_placeholders
             if unknown:
                 errors.append(
-                    f"Aclaraciones: '{question_key}' usa slots desconocidos: "
+                    f"Acciones conversacionales: '{question_key}' usa slots desconocidos: "
                     + ", ".join(sorted(unknown))
                 )
 
@@ -229,11 +316,13 @@ def validate() -> list[str]:
     if not isinstance(restaurant, dict) or not restaurant:
         errors.append("Negocio: 'restaurant' debe ser un objeto no vacío.")
 
-    for pair, policy in policies.items():
+    for pair, policy in rules.items():
         if pair not in valid_pairs:
-            errors.append(f"Aclaraciones: política '{pair}' fuera de la taxonomía.")
+            errors.append(
+                f"Acciones conversacionales: regla '{pair}' fuera de la taxonomía."
+            )
         if not isinstance(policy, dict):
-            errors.append(f"Aclaraciones: política '{pair}' debe ser un objeto.")
+            errors.append(f"Acciones conversacionales: regla '{pair}' debe ser un objeto.")
             continue
         required = [str(slot) for slot in policy.get("required_slots", [])]
         required_any = [
@@ -246,13 +335,15 @@ def validate() -> list[str]:
         unknown_slots = referenced_slots - set(slots)
         if unknown_slots:
             errors.append(
-                f"Aclaraciones {pair}: slots desconocidos: "
+                f"Acciones conversacionales {pair}: slots desconocidos: "
                 + ", ".join(sorted(unknown_slots))
             )
         for mode_field in ("on_missing", "on_complete"):
             mode = policy.get(mode_field)
-            if mode is not None and mode not in modes:
-                errors.append(f"Aclaraciones {pair}: modo desconocido '{mode}'.")
+            if mode is not None and mode not in actions:
+                errors.append(
+                    f"Acciones conversacionales {pair}: acción desconocida '{mode}'."
+                )
         question_by_slot = policy.get("question_by_slot", {})
         expected_question_slots = set(required) | {
             "|".join(group) for group in required_any if group
@@ -260,7 +351,7 @@ def validate() -> list[str]:
         missing_question_slots = expected_question_slots - set(question_by_slot)
         if missing_question_slots:
             errors.append(
-                f"Aclaraciones {pair}: faltan preguntas para "
+                f"Acciones conversacionales {pair}: faltan preguntas para "
                 + ", ".join(sorted(missing_question_slots))
             )
         referenced_questions = list(question_by_slot.values())
@@ -269,24 +360,24 @@ def validate() -> list[str]:
         requires_identity = policy.get("requires_identity_verification")
         if requires_identity is not None and not isinstance(requires_identity, bool):
             errors.append(
-                f"Aclaraciones {pair}: requires_identity_verification debe ser booleano."
+                f"Acciones conversacionales {pair}: requires_identity_verification debe ser booleano."
             )
         if requires_identity is True:
-            if "needs_identity_verification" not in modes:
+            if "needs_identity_verification" not in actions:
                 errors.append(
-                    "Aclaraciones: falta declarar el modo needs_identity_verification."
+                    "Acciones conversacionales: falta declarar needs_identity_verification."
                 )
             identity_question = policy.get("identity_question")
             if not identity_question:
                 errors.append(
-                    f"Aclaraciones {pair}: falta identity_question."
+                    f"Acciones conversacionales {pair}: falta identity_question."
                 )
             else:
                 referenced_questions.append(identity_question)
         for question_key in referenced_questions:
             if question_key not in questions:
                 errors.append(
-                    f"Aclaraciones {pair}: pregunta desconocida '{question_key}'."
+                    f"Acciones conversacionales {pair}: pregunta desconocida '{question_key}'."
                 )
 
     uncovered = sorted(valid_pairs - covered_pairs)
@@ -335,12 +426,21 @@ def validate() -> list[str]:
             "Negocio: medios de pago fuera del catálogo PhraseMatcher: "
             + ", ".join(sorted(unknown_payment_methods))
         )
-    featured_product_ids = set(restaurant.get("featured_product_ids", []))
-    unknown_featured_products = featured_product_ids - product_ids
-    if unknown_featured_products:
+    recommendations = offerings.get("recommendations", {})
+    recommended_product_ids = recommendations.get("product_ids", [])
+    if not isinstance(recommendations, dict) or set(recommendations) != {"product_ids"}:
+        errors.append("Ofertas: recommendations debe contener únicamente product_ids.")
+        recommended_product_ids = []
+    if not isinstance(recommended_product_ids, list) or not 3 <= len(recommended_product_ids) <= 4:
+        errors.append("Ofertas: recommendations.product_ids debe contener entre 3 y 4 IDs.")
+        recommended_product_ids = []
+    if len(recommended_product_ids) != len(set(recommended_product_ids)):
+        errors.append("Ofertas: recommendations.product_ids contiene IDs duplicados.")
+    unknown_recommended_products = set(recommended_product_ids) - product_ids
+    if unknown_recommended_products:
         errors.append(
-            "Negocio: productos destacados fuera del catálogo PhraseMatcher: "
-            + ", ".join(sorted(unknown_featured_products))
+            "Ofertas: recomendaciones fuera del catálogo PhraseMatcher: "
+            + ", ".join(sorted(unknown_recommended_products))
         )
     address = restaurant.get("address", {})
     if not isinstance(address, dict) or not all(
@@ -422,6 +522,13 @@ def validate() -> list[str]:
                         f"Ofertas {offering_id}: los precios por tamaño deben ser crecientes."
                     )
 
+    missing_recommended_offerings = set(recommended_product_ids) - offering_product_ids
+    if missing_recommended_offerings:
+        errors.append(
+            "Ofertas: recomendaciones sin oferta comercial: "
+            + ", ".join(sorted(missing_recommended_offerings))
+        )
+
     ruler_keys: set[tuple[str, str]] = set()
     for pattern in ruler.get("patterns", []):
         raw = pattern.get("pattern")
@@ -489,10 +596,10 @@ def validate() -> list[str]:
                 + ", ".join(sorted(forbidden))
             )
 
-    if not DATASET_JSON.is_file():
-        errors.append("Dataset: falta customer_intent_benchmark.json.")
+    if not BENCHMARK_JSON.is_file():
+        errors.append("Benchmark: falta customer_intent_benchmark.json.")
     else:
-        dataset = json.loads(DATASET_JSON.read_text(encoding="utf-8"))
+        dataset = json.loads(BENCHMARK_JSON.read_text(encoding="utf-8"))
         dataset_cases = dataset.get("cases", []) if isinstance(dataset, dict) else []
         metadata = dataset.get("metadata", {}) if isinstance(dataset, dict) else {}
         if not isinstance(dataset, dict) or set(dataset) != {"metadata", "cases"}:
@@ -503,7 +610,7 @@ def validate() -> list[str]:
         expected_metadata_fields = {
             "schema_version", "purpose", "language", "domain",
             "profiles_reference", "taxonomy_reference", "slots_reference",
-            "questions_reference",
+            "conversation_action_rules_reference",
         }
         if set(metadata) != expected_metadata_fields:
             errors.append("Dataset: metadata no coincide con el contrato mínimo canónico.")
@@ -515,8 +622,12 @@ def validate() -> list[str]:
             errors.append("Dataset: taxonomy_reference no apunta al recurso canónico.")
         if metadata.get("slots_reference") != "resources/config/domain/slot_catalog.json":
             errors.append("Dataset: slots_reference no apunta al recurso canónico.")
-        if metadata.get("questions_reference") != expected_questions_reference:
-            errors.append("Dataset: questions_reference no apunta al recurso canónico.")
+        if metadata.get("conversation_action_rules_reference") != (
+            "resources/config/application/conversation_action_rules.json"
+        ):
+            errors.append(
+                "Dataset: conversation_action_rules_reference no apunta al recurso canónico."
+            )
         if len(dataset_cases) != 600:
             errors.append(f"Dataset: se esperaban 600 casos; hay {len(dataset_cases)}.")
 
@@ -528,7 +639,7 @@ def validate() -> list[str]:
         modes_by_profile: dict[str, set[str]] = {}
         pair_counts: dict[str, int] = {}
         dataset_pairs: set[str] = set()
-        valid_modes = {"resolved", *modes.keys()}
+        valid_modes = set(actions)
         required_benchmark_modes = {
             "resolved",
             "needs_transaction_confirmation",
@@ -638,7 +749,7 @@ def validate() -> list[str]:
                 errors.append(f"Dataset {case_id}: '{pair}' no existe en la taxonomía.")
             mode = expected.get("intervention_mode")
             if mode not in valid_modes:
-                errors.append(f"Dataset {case_id}: modo desconocido '{mode}'.")
+                errors.append(f"Dataset {case_id}: acción conversacional desconocida '{mode}'.")
             modes_by_profile.setdefault(profile_id, set()).add(str(mode))
             pair_counts[pair] = pair_counts.get(pair, 0) + 1
             missing_slots = expected.get("missing_slots", [])
@@ -652,7 +763,7 @@ def validate() -> list[str]:
             question_key = expected.get("question_key")
             if question_key is not None and question_key not in valid_question_keys:
                 errors.append(f"Dataset {case_id}: question_key desconocida '{question_key}'.")
-            policy = policies.get(pair, {})
+            policy = rules.get(pair, {})
             identity_pending = (
                 isinstance(policy, dict)
                 and policy.get("requires_identity_verification") is True
@@ -806,7 +917,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}")
         return 1
-    print("Recursos válidos: taxonomía, propietarios, dataset y referencias son coherentes.")
+    print("Recursos válidos: taxonomía, propietarios, benchmark y referencias son coherentes.")
     return 0
 
 

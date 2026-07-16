@@ -1,4 +1,4 @@
-"""Evaluación masiva de TextNormalizerService sobre el dataset canónico."""
+"""Evaluación masiva de TextNormalizerService sobre el benchmark canónico."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ def main() -> None:
             ROOT
             / "resources"
             / "corpus"
-            / "datasets"
+            / "benchmarks"
             / "customer_intent_benchmark.json"
         ).read_text(encoding="utf-8")
     )

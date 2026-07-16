@@ -1,4 +1,4 @@
-"""Evaluación masiva de LemmaService sobre el dataset canónico."""
+"""Evaluación masiva de LemmaService sobre el benchmark canónico."""
 
 from pathlib import Path
 import csv
@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT))
 from src.infrastructure import EntityRulerService, LemmaService, MatcherService, PhraseMatcherService, TextNormalizerService
 from src.application import LinguisticParser
 
-CASES = ROOT / "resources" / "corpus" / "datasets" / "customer_intent_benchmark.json"
+CASES = ROOT / "resources" / "corpus" / "benchmarks" / "customer_intent_benchmark.json"
 OUTPUT = ROOT / "reports" / "lemma" / "evaluacion_lemas_dataset.csv"
 SUMMARY = ROOT / "reports" / "lemma" / "resultado_lemas.json"
 

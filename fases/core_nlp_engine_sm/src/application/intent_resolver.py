@@ -77,11 +77,11 @@ class IntentResolver:
     def __init__(
         self,
         config: str | Path | Mapping[str, Any],
-        clarification_policy: str | Path | Mapping[str, Any] | None = None,
+        conversation_action_rules: str | Path | Mapping[str, Any] | None = None,
     ) -> None:
         self._config = self._load_config(config)
-        self._clarification = self._load_clarification_policy(
-            clarification_policy,
+        self._conversation_action_rules = self._load_conversation_action_rules(
+            conversation_action_rules,
             resolver_source=config,
             resolver_config=self._config,
         )
@@ -108,7 +108,7 @@ class IntentResolver:
         return data
 
     @staticmethod
-    def _load_clarification_policy(
+    def _load_conversation_action_rules(
         source: str | Path | Mapping[str, Any] | None,
         *,
         resolver_source: str | Path | Mapping[str, Any],
@@ -117,7 +117,7 @@ class IntentResolver:
         selected = source
         if selected is None and isinstance(resolver_source, (str, Path)):
             resolver_path = Path(resolver_source)
-            candidate = resolver_path.parent / "clarification_policy.json"
+            candidate = resolver_path.parent / "conversation_action_rules.json"
             if candidate.is_file():
                 selected = candidate
 
@@ -126,17 +126,17 @@ class IntentResolver:
         elif isinstance(selected, (str, Path)):
             path = Path(selected)
             if not path.is_file():
-                raise FileNotFoundError(f"No existe la política de aclaración: {path}")
+                raise FileNotFoundError(f"No existen las reglas de acción conversacional: {path}")
             data = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(data, dict):
                 raise TypeError(f"Se esperaba un objeto JSON en {path}")
         elif selected is None:
             legacy = resolver_config.get("clarification_messages", {})
             return {
-                "intervention_modes": {
+                "conversation_actions": {
                     "needs_user_clarification": {"requires_clarification_compat": True}
                 },
-                "policies": {},
+                "rules_by_intent_and_subintent": {},
                 "questions": {
                     key: {"template": value}
                     for key, value in legacy.items()
@@ -144,37 +144,25 @@ class IntentResolver:
                 },
             }
         else:
-            raise TypeError("clarification_policy debe ser una ruta, un diccionario o None")
+            raise TypeError(
+                "conversation_action_rules debe ser una ruta, un diccionario o None"
+            )
 
         questions = data.get("questions")
         if not isinstance(questions, dict):
-            reference = data.get("questions_reference")
-            if not isinstance(reference, str) or not reference.strip():
-                raise ValueError(
-                    "La política de aclaración debe contener 'questions' o "
-                    "'questions_reference'."
-                )
-            reference_path = Path(reference)
-            candidates = [Path.cwd() / reference_path]
-            if isinstance(selected, (str, Path)):
-                policy_path = Path(selected).resolve()
-                candidates.extend(parent / reference_path for parent in policy_path.parents)
-            questions_path = next((item for item in candidates if item.is_file()), None)
-            if questions_path is None:
-                raise FileNotFoundError(
-                    f"No existe el catálogo de preguntas referenciado: {reference}"
-                )
-            questions_resource = json.loads(questions_path.read_text(encoding="utf-8"))
-            questions = questions_resource.get("questions", questions_resource)
-            if not isinstance(questions, dict):
-                raise TypeError(
-                    f"Se esperaba un catálogo de preguntas en {questions_path}"
-                )
-            data["questions"] = questions
+            raise ValueError(
+                "Las reglas de acción conversacional deben contener 'questions'."
+            )
 
-        for key in ("intervention_modes", "policies", "questions"):
+        for key in (
+            "conversation_actions",
+            "rules_by_intent_and_subintent",
+            "questions",
+        ):
             if not isinstance(data.get(key), dict):
-                raise ValueError(f"La política de aclaración debe contener '{key}'.")
+                raise ValueError(
+                    f"Las reglas de acción conversacional deben contener '{key}'."
+                )
         return data
 
     def resolve(
@@ -613,7 +601,9 @@ class IntentResolver:
 
     def _policy(self, top: CandidateScore) -> dict[str, Any]:
         key = f"{top.intent}.{top.subintent}"
-        policy = self._clarification.get("policies", {}).get(key, {})
+        policy = self._conversation_action_rules.get(
+            "rules_by_intent_and_subintent", {}
+        ).get(key, {})
         return dict(policy) if isinstance(policy, Mapping) else {}
 
     def _missing_slots(
@@ -725,7 +715,9 @@ class IntentResolver:
     def _mode_requires_clarification(self, mode: str) -> bool:
         if mode == "resolved":
             return False
-        config = self._clarification.get("intervention_modes", {}).get(mode, {})
+        config = self._conversation_action_rules.get("conversation_actions", {}).get(
+            mode, {}
+        )
         return bool(config.get("requires_clarification_compat", True))
 
     def _question(
@@ -735,7 +727,7 @@ class IntentResolver:
     ) -> str | None:
         if not question_key:
             return None
-        item = self._clarification.get("questions", {}).get(question_key)
+        item = self._conversation_action_rules.get("questions", {}).get(question_key)
         if not isinstance(item, Mapping):
             legacy = self._config.get("clarification_messages", {})
             return str(legacy.get(question_key, legacy.get("no_evidence", ""))) or None
@@ -795,5 +787,5 @@ class IntentResolver:
         return self._config
 
     @property
-    def clarification_policy(self) -> dict[str, Any]:
-        return self._clarification
+    def conversation_action_rules(self) -> dict[str, Any]:
+        return self._conversation_action_rules

@@ -7,13 +7,16 @@ Este directorio reúne los archivos no Python de `core_nlp_engine`. Su objetivo 
 - `config/`: reglas, taxonomías y políticas.
 - `config/domain/`: vocabulario canónico de intenciones y slots del negocio conversacional.
 - `content/responses/es-CO/`: preguntas y plantillas lingüísticas mostrables al usuario.
-- `data/`: datos reales del dominio suministrados para el funcionamiento de la aplicación.
-- `data/business/`: información estable y validada del restaurante.
+- `business_data/`: datos reales del restaurante suministrados para el funcionamiento de la aplicación.
+- `business_data/restaurant/`: información estable y validada del restaurante.
 - `corpus/`: material lingüístico para desarrollo y experimentación.
-- `corpus/datasets/`: conjuntos para entrenar, validar, probar y medir.
+- `corpus/benchmarks/`: casos etiquetados y estables para medir el sistema.
+- `corpus/conversations/`: secuencias sintéticas de mensajes para simular conversaciones completas.
+- `corpus/datasets/`: material separado para entrenar, validar y probar modelos.
+- `corpus/profiles/`: perfiles lingüísticos para diseñar y segmentar la cobertura.
 - `trained_models/`: artefactos entrenados consumidos por la aplicación; se creará cuando exista el primer modelo.
 
-`config` participa en el runtime actual. Los archivos de `data` conservan la información suministrada por el usuario y deben superar su contrato antes de utilizarse. El contenido de `corpus` no se inyecta al motor en producción.
+`config` participa en el runtime actual. Los archivos de `business_data` conservan la información suministrada por el usuario y deben superar su contrato antes de utilizarse. El contenido de `corpus` no se inyecta al motor en producción.
 
 ## Criterios del dominio
 
@@ -39,13 +42,12 @@ Principios obligatorios:
 | `config/infrastructure_nlp/lemma_service_config.json` | Formas morfológicas y evidencia secundaria de bajo peso | Decisiones finales |
 | `config/infrastructure_nlp/entity_ruler_service_config.json` | Tiempo y referencias que requieren contexto conversacional | Productos, ingredientes, precios o negación |
 | `config/application/intent_resolver_config.json` | Pesos, umbrales, prioridades y evidencia | Requisitos, preguntas, carta o precios |
-| `config/application/clarification_policy.json` | Slots requeridos por intención, decisiones y modos de intervención | Textos de preguntas, definiciones de slots, puntajes o respuestas comerciales |
-| `content/responses/es-CO/clarification_questions.json` | Preguntas en español colombiano referenciadas por la política | Reglas de decisión o datos comerciales |
+| `config/application/conversation_action_rules.json` | Acciones conversacionales, reglas por intención y subintención, y preguntas asociadas | Definiciones de slots, puntajes o respuestas comerciales generales |
 | `content/responses/es-CO/response_templates.json` | Plantillas neutrales para presentar datos ya validados | Precios, disponibilidad o datos personales persistidos |
-| `data/business/restaurant_profile.json` | Nombre, ubicación, horario, medios de pago y referencias comerciales estables | Patrones NLP o textos conversacionales |
-| `data/menu/menu_offerings.json` | Productos únicos con sus nombres, secciones, presentaciones y precios suministrados por el usuario | Alias, reglas lingüísticas o conversiones implícitas de precios |
+| `business_data/restaurant/restaurant_profile.json` | Nombre, ubicación, horario y medios de pago estables | Patrones NLP o textos conversacionales |
+| `business_data/menu/menu_offerings.json` | Productos, ofertas, precios y una lista breve de recomendaciones comerciales suministradas por el usuario | Alias, reglas lingüísticas o conversiones implícitas de precios |
 | `corpus/profiles/conversation_profiles.json` | Estilos conversacionales para diseño y evaluación de cobertura | Casos, datos personales o reglas de producción |
-| `corpus/datasets/customer_intent_benchmark.json` | Casos sintéticos y anotaciones de referencia | Configuración de producción o datos de entrenamiento futuros |
+| `corpus/benchmarks/customer_intent_benchmark.json` | Casos sintéticos y anotaciones de referencia para medir el sistema | Configuración de producción o datos de entrenamiento futuros |
 
 ## Cómo decidir el propietario
 
@@ -57,8 +59,7 @@ Principios obligatorios:
 | `pagar`, `pago`, `pagando` | Lemmas | Variación morfológica con evidencia secundaria |
 | `mañana`, `el domingo`, `ese mismo` | EntityRuler | Tiempo o referencia dependiente del contexto |
 | Prioridad de una alergia | Resolver | Política de decisión entre evidencias |
-| Decidir que falta una fecha | Política de aclaración | Intervención conversacional posterior al análisis |
-| Redactar la pregunta por esa fecha | Catálogo de preguntas | Contenido lingüístico desacoplado de la decisión |
+| Decidir que falta una fecha y seleccionar la pregunta | Reglas de acción conversacional | Siguiente acción posterior al análisis |
 | Precio de la mojarra | `menu_offerings.json` | Dato comercial cambiante |
 
 PhraseMatcher y EntityRuler no deben reconocer la misma expresión. PhraseMatcher identifica vocabulario estable del negocio; EntityRuler delimita expresiones temporales o contextuales sobre el `Doc`. `tests/contract/test_resource_contract.py` comprueba esta frontera.
@@ -92,7 +93,7 @@ Una expresión puede aportar más de una lectura. `camarón`, por ejemplo, puede
 4. Solicitar validación humana cuando la respuesta dependa de utensilios, aceite, superficies o composición no documentada.
 5. Mantener separados `ALERGENO` e `INGREDIENTE`, aunque una expresión pueda aportar evidencia a ambos.
 
-## Intenciones y aclaraciones
+## Intenciones y acciones conversacionales
 
 Toda intención o subintención debe:
 
@@ -102,7 +103,7 @@ Toda intención o subintención debe:
 4. Tener al menos una ruta de evidencia en Matcher, Lemmas, PhraseMatcher, EntityRuler o Resolver.
 5. Incluir pruebas positivas, ambiguas y negativas.
 
-Una aclaración debe indicar qué falta o qué resulta ambiguo. La política distingue seis modos operativos —información del usuario, confirmación transaccional, consulta comercial, validación humana de seguridad, asistencia humana y verificación de identidad— y el resultado terminal `out_of_scope`. Mantiene separados `missing_slots`, `question_key` y el texto, que vive en `clarification_questions.json`. No se debe usar una pregunta genérica cuando el motor conoce la causa.
+`conversation_action_rules.json` determina la siguiente acción después de reconocer una intención. Su sección `conversation_actions` explica cada resultado y su categoría; `rules_by_intent_and_subintent` define requisitos y decisiones; `questions` contiene los textos seleccionados por esas reglas. Sus metadatos resumen los conteos de las tres secciones y el contrato comprueba que permanezcan sincronizados. Se mantienen separados `missing_slots`, `question_key` y el texto de la pregunta, aunque vivan en el mismo recurso. No se debe usar una pregunta genérica cuando el motor conoce la causa.
 
 Un slot representa el dato requerido, no su procedencia. Por ejemplo, `product` puede satisfacerse con una entidad del mensaje o con `context.producto_activo`; `order`, con `context.pedido_anterior`; y `delivery_address`, con `context.direccion_previa`. Las fuentes contextuales pertenecen al resolver y no crean slots alternativos.
 
@@ -130,11 +131,11 @@ Los 20 perfiles describen estilos de interacción observables; no clasifican per
 - No variar por perfil precios, disponibilidad, seguridad, prioridades ni acceso a funciones.
 - Definir perfiles mediante registro, longitud, ortografía, elipsis, referencias, negación y estructura del turno.
 - Excluir edad, género, etnia, religión, discapacidad, estrato y procedencia social.
-- Mantener los casos de referencia en `corpus/datasets/`, nunca dentro del archivo de perfiles.
+- Mantener los casos de referencia en `corpus/benchmarks/`, nunca dentro del archivo de perfiles ni de los datasets de entrenamiento.
 
 ## Precios y disponibilidad
 
-- Los precios viven en `data/menu/menu_offerings.json` o en una fuente comercial externa.
+- Los precios viven en `business_data/menu/menu_offerings.json` o en una fuente comercial externa.
 - `fixed` representa un valor único y `by_size` los tamaños `pequeno`, `mediano` y `grande`.
 - Reconocer un producto no significa que esté disponible.
 - Un cambio de precio no debe requerir cambios en recursos lingüísticos.
@@ -145,7 +146,7 @@ Los 20 perfiles describen estilos de interacción observables; no clasifican per
 
 1. Crear un ID estable y sus frases reales en `config/infrastructure_nlp/phrase_matcher_service_config.json`.
 2. Evitar frases asignadas a dos IDs del mismo tipo.
-3. Crear o actualizar el bloque del producto en `data/menu/menu_offerings.json` usando el mismo `product_id`.
+3. Crear o actualizar el bloque del producto en `business_data/menu/menu_offerings.json` usando el mismo `product_id`.
 4. Añadir pruebas de detección, solapamiento y precio cuando corresponda.
 
 ### Alias, patrón o lema
@@ -163,12 +164,12 @@ Los 20 perfiles describen estilos de interacción observables; no clasifican per
 3. Configurar requisitos, pesos o prioridades en el Resolver únicamente si son necesarios.
 4. Añadir casos contractuales y de aclaración.
 
-### Política de aclaración
+### Reglas de acción conversacional
 
 1. Definir primero cada dato semántico en `config/domain/slot_catalog.json`.
-2. Declarar en la política los slots obligatorios de la subintención.
+2. Declarar en `rules_by_intent_and_subintent` los slots obligatorios de la subintención.
 3. Elegir `on_missing` y, solo cuando corresponda, `on_complete`.
-4. Asociar cada slot faltante con una pregunta existente.
+4. Asociar cada slot faltante con una pregunta declarada en `questions`.
 5. Pedir un dato por turno, conservar lo ya comprendido y no prometer información comercial o alimentaria no validada.
 
 ### Perfil conversacional
