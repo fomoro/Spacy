@@ -1,0 +1,146 @@
+{
+  "metadata": {
+    "schema_version": "3.0.0",
+    "purpose": "Definir las intenciones, subintenciones y parámetros técnicos con los que se resuelve la intención del cliente.",
+    "language": "es-CO",
+    "domain": "restaurante_colombiano_de_comida_de_mar"
+  },
+  "resolver_settings": {
+    "thresholds": {
+      "minimum_score": 0.18,
+      "clarification_margin": 0.15,
+      "maximum_confidence": 0.99
+    },
+    "source_multipliers": {
+      "matcher": 1.0,
+      "lemma_spacy": 0.9,
+      "lemma_catalog_fallback": 0.8,
+      "lemma_surface": 0.45,
+      "phrase_matcher": 1.0,
+      "entity_ruler": 1.0
+    }
+  },
+  "intents": {
+    "catalogo": {
+      "tie_break_priority": 70,
+      "description": "Consultas sobre la oferta gastronómica y las propiedades de los platos.",
+      "subintents": {
+        "comparar_productos": "Compara dos o más productos por una cualidad explícita.",
+        "consultar_categoria": "Consulta qué productos pertenecen a una categoría de la carta.",
+        "consultar_categoria_por_restriccion": "Busca una categoría u opción compatible con una restricción alimentaria.",
+        "consultar_definicion_preparacion": "Pregunta qué significa una técnica o preparación culinaria.",
+        "consultar_detalle_producto": "Pregunta por ingredientes, acompañamientos o características de un producto identificado.",
+        "consultar_disponibilidad_producto": "Pregunta si un producto se encuentra disponible.",
+        "consultar_preparacion": "Busca productos elaborados con una preparación determinada.",
+        "consultar_preparacion_producto": "Pregunta si un producto admite una preparación determinada.",
+        "consultar_producto": "Pregunta de manera general si el restaurante ofrece un producto."
+      }
+    },
+    "domicilio": {
+      "tie_break_priority": 75,
+      "description": "Consultas sobre cobertura, costo, tiempo y referencias de entrega a domicilio.",
+      "subintents": {
+        "consultar_domicilio": "Consulta condiciones generales, cobertura, costo o tiempo del domicilio.",
+        "consultar_domicilio_grupal": "Consulta logística de entrega para un pedido grupal.",
+        "consultar_estado_domicilio": "Consulta el estado o seguimiento de un domicilio asociado a un pedido existente.",
+        "solicitar_domicilio": "Solicita enviar a una dirección un pedido identificado.",
+        "usar_direccion_previa": "Solicita usar una dirección registrada en el contexto conversacional."
+      }
+    },
+    "horario_ubicacion": {
+      "tie_break_priority": 60,
+      "description": "Información física y temporal del establecimiento.",
+      "subintents": {
+        "consultar_horario": "Consulta días u horas de atención.",
+        "consultar_instalacion": "Consulta instalaciones o facilidades disponibles para clientes.",
+        "consultar_parqueadero": "Consulta disponibilidad o condiciones del parqueadero.",
+        "consultar_ubicacion": "Consulta dirección o ubicación del restaurante."
+      }
+    },
+    "menu": {
+      "tie_break_priority": 80,
+      "description": "Solicitudes relacionadas con la carta como documento o vista general.",
+      "subintents": {
+        "consultar_cambios_menu": "Pregunta qué cambió en la carta.",
+        "consultar_menu_general": "Pregunta de forma abierta qué ofrece el restaurante.",
+        "reenviar_menu": "Solicita volver a enviar una carta previamente compartida.",
+        "solicitar_menu": "Solicita recibir o visualizar la carta."
+      }
+    },
+    "operacion": {
+      "tie_break_priority": 55,
+      "description": "Servicios operativos complementarios al consumo y al pedido.",
+      "subintents": {
+        "consultar_empaque": "Consulta separación, marcado o presentación de pedidos.",
+        "consultar_facturacion": "Consulta factura, factura electrónica o requisitos tributarios.",
+        "consultar_pedido_programado": "Consulta o solicita programar una entrega para una hora posterior.",
+        "consultar_servicio": "Consulta un servicio complementario no cubierto por otra intención."
+      }
+    },
+    "pago": {
+      "tie_break_priority": 75,
+      "description": "Consultas sobre instrumentos y combinación de pagos.",
+      "subintents": {
+        "consultar_medio_pago": "Pregunta si se acepta un medio de pago.",
+        "consultar_pago_mixto": "Pregunta si puede dividir el pago entre dos o más medios."
+      }
+    },
+    "pedido": {
+      "tie_break_priority": 90,
+      "description": "Creación y modificación transaccional de un pedido.",
+      "subintents": {
+        "agregar_producto_pedido": "Añade una referencia de producto a un pedido en curso.",
+        "agregar_productos_pedido": "Añade explícitamente varias referencias o unidades a un pedido.",
+        "indicar_cantidad": "Indica una cantidad apoyándose en el producto activo del contexto.",
+        "iniciar_pedido": "Expresa la voluntad de pedir un producto.",
+        "iniciar_pedido_grupal": "Inicia un pedido para varias personas sin detallar todavía los productos.",
+        "repetir_pedido": "Solicita repetir un pedido conocido por el contexto.",
+        "seleccionar_preparacion": "Selecciona una preparación para el producto activo.",
+        "solicitar_modificacion": "Añade, retira o sustituye ingredientes o preparaciones."
+      }
+    },
+    "precio": {
+      "tie_break_priority": 95,
+      "description": "Consultas de precios y presupuesto.",
+      "subintents": {
+        "consultar_precio_producto": "Pregunta el precio de un producto identificado.",
+        "consultar_precios_generales": "Solicita precios sin identificar un producto.",
+        "solicitar_recomendacion_por_presupuesto": "Busca opciones compatibles con un presupuesto o criterio de economía."
+      }
+    },
+    "recomendacion": {
+      "tie_break_priority": 65,
+      "description": "Solicitudes de orientación para elegir un plato.",
+      "subintents": {
+        "solicitar_recomendacion": "Solicita una recomendación general o por preferencia culinaria.",
+        "solicitar_recomendacion_por_alergia": "Solicita una recomendación compatible con una alergia.",
+        "solicitar_recomendacion_por_restriccion": "Solicita una recomendación compatible con una restricción no necesariamente alérgica."
+      }
+    },
+    "reserva_evento": {
+      "tie_break_priority": 75,
+      "description": "Reservas de mesa y servicios para grupos o eventos.",
+      "subintents": {
+        "consultar_eventos": "Consulta capacidad o condiciones para realizar eventos.",
+        "consultar_reserva": "Consulta condiciones, costo o disponibilidad de una reserva.",
+        "solicitar_evento": "Solicita una propuesta o gestión para un evento.",
+        "solicitar_reserva": "Solicita reservar una mesa o espacio."
+      }
+    },
+    "seguridad_alimentaria": {
+      "tie_break_priority": 100,
+      "description": "Consultas que requieren tratamiento conservador por riesgo alimentario.",
+      "subintents": {
+        "consultar_alergenos": "Consulta presencia de alérgenos o ingredientes sensibles.",
+        "consultar_contaminacion_cruzada": "Consulta separación de aceite, utensilios o superficies."
+      }
+    },
+    "social": {
+      "tie_break_priority": 10,
+      "description": "Actos sociales que no requieren una operación comercial.",
+      "subintents": {
+        "agradecer": "Expresa agradecimiento o cierre cortés."
+      }
+    }
+  }
+}

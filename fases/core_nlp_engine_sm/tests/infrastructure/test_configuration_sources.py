@@ -13,15 +13,15 @@ ROOT = Path(__file__).resolve().parents[2]
 class ConfigurationSourceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.normalizer = json.loads((ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json").read_text(encoding="utf-8"))
-        cls.matcher = json.loads((ROOT / "resources" / "config" / "infrastructure_nlp" / "matcher_service_config.json").read_text(encoding="utf-8"))
-        cls.lemmas = json.loads((ROOT / "resources" / "config" / "infrastructure_nlp" / "lemma_service_config.json").read_text(encoding="utf-8"))
+        cls.normalizer = json.loads((ROOT / "src" / "infrastructure" / "resources" / "text_normalizer_service_config.json").read_text(encoding="utf-8"))
+        cls.matcher = json.loads((ROOT / "src" / "infrastructure" / "resources" / "matcher_service_config.json").read_text(encoding="utf-8"))
+        cls.lemmas = json.loads((ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json").read_text(encoding="utf-8"))
         cls.menu = json.loads(
             (
                 ROOT
+                / "src"
+                / "infrastructure"
                 / "resources"
-                / "config"
-                / "infrastructure_nlp"
                 / "phrase_matcher_service_config.json"
             ).read_text(encoding="utf-8")
         )
@@ -29,7 +29,7 @@ class ConfigurationSourceTests(unittest.TestCase):
     def test_services_accept_section_dictionaries(self):
         normalizer = TextNormalizerService(self.normalizer)
         phrase = PhraseMatcherService(self.menu)
-        matcher = MatcherService(self.matcher, phrase)
+        matcher = MatcherService(self.matcher)
         lemmas = LemmaService(self.lemmas)
 
         self.assertEqual(normalizer.normalize("  HOLA  ").normalized, "hola")

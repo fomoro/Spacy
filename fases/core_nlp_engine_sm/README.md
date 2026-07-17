@@ -24,41 +24,30 @@ El procesador está diseñado bajo una estricta separación de responsabilidades
 ```text
 core_nlp_engine/
 │
-├── resources/                         # Archivos no Python y su gobernanza
+├── resources/                         # Datos, contratos y corpus
 │   ├── README.md
-│   ├── config/                    # Reglas, taxonomías y políticas
-│   │   ├── domain/                  # Intenciones y slots del dominio
-│   │   │   ├── intent_taxonomy.json
-│   │   │   └── slot_catalog.json
-│   │   ├── infrastructure_nlp/     # Configuración de servicios NLP
-│   │   └── application/            # Resolución y acciones conversacionales
-│   ├── content/responses/es-CO/     # Plantillas generales de respuesta
-│   ├── business_data/             # Información real consumida por la aplicación
-│   │   ├── restaurant/            # Perfil estable del restaurante
-│   │   └── menu/                  # Ofertas, precios y recomendaciones
-│   └── corpus/                    # Material lingüístico de desarrollo y medición
+│   ├── business_data/
+│   │   ├── menu/                       # Ofertas, precios y recomendaciones
+│   │   └── restaurant/                 # Información estable del negocio
+│   └── corpus/                         # Material lingüístico de desarrollo y medición
 │       ├── README.md
-│       ├── benchmarks/            # Casos etiquetados para medir el sistema
-│       │   └── customer_intent_benchmark.json
-│       ├── conversations/         # Flujos sintéticos con solo mensajes del cliente
-│       ├── datasets/              # Material para entrenar, validar y probar modelos
-│       ├── profiles/
-│       │   └── conversation_profiles.json
-├── src/                           # Código fuente
-│   ├── application/               # Parser, resolutor y fachada IntentEngine
-│   └── infrastructure/nlp/        # Servicios lingüísticos autónomos con spaCy
-├── tests/                         # Calidad separada por capa y tipo de ejecución
-│   ├── README.md
-│   ├── infrastructure/            # Pruebas unitarias de servicios lingüísticos
-│   ├── application/               # Parser, resolutor y fachada
-│   ├── contract/                  # Coherencia de recursos y dataset
-│   ├── evaluation/                # Evaluaciones masivas sobre 600 casos
-│   └── interactive/               # Consolas manuales
-└── reports/                       # Reportes generados automáticamente por tema
-    ├── normalizer/
-    ├── phrase_matcher/
-    ├── matcher/
-    └── lemma/
+│       ├── benchmarks/customer_intent_benchmark.json
+│       ├── conversations/
+│       ├── datasets/
+│       └── profiles/conversation_profiles.json
+├── src/                               # Código fuente y recursos por capa
+│   ├── temp/                          # Código y recursos todavía en revisión
+│   │   └── resources/intent_resolver/
+│   │       ├── intents_and_subintents.json
+│   │       ├── conversation_data_fields.json
+│   │       └── conversation_action_rules.json
+│   └── infrastructure/
+│       ├── nlp/                       # Servicios lingüísticos autónomos con spaCy
+│       └── resources/                 # JSON exclusivos de infraestructura
+├── tests/
+│   ├── infrastructure/                # Pruebas unitarias de infraestructura
+│   └── temp/                          # Pruebas y herramientas aún en validación
+└── reports/                           # Reportes generados
 ```
 
 ---
@@ -67,7 +56,7 @@ core_nlp_engine/
 
 `resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de 600 casos. Cada uno de los 20 perfiles aporta 30 casos y cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de obtención o verificación de información; 150 casos incluyen contexto conversacional. Los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
 
-El comando `python -X utf8 tests/contract/test_resource_contract.py` comprueba conteos, unicidad, cobertura de las 49 subintenciones, referencias al menú, slots, modos de intervención y anotaciones lingüísticas.
+El comando `python -X utf8 tests/temp/json_validators/test_resource_json_validator.py` comprueba la coherencia general de taxonomía, perfiles, slots, acciones y benchmark. El menú y el perfil del restaurante tienen validadores JSON independientes.
 
 El contrato de anotación, los criterios de mantenimiento y el alcance correcto de las métricas están documentados en [`resources/corpus/README.md`](resources/corpus/README.md).
 
@@ -86,7 +75,7 @@ El normalizador debe tratar con igual rigor registros coloquiales y formales, es
 #### 1. Prueba rápida interactiva (Consola interactiva)
 Ejecuta el siguiente comando para abrir la consola del normalizador en tiempo real:
 ```bash
-python tests/interactive/normalizer_console.py
+python tests/temp/interactive/normalizer_console.py
 ```
 **5 frases recomendadas para probar:**
 *   `Bro, me regala un corrientazo porfa?` *(Estandariza modismos afectuosos y jergas de almuerzos)*
@@ -98,7 +87,7 @@ python tests/interactive/normalizer_console.py
 #### 2. Evaluación de calidad en lote (Simulación masiva)
 Para procesar los 600 casos de prueba y generar reportes de calidad detallados:
 ```bash
-python tests/evaluation/evaluate_normalizer.py
+python tests/temp/evaluation/evaluate_normalizer.py
 ```
 *   **Reportes generados**: 
     *   `reports/normalizer/evaluacion_normalizador.csv`: Detalle caso por caso con las reglas aplicadas.
@@ -121,7 +110,7 @@ python -m unittest tests.infrastructure.test_text_normalizer_service
 #### 1. Prueba rápida interactiva (Consola interactiva)
 Este interactivo primero **normaliza** el mensaje del usuario y luego extrae los conceptos clave e ingredientes identificados en el texto:
 ```bash
-python tests/interactive/phrase_matcher_console.py
+python tests/temp/interactive/phrase_matcher_console.py
 ```
 **5 frases recomendadas para probar:**
 *   `¿Cuánto vale la mojarra frita?` *(Detecta "mojarra frita" como Plato Específico)*
@@ -133,7 +122,7 @@ python tests/interactive/phrase_matcher_console.py
 #### 2. Evaluación de calidad en lote (Simulación masiva)
 Para procesar los 600 casos de prueba midiendo la precisión de la extracción:
 ```bash
-python tests/evaluation/evaluate_phrase_matcher.py
+python tests/temp/evaluation/evaluate_phrase_matcher.py
 ```
 *   **Reportes generados**: 
     *   `reports/phrase_matcher/evaluacion_phrase_matcher.csv`: Detalla los términos detectados y descartados por solape.
@@ -156,7 +145,7 @@ python -m unittest tests.infrastructure.test_phrase_matcher_service
 #### 1. Prueba rápida interactiva (Consola interactiva)
 Este interactivo limpia el mensaje del usuario, identifica el vocabulario del menú y luego deduce la intención del cliente en tiempo real:
 ```bash
-python tests/interactive/matcher_console.py
+python tests/temp/interactive/matcher_console.py
 ```
 **5 frases recomendadas para probar:**
 *   `¿Cuánto vale la cazuela de mariscos?` *(Detecta la acción de consultar precio, identificando el plato)*
@@ -168,7 +157,7 @@ python tests/interactive/matcher_console.py
 #### 2. Evaluación de calidad en lote
 Para medir la cobertura de evidencia sintáctica sobre los 600 casos:
 ```bash
-python tests/evaluation/evaluate_matcher.py
+python tests/temp/evaluation/evaluate_matcher.py
 ```
 *   **Reportes generados**: 
     *   `reports/matcher/evaluacion_matcher.csv`: Detalle de intenciones detectadas frente a las esperadas.
@@ -184,26 +173,26 @@ python -m unittest tests.infrastructure.test_matcher_service
 
 ## Tema 4: Analizador de Lemas (LemmaService)
 
-**Foco Principal**: Lematizar términos en español y generar evidencias secundarias de intención a partir de las raíces de las palabras (lemas). Funciona de forma híbrida: si el modelo en español `es_core_news_sm` está disponible, usa su motor de lematización y resuelve conflictos; si no está, recurre a `lemma_service_config.json` como fallback controlado. Adicionalmente, prioriza las formas del catálogo para garantizar que la jerga del restaurante (ej: "gracias" -> "agradecer", "alérgica" -> "alérgico") se asocie correctamente.
+**Foco Principal**: Lematizar términos en español y producir señales morfológicas neutrales. Si el modelo `es_core_news_sm` está disponible usa su lematizador; si no, recurre a `lemma_service_config.json` como fallback controlado. La relación posterior entre un lema y una intención vive en `src/temp/resources/linguistic_evidence_mapping.json`.
 
 ### ¿Cómo probar el LemmaService?
 
 #### 1. Prueba rápida interactiva (Consola interactiva)
-Este interactivo primero normaliza el texto, luego procesa cada token a su lema correspondiente y asigna pesos a evidencias secundarias:
+Este interactivo normaliza el texto y muestra lemas y señales, sin asignar intenciones ni pesos:
 ```bash
-python tests/interactive/lemma_console.py
+python tests/temp/interactive/lemma_console.py
 ```
 **5 frases recomendadas para probar:**
-*   `quiero agradecer por el gran servicio` *(Detecta "agradecer" con intención social/agradecer)*
-*   `Soy alérgica a los mariscos` *(Mapea "alérgica" a "alérgico" con intención de consultar alérgenos)*
-*   `¿Cuánto me costará el almuerzo?` *(Lematiza "costará" a "costar" con intención de precio)*
-*   `Quisiera reservar una mesa` *(Lematiza "quisiera" a "querer" con intención de reserva)*
-*   `Hola, buenas` *(Lematiza saludo con intención social/saludar)*
+*   `quiero agradecer por el gran servicio` *(Reconoce la señal morfológica `agradecer`.)*
+*   `Soy alérgica a los mariscos` *(Normaliza la forma hacia el lema `alérgico`.)*
+*   `¿Cuánto me costará el almuerzo?` *(Lematiza `costará` hacia `costar`.)*
+*   `Quisiera reservar una mesa` *(Lematiza `quisiera` hacia `querer`.)*
+*   `Hola, buenas` *(Muestra los lemas aunque no exista una señal configurada.)*
 
 #### 2. Evaluación de lemas en lote
 Para procesar los 600 casos evaluando la cobertura de lemas:
 ```bash
-python -X utf8 tests/evaluation/evaluate_lemma.py
+python -X utf8 tests/temp/evaluation/evaluate_lemma.py
 ```
 *   **Reportes generados**:
     *   `reports/lemma/evaluacion_lemas_dataset.csv`: Detalle de tokens, origen y apoyo a la subintención esperada.
@@ -226,7 +215,7 @@ python -m unittest tests.infrastructure.test_lemma_service
 #### 1. Prueba rápida interactiva (Consola interactiva del Pipeline)
 Permite ingresar cualquier frase en consola y ver el bundle completo de evidencias consolidadas:
 ```bash
-python tests/interactive/linguistic_parser_console.py
+python tests/temp/interactive/linguistic_parser_console.py
 ```
 
 #### 2. Pruebas unitarias del Pipeline
@@ -260,7 +249,7 @@ python -m unittest tests.application.test_intent_resolver
 #### 1. Evaluación de calidad en lote
 Para procesar los 600 casos evaluando intención, subintención, aclaración y modo de intervención:
 ```bash
-python -X utf8 tests/evaluation/evaluate_resolver.py
+python -X utf8 tests/temp/evaluation/evaluate_resolver.py
 ```
 * **Reportes generados**:
   * `reports/resolver/evaluacion_resolutor_dataset.csv`: Detalle caso por caso de la intención, subintención y modo esperados frente a los resueltos.
@@ -278,5 +267,7 @@ python -m unittest discover -s tests -p "test_*.py"
 Para comprobar la coherencia entre taxonomía, carta, Matcher, Lemmas, EntityRuler y Resolver:
 
 ```bash
-python -X utf8 tests/contract/test_resource_contract.py
+python -X utf8 tests/temp/json_validators/test_resource_json_validator.py
+python -X utf8 tests/temp/json_validators/test_menu_offerings_json_validator.py
+python -X utf8 tests/temp/json_validators/test_restaurant_profile_json_validator.py
 ```

@@ -16,7 +16,9 @@ class TextCategorizerService:
     - ``resources/corpus/datasets/text_categorizer/prueba``: medir el resultado
       final sin tocarlo durante el desarrollo.
 
-    Cuando se implemente, este servicio producirá evidencia estadística para
-    el IntentResolver. No deberá sustituir las reglas de seguridad, el contexto,
-    la extracción de entidades ni la política de aclaración.
+    Cuando se implemente, este servicio producirá puntuaciones estadísticas
+    neutrales. La capa de aplicación será responsable de convertirlas en
+    evidencia para el IntentResolver. No deberá sustituir las reglas de
+    seguridad, el contexto, la extracción de entidades ni la política de
+    aclaración.
     """

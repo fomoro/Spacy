@@ -1,13 +1,12 @@
 {
   "metadata": {
-    "schema_version": "11.0.0",
-    "purpose": "Evaluar la detección de intenciones, subintenciones, entidades, contexto y modos de intervención en español colombiano sin utilizar este corpus como material de entrenamiento.",
+    "schema_version": "12.0.0",
+    "purpose": "Evaluar la detección de intenciones, subintenciones, entidades, contexto y acciones conversacionales en español colombiano sin utilizar este corpus como material de entrenamiento.",
     "language": "es-CO",
-    "domain": "restaurante_colombiano_de_comida_de_mar",
-    "profiles_reference": "resources/corpus/profiles/conversation_profiles.json",
-    "taxonomy_reference": "resources/config/domain/intent_taxonomy.json",
-    "slots_reference": "resources/config/domain/slot_catalog.json",
-    "conversation_action_rules_reference": "resources/config/application/conversation_action_rules.json"
+    "case_count": 600,
+    "profile_count": 20,
+    "context_case_count": 150,
+    "intent_subintent_pair_count": 49
   },
   "cases": [
     {

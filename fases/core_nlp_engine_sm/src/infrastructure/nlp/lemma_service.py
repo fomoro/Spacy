@@ -1,5 +1,5 @@
 
-"""Análisis de lemas y evidencia morfológica secundaria."""
+"""Análisis neutral de lemas y formas morfológicas."""
 
 from __future__ import annotations
 
@@ -27,12 +27,9 @@ class LemmaToken:
 
 
 @dataclass(frozen=True)
-class LemmaEvidence:
+class LemmaSignal:
     lemma: str
     matched_text: str
-    intent: str
-    subintent: str
-    weight: float
     token_index: int
     source: str
 
@@ -44,27 +41,27 @@ class LemmaEvidence:
 class LemmaAnalysisResult:
     text: str
     tokens: tuple[LemmaToken, ...]
-    evidence: tuple[LemmaEvidence, ...]
+    signals: tuple[LemmaSignal, ...]
     model_has_lemmatizer: bool
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "text": self.text,
             "tokens": [item.to_dict() for item in self.tokens],
-            "evidence": [item.to_dict() for item in self.evidence],
+            "signals": [item.to_dict() for item in self.signals],
             "model_has_lemmatizer": self.model_has_lemmatizer,
         }
 
 
 class LemmaService:
     """
-    Analiza lemas y genera evidencia secundaria de intención.
+    Analiza lemas y reconoce señales morfológicas neutrales.
 
     Prioridad:
     1. token.lemma_ producido por un pipeline spaCy con lematizador.
     2. Catálogo controlado de formas flexionadas como fallback.
 
-    No resuelve la intención final y no modifica contexto ni reglas de negocio.
+    No conoce intenciones, pesos, contexto ni reglas de negocio.
     """
 
     def __init__(
@@ -79,17 +76,16 @@ class LemmaService:
         self._nlp = nlp or self._load_preferred_model(model_name)
         self._model_has_lemmatizer = "lemmatizer" in self._nlp.pipe_names
 
-        self._signals_by_lemma: dict[str, list[dict[str, Any]]] = {}
+        self._configured_signals: set[str] = set()
         self._lemma_by_form: dict[str, str] = {}
         self._stop_lemmas = {
             self._normalize(value)
             for value in self._catalog.get("stop_lemmas", [])
         }
-        self._ignored_pos = set(
-            self._catalog["metadata"].get("ignored_pos", [])
-        )
+        options = self._catalog.get("options", {})
+        self._ignored_pos = set(options.get("ignored_pos", []))
         self._minimum_token_length = int(
-            self._catalog["metadata"].get("minimum_token_length", 1)
+            options.get("minimum_token_length", 1)
         )
         self._build_indexes()
 
@@ -121,8 +117,7 @@ class LemmaService:
     def _build_indexes(self) -> None:
         for signal in self._catalog["signals"]:
             lemma = self._normalize(str(signal["lemma"]))
-            evidence = signal.get("evidence", [])
-            self._signals_by_lemma.setdefault(lemma, []).extend(evidence)
+            self._configured_signals.add(lemma)
 
             forms = set(signal.get("forms", []))
             forms.add(signal["lemma"])
@@ -144,8 +139,8 @@ class LemmaService:
 
         doc = self._nlp(text)
         tokens: list[LemmaToken] = []
-        evidence: list[LemmaEvidence] = []
-        seen_evidence: set[tuple[str, str, str, int]] = set()
+        signals: list[LemmaSignal] = []
+        seen_signals: set[tuple[str, int]] = set()
 
         for token in doc:
             if token.is_space or token.is_punct:
@@ -172,40 +167,23 @@ class LemmaService:
             if lemma in self._stop_lemmas:
                 continue
 
-            for item in self._signals_by_lemma.get(lemma, []):
-                key = (
-                    lemma,
-                    str(item["intent"]),
-                    str(item["subintent"]),
-                    token.i,
-                )
-                if key in seen_evidence:
-                    continue
-                seen_evidence.add(key)
-                evidence.append(
-                    LemmaEvidence(
+            key = (lemma, token.i)
+            if lemma in self._configured_signals and key not in seen_signals:
+                seen_signals.add(key)
+                signals.append(
+                    LemmaSignal(
                         lemma=lemma,
                         matched_text=token.text,
-                        intent=str(item["intent"]),
-                        subintent=str(item["subintent"]),
-                        weight=float(item["weight"]),
                         token_index=token.i,
                         source=source,
                     )
                 )
 
-        evidence.sort(
-            key=lambda item: (
-                -item.weight,
-                item.token_index,
-                item.intent,
-                item.subintent,
-            )
-        )
+        signals.sort(key=lambda item: (item.token_index, item.lemma))
         return LemmaAnalysisResult(
             text=text,
             tokens=tuple(tokens),
-            evidence=tuple(evidence),
+            signals=tuple(signals),
             model_has_lemmatizer=self._model_has_lemmatizer,
         )
 

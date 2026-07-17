@@ -21,11 +21,12 @@ Este directorio contiene perfiles y conjuntos lingüísticos de `core_nlp_engine
 Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 
 - Perfiles: `resources/corpus/profiles/conversation_profiles.json`.
-- Intenciones y subintenciones: `resources/config/domain/intent_taxonomy.json`.
-- Slots semánticos: `resources/config/domain/slot_catalog.json`.
-- Entidades comerciales: `resources/config/infrastructure_nlp/phrase_matcher_service_config.json`.
-- Entidades contextuales: `resources/config/infrastructure_nlp/entity_ruler_service_config.json`.
-- Acciones, reglas de completitud y preguntas: `resources/config/application/conversation_action_rules.json`.
+- Intenciones y subintenciones: `src/temp/resources/intent_resolver/intents_and_subintents.json`.
+- Campos de datos conversacionales: `src/temp/resources/intent_resolver/conversation_data_fields.json`.
+- Entidades comerciales: `src/infrastructure/resources/phrase_matcher_service_config.json`.
+- Entidades contextuales: `src/infrastructure/resources/entity_ruler_service_config.json`.
+- Mapeo de señales y entidades a intenciones: `src/temp/resources/linguistic_evidence_mapping.json`.
+- Acciones, reglas de completitud y preguntas: `src/temp/resources/intent_resolver/conversation_action_rules.json`.
 
 Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro del benchmark.
 
@@ -106,16 +107,16 @@ No se debe duplicar un mensaje cambiando palabras superficiales, agregar informa
 Desde la raíz del proyecto:
 
 ```bash
-python -X utf8 tests/contract/test_resource_contract.py
+python -X utf8 tests/temp/json_validators/test_resource_json_validator.py
 python -m unittest discover -s tests -p "test_*.py"
-python -X utf8 tests/evaluation/evaluate_normalizer.py
-python -X utf8 tests/evaluation/evaluate_phrase_matcher.py
-python -X utf8 tests/evaluation/evaluate_resolver.py
+python -X utf8 tests/temp/evaluation/evaluate_normalizer.py
+python -X utf8 tests/temp/evaluation/evaluate_phrase_matcher.py
+python -X utf8 tests/temp/evaluation/evaluate_resolver.py
 ```
 
-`tests/contract/test_resource_contract.py` comprueba el JSON canónico, sus metadatos mínimos, conteos, IDs, unicidad de mensajes, perfiles, taxonomía, slots, preguntas, entidades, cobertura y evidencia lingüística de las anotaciones. Los evaluadores generan resultados en `reports/`; esos archivos son salidas derivadas y no forman parte de la verdad anotada.
+`tests/temp/json_validators/test_resource_json_validator.py` comprueba el JSON canónico, sus metadatos mínimos, conteos, IDs, unicidad de mensajes, perfiles, taxonomía, slots, preguntas, entidades, cobertura y evidencia lingüística de las anotaciones. Los evaluadores generan resultados en `reports/`; esos archivos son salidas derivadas y no forman parte de la verdad anotada.
 
-Los cinco evaluadores de `tests/evaluation/` recorren este mismo benchmark de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
+Los cinco evaluadores de `tests/temp/evaluation/` recorren este mismo benchmark de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
 
 ## Alcance de las métricas
 

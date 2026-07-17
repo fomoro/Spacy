@@ -1,6 +1,6 @@
 # Arquitectura técnica de `core_nlp_engine`
 
-El motor separa extracción lingüística y resolución de negocio. Los servicios de infraestructura producen evidencia; la capa de aplicación coordina el flujo y decide la intención final.
+El motor separa extracción lingüística y resolución de negocio. Los servicios de infraestructura producen señales y entidades neutrales; la capa de aplicación las convierte en evidencia y decide la intención final.
 
 ## Flujo general
 
@@ -12,31 +12,35 @@ flowchart LR
     C --> E[MatcherService]
     C --> F[LemmaService]
     C --> G[EntityRulerService]
-    D --> H[LinguisticEvidenceBundle]
-    E --> H
-    F --> H
-    G --> H
+    D --> M[LinguisticEvidenceMapper]
+    E --> M
+    F --> M
+    G --> M
+    M --> H[LinguisticEvidenceBundle]
     H --> I[IntentResolver]
     J[Contexto de diálogo] --> I
     I --> K[IntentResolution]
     K --> L[IntentEngine / ResolvedNlpResult]
 ```
 
-`LinguisticParser` ejecuta una sola vez el `PhraseMatcher` y entrega el resultado a `MatcherService`, evitando repetir esa búsqueda. `EntityRulerService` usa el componente nativo `entity_ruler` de spaCy y también permite anotar un `Doc` in-place.
+Los cuatro analizadores posteriores a la normalización son independientes. `MatcherService` y `LemmaService` producen señales neutrales; `LinguisticEvidenceMapper`, en aplicación, las relaciona con entidades e intenciones. `EntityRulerService` usa el componente nativo `entity_ruler` de spaCy.
 
 ## Recursos
 
 Cada responsabilidad tiene un recurso auditable:
 
-- `config/domain/intent_taxonomy.json`: vocabulario canónico de intenciones y subintenciones del dominio.
-- `config/domain/slot_catalog.json`: datos semánticos requeridos por las intenciones, sin importar si provienen del mensaje o del contexto.
-- `config/infrastructure_nlp/text_normalizer_service_config.json`: variación gráfica, alias y jerga.
-- `config/infrastructure_nlp/phrase_matcher_service_config.json`: vocabulario comercial estable reconocido por `PhraseMatcherService`.
-- `config/infrastructure_nlp/matcher_service_config.json`: estructuras tokenizadas y extracciones sintácticas.
-- `config/infrastructure_nlp/lemma_service_config.json`: lemas y formas como evidencia secundaria.
-- `config/infrastructure_nlp/entity_ruler_service_config.json`: tiempo y referencias contextuales.
-- `config/application/intent_resolver_config.json`: pesos, prioridades y fuentes de evidencia.
-- `config/application/conversation_action_rules.json`: acciones posibles, reglas por intención y subintención, y preguntas asociadas.
+- `src/temp/resources/intent_resolver/intents_and_subintents.json`: vocabulario canónico, prioridades de desempate y parámetros técnicos de resolución, temporalmente en revisión.
+- `src/temp/resources/intent_resolver/conversation_data_fields.json`: campos de datos conversacionales, temporalmente en revisión.
+- `src/infrastructure/resources/text_normalizer_service_config.json`: variación gráfica, alias y jerga.
+- `src/infrastructure/resources/phrase_matcher_service_config.json`: vocabulario comercial estable reconocido por `PhraseMatcherService`.
+- `src/infrastructure/resources/matcher_service_config.json`: estructuras tokenizadas y extracciones sintácticas.
+- `src/infrastructure/resources/lemma_service_config.json`: lemas y formas flexionadas neutrales.
+- `src/infrastructure/resources/entity_ruler_service_config.json`: tiempo y referencias contextuales.
+- `src/temp/resources/linguistic_evidence_mapping.json`: traducción de señales y entidades a evidencia ponderada de intenciones.
+- `src/temp/resources/intent_resolver/conversation_action_rules.json`: acciones, reglas y preguntas, temporalmente en revisión.
+
+`IntentResolver` recibe la carpeta `src/temp/resources/intent_resolver/`, carga obligatoriamente los tres JSON y rechaza al iniciar reglas con pares de intención o campos no declarados. Las prioridades, los umbrales y los multiplicadores están integrados en `intents_and_subintents.json` para evitar duplicar identificadores de intención.
+- `src/temp/resources/response_templates.json`: plantillas para presentar información ya validada.
 - `business_data/menu/menu_offerings.json`: precios, presentaciones y recomendaciones enlazados por `product_id`.
 - `business_data/restaurant/restaurant_profile.json`: información estable del restaurante.
 - `corpus/benchmarks/customer_intent_benchmark.json`: benchmark conocido de 600 casos para medir el sistema.
@@ -44,7 +48,11 @@ Cada responsabilidad tiene un recurso auditable:
 - `corpus/datasets/`: material futuro para entrenar, validar y probar modelos.
 - `corpus/profiles/conversation_profiles.json`: 20 estilos conversacionales para diseño y evaluación, fuera del runtime.
 
-La política completa se documenta en `resources/README.md`. Cada servicio carga de forma autónoma su archivo o un diccionario. `IntentResolver` carga por separado sus puntajes y la política conversacional. Los perfiles no se inyectan al parser ni al resolutor. `tests/contract/test_resource_contract.py` verifica referencias contra la taxonomía, cobertura, preguntas, slots, duplicados y fronteras de propiedad.
+La política completa se documenta en `resources/README.md`. Cada servicio carga de forma autónoma su archivo o un diccionario. `IntentResolver` carga por separado sus puntajes y la política conversacional. Los perfiles no se inyectan al parser ni al resolutor. `tests/temp/json_validators/test_resource_json_validator.py` verifica referencias contra la taxonomía, cobertura, preguntas, slots, duplicados y fronteras de propiedad.
+
+`tests/temp/json_validators/test_menu_offerings_json_validator.py` valida de manera independiente la estructura vigente de productos, ofertas, precios y recomendaciones.
+
+`tests/temp/json_validators/test_restaurant_profile_json_validator.py` valida por separado la metadata, identificación, dirección, zona horaria, horarios y medios de pago del restaurante.
 
 ## Infraestructura
 
@@ -52,17 +60,18 @@ Los servicios lingüísticos viven en `src/infrastructure/nlp/`.
 
 - `TextNormalizerService`: normalización Unicode, reemplazos deterministas, espacios y jerga monetaria.
 - `PhraseMatcherService`: vocabulario estable de negocio y resolución de solapamientos.
-- `MatcherService`: patrones sintácticos, evidencias, cantidades, dinero y negación.
-- `LemmaService`: lematización de spaCy con fallback controlado de formas.
+- `MatcherService`: señales sintácticas neutrales, cantidades, dinero y negación.
+- `LemmaService`: lematización de spaCy y señales neutrales con fallback controlado.
 - `EntityRulerService`: días, fechas, momentos del día y referencias contextuales nativas.
 
 Estos componentes no eligen la intención final ni generan respuestas comerciales.
 
 ## Aplicación
 
-- `LinguisticParser` y `LinguisticEvidenceBundle`, en `src/application/linguistic_parser.py`, coordinan las cinco fuentes lingüísticas.
-- `IntentResolver`, `CandidateScore` e `IntentResolution`, en `src/application/intent_resolver.py`, aplican pesos, prioridades, requisitos y contexto conversacional.
-- `IntentEngine` y `ResolvedNlpResult`, en `src/application/intent_engine.py`, forman la fachada pública para `analyze(text, context)`.
+- `LinguisticEvidenceMapper`, en `src/temp/linguistic_evidence_mapper.py`, combina señales neutrales y entidades, y allí asigna intención, subintención y peso.
+- `LinguisticParser` y `LinguisticEvidenceBundle`, en `src/temp/linguistic_parser.py`, coordinan las cinco fuentes lingüísticas mientras esta capa permanece en revisión.
+- `IntentResolver`, `CandidateScore` e `IntentResolution`, en `src/temp/intent_resolver.py`, aplican pesos, prioridades, requisitos y contexto conversacional.
+- `IntentEngine` y `ResolvedNlpResult`, en `src/temp/intent_engine.py`, forman la fachada pública provisional para `analyze(text, context)`.
 
 El resolutor combina las entidades del catálogo con las del `EntityRuler`. Así, las referencias contextuales se mantienen desacopladas del catálogo comercial.
 
@@ -78,5 +87,5 @@ El resolutor combina las entidades del catálogo con las del `EntityRuler`. Así
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py"
-python -X utf8 tests/evaluation/evaluate_resolver.py
+python -X utf8 tests/temp/evaluation/evaluate_resolver.py
 ```

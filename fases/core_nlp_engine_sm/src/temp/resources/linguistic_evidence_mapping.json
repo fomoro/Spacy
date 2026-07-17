@@ -1,0 +1,993 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "purpose": "Traducir señales lingüísticas neutrales y entidades reconocidas en evidencia ponderada de intenciones y subintenciones.",
+    "language": "es-CO"
+  },
+  "matcher_signals": {
+    "PRICE_Q_WH": {
+      "intent": "precio",
+      "subintent": "consultar_precio_producto",
+      "weight": 0.55,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PRICE_PRODUCT_TRAILING": {
+      "intent": "precio",
+      "subintent": "consultar_precio_producto",
+      "weight": 0.52,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PRICE_BUDGET": {
+      "intent": "precio",
+      "subintent": "solicitar_recomendacion_por_presupuesto",
+      "weight": 0.58
+    },
+    "MENU_REQUEST": {
+      "intent": "menu",
+      "subintent": "solicitar_menu",
+      "weight": 0.55,
+      "entity_requirements": [
+        {
+          "entity_ids": [
+            "menu_pdf"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "MENU_RETRY": {
+      "intent": "menu",
+      "subintent": "reenviar_menu",
+      "weight": 0.65,
+      "requires_context": true
+    },
+    "CATEGORY_QUERY": {
+      "intent": "catalogo",
+      "subintent": "consultar_categoria",
+      "weight": 0.5,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "CATEGORIA"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "AVAILABILITY_PRODUCT": {
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.52,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PRODUCT_DETAIL_WHAT_HAS": {
+      "intent": "catalogo",
+      "subintent": "consultar_detalle_producto",
+      "weight": 0.5
+    },
+    "PREPARATION_PRODUCT": {
+      "intent": "catalogo",
+      "subintent": "consultar_preparacion_producto",
+      "weight": 0.5,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        },
+        {
+          "entity_types": [
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ORDER_WANT_PRODUCT": {
+      "intent": "pedido",
+      "subintent": "iniciar_pedido",
+      "weight": 0.58,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ORDER_MULTI_PRODUCT": {
+      "intent": "pedido",
+      "subintent": "agregar_productos_pedido",
+      "weight": 0.64,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 2
+        }
+      ]
+    },
+    "MODIFICATION_REMOVE": {
+      "intent": "pedido",
+      "subintent": "solicitar_modificacion",
+      "weight": 0.62,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "INGREDIENTE",
+            "ALERGENO",
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "MODIFICATION_ADD": {
+      "intent": "pedido",
+      "subintent": "solicitar_modificacion",
+      "weight": 0.6,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "INGREDIENTE",
+            "PRODUCTO_BASE",
+            "PRODUCTO_ESPECIFICO"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "QUANTITY_ONLY": {
+      "intent": "pedido",
+      "subintent": "indicar_cantidad",
+      "weight": 0.38,
+      "requires_context": true
+    },
+    "PAYMENT_QUERY": {
+      "intent": "pago",
+      "subintent": "consultar_medio_pago",
+      "weight": 0.55,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "MEDIO_PAGO"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "DELIVERY_QUERY": {
+      "intent": "domicilio",
+      "subintent": "consultar_domicilio",
+      "weight": 0.54,
+      "entity_requirements": [
+        {
+          "entity_ids": [
+            "domicilio"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "DELIVERY_REQUEST": {
+      "intent": "domicilio",
+      "subintent": "solicitar_domicilio",
+      "weight": 0.8
+    },
+    "DELIVERY_STATUS": {
+      "intent": "domicilio",
+      "subintent": "consultar_estado_domicilio",
+      "weight": 0.84
+    },
+    "RESERVATION_REQUEST": {
+      "intent": "reserva_evento",
+      "subintent": "solicitar_reserva",
+      "weight": 0.58
+    },
+    "EVENT_QUERY": {
+      "intent": "reserva_evento",
+      "subintent": "consultar_eventos",
+      "weight": 0.52
+    },
+    "SCHEDULE_QUERY": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_horario",
+      "weight": 0.52
+    },
+    "LOCATION_QUERY": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_ubicacion",
+      "weight": 0.5
+    },
+    "RECOMMENDATION_QUERY": {
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion",
+      "weight": 0.5
+    },
+    "ALLERGY_QUERY": {
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_alergenos",
+      "weight": 0.8,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "ALERGENO",
+            "INGREDIENTE",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "CROSS_CONTAMINATION": {
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_contaminacion_cruzada",
+      "weight": 0.82
+    },
+    "THANKS": {
+      "intent": "social",
+      "subintent": "agradecer",
+      "weight": 0.7
+    },
+    "CATALOG_PRODUCT_OFFER": {
+      "intent": "catalogo",
+      "subintent": "consultar_producto",
+      "weight": 0.5,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "AVAILABILITY_TEMPORAL": {
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.58,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "AVAILABILITY_PRODUCT_TRAILING": {
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.76,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "AVAILABILITY_SPECIFIC_EXISTENCE": {
+      "intent": "catalogo",
+      "subintent": "consultar_disponibilidad_producto",
+      "weight": 0.7,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PREPARATION_SEARCH": {
+      "intent": "catalogo",
+      "subintent": "consultar_preparacion",
+      "weight": 0.54,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PREPARATION_DEFINITION": {
+      "intent": "catalogo",
+      "subintent": "consultar_definicion_preparacion",
+      "weight": 0.6,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PRODUCT_COMPARISON": {
+      "intent": "catalogo",
+      "subintent": "comparar_productos",
+      "weight": 0.78,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 2
+        }
+      ]
+    },
+    "PRODUCT_DETAIL_CONTENT": {
+      "intent": "catalogo",
+      "subintent": "consultar_detalle_producto",
+      "weight": 0.62,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PREPARATION_PRODUCT_VERBAL": {
+      "intent": "catalogo",
+      "subintent": "consultar_preparacion_producto",
+      "weight": 0.7,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        },
+        {
+          "entity_types": [
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "CATEGORY_DIETARY_RESTRICTION": {
+      "intent": "catalogo",
+      "subintent": "consultar_categoria_por_restriccion",
+      "weight": 0.82
+    },
+    "MENU_GENERAL": {
+      "intent": "menu",
+      "subintent": "consultar_menu_general",
+      "weight": 0.48
+    },
+    "MENU_CHANGES": {
+      "intent": "menu",
+      "subintent": "consultar_cambios_menu",
+      "weight": 0.58
+    },
+    "MENU_RETRY_PERIPHRASTIC": {
+      "intent": "menu",
+      "subintent": "reenviar_menu",
+      "weight": 0.62,
+      "requires_context": true
+    },
+    "ORDER_ADD_SINGLE": {
+      "intent": "pedido",
+      "subintent": "agregar_producto_pedido",
+      "weight": 0.63,
+      "requires_context": true,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ORDER_QUANTIFIED_PRODUCT": {
+      "intent": "pedido",
+      "subintent": "agregar_productos_pedido",
+      "weight": 0.78,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ORDER_GROUP_START": {
+      "intent": "pedido",
+      "subintent": "iniciar_pedido_grupal",
+      "weight": 0.58
+    },
+    "ORDER_REPEAT": {
+      "intent": "pedido",
+      "subintent": "repetir_pedido",
+      "weight": 0.66,
+      "requires_context": true
+    },
+    "ORDER_SELECT_PREPARATION": {
+      "intent": "pedido",
+      "subintent": "seleccionar_preparacion",
+      "weight": 0.6,
+      "requires_context": true,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ORDER_SELECT_PREPARATION_COMMAND": {
+      "intent": "pedido",
+      "subintent": "seleccionar_preparacion",
+      "weight": 0.6,
+      "requires_context": true,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PREPARACION"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PRICE_GENERAL": {
+      "intent": "precio",
+      "subintent": "consultar_precios_generales",
+      "weight": 0.5
+    },
+    "PAYMENT_MIXED": {
+      "intent": "pago",
+      "subintent": "consultar_pago_mixto",
+      "weight": 1.25,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "MEDIO_PAGO"
+          ],
+          "min_count": 2
+        }
+      ]
+    },
+    "DELIVERY_GROUP": {
+      "intent": "domicilio",
+      "subintent": "consultar_domicilio_grupal",
+      "weight": 0.72
+    },
+    "DELIVERY_PREVIOUS_ADDRESS": {
+      "intent": "domicilio",
+      "subintent": "usar_direccion_previa",
+      "weight": 0.72,
+      "requires_context": true
+    },
+    "INVOICE_QUERY": {
+      "intent": "operacion",
+      "subintent": "consultar_facturacion",
+      "weight": 0.6,
+      "entity_requirements": [
+        {
+          "entity_ids": [
+            "factura_electronica"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "PACKAGING_QUERY": {
+      "intent": "operacion",
+      "subintent": "consultar_empaque",
+      "weight": 0.58
+    },
+    "SCHEDULED_ORDER": {
+      "intent": "operacion",
+      "subintent": "consultar_pedido_programado",
+      "weight": 0.6
+    },
+    "PARKING_QUERY": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_parqueadero",
+      "weight": 0.58,
+      "entity_requirements": [
+        {
+          "entity_ids": [
+            "parqueadero"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "INSTALLATION_QUERY": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_instalacion",
+      "weight": 0.55
+    },
+    "LOCATION_ADDRESS_REFERENCE": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_ubicacion",
+      "weight": 0.52
+    },
+    "RECOMMENDATION_QUALITY": {
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion",
+      "weight": 0.56
+    },
+    "RECOMMENDATION_BY_ALLERGY": {
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion_por_alergia",
+      "weight": 0.92
+    },
+    "RECOMMENDATION_BY_RESTRICTION": {
+      "intent": "recomendacion",
+      "subintent": "solicitar_recomendacion_por_restriccion",
+      "weight": 0.86,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "ALERGENO",
+            "INGREDIENTE",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ALLERGEN_CONTENT": {
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_alergenos",
+      "weight": 0.82,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "PRODUCTO_ESPECIFICO",
+            "PRODUCTO_BASE",
+            "PREPARACION",
+            "INGREDIENTE"
+          ],
+          "min_count": 1
+        },
+        {
+          "entity_types": [
+            "ALERGENO"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "ALLERGEN_OPEN_QUERY": {
+      "intent": "seguridad_alimentaria",
+      "subintent": "consultar_alergenos",
+      "weight": 0.72,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "ALERGENO"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "MODIFICATION_ADAPT": {
+      "intent": "pedido",
+      "subintent": "solicitar_modificacion",
+      "weight": 0.7,
+      "entity_requirements": [
+        {
+          "entity_types": [
+            "ALERGENO",
+            "INGREDIENTE",
+            "PRODUCTO_BASE"
+          ],
+          "min_count": 1
+        }
+      ]
+    },
+    "RESERVATION_CONDITIONS": {
+      "intent": "reserva_evento",
+      "subintent": "consultar_reserva",
+      "weight": 0.58
+    },
+    "EVENT_PROPOSAL": {
+      "intent": "reserva_evento",
+      "subintent": "solicitar_evento",
+      "weight": 0.78
+    },
+    "EVENT_PROPOSAL_FOR_GROUP": {
+      "intent": "reserva_evento",
+      "subintent": "solicitar_evento",
+      "weight": 0.82
+    }
+  },
+  "lemma_signals": {
+    "costar": [
+      {
+        "intent": "precio",
+        "subintent": "consultar_precio_producto",
+        "weight": 0.22
+      }
+    ],
+    "valer": [
+      {
+        "intent": "precio",
+        "subintent": "consultar_precio_producto",
+        "weight": 0.22
+      }
+    ],
+    "precio": [
+      {
+        "intent": "precio",
+        "subintent": "consultar_precios_generales",
+        "weight": 0.18
+      }
+    ],
+    "querer": [
+      {
+        "intent": "pedido",
+        "subintent": "iniciar_pedido",
+        "weight": 0.12
+      }
+    ],
+    "pedir": [
+      {
+        "intent": "pedido",
+        "subintent": "iniciar_pedido",
+        "weight": 0.24
+      }
+    ],
+    "agregar": [
+      {
+        "intent": "pedido",
+        "subintent": "agregar_producto_pedido",
+        "weight": 0.22
+      },
+      {
+        "intent": "pedido",
+        "subintent": "solicitar_modificacion",
+        "weight": 0.15
+      }
+    ],
+    "adicionar": [
+      {
+        "intent": "pedido",
+        "subintent": "solicitar_modificacion",
+        "weight": 0.23
+      }
+    ],
+    "preparar": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_preparacion_producto",
+        "weight": 0.2
+      }
+    ],
+    "tener": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_producto",
+        "weight": 0.12
+      }
+    ],
+    "haber": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_producto",
+        "weight": 0.12
+      }
+    ],
+    "mostrar": [
+      {
+        "intent": "menu",
+        "subintent": "solicitar_menu",
+        "weight": 0.2
+      }
+    ],
+    "enviar": [
+      {
+        "intent": "menu",
+        "subintent": "solicitar_menu",
+        "weight": 0.16
+      }
+    ],
+    "reenviar": [
+      {
+        "intent": "menu",
+        "subintent": "reenviar_menu",
+        "weight": 0.28
+      }
+    ],
+    "pagar": [
+      {
+        "intent": "pago",
+        "subintent": "consultar_medio_pago",
+        "weight": 0.2
+      }
+    ],
+    "aceptar": [
+      {
+        "intent": "pago",
+        "subintent": "consultar_medio_pago",
+        "weight": 0.15
+      }
+    ],
+    "reservar": [
+      {
+        "intent": "reserva_evento",
+        "subintent": "solicitar_reserva",
+        "weight": 0.25
+      }
+    ],
+    "recomendar": [
+      {
+        "intent": "recomendacion",
+        "subintent": "solicitar_recomendacion",
+        "weight": 0.28
+      }
+    ],
+    "domicilio": [
+      {
+        "intent": "domicilio",
+        "subintent": "consultar_domicilio",
+        "weight": 0.2
+      }
+    ],
+    "demorar": [
+      {
+        "intent": "domicilio",
+        "subintent": "consultar_domicilio",
+        "weight": 0.16
+      }
+    ],
+    "abrir": [
+      {
+        "intent": "horario_ubicacion",
+        "subintent": "consultar_horario",
+        "weight": 0.22
+      }
+    ],
+    "cerrar": [
+      {
+        "intent": "horario_ubicacion",
+        "subintent": "consultar_horario",
+        "weight": 0.22
+      }
+    ],
+    "quedar": [
+      {
+        "intent": "horario_ubicacion",
+        "subintent": "consultar_ubicacion",
+        "weight": 0.18
+      }
+    ],
+    "facturar": [
+      {
+        "intent": "operacion",
+        "subintent": "consultar_facturacion",
+        "weight": 0.24
+      }
+    ],
+    "alérgico": [
+      {
+        "intent": "seguridad_alimentaria",
+        "subintent": "consultar_alergenos",
+        "weight": 0.42
+      }
+    ],
+    "contaminar": [
+      {
+        "intent": "seguridad_alimentaria",
+        "subintent": "consultar_contaminacion_cruzada",
+        "weight": 0.42
+      }
+    ],
+    "agradecer": [
+      {
+        "intent": "social",
+        "subintent": "agradecer",
+        "weight": 0.3
+      }
+    ],
+    "disponer": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_disponibilidad_producto",
+        "weight": 0.18
+      }
+    ],
+    "comparar": [
+      {
+        "intent": "catalogo",
+        "subintent": "comparar_productos",
+        "weight": 0.16
+      }
+    ],
+    "empacar": [
+      {
+        "intent": "operacion",
+        "subintent": "consultar_empaque",
+        "weight": 0.18
+      }
+    ],
+    "marcar": [
+      {
+        "intent": "operacion",
+        "subintent": "consultar_empaque",
+        "weight": 0.16
+      }
+    ],
+    "programar": [
+      {
+        "intent": "operacion",
+        "subintent": "consultar_pedido_programado",
+        "weight": 0.18
+      }
+    ],
+    "repetir": [
+      {
+        "intent": "pedido",
+        "subintent": "repetir_pedido",
+        "weight": 0.16
+      }
+    ],
+    "ubicar": [
+      {
+        "intent": "horario_ubicacion",
+        "subintent": "consultar_ubicacion",
+        "weight": 0.16
+      }
+    ]
+  },
+  "phrase_entity_types": {
+    "PRODUCTO_ESPECIFICO": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_producto",
+        "weight": 0.14
+      }
+    ],
+    "PRODUCTO_BASE": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_producto",
+        "weight": 0.12
+      }
+    ],
+    "CATEGORIA": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_categoria",
+        "weight": 0.18
+      }
+    ],
+    "PREPARACION": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_preparacion",
+        "weight": 0.1
+      }
+    ],
+    "MEDIO_PAGO": [
+      {
+        "intent": "pago",
+        "subintent": "consultar_medio_pago",
+        "weight": 0.28
+      }
+    ],
+    "ALERGENO": [],
+    "INGREDIENTE": [
+      {
+        "intent": "catalogo",
+        "subintent": "consultar_detalle_producto",
+        "weight": 0.06
+      }
+    ]
+  },
+  "service_entities": {
+    "menu_pdf": {
+      "intent": "menu",
+      "subintent": "solicitar_menu",
+      "weight": 0.3
+    },
+    "domicilio": {
+      "intent": "domicilio",
+      "subintent": "consultar_domicilio",
+      "weight": 0.26
+    },
+    "reserva": {
+      "intent": "reserva_evento",
+      "subintent": "solicitar_reserva",
+      "weight": 0.24
+    },
+    "eventos": {
+      "intent": "reserva_evento",
+      "subintent": "consultar_eventos",
+      "weight": 0.22
+    },
+    "factura_electronica": {
+      "intent": "operacion",
+      "subintent": "consultar_facturacion",
+      "weight": 0.26
+    },
+    "empaque_individual": {
+      "intent": "operacion",
+      "subintent": "consultar_empaque",
+      "weight": 0.24
+    },
+    "etiquetado_nombre": {
+      "intent": "operacion",
+      "subintent": "consultar_empaque",
+      "weight": 0.24
+    },
+    "pedido_programado": {
+      "intent": "operacion",
+      "subintent": "consultar_pedido_programado",
+      "weight": 0.24
+    },
+    "parqueadero": {
+      "intent": "horario_ubicacion",
+      "subintent": "consultar_parqueadero",
+      "weight": 0.24
+    },
+    "menu_infantil": {
+      "intent": "operacion",
+      "subintent": "consultar_servicio",
+      "weight": 0.22
+    }
+  },
+  "entity_ruler_types": {
+    "DIA_SEMANA": [
+      {
+        "intent": "horario_ubicacion",
+        "subintent": "consultar_horario",
+        "weight": 0.06
+      }
+    ],
+    "FECHA_RELATIVA": [],
+    "MOMENTO_DIA": [],
+    "REFERENCIA_CONTEXTUAL": []
+  }
+}

@@ -9,14 +9,14 @@ from src.infrastructure.nlp.phrase_matcher_service import (
 )
 from src.infrastructure.nlp.matcher_service import (
     MatcherService,
-    MatcherEvidence,
+    MatcherSignal,
     StructuredExtraction,
     MatcherResult,
 )
 from src.infrastructure.nlp.lemma_service import (
     LemmaService,
     LemmaToken,
-    LemmaEvidence,
+    LemmaSignal,
     LemmaAnalysisResult,
 )
 from src.infrastructure.nlp.entity_ruler_service import (
@@ -32,12 +32,12 @@ __all__ = [
     "PhraseEntity",
     "PhraseMatchResult",
     "MatcherService",
-    "MatcherEvidence",
+    "MatcherSignal",
     "StructuredExtraction",
     "MatcherResult",
     "LemmaService",
     "LemmaToken",
-    "LemmaEvidence",
+    "LemmaSignal",
     "LemmaAnalysisResult",
     "EntityRulerEntity",
     "EntityRulerResult",

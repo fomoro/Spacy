@@ -12,12 +12,12 @@ ROOT = Path(__file__).resolve().parents[2]
 class PhraseMatcherServiceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.normalizer = TextNormalizerService(ROOT / "resources" / "config" / "infrastructure_nlp" / "text_normalizer_service_config.json")
+        cls.normalizer = TextNormalizerService(ROOT / "src" / "infrastructure" / "resources" / "text_normalizer_service_config.json")
         cls.matcher = PhraseMatcherService(
             ROOT
+            / "src"
+            / "infrastructure"
             / "resources"
-            / "config"
-            / "infrastructure_nlp"
             / "phrase_matcher_service_config.json"
         )
 

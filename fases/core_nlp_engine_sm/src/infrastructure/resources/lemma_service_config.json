@@ -1,0 +1,382 @@
+{
+  "metadata": {
+    "schema_version": "4.0.0",
+    "purpose": "Lematizar texto y reconocer señales morfológicas neutrales sin asignar intenciones.",
+    "language": "es-CO"
+  },
+  "options": {
+    "minimum_token_length": 2,
+    "ignored_pos": [
+      "PUNCT",
+      "SPACE",
+      "SYM"
+    ]
+  },
+  "stop_lemmas": [
+    "el",
+    "la",
+    "los",
+    "las",
+    "un",
+    "uno",
+    "una",
+    "de",
+    "del",
+    "al",
+    "a",
+    "en",
+    "con",
+    "por",
+    "para",
+    "que",
+    "qué",
+    "y",
+    "o",
+    "se",
+    "me",
+    "te",
+    "le",
+    "lo",
+    "mi",
+    "su",
+    "este",
+    "esta",
+    "ese",
+    "esa"
+  ],
+  "signals": [
+    {
+      "lemma": "costar",
+      "forms": [
+        "costar",
+        "cuesta",
+        "cuestan",
+        "costaba",
+        "costaría"
+      ]
+    },
+    {
+      "lemma": "valer",
+      "forms": [
+        "valer",
+        "vale",
+        "valen",
+        "valía",
+        "valdría"
+      ]
+    },
+    {
+      "lemma": "precio",
+      "forms": [
+        "precio",
+        "precios"
+      ]
+    },
+    {
+      "lemma": "querer",
+      "forms": [
+        "querer",
+        "quiero",
+        "quiere",
+        "queremos",
+        "quisiera",
+        "quisieran"
+      ]
+    },
+    {
+      "lemma": "pedir",
+      "forms": [
+        "pedir",
+        "pido",
+        "pide",
+        "pedido",
+        "pedidos",
+        "pediría"
+      ]
+    },
+    {
+      "lemma": "agregar",
+      "forms": [
+        "agregar",
+        "agrego",
+        "agregue",
+        "agregarle",
+        "añadir",
+        "añada"
+      ]
+    },
+    {
+      "lemma": "adicionar",
+      "forms": [
+        "adicionar",
+        "adiciona",
+        "adicionarle",
+        "adicione"
+      ]
+    },
+    {
+      "lemma": "preparar",
+      "forms": [
+        "preparar",
+        "preparan",
+        "prepararlo",
+        "prepararla",
+        "preparado",
+        "preparen"
+      ]
+    },
+    {
+      "lemma": "tener",
+      "forms": [
+        "tener",
+        "tienen",
+        "tiene",
+        "tengo",
+        "tengan"
+      ]
+    },
+    {
+      "lemma": "haber",
+      "forms": [
+        "haber",
+        "hay",
+        "había"
+      ]
+    },
+    {
+      "lemma": "mostrar",
+      "forms": [
+        "mostrar",
+        "muestre",
+        "muéstrame",
+        "muestrame",
+        "mostrarme",
+        "enseñar",
+        "enséñame",
+        "enseñame"
+      ]
+    },
+    {
+      "lemma": "enviar",
+      "forms": [
+        "enviar",
+        "envía",
+        "envie",
+        "envíe",
+        "envíame",
+        "enviame",
+        "mandar",
+        "manda",
+        "mándame",
+        "mandame"
+      ]
+    },
+    {
+      "lemma": "reenviar",
+      "forms": [
+        "reenviar",
+        "reenvía",
+        "reenvíame",
+        "reenviala",
+        "reenvíala"
+      ]
+    },
+    {
+      "lemma": "pagar",
+      "forms": [
+        "pagar",
+        "pago",
+        "paga",
+        "pagaría",
+        "pagando"
+      ]
+    },
+    {
+      "lemma": "aceptar",
+      "forms": [
+        "aceptar",
+        "aceptan",
+        "acepta",
+        "recibir",
+        "reciben",
+        "recibe"
+      ]
+    },
+    {
+      "lemma": "reservar",
+      "forms": [
+        "reservar",
+        "reserva",
+        "reservar una",
+        "separar",
+        "separo"
+      ]
+    },
+    {
+      "lemma": "recomendar",
+      "forms": [
+        "recomendar",
+        "recomienda",
+        "recomiendan",
+        "recomiéndame",
+        "recomendacion",
+        "recomendación"
+      ]
+    },
+    {
+      "lemma": "domicilio",
+      "forms": [
+        "domicilio",
+        "domicilios",
+        "entrega"
+      ]
+    },
+    {
+      "lemma": "demorar",
+      "forms": [
+        "demorar",
+        "demora",
+        "demoran",
+        "tardar",
+        "tarda"
+      ]
+    },
+    {
+      "lemma": "abrir",
+      "forms": [
+        "abrir",
+        "abren",
+        "abre",
+        "abierto",
+        "abiertos"
+      ]
+    },
+    {
+      "lemma": "cerrar",
+      "forms": [
+        "cerrar",
+        "cierran",
+        "cierra",
+        "cerrado",
+        "cerrados"
+      ]
+    },
+    {
+      "lemma": "quedar",
+      "forms": [
+        "quedar",
+        "queda",
+        "quedan",
+        "ubicado",
+        "ubicados"
+      ]
+    },
+    {
+      "lemma": "facturar",
+      "forms": [
+        "facturar",
+        "factura",
+        "facturación",
+        "facturacion"
+      ]
+    },
+    {
+      "lemma": "alérgico",
+      "forms": [
+        "alérgico",
+        "alergico",
+        "alérgica",
+        "alergica",
+        "alergia",
+        "alergias"
+      ]
+    },
+    {
+      "lemma": "contaminar",
+      "forms": [
+        "contaminación",
+        "contaminacion",
+        "contaminar",
+        "cruzada"
+      ]
+    },
+    {
+      "lemma": "agradecer",
+      "forms": [
+        "agradecer",
+        "agradezco",
+        "gracias",
+        "grx"
+      ]
+    },
+    {
+      "lemma": "disponer",
+      "forms": [
+        "disponer",
+        "disponible",
+        "disponibles",
+        "disponibilidad"
+      ]
+    },
+    {
+      "lemma": "comparar",
+      "forms": [
+        "comparar",
+        "compara",
+        "compare",
+        "comparación"
+      ]
+    },
+    {
+      "lemma": "empacar",
+      "forms": [
+        "empacar",
+        "empaca",
+        "empacan",
+        "empaque",
+        "empacado"
+      ]
+    },
+    {
+      "lemma": "marcar",
+      "forms": [
+        "marcar",
+        "marca",
+        "marcan",
+        "marcado",
+        "etiquetar",
+        "etiquetado"
+      ]
+    },
+    {
+      "lemma": "programar",
+      "forms": [
+        "programar",
+        "programa",
+        "programan",
+        "programado",
+        "programarlo"
+      ]
+    },
+    {
+      "lemma": "repetir",
+      "forms": [
+        "repetir",
+        "repite",
+        "repita",
+        "mismo",
+        "misma"
+      ]
+    },
+    {
+      "lemma": "ubicar",
+      "forms": [
+        "ubicar",
+        "ubica",
+        "ubicado",
+        "ubicados",
+        "ubicación"
+      ]
+    }
+  ]
+}

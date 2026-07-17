@@ -1,8 +1,8 @@
 # Infraestructura
 
-Esta capa contiene las implementaciones técnicas que producen evidencia para
-la aplicación. No decide por sí misma la intención final ni genera respuestas
-comerciales.
+Esta capa contiene implementaciones técnicas que producen texto normalizado,
+entidades y señales neutrales. No asigna intenciones, subintenciones o pesos,
+ni genera respuestas comerciales.
 
 ## NLP
 
@@ -10,15 +10,35 @@ Los servicios de `nlp/` tienen responsabilidades independientes:
 
 - `text_normalizer_service.py`: normalización controlada del texto.
 - `phrase_matcher_service.py`: reconocimiento del vocabulario comercial.
-- `matcher_service.py`: patrones sintácticos y extracciones estructuradas.
-- `lemma_service.py`: lematización y evidencia morfológica.
+- `matcher_service.py`: señales sintácticas neutrales, cantidades, dinero y negación.
+- `lemma_service.py`: lematización y señales morfológicas neutrales.
 - `entity_ruler_service.py`: entidades temporales y contextuales.
-- `text_categorizer_service.py`: punto de extensión pendiente para evidencia
-  estadística de intenciones y subintenciones.
+- `text_categorizer_service.py`: punto de extensión pendiente para
+  puntuaciones estadísticas neutrales.
 
-El futuro `TextCategorizerService` deberá entregar puntuaciones al
-`IntentResolver`; no tomará la decisión final ni reemplazará las reglas y
-prioridades existentes.
+El futuro `TextCategorizerService` entregará puntuaciones a la capa de
+aplicación; no tomará la decisión final ni reemplazará las reglas y prioridades
+existentes.
+
+Cada servicio recibe texto y puede probarse sin construir otro servicio. La
+capa de aplicación combina después sus resultados mediante
+`LinguisticEvidenceMapper`; por ello Matcher no recibe `PhraseMatchResult` y
+Lemma no contiene intenciones ni pesos.
+
+## Resources
+
+La carpeta `resources/` contiene únicamente las configuraciones JSON que
+pertenecen directamente a los servicios de esta capa:
+
+- `text_normalizer_service_config.json`
+- `phrase_matcher_service_config.json`
+- `matcher_service_config.json`
+- `lemma_service_config.json`
+- `entity_ruler_service_config.json`
+
+No contiene taxonomías, reglas conversacionales, benchmarks ni datos del
+restaurante. `TextCategorizerService` todavía no tiene configuración porque su
+implementación permanece pendiente.
 
 ## Convención documental
 
