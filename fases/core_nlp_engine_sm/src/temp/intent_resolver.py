@@ -666,9 +666,9 @@ class IntentResolver:
         delivery_status_markers = any(
             marker in text
             for marker in (
-                "estado del domicilio", "estado de mi pedido", "estado del pedido",
-                "seguimiento del pedido", "rastrear el pedido", "dónde va mi pedido",
-                "donde va mi pedido", "ya salió mi pedido", "ya salio mi pedido",
+                "estado del domicilio", "seguimiento del domicilio",
+                "rastrear el domicilio", "dónde va el domicilio",
+                "donde va el domicilio", "ya salió el domicilio", "ya salio el domicilio",
             )
         )
         if delivery_status_markers:
@@ -788,6 +788,7 @@ class IntentResolver:
     ) -> set[str]:
         entities = self._all_entities(payload)
         types = {item.get("entity_type") for item in entities}
+        entity_ids = {str(item.get("entity_id", "")) for item in entities}
         extraction = payload.get("matcher", {}).get("extraction", {})
         quantities = extraction.get("quantities", [])
         text = str(payload.get("normalized_text", "")).casefold()
@@ -808,6 +809,16 @@ class IntentResolver:
             available.add("time")
         if "MEDIO_PAGO" in types:
             available.add("payment_method")
+        if entity_ids.intersection(
+            {"domicilio", "recoger_en_restaurante", "consumo_en_sitio"}
+        ) or any(
+            marker in text
+            for marker in (
+                "recoger", "recogerlo", "recogerla", "pickup",
+                "consumo en sitio", "comer en el restaurante", "dine in",
+            )
+        ):
+            available.add("fulfillment_method")
         if types.intersection({"ALERGENO", "INGREDIENTE"}):
             available.add("allergen")
         if types.intersection({"ALERGENO", "INGREDIENTE"}) or any(
@@ -845,6 +856,7 @@ class IntentResolver:
             ("order_id", "order_id"),
             ("reservation_id", "reservation_id"),
             ("invoice_data", "invoice_data"),
+            ("fulfillment_method", "fulfillment_method"),
         ):
             if context.get(context_key):
                 available.add(slot)

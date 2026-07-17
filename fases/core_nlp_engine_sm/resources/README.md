@@ -44,7 +44,7 @@ Principios obligatorios:
 | `src/infrastructure/resources/matcher_service_config.json` | Señales sintácticas neutrales, cantidades, dinero y negación | Intenciones, subintenciones, pesos o dependencias de entidades previas |
 | `src/infrastructure/resources/lemma_service_config.json` | Lemas, formas flexionadas y señales morfológicas neutrales | Intenciones, subintenciones o pesos |
 | `src/infrastructure/resources/entity_ruler_service_config.json` | Tiempo y referencias que requieren contexto conversacional | Productos, ingredientes, precios o negación |
-| `src/temp/resources/linguistic_evidence_mapping.json` | Correspondencia entre señales o entidades e intenciones, subintenciones y pesos | Patrones spaCy, carta o respuestas |
+| `src/temp/resources/intent_resolver/linguistic_evidence_mapping.json` | Correspondencia entre señales o entidades de infraestructura e intenciones, subintenciones y pesos | Campos conversacionales, preguntas, acciones, carta o respuestas |
 | `src/temp/resources/intent_resolver/conversation_action_rules.json` | Acciones conversacionales, reglas y preguntas en revisión | Definiciones de slots, puntajes o respuestas comerciales generales |
 | `src/temp/resources/response_templates.json` | Plantillas neutrales para presentar datos ya validados | Precios, disponibilidad o datos personales persistidos |
 | `business_data/restaurant/restaurant_profile.json` | Nombre, ubicación, horario y medios de pago estables | Patrones NLP o textos conversacionales |
@@ -108,7 +108,7 @@ Toda intención o subintención debe:
 
 `conversation_action_rules.json` determina la siguiente acción después de reconocer una intención. Su sección `conversation_actions` explica cada resultado y su categoría; `rules_by_intent_and_subintent` define requisitos y decisiones; `questions` contiene los textos seleccionados por esas reglas. Sus metadatos resumen los conteos de las tres secciones y el contrato comprueba que permanezcan sincronizados. Se mantienen separados `missing_slots`, `question_key` y el texto de la pregunta, aunque vivan en el mismo recurso. No se debe usar una pregunta genérica cuando el motor conoce la causa.
 
-Los tres JSON de `src/temp/resources/intent_resolver/` forman un conjunto obligatorio de runtime. El resolutor carga la carpeta completa: `intents_and_subintents.json` limita los pares válidos e integra las prioridades, los umbrales y los multiplicadores; el catálogo de campos limita los datos utilizables; y las reglas determinan la siguiente acción.
+Los cuatro JSON de `src/temp/resources/intent_resolver/` están agrupados por dominio, no por dependencia de carga. `linguistic_evidence_mapping.json` depende solo de la taxonomía válida y de las señales producidas por infraestructura, y `LinguisticEvidenceMapper` lo carga de forma autónoma. `IntentResolver` carga los otros tres: `intents_and_subintents.json` limita los pares válidos e integra las prioridades, los umbrales y los multiplicadores; `conversation_data_fields.json` limita los datos utilizables; y `conversation_action_rules.json` depende de ambos para determinar la siguiente acción. El mapeo lingüístico no debe contener campos, preguntas ni acciones.
 
 Un campo de datos conversacionales —denominado técnicamente *slot*— representa el dato requerido, no su procedencia. Por ejemplo, `product` puede satisfacerse con una entidad del mensaje o con `context.producto_activo`; `order`, con `context.pedido_anterior`; y `delivery_address`, con `context.direccion_previa`. Las fuentes contextuales pertenecen al resolver y no crean campos alternativos.
 
@@ -161,7 +161,7 @@ Los 20 perfiles describen estilos de interacción observables; no clasifican per
 3. Evitar patrones completamente opcionales.
 4. Usar `full_text_only` cuando una señal solo sea válida como mensaje completo.
 5. Mantener los lemas como señales neutrales y comprobar palabras polisémicas.
-6. Declarar la intención, subintención, peso y requisitos de entidades en `src/temp/resources/linguistic_evidence_mapping.json`.
+6. Declarar la intención, subintención, peso y requisitos de entidades en `src/temp/resources/intent_resolver/linguistic_evidence_mapping.json`.
 
 ### Intención o subintención
 

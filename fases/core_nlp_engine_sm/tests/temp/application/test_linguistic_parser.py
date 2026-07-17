@@ -24,7 +24,7 @@ class LinguisticParserTests(unittest.TestCase):
         matcher = MatcherService(ROOT / "src" / "infrastructure" / "resources" / "matcher_service_config.json")
         lemmas = LemmaService(ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json")
         ruler = EntityRulerService(ROOT / "src" / "infrastructure" / "resources" / "entity_ruler_service_config.json")
-        evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "linguistic_evidence_mapping.json")
+        evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json")
         cls.pipeline = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler, evidence_mapper)
 
     def test_integrated_price_analysis(self):

@@ -1,9 +1,10 @@
 {
   "metadata": {
-    "schema_version": "3.0.0",
-    "purpose": "Definir las intenciones, subintenciones y parámetros técnicos con los que se resuelve la intención del cliente.",
+    "schema_version": "4.0.0",
+    "purpose": "Definir las intenciones, subintenciones y parámetros técnicos con los que se resuelve la solicitud del cliente.",
     "language": "es-CO",
-    "domain": "restaurante_colombiano_de_comida_de_mar"
+    "intent_count": 12,
+    "intent_subintent_pair_count": 56
   },
   "resolver_settings": {
     "thresholds": {
@@ -27,13 +28,14 @@
       "subintents": {
         "comparar_productos": "Compara dos o más productos por una cualidad explícita.",
         "consultar_categoria": "Consulta qué productos pertenecen a una categoría de la carta.",
-        "consultar_categoria_por_restriccion": "Busca una categoría u opción compatible con una restricción alimentaria.",
+        "consultar_categoria_por_restriccion": "Solicita listar productos de una categoría explícita filtrados por una restricción alimentaria; no pide una recomendación personalizada.",
         "consultar_definicion_preparacion": "Pregunta qué significa una técnica o preparación culinaria.",
         "consultar_detalle_producto": "Pregunta por ingredientes, acompañamientos o características de un producto identificado.",
-        "consultar_disponibilidad_producto": "Pregunta si un producto se encuentra disponible.",
-        "consultar_preparacion": "Busca productos elaborados con una preparación determinada.",
-        "consultar_preparacion_producto": "Pregunta si un producto admite una preparación determinada.",
-        "consultar_producto": "Pregunta de manera general si el restaurante ofrece un producto."
+        "consultar_disponibilidad_producto": "Pregunta si un producto está disponible actualmente, hoy o para una operación concreta.",
+        "consultar_preparacion": "Busca productos de la carta elaborados mediante una preparación determinada.",
+        "consultar_preparacion_producto": "Pregunta, sin elegir todavía, si un producto identificado admite una preparación determinada.",
+        "consultar_producto": "Pregunta si un producto pertenece de forma estable a la oferta del restaurante; no consulta inventario o disponibilidad del momento.",
+        "consultar_opciones_infantiles": "Consulta platos, porciones o presentaciones ofrecidos específicamente para niños."
       }
     },
     "domicilio": {
@@ -62,9 +64,9 @@
       "description": "Solicitudes relacionadas con la carta como documento o vista general.",
       "subintents": {
         "consultar_cambios_menu": "Pregunta qué cambió en la carta.",
-        "consultar_menu_general": "Pregunta de forma abierta qué ofrece el restaurante.",
-        "reenviar_menu": "Solicita volver a enviar una carta previamente compartida.",
-        "solicitar_menu": "Solicita recibir o visualizar la carta."
+        "consultar_menu_general": "Pregunta de forma abierta qué ofrece el restaurante sin solicitar el documento de la carta.",
+        "reenviar_menu": "Solicita volver a enviar una carta que el contexto confirma como compartida previamente.",
+        "solicitar_menu": "Solicita recibir, abrir o visualizar por primera vez el documento o vista de la carta."
       }
     },
     "operacion": {
@@ -73,8 +75,8 @@
       "subintents": {
         "consultar_empaque": "Consulta separación, marcado o presentación de pedidos.",
         "consultar_facturacion": "Consulta factura, factura electrónica o requisitos tributarios.",
-        "consultar_pedido_programado": "Consulta o solicita programar una entrega para una hora posterior.",
-        "consultar_servicio": "Consulta un servicio complementario no cubierto por otra intención."
+        "consultar_pedido_programado": "Consulta disponibilidad o condiciones para programar un pedido; no confirma todavía la programación.",
+        "solicitar_factura": "Solicita generar o tramitar la factura de un pedido identificado con datos tributarios explícitos."
       }
     },
     "pago": {
@@ -89,14 +91,16 @@
       "tie_break_priority": 90,
       "description": "Creación y modificación transaccional de un pedido.",
       "subintents": {
-        "agregar_producto_pedido": "Añade una referencia de producto a un pedido en curso.",
-        "agregar_productos_pedido": "Añade explícitamente varias referencias o unidades a un pedido.",
+        "agregar_producto_pedido": "Añade una o varias referencias o unidades a un pedido que ya está en curso.",
         "indicar_cantidad": "Indica una cantidad apoyándose en el producto activo del contexto.",
         "iniciar_pedido": "Expresa la voluntad de pedir un producto.",
         "iniciar_pedido_grupal": "Inicia un pedido para varias personas sin detallar todavía los productos.",
         "repetir_pedido": "Solicita repetir un pedido conocido por el contexto.",
         "seleccionar_preparacion": "Selecciona una preparación para el producto activo.",
-        "solicitar_modificacion": "Añade, retira o sustituye ingredientes o preparaciones."
+        "solicitar_modificacion": "Añade, retira o sustituye ingredientes o preparaciones.",
+        "seleccionar_modalidad_entrega": "Selecciona cómo recibirá el pedido: domicilio, recogida en el restaurante o consumo en sitio.",
+        "consultar_estado_pedido": "Consulta el estado de un pedido existente que no se identifica específicamente como domicilio.",
+        "cancelar_pedido": "Solicita cancelar un pedido existente después de identificarlo."
       }
     },
     "precio": {
@@ -113,8 +117,8 @@
       "description": "Solicitudes de orientación para elegir un plato.",
       "subintents": {
         "solicitar_recomendacion": "Solicita una recomendación general o por preferencia culinaria.",
-        "solicitar_recomendacion_por_alergia": "Solicita una recomendación compatible con una alergia.",
-        "solicitar_recomendacion_por_restriccion": "Solicita una recomendación compatible con una restricción no necesariamente alérgica."
+        "solicitar_recomendacion_por_alergia": "Pide opciones compatibles con una alergia explícita y exige validación humana de seguridad; no afirma que un producto sea seguro.",
+        "solicitar_recomendacion_por_restriccion": "Pide orientación personalizada por una preferencia o restricción no alérgica; no solicita filtrar una categoría ya identificada."
       }
     },
     "reserva_evento": {
@@ -122,24 +126,28 @@
       "description": "Reservas de mesa y servicios para grupos o eventos.",
       "subintents": {
         "consultar_eventos": "Consulta capacidad o condiciones para realizar eventos.",
-        "consultar_reserva": "Consulta condiciones, costo o disponibilidad de una reserva.",
+        "consultar_reserva": "Consulta condiciones, costo o disponibilidad sin crear ni modificar todavía una reserva.",
         "solicitar_evento": "Solicita una propuesta o gestión para un evento.",
-        "solicitar_reserva": "Solicita reservar una mesa o espacio."
+        "solicitar_reserva": "Solicita crear una nueva reserva de mesa o espacio.",
+        "modificar_reserva": "Solicita cambiar una reserva existente después de identificarla.",
+        "cancelar_reserva": "Solicita cancelar una reserva existente después de identificarla."
       }
     },
     "seguridad_alimentaria": {
       "tie_break_priority": 100,
       "description": "Consultas que requieren tratamiento conservador por riesgo alimentario.",
       "subintents": {
-        "consultar_alergenos": "Consulta presencia de alérgenos o ingredientes sensibles.",
+        "consultar_alergenos": "Pregunta por presencia de alérgenos o ingredientes sensibles en un producto o preparación; no solicita elegir entre opciones.",
         "consultar_contaminacion_cruzada": "Consulta separación de aceite, utensilios o superficies."
       }
     },
     "social": {
       "tie_break_priority": 10,
-      "description": "Actos sociales que no requieren una operación comercial.",
+      "description": "Actos sociales autónomos que no solicitan una operación comercial.",
       "subintents": {
-        "agradecer": "Expresa agradecimiento o cierre cortés."
+        "saludar": "Inicia o reabre la conversación mediante un saludo sin otra solicitud principal.",
+        "agradecer": "Expresa agradecimiento sin una solicitud adicional.",
+        "despedirse": "Cierra explícitamente la conversación mediante una despedida."
       }
     }
   }

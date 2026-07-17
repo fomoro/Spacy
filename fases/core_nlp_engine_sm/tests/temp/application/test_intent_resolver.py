@@ -35,7 +35,7 @@ class IntentResolverTests(unittest.TestCase):
         matcher = MatcherService(ROOT / "src" / "infrastructure" / "resources" / "matcher_service_config.json")
         lemmas = LemmaService(ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json")
         ruler = EntityRulerService(ROOT / "src" / "infrastructure" / "resources" / "entity_ruler_service_config.json")
-        evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "linguistic_evidence_mapping.json")
+        evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json")
         parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler, evidence_mapper)
         resolver = IntentResolver(
             ROOT / "src" / "temp" / "resources" / "intent_resolver"
@@ -94,6 +94,67 @@ class IntentResolverTests(unittest.TestCase):
         self.assertEqual(result.status, "unknown")
         self.assertEqual(result.intervention_mode, "out_of_scope")
         self.assertEqual(result.question_key, "out_of_scope")
+
+    def test_standalone_greeting_and_farewell(self):
+        greeting = self.resolve("Hola")
+        farewell = self.resolve("Chao")
+        self.assertEqual((greeting.intent, greeting.subintent), ("social", "saludar"))
+        self.assertEqual(
+            (farewell.intent, farewell.subintent), ("social", "despedirse")
+        )
+
+    def test_selects_pickup_as_fulfillment_method(self):
+        result = self.resolve(
+            "Quiero recoger el pedido directamente en el restaurante"
+        )
+        self.assertEqual(result.intent, "pedido")
+        self.assertEqual(result.subintent, "seleccionar_modalidad_entrega")
+        self.assertEqual(result.intervention_mode, "needs_transaction_confirmation")
+        self.assertEqual(result.question_key, "confirm_fulfillment_method")
+
+    def test_general_order_status_is_not_delivery_status(self):
+        result = self.resolve(
+            "Quiero consultar el estado de mi pedido para recoger"
+        )
+        self.assertEqual(result.intent, "pedido")
+        self.assertEqual(result.subintent, "consultar_estado_pedido")
+        self.assertEqual(result.intervention_mode, "needs_identity_verification")
+
+    def test_cancel_order_requires_identity_before_confirmation(self):
+        pending = self.resolve("Necesito cancelar el pedido que está activo")
+        verified = self.resolve(
+            "Necesito cancelar el pedido que está activo",
+            {"identity_verified": True, "order_id": "order-test-1"},
+        )
+        self.assertEqual(pending.subintent, "cancelar_pedido")
+        self.assertEqual(pending.intervention_mode, "needs_identity_verification")
+        self.assertEqual(
+            verified.intervention_mode, "needs_transaction_confirmation"
+        )
+
+    def test_modify_and_cancel_existing_reservation(self):
+        change = self.resolve("Necesito modificar la reserva que ya tengo")
+        cancellation = self.resolve("Necesito cancelar la reserva que ya tengo")
+        self.assertEqual(change.subintent, "modificar_reserva")
+        self.assertEqual(cancellation.subintent, "cancelar_reserva")
+        self.assertEqual(change.intervention_mode, "needs_identity_verification")
+        self.assertEqual(
+            cancellation.intervention_mode, "needs_identity_verification"
+        )
+
+    def test_invoice_request_is_distinct_from_invoice_query(self):
+        result = self.resolve(
+            "Necesito que generen la factura electrónica de mi pedido"
+        )
+        self.assertEqual(result.intent, "operacion")
+        self.assertEqual(result.subintent, "solicitar_factura")
+        self.assertEqual(result.intervention_mode, "needs_identity_verification")
+
+    def test_children_options_replace_generic_service_query(self):
+        result = self.resolve("¿Tienen menú infantil?")
+        self.assertEqual(result.intent, "catalogo")
+        self.assertEqual(result.subintent, "consultar_opciones_infantiles")
+        self.assertEqual(result.intervention_mode, "needs_business_lookup")
 
     def test_quantity_requires_context(self):
         result = self.resolve("dos")

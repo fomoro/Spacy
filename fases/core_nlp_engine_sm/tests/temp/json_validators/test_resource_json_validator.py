@@ -28,7 +28,7 @@ RESOURCE_PATHS = {
     "lemma_service_config.json": ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json",
     "entity_ruler_service_config.json": ROOT / "src" / "infrastructure" / "resources" / "entity_ruler_service_config.json",
     "linguistic_evidence_mapping.json": (
-        ROOT / "src" / "temp" / "resources" / "linguistic_evidence_mapping.json"
+        ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json"
     ),
     "conversation_action_rules.json": (
         ROOT / "src" / "temp" / "resources" / "intent_resolver" / "conversation_action_rules.json"
@@ -83,6 +83,20 @@ def validate() -> list[str]:
     valid_pairs = taxonomy_pairs(taxonomy)
     covered_pairs: set[str] = set()
 
+    expected_evidence_mapping_fields = {
+        "metadata",
+        "matcher_signals",
+        "lemma_signals",
+        "phrase_entity_types",
+        "service_entities",
+        "entity_ruler_types",
+    }
+    if set(evidence_mapping) != expected_evidence_mapping_fields:
+        errors.append(
+            "linguistic_evidence_mapping.json: solo debe contener evidencia "
+            "lingüística; no campos, preguntas ni acciones conversacionales."
+        )
+
     conversation_messages: set[str] = set()
     for conversation_name, conversation_path in CONVERSATION_PATHS.items():
         conversation = json.loads(conversation_path.read_text(encoding="utf-8"))
@@ -106,16 +120,44 @@ def validate() -> list[str]:
             )
         conversation_messages.update(normalized)
 
-    minimal_metadata_fields = {"schema_version", "purpose", "language", "domain"}
-    for resource_name, resource in (
-        ("intents_and_subintents.json", taxonomy),
-        ("response_templates.json", response_templates),
-    ):
+    minimal_metadata_fields = {"schema_version", "purpose", "language"}
+    for resource_name, resource in (("response_templates.json", response_templates),):
         metadata = resource.get("metadata", {})
         if not isinstance(metadata, dict) or set(metadata) != minimal_metadata_fields:
             errors.append(f"{resource_name}: metadata no coincide con el contrato mínimo.")
         elif not str(metadata.get("purpose", "")).strip():
             errors.append(f"{resource_name}: metadata.purpose debe ser texto no vacío.")
+
+    taxonomy_metadata = taxonomy.get("metadata", {})
+    expected_taxonomy_metadata = {
+        "schema_version",
+        "purpose",
+        "language",
+        "intent_count",
+        "intent_subintent_pair_count",
+    }
+    if not isinstance(taxonomy_metadata, dict) or set(taxonomy_metadata) != expected_taxonomy_metadata:
+        errors.append(
+            "intents_and_subintents.json: metadata no coincide con el contrato mínimo."
+        )
+    else:
+        if taxonomy_metadata.get("intent_count") != len(taxonomy.get("intents", {})):
+            errors.append("intents_and_subintents.json: intent_count es incorrecto.")
+        if taxonomy_metadata.get("intent_subintent_pair_count") != len(valid_pairs):
+            errors.append(
+                "intents_and_subintents.json: intent_subintent_pair_count es incorrecto."
+            )
+    for intent_id, intent in taxonomy.get("intents", {}).items():
+        if not str(intent.get("description", "")).strip():
+            errors.append(
+                f"intents_and_subintents.json: '{intent_id}' requiere descripción."
+            )
+        for subintent_id, description in intent.get("subintents", {}).items():
+            if not isinstance(description, str) or not description.strip():
+                errors.append(
+                    "intents_and_subintents.json: "
+                    f"'{intent_id}.{subintent_id}' requiere descripción."
+                )
 
     configuration_metadata_fields = {"schema_version", "purpose", "language"}
     for resource_name, resource in (
@@ -681,6 +723,7 @@ def validate() -> list[str]:
                 "menu_pdf_ultima_fecha_envio",
                 "budget", "delivery_zone", "customer_name", "phone",
                 "order_id", "reservation_id", "invoice_data",
+                "fulfillment_method",
                 "identity_verified",
             }
             if not isinstance(context, dict):

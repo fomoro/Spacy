@@ -41,7 +41,7 @@ def main() -> None:
         lemmas = LemmaService(lemma_path)
         ruler = EntityRulerService(ruler_path)
         evidence_mapper = LinguisticEvidenceMapper(
-            ROOT / "src" / "temp" / "resources" / "linguistic_evidence_mapping.json"
+            ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json"
         )
         pipeline = LinguisticParser(
             normalizer, phrase_matcher, matcher, lemmas, ruler, evidence_mapper

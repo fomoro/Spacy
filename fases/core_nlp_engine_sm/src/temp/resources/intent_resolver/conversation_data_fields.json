@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "schema_version": "2.1.0",
+    "schema_version": "3.0.0",
     "purpose": "Catalogar los datos requeridos por las intenciones y subintenciones para orientar las preguntas de aclaración y confirmación.",
     "language": "es-CO",
-    "slot_count": 19
+    "slot_count": 20
   },
   "slots": {
     "product": {
@@ -81,6 +81,10 @@
     "invoice_data": {
       "description": "Datos tributarios suministrados expresamente para facturación.",
       "classification": "tax_data"
+    },
+    "fulfillment_method": {
+      "description": "Modalidad elegida para recibir el pedido: domicilio, recogida en el restaurante o consumo en sitio.",
+      "classification": "operational"
     }
   }
 }

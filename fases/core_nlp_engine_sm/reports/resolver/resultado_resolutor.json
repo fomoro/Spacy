@@ -1,26 +1,26 @@
 {
   "casos_evaluados": 600,
-  "intencion_correcta": 461,
-  "subintencion_correcta": 404,
-  "aclaracion_correcta": 500,
-  "modo_intervencion_correcto": 421,
-  "slots_faltantes_exactos": 546,
-  "clave_pregunta_correcta": 415,
-  "precision_intencion_sobre_dataset": 0.7683,
-  "precision_subintencion_sobre_dataset": 0.6733,
-  "precision_aclaracion_sobre_dataset": 0.8333,
-  "precision_modo_intervencion_sobre_dataset": 0.7017,
-  "precision_slots_faltantes_sobre_dataset": 0.91,
-  "precision_clave_pregunta_sobre_dataset": 0.6917,
-  "falsos_positivos_lecturas_excluidas": 57,
+  "intencion_correcta": 477,
+  "subintencion_correcta": 432,
+  "aclaracion_correcta": 511,
+  "modo_intervencion_correcto": 431,
+  "slots_faltantes_exactos": 551,
+  "clave_pregunta_correcta": 427,
+  "precision_intencion_sobre_dataset": 0.795,
+  "precision_subintencion_sobre_dataset": 0.72,
+  "precision_aclaracion_sobre_dataset": 0.8517,
+  "precision_modo_intervencion_sobre_dataset": 0.7183,
+  "precision_slots_faltantes_sobre_dataset": 0.9183,
+  "precision_clave_pregunta_sobre_dataset": 0.7117,
+  "falsos_positivos_lecturas_excluidas": 50,
   "metricas_por_slot": {
     "date": {
       "true_positive": 24,
-      "false_positive": 27,
+      "false_positive": 24,
       "false_negative": 0,
-      "precision": 0.4706,
+      "precision": 0.5,
       "recall": 1.0,
-      "f1": 0.64
+      "f1": 0.6667
     },
     "delivery_address": {
       "true_positive": 8,
@@ -55,44 +55,45 @@
       "f1": 0
     },
     "product": {
-      "true_positive": 38,
-      "false_positive": 24,
+      "true_positive": 31,
+      "false_positive": 22,
       "false_negative": 3,
-      "precision": 0.6129,
-      "recall": 0.9268,
-      "f1": 0.7379
+      "precision": 0.5849,
+      "recall": 0.9118,
+      "f1": 0.7126
     },
     "time": {
       "true_positive": 13,
-      "false_positive": 25,
+      "false_positive": 22,
       "false_negative": 0,
-      "precision": 0.3421,
+      "precision": 0.3714,
       "recall": 1.0,
-      "f1": 0.5098
+      "f1": 0.5417
     }
   },
   "metricas_aclaracion": {
-    "precision": 0.8167,
-    "recall": 0.9437,
-    "specificity": 0.652,
-    "f1": 0.8756,
-    "true_positive": 352,
-    "false_positive": 79,
-    "false_negative": 21,
-    "true_negative": 148
+    "precision": 0.8381,
+    "recall": 0.9594,
+    "specificity": 0.6456,
+    "f1": 0.8947,
+    "true_positive": 378,
+    "false_positive": 73,
+    "false_negative": 16,
+    "true_negative": 133
   },
   "estados": {
-    "resolved": 169,
-    "ambiguous_or_clarification": 431,
+    "resolved": 149,
+    "ambiguous_or_clarification": 451,
     "unknown": 0
   },
   "modos_intervencion": {
-    "needs_business_lookup": 123,
-    "needs_human_safety_validation": 49,
-    "needs_identity_verification": 30,
-    "needs_transaction_confirmation": 48,
-    "needs_user_clarification": 181,
-    "resolved": 169
+    "needs_business_lookup": 119,
+    "needs_human_assistance": 4,
+    "needs_human_safety_validation": 46,
+    "needs_identity_verification": 56,
+    "needs_transaction_confirmation": 59,
+    "needs_user_clarification": 167,
+    "resolved": 149
   },
   "errores": 0,
   "nota": "Métrica sobre 600 casos sintéticos; no reemplaza validación con conversaciones reales."

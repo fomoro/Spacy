@@ -29,17 +29,17 @@ Los cuatro analizadores posteriores a la normalización son independientes. `Mat
 
 Cada responsabilidad tiene un recurso auditable:
 
-- `src/temp/resources/intent_resolver/intents_and_subintents.json`: vocabulario canónico, prioridades de desempate y parámetros técnicos de resolución, temporalmente en revisión.
+- `src/temp/resources/intent_resolver/intents_and_subintents.json`: 12 intenciones, 56 subintenciones canónicas, prioridades de desempate y parámetros técnicos de resolución, temporalmente en revisión.
 - `src/temp/resources/intent_resolver/conversation_data_fields.json`: campos de datos conversacionales, temporalmente en revisión.
 - `src/infrastructure/resources/text_normalizer_service_config.json`: variación gráfica, alias y jerga.
 - `src/infrastructure/resources/phrase_matcher_service_config.json`: vocabulario comercial estable reconocido por `PhraseMatcherService`.
 - `src/infrastructure/resources/matcher_service_config.json`: estructuras tokenizadas y extracciones sintácticas.
 - `src/infrastructure/resources/lemma_service_config.json`: lemas y formas flexionadas neutrales.
 - `src/infrastructure/resources/entity_ruler_service_config.json`: tiempo y referencias contextuales.
-- `src/temp/resources/linguistic_evidence_mapping.json`: traducción de señales y entidades a evidencia ponderada de intenciones.
+- `src/temp/resources/intent_resolver/linguistic_evidence_mapping.json`: traducción de señales y entidades de infraestructura a evidencia ponderada de intenciones.
 - `src/temp/resources/intent_resolver/conversation_action_rules.json`: acciones, reglas y preguntas, temporalmente en revisión.
 
-`IntentResolver` recibe la carpeta `src/temp/resources/intent_resolver/`, carga obligatoriamente los tres JSON y rechaza al iniciar reglas con pares de intención o campos no declarados. Las prioridades, los umbrales y los multiplicadores están integrados en `intents_and_subintents.json` para evitar duplicar identificadores de intención.
+Los cuatro contratos se ubican juntos porque participan en la resolución, pero no forman una dependencia circular. `LinguisticEvidenceMapper` carga únicamente `linguistic_evidence_mapping.json`: sus referencias se validan contra `intents_and_subintents.json` y sus claves de señal contra los recursos de infraestructura; no conoce campos, preguntas ni acciones. `IntentResolver` recibe la carpeta `src/temp/resources/intent_resolver/`, carga los otros tres JSON y rechaza al iniciar reglas con pares de intención o campos no declarados. Las prioridades, los umbrales y los multiplicadores están integrados en `intents_and_subintents.json` para evitar duplicar identificadores de intención.
 - `src/temp/resources/response_templates.json`: plantillas para presentar información ya validada.
 - `business_data/menu/menu_offerings.json`: precios, presentaciones y recomendaciones enlazados por `product_id`.
 - `business_data/restaurant/restaurant_profile.json`: información estable del restaurante.

@@ -39,6 +39,7 @@ core_nlp_engine/
 │   ├── temp/                          # Código y recursos todavía en revisión
 │   │   └── resources/intent_resolver/
 │   │       ├── intents_and_subintents.json
+│   │       ├── linguistic_evidence_mapping.json
 │   │       ├── conversation_data_fields.json
 │   │       └── conversation_action_rules.json
 │   └── infrastructure/
@@ -54,7 +55,7 @@ core_nlp_engine/
 
 ## Benchmark de intenciones
 
-`resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de 600 casos. Cada uno de los 20 perfiles aporta 30 casos y cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de obtención o verificación de información; 150 casos incluyen contexto conversacional. Los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
+`resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de 600 casos y cubre 56 combinaciones de intención y subintención. Cada uno de los 20 perfiles aporta 30 casos y cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de obtención o verificación de información; 150 casos incluyen contexto conversacional. Los perfiles sirven para segmentar evaluación y nunca se infieren ni se envían al motor en producción.
 
 El comando `python -X utf8 tests/temp/json_validators/test_resource_json_validator.py` comprueba la coherencia general de taxonomía, perfiles, slots, acciones y benchmark. El menú y el perfil del restaurante tienen validadores JSON independientes.
 
@@ -173,7 +174,7 @@ python -m unittest tests.infrastructure.test_matcher_service
 
 ## Tema 4: Analizador de Lemas (LemmaService)
 
-**Foco Principal**: Lematizar términos en español y producir señales morfológicas neutrales. Si el modelo `es_core_news_sm` está disponible usa su lematizador; si no, recurre a `lemma_service_config.json` como fallback controlado. La relación posterior entre un lema y una intención vive en `src/temp/resources/linguistic_evidence_mapping.json`.
+**Foco Principal**: Lematizar términos en español y producir señales morfológicas neutrales. Si el modelo `es_core_news_sm` está disponible usa su lematizador; si no, recurre a `lemma_service_config.json` como fallback controlado. La relación posterior entre un lema y una intención vive en `src/temp/resources/intent_resolver/linguistic_evidence_mapping.json`.
 
 ### ¿Cómo probar el LemmaService?
 

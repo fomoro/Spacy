@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "schema_version": "4.0.0",
+    "schema_version": "5.0.0",
     "purpose": "Detectar señales sintácticas neutrales y extraer cantidades, dinero y negación sin asignar intenciones.",
     "language": "es-CO"
   },
@@ -1796,6 +1796,204 @@
         },
         {
           "LOWER": "personas"
+        }
+      ]
+    },
+    {
+      "id": "SOCIAL_GREETING",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "hola",
+              "buenas",
+              "buenos",
+              "saludos",
+              "holi"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "SOCIAL_FAREWELL",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "chao",
+              "adiós",
+              "adios",
+              "bye",
+              "hasta",
+              "nos"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "FULFILLMENT_PICKUP",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "recoger",
+              "recogerlo",
+              "recogerla",
+              "recojo",
+              "pickup"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "restaurante",
+              "local",
+              "sitio"
+            ]
+          },
+          "OP": "?"
+        }
+      ]
+    },
+    {
+      "id": "ORDER_STATUS_GENERAL",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "estado",
+              "seguimiento",
+              "rastrear",
+              "consultar"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedido",
+              "orden"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ORDER_CANCEL",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cancelar",
+              "cancele",
+              "cancela",
+              "anular",
+              "anule"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "pedido",
+              "orden"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RESERVATION_MODIFY",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cambiar",
+              "cambie",
+              "modificar",
+              "modifique"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "reserva",
+              "reservación",
+              "reservacion"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RESERVATION_CANCEL",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "cancelar",
+              "cancele",
+              "cancela",
+              "anular",
+              "anule"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "reserva",
+              "reservación",
+              "reservacion"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "INVOICE_REQUEST",
+      "pattern": [
+        {
+          "LOWER": {
+            "IN": [
+              "necesito",
+              "quiero",
+              "solicito",
+              "generar",
+              "generen"
+            ]
+          }
+        },
+        {
+          "OP": "*"
+        },
+        {
+          "LOWER": {
+            "IN": [
+              "factura",
+              "facturación",
+              "facturacion"
+            ]
+          }
         }
       ]
     }

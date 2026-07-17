@@ -1,40 +1,35 @@
 {
   "metadata": {
-    "schema_version": "12.0.0",
+    "schema_version": "13.0.0",
     "purpose": "Evaluar la detección de intenciones, subintenciones, entidades, contexto y acciones conversacionales en español colombiano sin utilizar este corpus como material de entrenamiento.",
     "language": "es-CO",
     "case_count": 600,
     "profile_count": 20,
     "context_case_count": 150,
-    "intent_subintent_pair_count": 49
+    "intent_subintent_pair_count": 56
   },
   "cases": [
     {
       "id": "caso_001",
       "profile_id": "perfil_01_coloquial_presupuesto",
-      "message": "Parce, tengo un presupuesto máximo de treinta y cinco mil pesos y quisiera saber qué plato de mar me alcanza. Quiero ver qué me alcanza con ese monto; todavía no armen el pedido.",
+      "message": "Parce, una cosa puntual: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "precio",
-        "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "social",
+        "subintent": "saludar",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "budget_recommendation_lookup"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "MONEY",
-          "entity_id": "35000"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "tengo un presupuesto máximo de treinta y cinco mil pesos y quisiera saber qué plato de mar me alcanza.",
-        "disambiguating_evidence": "Quiero ver qué me alcanza con ese monto; todavía no armen el pedido.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
@@ -70,54 +65,52 @@
     {
       "id": "caso_003",
       "profile_id": "perfil_01_coloquial_presupuesto",
-      "message": "Pana, voy con esta pregunta: necesito consultar precios, pero aún no he decidido qué plato quiero revisar. Quiero consultar un precio, pero aún no he escogido el plato.",
+      "message": "Parce, una cosa puntual: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {},
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precios_generales",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_product_for_price"
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "necesito consultar precios, pero aún no he decidido qué plato quiero revisar.",
-        "disambiguating_evidence": "Quiero consultar un precio, pero aún no he escogido el plato.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
       "id": "caso_004",
       "profile_id": "perfil_01_coloquial_presupuesto",
-      "message": "Parce, estoy cuidando las lucas, pero ahora no pregunto por precios: antes de hacer el pedido, quisiera confirmar si reciben pagos por código QR. Solo quiero saber si aceptan ese medio; todavía no estoy pagando un pedido.",
+      "message": "Parce, una cosa puntual: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {},
       "expected": {
-        "intent": "pago",
-        "subintent": "consultar_medio_pago",
-        "intervention_mode": "resolved",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "MEDIO_PAGO",
-          "entity_id": "pago_qr"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de hacer el pedido, quisiera confirmar si reciben pagos por código QR.",
-        "disambiguating_evidence": "Solo quiero saber si aceptan ese medio; todavía no estoy pagando un pedido.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "precio.consultar_precio_producto"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -206,31 +199,27 @@
     {
       "id": "caso_008",
       "profile_id": "perfil_01_coloquial_presupuesto",
-      "message": "Mi llave, el presupuesto lo reviso después; en este turno necesito esto: quiero pedir una porción de mojarra frita para el almuerzo de hoy. Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+      "message": "Parce, una cosa puntual: necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {
-        "producto_activo": "mojarra_frita"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_008"
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "iniciar_pedido",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_reservation_change"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "mojarra_frita"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quiero pedir una porción de mojarra frita para el almuerzo de hoy.",
-        "disambiguating_evidence": "Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
@@ -866,119 +855,101 @@
     {
       "id": "caso_031",
       "profile_id": "perfil_02_directo_tiempo_limitado",
-      "message": "Voy de afán: ¿cómo funciona el domicilio, cuánto suele tardar y qué condiciones manejan para la entrega? Por ahora solo quiero conocer las condiciones del domicilio; no estoy solicitando el envío.",
+      "message": "Voy de afán: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "domicilio",
-        "subintent": "consultar_domicilio",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "social",
+        "subintent": "saludar",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "delivery_lookup"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "domicilio"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿cómo funciona el domicilio, cuánto suele tardar y qué condiciones manejan para la entrega?",
-        "disambiguating_evidence": "Por ahora solo quiero conocer las condiciones del domicilio; no estoy solicitando el envío.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "horario_ubicacion.consultar_ubicacion"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_032",
       "profile_id": "perfil_02_directo_tiempo_limitado",
-      "message": "Necesito una respuesta puntual: quisiera programar la entrega para las doce del día; ¿pueden confirmar si atienden exactamente a esa hora? Quiero saber si pueden atender esa hora concreta, no consultar el domicilio en general.",
+      "message": "Voy de afán: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_pedido_programado",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "scheduled_order_lookup"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "pedido_programado"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quisiera programar la entrega para las doce del día; ¿pueden confirmar si atienden exactamente a esa hora?",
-        "disambiguating_evidence": "Quiero saber si pueden atender esa hora concreta, no consultar el domicilio en general.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "pedido.solicitar_modificacion",
-          "domicilio.consultar_domicilio"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
       "id": "caso_033",
       "profile_id": "perfil_02_directo_tiempo_limitado",
-      "message": "En concreto: ¿hoy tienen disponible bagre a la marinera o ya se terminó para el servicio de almuerzo? Solo quiero saber si lo tienen hoy; todavía no lo agreguen al pedido.",
+      "message": "Voy de afán: necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {
-        "producto_activo": "bagre_a_la_marinera"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_033"
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "product_availability_lookup"
+        "question_key": "confirm_reservation_change"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        },
-        {
-          "entity_type": "FECHA_RELATIVA",
-          "entity_id": "hoy"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿hoy tienen disponible bagre a la marinera o ya se terminó para el servicio de almuerzo?",
-        "disambiguating_evidence": "Solo quiero saber si lo tienen hoy; todavía no lo agreguen al pedido.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
       "id": "caso_034",
       "profile_id": "perfil_02_directo_tiempo_limitado",
-      "message": "Voy de afán: quiero pedir una porción de trucha al ajillo para el almuerzo de hoy. Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+      "message": "Voy de afán: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {},
       "expected": {
-        "intent": "pedido",
-        "subintent": "iniciar_pedido",
-        "intervention_mode": "needs_transaction_confirmation",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "trucha_al_ajillo"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "quiero pedir una porción de trucha al ajillo para el almuerzo de hoy.",
-        "disambiguating_evidence": "Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -990,10 +961,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -1467,11 +1438,11 @@
       "message": "Voy de afán: quisiera saber si cuentan con menú infantil o alguna presentación pensada para una porción pequeña. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -1486,7 +1457,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -1729,90 +1700,78 @@
     {
       "id": "caso_061",
       "profile_id": "perfil_03_compra_familiar",
-      "message": "Para organizar lo de la familia: necesito organizar almuerzo para 5 personas, pero todavía no hemos definido qué platos pedir. Sí quiero iniciar el pedido para el grupo, pero aún no está completo.",
+      "message": "Para organizar lo de la familia: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "pedido",
-        "subintent": "iniciar_pedido_grupal",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_group_products"
+        "intent": "social",
+        "subintent": "saludar",
+        "intervention_mode": "resolved",
+        "missing_slots": [],
+        "question_key": null
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "necesito organizar almuerzo para 5 personas, pero todavía no hemos definido qué platos pedir.",
-        "disambiguating_evidence": "Sí quiero iniciar el pedido para el grupo, pero aún no está completo.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_062",
       "profile_id": "perfil_03_compra_familiar",
-      "message": "Entre todos necesitamos resolver esto: para completar el pedido, anote 3 porciones de bagre a la marinera y 1 de sancocho de bagre. Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+      "message": "Para organizar lo de la familia: necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {
-        "pedido_activo": true
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_062"
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_reservation_change"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        },
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "para completar el pedido, anote 3 porciones de bagre a la marinera y 1 de sancocho de bagre.",
-        "disambiguating_evidence": "Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
       "id": "caso_063",
       "profile_id": "perfil_03_compra_familiar",
-      "message": "Para dejar claro este punto del almuerzo: quiero pedirlo sin ensalada, pero todavía no he indicado a cuál plato debe aplicarse el cambio. Sí quiero hacer ese cambio en el pedido; no es solo una pregunta sobre ingredientes.",
+      "message": "Para organizar lo de la familia: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {},
       "expected": {
-        "intent": "pedido",
-        "subintent": "solicitar_modificacion",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_modification_product"
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "INGREDIENTE",
-          "entity_id": "ensalada"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "quiero pedirlo sin ensalada, pero todavía no he indicado a cuál plato debe aplicarse el cambio.",
-        "disambiguating_evidence": "Sí quiero hacer ese cambio en el pedido; no es solo una pregunta sobre ingredientes.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -1924,31 +1883,27 @@
     {
       "id": "caso_068",
       "profile_id": "perfil_03_compra_familiar",
-      "message": "Entre todos necesitamos resolver esto: antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye filete a la marinera. Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+      "message": "Para organizar lo de la familia: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {
-        "producto_activo": "filete_a_la_marinera"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_068"
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_detalle_producto",
-        "intervention_mode": "resolved",
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_reservation_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "filete_a_la_marinera"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye filete a la marinera.",
-        "disambiguating_evidence": "Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
@@ -2190,11 +2145,11 @@
       "message": "Entre todos necesitamos resolver esto: quisiera saber si cuentan con menú infantil o alguna presentación pensada para una porción pequeña. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -2209,7 +2164,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -2587,110 +2542,101 @@
     {
       "id": "caso_091",
       "profile_id": "perfil_04_cortes_explicativo",
-      "message": "Buenas tardes. Por favor, quisiera consultar lo siguiente: es mi primera consulta y quisiera conocer, en términos generales, qué ofrece el restaurante. Quiero una explicación general de lo que ofrecen, no que reenvíen un documento anterior.",
+      "message": "Por favor, quisiera precisar lo siguiente: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "menu",
-        "subintent": "consultar_menu_general",
+        "intent": "social",
+        "subintent": "saludar",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "es mi primera consulta y quisiera conocer, en términos generales, qué ofrece el restaurante.",
-        "disambiguating_evidence": "Quiero una explicación general de lo que ofrecen, no que reenvíen un documento anterior.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_producto",
-          "recomendacion.solicitar_recomendacion"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_092",
       "profile_id": "perfil_04_cortes_explicativo",
-      "message": "Por favor, quisiera consultar lo siguiente: ¿me pueden compartir el menú completo para revisar platos, presentaciones y precios? Quiero recibir o ver la carta completa, no consultar un único plato.",
+      "message": "Por favor, quisiera precisar lo siguiente: chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "menu",
-        "subintent": "solicitar_menu",
+        "intent": "social",
+        "subintent": "despedirse",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "menu_pdf"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿me pueden compartir el menú completo para revisar platos, presentaciones y precios?",
-        "disambiguating_evidence": "Quiero recibir o ver la carta completa, no consultar un único plato.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_producto",
-          "recomendacion.solicitar_recomendacion"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_093",
       "profile_id": "perfil_04_cortes_explicativo",
-      "message": "Qué pena molestarlos; necesito saber esto: no conozco esa preparación; ¿me explican qué significa pedir un pescado frito? Solo quiero entender qué significa esa preparación; aún no la estoy eligiendo para un pedido.",
+      "message": "Por favor, quisiera precisar lo siguiente: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {},
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_definicion_preparacion",
-        "intervention_mode": "resolved",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [
         {
-          "entity_type": "PREPARACION",
-          "entity_id": "frito"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "no conozco esa preparación; ¿me explican qué significa pedir un pescado frito?",
-        "disambiguating_evidence": "Solo quiero entender qué significa esa preparación; aún no la estoy eligiendo para un pedido.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
       "id": "caso_094",
       "profile_id": "perfil_04_cortes_explicativo",
-      "message": "Buenas tardes. Por favor, quisiera consultar lo siguiente: antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye arroz con camarón. Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+      "message": "Por favor, quisiera precisar lo siguiente: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {
-        "producto_activo": "arroz_con_camaron"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_094"
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_detalle_producto",
-        "intervention_mode": "resolved",
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_reservation_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "arroz_con_camaron"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye arroz con camarón.",
-        "disambiguating_evidence": "Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
@@ -3445,64 +3391,49 @@
     {
       "id": "caso_121",
       "profile_id": "perfil_05_habitual_contextual",
-      "message": "Retomando lo anterior: el menú que me enviaron antes ya no me aparece; ¿pueden mandármelo nuevamente? Quiero que vuelvan a enviarme la carta anterior, no una recomendación por este chat.",
+      "message": "Como ya hemos hablado antes, hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {
-        "menu_enviado_previamente": true,
-        "menu_pdf_ultima_fecha_envio": "2026-07-13T12:30:00-05:00"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "menu",
-        "subintent": "reenviar_menu",
+        "intent": "social",
+        "subintent": "saludar",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "menu_pdf"
-        },
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_elemento"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "el menú que me enviaron antes ya no me aparece; ¿pueden mandármelo nuevamente?",
-        "disambiguating_evidence": "Quiero que vuelvan a enviarme la carta anterior, no una recomendación por este chat.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_producto",
-          "recomendacion.solicitar_recomendacion"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_122",
       "profile_id": "perfil_05_habitual_contextual",
-      "message": "Sobre lo que veníamos revisando: quiero que envíen el pedido a la misma dirección que usé anteriormente, pero no la veo en esta conversación. Sí quiero usar la dirección anterior, pero no aparece en esta conversación.",
+      "message": "Como ya hemos hablado antes, chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "domicilio",
-        "subintent": "usar_direccion_previa",
-        "intervention_mode": "needs_identity_verification",
+        "intent": "social",
+        "subintent": "despedirse",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "identity_verification_required"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "direccion_previa"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quiero que envíen el pedido a la misma dirección que usé anteriormente, pero no la veo en esta conversación.",
-        "disambiguating_evidence": "Sí quiero usar la dirección anterior, pero no aparece en esta conversación.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "horario_ubicacion.consultar_ubicacion"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
@@ -3536,65 +3467,61 @@
     {
       "id": "caso_124",
       "profile_id": "perfil_05_habitual_contextual",
-      "message": "Retomando lo anterior: del plato que acabamos de revisar necesito exactamente 4 unidades. Esa es la cantidad del producto activo, no una consulta de precio.",
+      "message": "Como ya hemos hablado antes, necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {
-        "producto_activo": "mojarra_frita"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_124"
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "indicar_cantidad",
-        "intervention_mode": "resolved",
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_reservation_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_producto"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "del plato que acabamos de revisar necesito exactamente 4 unidades.",
-        "disambiguating_evidence": "Esa es la cantidad del producto activo, no una consulta de precio.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "actualizar el estado conversacional con el dato explícito"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
       "id": "caso_125",
       "profile_id": "perfil_05_habitual_contextual",
-      "message": "Sobre lo que veníamos revisando: para bocachico, que es el pescado que estamos revisando, prefiero la preparación al ajillo. Estoy escogiendo la preparación del producto que veníamos revisando, no consultando opciones generales.",
+      "message": "Como ya hemos hablado antes, necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {
-        "producto_activo": "bocachico"
+        "identity_verified": true,
+        "order_id": "validation_order_125",
+        "invoice_data": {
+          "status": "validated"
+        }
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "seleccionar_preparacion",
-        "intervention_mode": "resolved",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_human_assistance",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "invoice_human_assistance"
       },
       "expected_entities": [
         {
-          "entity_type": "PREPARACION",
-          "entity_id": "al_ajillo"
-        },
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_producto"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "para bocachico, que es el pescado que estamos revisando, prefiero la preparación al ajillo.",
-        "disambiguating_evidence": "Estoy escogiendo la preparación del producto que veníamos revisando, no consultando opciones generales.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "actualizar el estado conversacional con el dato explícito"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -4323,63 +4250,49 @@
     {
       "id": "caso_151",
       "profile_id": "perfil_06_formal_orientado_calidad",
-      "message": "Necesito una respuesta precisa: estoy entre bagre y róbalo; ¿cuál es más suave y fácil de comer? Quiero compararlos por ese criterio antes de escoger; todavía no estoy pidiendo ninguno.",
+      "message": "De manera formal: chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "catalogo",
-        "subintent": "comparar_productos",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "social",
+        "subintent": "despedirse",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "comparison_lookup"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "bagre"
-        },
-        {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "robalo"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "estoy entre bagre y róbalo; ¿cuál es más suave y fácil de comer?",
-        "disambiguating_evidence": "Quiero compararlos por ese criterio antes de escoger; todavía no estoy pidiendo ninguno.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_152",
       "profile_id": "perfil_06_formal_orientado_calidad",
-      "message": "Antes de decidir quisiera conocer exactamente esto: antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye arroz con camarón. Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+      "message": "De manera formal: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {
-        "producto_activo": "arroz_con_camaron"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_detalle_producto",
+        "intent": "social",
+        "subintent": "saludar",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "arroz_con_camaron"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye arroz con camarón.",
-        "disambiguating_evidence": "Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
@@ -4413,35 +4326,27 @@
     {
       "id": "caso_154",
       "profile_id": "perfil_06_formal_orientado_calidad",
-      "message": "Necesito una respuesta precisa: ¿se puede pedir bocachico al ajillo, o esa preparación no está disponible para ese pescado? Quiero saber si esa combinación se puede preparar; todavía no la confirmo como pedido.",
+      "message": "Agradezco gestionar esta solicitud: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {
-        "producto_activo": "bocachico"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_154"
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_preparacion_producto",
-        "intervention_mode": "resolved",
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_reservation_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "bocachico"
-        },
-        {
-          "entity_type": "PREPARACION",
-          "entity_id": "al_ajillo"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿se puede pedir bocachico al ajillo, o esa preparación no está disponible para ese pescado?",
-        "disambiguating_evidence": "Quiero saber si esa combinación se puede preparar; todavía no la confirmo como pedido.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
@@ -4551,35 +4456,35 @@
     {
       "id": "caso_159",
       "profile_id": "perfil_06_formal_orientado_calidad",
-      "message": "Para evaluar bien la opción: necesito confirmar si cazuela de mariscos contiene huevo, porque se trata de una alergia alimentaria. Es una consulta de seguridad, no una preferencia; necesito que cocina confirme la información.",
+      "message": "Agradezco gestionar esta solicitud: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {
-        "producto_activo": "cazuela_de_mariscos"
+        "identity_verified": true,
+        "order_id": "validation_order_159",
+        "invoice_data": {
+          "status": "validated"
+        }
       },
       "expected": {
-        "intent": "seguridad_alimentaria",
-        "subintent": "consultar_alergenos",
-        "intervention_mode": "needs_human_safety_validation",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_human_assistance",
         "missing_slots": [],
-        "question_key": "safety_validation"
+        "question_key": "invoice_human_assistance"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "cazuela_de_mariscos"
-        },
-        {
-          "entity_type": "ALERGENO",
-          "entity_id": "huevo"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "necesito confirmar si cazuela de mariscos contiene huevo, porque se trata de una alergia alimentaria.",
-        "disambiguating_evidence": "Es una consulta de seguridad, no una preferencia; necesito que cocina confirme la información.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "recomendacion.solicitar_recomendacion_por_restriccion",
-          "catalogo.consultar_detalle_producto"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "escalar a validación humana de seguridad alimentaria"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -5180,57 +5085,52 @@
     {
       "id": "caso_181",
       "profile_id": "perfil_07_escritura_no_estandar",
-      "message": "hola necesito saber esto antes de hacer el pedido, kisiera confirmar si reciben pagos por tarjeta. Solo quiero saber si aceptan ese medio; todavía no estoy pagando un pedido.",
+      "message": "hola necesito esto: chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {},
       "expected": {
-        "intent": "pago",
-        "subintent": "consultar_medio_pago",
+        "intent": "social",
+        "subintent": "despedirse",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "MEDIO_PAGO",
-          "entity_id": "tarjeta"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de hacer el pedido, kisiera confirmar si reciben pagos por tarjeta.",
-        "disambiguating_evidence": "Solo quiero saber si aceptan ese medio; todavía no estoy pagando un pedido.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "precio.consultar_precio_producto"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_182",
       "profile_id": "perfil_07_escritura_no_estandar",
-      "message": "xfa me aclara esto me pueden compartir el menu completo para revisar platos, presentaciones y precios? Quiero recibir o ver la carta completa, no consultar un único plato.",
+      "message": "hola necesito esto: quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {},
       "expected": {
-        "intent": "menu",
-        "subintent": "solicitar_menu",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
           "entity_type": "SERVICIO",
-          "entity_id": "menu_pdf"
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "me pueden compartir el menu completo para revisar platos, presentaciones y precios?",
-        "disambiguating_evidence": "Quiero recibir o ver la carta completa, no consultar un único plato.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "catalogo.consultar_producto",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
@@ -5266,61 +5166,60 @@
     {
       "id": "caso_184",
       "profile_id": "perfil_07_escritura_no_estandar",
-      "message": "hola necesito saber esto kiero pedir una porcion de filete a la marinera pa el almuerzo de hoy. Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+      "message": "hola necesito esto: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {
-        "producto_activo": "filete_a_la_marinera"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "iniciar_pedido",
-        "intervention_mode": "needs_transaction_confirmation",
+        "intent": "social",
+        "subintent": "saludar",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "filete_a_la_marinera"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "kiero pedir una porcion de filete a la marinera pa el almuerzo de hoy.",
-        "disambiguating_evidence": "Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_185",
       "profile_id": "perfil_07_escritura_no_estandar",
-      "message": "xfa me aclara esto kisiera confirmar si en este momento ofrecen langostinos al ajillo dentro de la carta. Solo pregunto si ese producto aparece en la oferta; no lo estoy pidiendo.",
+      "message": "hola necesito esto: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {
-        "producto_activo": "langostinos_al_ajillo"
+        "identity_verified": true,
+        "order_id": "validation_order_185",
+        "invoice_data": {
+          "status": "validated"
+        }
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_producto",
-        "intervention_mode": "resolved",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_human_assistance",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "invoice_human_assistance"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "langostinos_al_ajillo"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "kisiera confirmar si en este momento ofrecen langostinos al ajillo dentro de la carta.",
-        "disambiguating_evidence": "Solo pregunto si ese producto aparece en la oferta; no lo estoy pidiendo.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -5872,11 +5771,11 @@
       "message": "hola necesito saber esto kisiera saber si cuentan con menu infantil o alguna presentacion pensada para una porcion pequena. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -5891,7 +5790,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -5965,10 +5864,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -6051,26 +5950,29 @@
     {
       "id": "caso_211",
       "profile_id": "perfil_08_digital_ultrabreve",
-      "message": "Precios, por favor. Quiero consultar un precio, pero aún no he escogido el plato.",
+      "message": "WhatsApp: quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {},
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precios_generales",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_product_for_price"
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
+        "missing_slots": [],
+        "question_key": "confirm_fulfillment_method"
       },
-      "expected_entities": [],
+      "expected_entities": [
+        {
+          "entity_type": "SERVICIO",
+          "entity_id": "recoger_en_restaurante"
+        }
+      ],
       "annotation": {
-        "target_evidence": "Precios, por favor.",
-        "disambiguating_evidence": "Quiero consultar un precio, pero aún no he escogido el plato.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
@@ -6162,65 +6064,51 @@
     {
       "id": "caso_215",
       "profile_id": "perfil_08_digital_ultrabreve",
-      "message": "Puntual: Quiero 4 de ese. Esa es la cantidad del producto activo, no una consulta de precio.",
+      "message": "WhatsApp: hola, muy buenos días. Solo estoy saludando; todavía no tengo otra solicitud.",
       "context": {
-        "producto_activo": "bagre_a_la_marinera"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "indicar_cantidad",
+        "intent": "social",
+        "subintent": "saludar",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_producto"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "Quiero 4 de ese.",
-        "disambiguating_evidence": "Esa es la cantidad del producto activo, no una consulta de precio.",
+        "target_evidence": "hola, muy buenos días",
+        "disambiguating_evidence": "Solo estoy saludando; todavía no tengo otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "social.agradecer",
+          "social.despedirse"
         ],
-        "expected_action": "actualizar el estado conversacional con el dato explícito"
+        "expected_action": "responder el saludo sin iniciar una operación comercial"
       }
     },
     {
       "id": "caso_216",
       "profile_id": "perfil_08_digital_ultrabreve",
-      "message": "Solo esto: Lo quiero en salsa. Estoy escogiendo la preparación del producto que veníamos revisando, no consultando opciones generales.",
+      "message": "WhatsApp: chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {
-        "producto_activo": "salmon"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "seleccionar_preparacion",
+        "intent": "social",
+        "subintent": "despedirse",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PREPARACION",
-          "entity_id": "en_salsa"
-        },
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_producto"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "Lo quiero en salsa.",
-        "disambiguating_evidence": "Estoy escogiendo la preparación del producto que veníamos revisando, no consultando opciones generales.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "actualizar el estado conversacional con el dato explícito"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
@@ -6254,35 +6142,35 @@
     {
       "id": "caso_218",
       "profile_id": "perfil_08_digital_ultrabreve",
-      "message": "Puntual: ¿Hay arroz con camarón hoy? Solo quiero saber si lo tienen hoy; todavía no lo agreguen al pedido.",
+      "message": "WhatsApp: necesito que generen la factura electrónica de mi pedido. Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
       "context": {
-        "producto_activo": "arroz_con_camaron"
+        "identity_verified": true,
+        "order_id": "validation_order_218",
+        "invoice_data": {
+          "status": "validated"
+        }
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_disponibilidad_producto",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "operacion",
+        "subintent": "solicitar_factura",
+        "intervention_mode": "needs_human_assistance",
         "missing_slots": [],
-        "question_key": "product_availability_lookup"
+        "question_key": "invoice_human_assistance"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "arroz_con_camaron"
-        },
-        {
-          "entity_type": "FECHA_RELATIVA",
-          "entity_id": "hoy"
+          "entity_type": "SERVICIO",
+          "entity_id": "factura_electronica"
         }
       ],
       "annotation": {
-        "target_evidence": "¿Hay arroz con camarón hoy?",
-        "disambiguating_evidence": "Solo quiero saber si lo tienen hoy; todavía no lo agreguen al pedido.",
+        "target_evidence": "necesito que generen la factura electrónica de mi pedido",
+        "disambiguating_evidence": "Estoy solicitando la factura; no preguntando cuáles son los requisitos.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "operacion.consultar_facturacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y continuar la generación de la factura"
       }
     },
     {
@@ -6575,11 +6463,11 @@
       "message": "¿Tienen menú infantil? Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -6594,7 +6482,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -6668,10 +6556,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -6909,29 +6797,29 @@
     {
       "id": "caso_241",
       "profile_id": "perfil_09_preferencias_alimentarias",
-      "message": "Por mis preferencias alimentarias, ¿qué opciones de la carta pueden ofrecer sin crustáceos, teniendo en cuenta esa restricción? Uso la restricción para filtrar la carta; no estoy reportando una alergia ni haciendo un pedido.",
+      "message": "Sin mezclar mis preferencias, quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {},
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_categoria_por_restriccion",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "restriction_catalog_lookup"
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
-          "entity_type": "ALERGENO",
-          "entity_id": "crustaceos"
+          "entity_type": "SERVICIO",
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "¿qué opciones de la carta pueden ofrecer sin crustáceos, teniendo en cuenta esa restricción?",
-        "disambiguating_evidence": "Uso la restricción para filtrar la carta; no estoy reportando una alergia ni haciendo un pedido.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
@@ -6993,35 +6881,26 @@
     {
       "id": "caso_244",
       "profile_id": "perfil_09_preferencias_alimentarias",
-      "message": "Por mis preferencias alimentarias, necesito confirmar si bagre a la marinera contiene gluten, porque se trata de una alergia alimentaria. Es una consulta de seguridad, no una preferencia; necesito que cocina confirme la información.",
+      "message": "Sin mezclar mis preferencias, chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {
-        "producto_activo": "bagre_a_la_marinera"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "seguridad_alimentaria",
-        "subintent": "consultar_alergenos",
-        "intervention_mode": "needs_human_safety_validation",
+        "intent": "social",
+        "subintent": "despedirse",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "safety_validation"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        },
-        {
-          "entity_type": "ALERGENO",
-          "entity_id": "gluten"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "necesito confirmar si bagre a la marinera contiene gluten, porque se trata de una alergia alimentaria.",
-        "disambiguating_evidence": "Es una consulta de seguridad, no una preferencia; necesito que cocina confirme la información.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "recomendacion.solicitar_recomendacion_por_restriccion",
-          "catalogo.consultar_detalle_producto"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "escalar a validación humana de seguridad alimentaria"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
@@ -7203,11 +7082,11 @@
       "message": "Aunque reviso ingredientes, en este turno no pregunto por restricciones: quisiera saber si cuentan con menú infantil o alguna presentación pensada para una porción pequeña. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -7222,7 +7101,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -7324,10 +7203,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -7783,61 +7662,52 @@
     {
       "id": "caso_271",
       "profile_id": "perfil_10_operativo_pedido_grupal",
-      "message": "Para coordinar el pedido del equipo: para registrar la compra necesito factura electrónica; ¿el restaurante la expide y qué datos solicita? Necesito que el restaurante confirme cómo maneja la factura; todavía no estoy pagando.",
+      "message": "Para dejar la operación clara: quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_facturacion",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "invoice_business_lookup"
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
           "entity_type": "SERVICIO",
-          "entity_id": "factura_electronica"
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "para registrar la compra necesito factura electrónica; ¿el restaurante la expide y qué datos solicita?",
-        "disambiguating_evidence": "Necesito que el restaurante confirme cómo maneja la factura; todavía no estoy pagando.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "pedido.solicitar_modificacion",
-          "domicilio.consultar_domicilio"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
       "id": "caso_272",
       "profile_id": "perfil_10_operativo_pedido_grupal",
-      "message": "Como gestión puntual del pedido grupal: necesito que cada almuerzo vaya separado y marcado; ¿pueden preparar el empaque de esa manera? Necesito que confirmen ese tipo de empaque; no estoy cambiando ingredientes del plato.",
+      "message": "Para dejar la operación clara: quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_empaque",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "pedido",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "packaging_business_lookup"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "empaque_individual"
-        },
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "etiquetado_nombre"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "necesito que cada almuerzo vaya separado y marcado; ¿pueden preparar el empaque de esa manera?",
-        "disambiguating_evidence": "Necesito que confirmen ese tipo de empaque; no estoy cambiando ingredientes del plato.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "pedido.solicitar_modificacion",
-          "domicilio.consultar_domicilio"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
@@ -7925,10 +7795,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -8099,31 +7969,26 @@
     {
       "id": "caso_282",
       "profile_id": "perfil_10_operativo_pedido_grupal",
-      "message": "Para dejar esta parte de la operación clara: antes de decidir, quisiera saber cuál es el precio actual de trucha al ajillo. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Para dejar la operación clara: chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {
-        "producto_activo": "trucha_al_ajillo"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
+        "intent": "social",
+        "subintent": "despedirse",
         "intervention_mode": "resolved",
         "missing_slots": [],
         "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "trucha_al_ajillo"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de trucha al ajillo.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
@@ -8646,63 +8511,49 @@
     {
       "id": "caso_301",
       "profile_id": "perfil_11_dictado_por_voz",
-      "message": "Le dicto: quiero pedir una porción de langostinos al ajillo para el almuerzo de hoy. Punto final. Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+      "message": "Mensaje por voz: quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {},
       "expected": {
         "intent": "pedido",
-        "subintent": "iniciar_pedido",
-        "intervention_mode": "needs_transaction_confirmation",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "langostinos_al_ajillo"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quiero pedir una porción de langostinos al ajillo para el almuerzo de hoy.",
-        "disambiguating_evidence": "Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
       "id": "caso_302",
       "profile_id": "perfil_11_dictado_por_voz",
-      "message": "Mensaje por voz: para completar el pedido, anote 6 porciones de bagre a la marinera y 1 de sancocho de bagre. Esa es toda la solicitud. Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+      "message": "Mensaje por voz: chao, que esten bien. Doy por terminada la conversacion; no hay otra solicitud.",
       "context": {
         "pedido_activo": true
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
-        "intervention_mode": "needs_transaction_confirmation",
+        "intent": "social",
+        "subintent": "despedirse",
+        "intervention_mode": "resolved",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": null
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        },
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "para completar el pedido, anote 6 porciones de bagre a la marinera y 1 de sancocho de bagre.",
-        "disambiguating_evidence": "Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+        "target_evidence": "chao, que esten bien",
+        "disambiguating_evidence": "Doy por terminada la conversacion; no hay otra solicitud.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "social.agradecer",
+          "social.saludar"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "responder la despedida sin iniciar una operación comercial"
       }
     },
     {
@@ -8822,31 +8673,31 @@
     {
       "id": "caso_307",
       "profile_id": "perfil_11_dictado_por_voz",
-      "message": "Le dicto: antes de decidir, quisiera saber cuál es el precio actual de sancocho de bagre. Punto final. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Mensaje por voz: quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {
-        "producto_activo": "sancocho_de_bagre"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
+          "entity_type": "SERVICIO",
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de sancocho de bagre.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
@@ -9502,29 +9353,24 @@
     {
       "id": "caso_331",
       "profile_id": "perfil_12_hablante_no_local",
-      "message": "No conozco bien la carta local: no conozco esa preparación; ¿me explican qué significa pedir un pescado frito? Solo quiero entender qué significa esa preparación; aún no la estoy eligiendo para un pedido.",
+      "message": "No conozco bien cómo funciona acá; quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {},
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_definicion_preparacion",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PREPARACION",
-          "entity_id": "frito"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "no conozco esa preparación; ¿me explican qué significa pedir un pescado frito?",
-        "disambiguating_evidence": "Solo quiero entender qué significa esa preparación; aún no la estoy eligiendo para un pedido.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
@@ -9586,35 +9432,31 @@
     {
       "id": "caso_334",
       "profile_id": "perfil_12_hablante_no_local",
-      "message": "No conozco bien la carta local: ¿se puede pedir trucha al ajillo, o esa preparación no está disponible para ese pescado? Quiero saber si esa combinación se puede preparar; todavía no la confirmo como pedido.",
+      "message": "No conozco bien cómo funciona acá; quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {
-        "producto_activo": "trucha"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_preparacion_producto",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "trucha"
-        },
-        {
-          "entity_type": "PREPARACION",
-          "entity_id": "al_ajillo"
+          "entity_type": "SERVICIO",
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "¿se puede pedir trucha al ajillo, o esa preparación no está disponible para ese pescado?",
-        "disambiguating_evidence": "Quiero saber si esa combinación se puede preparar; todavía no la confirmo como pedido.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
@@ -10147,11 +9989,11 @@
       "message": "Para entender cómo llaman aquí a las cosas: quisiera saber si cuentan con menú infantil o alguna presentación pensada para una porción pequeña. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -10166,7 +10008,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -10240,10 +10082,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -10354,56 +10196,47 @@
     {
       "id": "caso_361",
       "profile_id": "perfil_13_indeciso_comparativo",
-      "message": "Todavía no me decido, pero necesito saber esto: estoy entre salmón y mapará; ¿cuál es más suave y fácil de comer? Quiero compararlos por ese criterio antes de escoger; todavía no estoy pidiendo ninguno.",
+      "message": "Después de comparar las opciones, quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {},
       "expected": {
-        "intent": "catalogo",
-        "subintent": "comparar_productos",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "pedido",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "comparison_lookup"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "salmon"
-        },
-        {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "mapara"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "estoy entre salmón y mapará; ¿cuál es más suave y fácil de comer?",
-        "disambiguating_evidence": "Quiero compararlos por ese criterio antes de escoger; todavía no estoy pidiendo ninguno.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
       "id": "caso_362",
       "profile_id": "perfil_13_indeciso_comparativo",
-      "message": "Antes de escoger quiero aclarar esto: no sé cuál escoger; ¿qué plato me recomiendan si prefiero algo de sabor suave? Quiero orientación para escoger; la recomendación todavía no es un pedido.",
+      "message": "Después de comparar las opciones, necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {},
       "expected": {
-        "intent": "recomendacion",
-        "subintent": "solicitar_recomendacion",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "cancelar_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "no sé cuál escoger; ¿qué plato me recomiendan si prefiero algo de sabor suave?",
-        "disambiguating_evidence": "Quiero orientación para escoger; la recomendación todavía no es un pedido.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "catalogo.consultar_categoria"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
@@ -10465,31 +10298,31 @@
     {
       "id": "caso_365",
       "profile_id": "perfil_13_indeciso_comparativo",
-      "message": "Aunque comparo opciones, mi pregunta actual es otra: antes de decidir, quisiera saber cuál es el precio actual de sancocho de bagre. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Después de comparar las opciones, quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {
-        "producto_activo": "sancocho_de_bagre"
+        "pedido_activo": true
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "seleccionar_modalidad_entrega",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
+          "entity_type": "SERVICIO",
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de sancocho de bagre.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
@@ -10871,11 +10704,11 @@
       "message": "Sigo indeciso sobre el plato, pero aquí no solicito una recomendación: quisiera saber si cuentan con menú infantil o alguna presentación pensada para una porción pequeña. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -10890,7 +10723,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -10992,10 +10825,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {
@@ -11220,24 +11053,24 @@
     {
       "id": "caso_391",
       "profile_id": "perfil_14_planificacion_evento",
-      "message": "Pensando en una ocasión futura: ¿qué capacidad y condiciones manejan para realizar un almuerzo empresarial de aproximadamente 15 personas? Estoy averiguando capacidad y condiciones; todavía no quiero solicitar el evento.",
+      "message": "Antes de continuar con la planificación, necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {},
       "expected": {
-        "intent": "reserva_evento",
-        "subintent": "consultar_eventos",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "pedido",
+        "subintent": "cancelar_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "events_lookup"
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿qué capacidad y condiciones manejan para realizar un almuerzo empresarial de aproximadamente 15 personas?",
-        "disambiguating_evidence": "Estoy averiguando capacidad y condiciones; todavía no quiero solicitar el evento.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "domicilio.consultar_domicilio_grupal",
-          "operacion.consultar_pedido_programado"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
@@ -11497,11 +11330,11 @@
       "message": "El evento es solo contexto; mi necesidad actual es: quisiera saber si cuentan con menú infantil o alguna presentación pensada para una porción pequeña. Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -11516,7 +11349,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -11582,65 +11415,57 @@
     {
       "id": "caso_404",
       "profile_id": "perfil_14_planificacion_evento",
-      "message": "El evento es solo contexto; mi necesidad actual es: al pedido que estamos armando agréguele también una porción de langostinos al ajillo, por favor. Sí quiero agregar ese producto al pedido activo; no estoy preguntando si lo venden.",
+      "message": "Antes de continuar con la planificación, quiero recoger el pedido directamente en el restaurante. Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
       "context": {
         "pedido_activo": true
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_producto_pedido",
+        "subintent": "seleccionar_modalidad_entrega",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order_change"
+        "question_key": "confirm_fulfillment_method"
       },
       "expected_entities": [
         {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "langostinos_al_ajillo"
+          "entity_type": "SERVICIO",
+          "entity_id": "recoger_en_restaurante"
         }
       ],
       "annotation": {
-        "target_evidence": "al pedido que estamos armando agréguele también una porción de langostinos al ajillo, por favor.",
-        "disambiguating_evidence": "Sí quiero agregar ese producto al pedido activo; no estoy preguntando si lo venden.",
+        "target_evidence": "quiero recoger el pedido directamente en el restaurante",
+        "disambiguating_evidence": "Estoy eligiendo la modalidad de entrega; no estoy solicitando un domicilio.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "domicilio.solicitar_domicilio",
+          "pedido.iniciar_pedido"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "confirmar la modalidad elegida para recibir el pedido"
       }
     },
     {
       "id": "caso_405",
       "profile_id": "perfil_14_planificacion_evento",
-      "message": "Antes de organizar la reserva tengo esta pregunta independiente: para completar el pedido, anote 5 porciones de bagre a la marinera y 1 de sancocho de bagre. Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+      "message": "Antes de continuar con la planificación, quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {
-        "pedido_activo": true
+        "identity_verified": true,
+        "order_id": "validation_order_405"
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
-        "intervention_mode": "needs_transaction_confirmation",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "order_status_lookup"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        },
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "para completar el pedido, anote 5 porciones de bagre a la marinera y 1 de sancocho de bagre.",
-        "disambiguating_evidence": "Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
@@ -12068,63 +11893,50 @@
     {
       "id": "caso_421",
       "profile_id": "perfil_15_seguridad_alimentaria",
-      "message": "Necesito revisar esto con cuidado: necesito confirmar si arroz con camarón contiene crustáceos, porque se trata de una alergia alimentaria. Es una consulta de seguridad, no una preferencia; necesito que cocina confirme la información.",
+      "message": "Esta solicitud es independiente de la alergia: quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {
-        "producto_activo": "arroz_con_camaron"
+        "identity_verified": true,
+        "order_id": "validation_order_421"
       },
       "expected": {
-        "intent": "seguridad_alimentaria",
-        "subintent": "consultar_alergenos",
-        "intervention_mode": "needs_human_safety_validation",
+        "intent": "pedido",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": "safety_validation"
+        "question_key": "order_status_lookup"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "arroz_con_camaron"
-        },
-        {
-          "entity_type": "ALERGENO",
-          "entity_id": "crustaceos"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "necesito confirmar si arroz con camarón contiene crustáceos, porque se trata de una alergia alimentaria.",
-        "disambiguating_evidence": "Es una consulta de seguridad, no una preferencia; necesito que cocina confirme la información.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "recomendacion.solicitar_recomendacion_por_restriccion",
-          "catalogo.consultar_detalle_producto"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "escalar a validación humana de seguridad alimentaria"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
       "id": "caso_422",
       "profile_id": "perfil_15_seguridad_alimentaria",
-      "message": "Para separar seguridad de preferencia: ¿usan aceite, utensilios o superficies compartidas con productos que contienen pescado? Necesito confirmar contaminación cruzada y utensilios compartidos, no solo leer la lista de ingredientes.",
+      "message": "Esta solicitud es independiente de la alergia: necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {},
       "expected": {
-        "intent": "seguridad_alimentaria",
-        "subintent": "consultar_contaminacion_cruzada",
-        "intervention_mode": "needs_human_safety_validation",
+        "intent": "pedido",
+        "subintent": "cancelar_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "cross_contamination_validation"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "ALERGENO",
-          "entity_id": "pescado"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿usan aceite, utensilios o superficies compartidas con productos que contienen pescado?",
-        "disambiguating_evidence": "Necesito confirmar contaminación cruzada y utensilios compartidos, no solo leer la lista de ingredientes.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "recomendacion.solicitar_recomendacion_por_restriccion",
-          "catalogo.consultar_detalle_producto"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "escalar a validación humana de seguridad alimentaria"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
@@ -12934,84 +12746,73 @@
     {
       "id": "caso_451",
       "profile_id": "perfil_16_variacion_lexica_regional",
-      "message": "Ajá, mi llave: tengo un presupuesto máximo de treinta y cinco mil pesos y quisiera saber qué plato de mar me alcanza. Quiero ver qué me alcanza con ese monto; todavía no armen el pedido.",
+      "message": "Ajá, mi llave: necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {},
       "expected": {
-        "intent": "precio",
-        "subintent": "solicitar_recomendacion_por_presupuesto",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "pedido",
+        "subintent": "cancelar_pedido",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "budget_recommendation_lookup"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "MONEY",
-          "entity_id": "35000"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "tengo un presupuesto máximo de treinta y cinco mil pesos y quisiera saber qué plato de mar me alcanza.",
-        "disambiguating_evidence": "Quiero ver qué me alcanza con ese monto; todavía no armen el pedido.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
       "id": "caso_452",
       "profile_id": "perfil_16_variacion_lexica_regional",
-      "message": "Sumercé, necesito su ayuda con esto: antes de decidir, quisiera saber cuál es el precio actual de filete a la marinera. Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+      "message": "Ajá, mi llave: quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {
-        "producto_activo": "filete_a_la_marinera"
+        "identity_verified": true,
+        "order_id": "validation_order_452"
       },
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precio_producto",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "order_status_lookup"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "filete_a_la_marinera"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de decidir, quisiera saber cuál es el precio actual de filete a la marinera.",
-        "disambiguating_evidence": "Solo quiero saber cuánto vale ese producto; todavía no lo agreguen al pedido.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
       "id": "caso_453",
       "profile_id": "perfil_16_variacion_lexica_regional",
-      "message": "Vea pues, socio: necesito consultar precios, pero aún no he decidido qué plato quiero revisar. Quiero consultar un precio, pero aún no he escogido el plato.",
+      "message": "Ajá, mi llave: necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {},
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precios_generales",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_product_for_price"
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "necesito consultar precios, pero aún no he decidido qué plato quiero revisar.",
-        "disambiguating_evidence": "Quiero consultar un precio, pero aún no he escogido el plato.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
@@ -13778,24 +13579,24 @@
     {
       "id": "caso_481",
       "profile_id": "perfil_17_narrativo_extenso",
-      "message": "Le cuento brevemente: estaba revisando varias opciones y me surgió una duda; en resumen, es mi primera consulta y quisiera conocer, en términos generales, qué ofrece el restaurante. Quiero una explicación general de lo que ofrecen, no que reenvíen un documento anterior.",
+      "message": "Para resumir todo lo anterior, necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {},
       "expected": {
-        "intent": "menu",
-        "subintent": "consultar_menu_general",
-        "intervention_mode": "resolved",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "es mi primera consulta y quisiera conocer, en términos generales, qué ofrece el restaurante.",
-        "disambiguating_evidence": "Quiero una explicación general de lo que ofrecen, no que reenvíen un documento anterior.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "catalogo.consultar_producto",
-          "recomendacion.solicitar_recomendacion"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
@@ -13857,65 +13658,53 @@
     {
       "id": "caso_484",
       "profile_id": "perfil_17_narrativo_extenso",
-      "message": "Le cuento brevemente: estaba revisando varias opciones y me surgió una duda; en resumen, antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye arroz con camarón. Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+      "message": "Para resumir todo lo anterior, quiero consultar el estado de mi pedido. No estoy consultando un domicilio; pregunto por el pedido general.",
       "context": {
-        "producto_activo": "arroz_con_camaron"
+        "identity_verified": true,
+        "order_id": "validation_order_484"
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_detalle_producto",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "consultar_estado_pedido",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "order_status_lookup"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "arroz_con_camaron"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "antes de escoger, quisiera saber qué ingredientes y acompañamientos incluye arroz con camarón.",
-        "disambiguating_evidence": "Quiero conocer qué trae ese plato; todavía no deseo ordenarlo.",
+        "target_evidence": "quiero consultar el estado de mi pedido",
+        "disambiguating_evidence": "No estoy consultando un domicilio; pregunto por el pedido general.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "domicilio.consultar_estado_domicilio",
+          "pedido.cancelar_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y consultar el estado del pedido identificado"
       }
     },
     {
       "id": "caso_485",
       "profile_id": "perfil_17_narrativo_extenso",
-      "message": "Después de mirar la carta y hablarlo con mi familia, la pregunta central es esta: ¿se puede pedir mojarra a la marinera, o esa preparación no está disponible para ese pescado? Quiero saber si esa combinación se puede preparar; todavía no la confirmo como pedido.",
+      "message": "Para resumir todo lo anterior, necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {
-        "producto_activo": "mojarra"
+        "identity_verified": true,
+        "order_id": "validation_order_485"
       },
       "expected": {
-        "intent": "catalogo",
-        "subintent": "consultar_preparacion_producto",
-        "intervention_mode": "resolved",
+        "intent": "pedido",
+        "subintent": "cancelar_pedido",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_order_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_BASE",
-          "entity_id": "mojarra"
-        },
-        {
-          "entity_type": "PREPARACION",
-          "entity_id": "a_la_marinera"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "¿se puede pedir mojarra a la marinera, o esa preparación no está disponible para ese pescado?",
-        "disambiguating_evidence": "Quiero saber si esa combinación se puede preparar; todavía no la confirmo como pedido.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "menu.solicitar_menu"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
@@ -14628,29 +14417,24 @@
     {
       "id": "caso_511",
       "profile_id": "perfil_18_solicitud_multiobjetivo",
-      "message": "También pensé preguntar por una recomendación, pero lo dejo para después. Mi necesidad actual es: para registrar la compra necesito factura electrónica; ¿el restaurante la expide y qué datos solicita? Necesito que el restaurante confirme cómo maneja la factura; todavía no estoy pagando.",
+      "message": "Para no mezclar objetivos, necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_facturacion",
-        "intervention_mode": "needs_business_lookup",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "invoice_business_lookup"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "SERVICIO",
-          "entity_id": "factura_electronica"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "para registrar la compra necesito factura electrónica; ¿el restaurante la expide y qué datos solicita?",
-        "disambiguating_evidence": "Necesito que el restaurante confirme cómo maneja la factura; todavía no estoy pagando.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "pedido.solicitar_modificacion",
-          "domicilio.consultar_domicilio"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "validar la condición con la fuente comercial u operativa correspondiente"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
@@ -14764,35 +14548,27 @@
     {
       "id": "caso_516",
       "profile_id": "perfil_18_solicitud_multiobjetivo",
-      "message": "Para no mezclar objetivos, separo las instalaciones. Lo que sí necesito resolver es: para completar el pedido, anote 3 porciones de arroz con camarón y 2 de bagre a la marinera. Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+      "message": "Para no mezclar objetivos, necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {
-        "pedido_activo": true
+        "identity_verified": true,
+        "order_id": "validation_order_516"
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "cancelar_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "arroz_con_camaron"
-        },
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "para completar el pedido, anote 3 porciones de arroz con camarón y 2 de bagre a la marinera.",
-        "disambiguating_evidence": "Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
@@ -15491,93 +15267,73 @@
     {
       "id": "caso_541",
       "profile_id": "perfil_19_reparacion_conversacional",
-      "message": "Iba a preguntar por las instalaciones, pero corrijo: quiero pedir una porción de langostinos al ajillo para el almuerzo de hoy. Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+      "message": "Perdón, corrijo lo anterior: necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {},
       "expected": {
-        "intent": "pedido",
-        "subintent": "iniciar_pedido",
-        "intervention_mode": "needs_transaction_confirmation",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
+        "intervention_mode": "needs_identity_verification",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "langostinos_al_ajillo"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quiero pedir una porción de langostinos al ajillo para el almuerzo de hoy.",
-        "disambiguating_evidence": "Esto sí es para pedir el producto; no estoy preguntando solamente por precio o disponibilidad.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
       "id": "caso_542",
       "profile_id": "perfil_19_reparacion_conversacional",
-      "message": "Perdón, retiro lo anterior sobre las instalaciones; quise decir: para completar el pedido, anote 6 porciones de bagre a la marinera y 1 de sancocho de bagre. Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+      "message": "Perdón, corrijo lo anterior: necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {
-        "pedido_activo": true
+        "identity_verified": true,
+        "order_id": "validation_order_542"
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "cancelar_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "bagre_a_la_marinera"
-        },
-        {
-          "entity_type": "PRODUCTO_ESPECIFICO",
-          "entity_id": "sancocho_de_bagre"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "para completar el pedido, anote 6 porciones de bagre a la marinera y 1 de sancocho de bagre.",
-        "disambiguating_evidence": "Sí quiero añadir esos productos y cantidades al pedido activo; no es una cotización.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "confirmar la acción transaccional antes de ejecutarla"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
       "id": "caso_543",
       "profile_id": "perfil_19_reparacion_conversacional",
-      "message": "Mejor dicho, no necesito resolver las instalaciones. La solicitud vigente es: quiero pedirlo sin salsa, pero todavía no he indicado a cuál plato debe aplicarse el cambio. Sí quiero hacer ese cambio en el pedido; no es solo una pregunta sobre ingredientes.",
+      "message": "Perdón, corrijo lo anterior: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {},
       "expected": {
-        "intent": "pedido",
-        "subintent": "solicitar_modificacion",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_modification_product"
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
-      "expected_entities": [
-        {
-          "entity_type": "INGREDIENTE",
-          "entity_id": "salsa"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quiero pedirlo sin salsa, pero todavía no he indicado a cuál plato debe aplicarse el cambio.",
-        "disambiguating_evidence": "Sí quiero hacer ese cambio en el pedido; no es solo una pregunta sobre ingredientes.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
@@ -16347,26 +16103,24 @@
     {
       "id": "caso_571",
       "profile_id": "perfil_20_lenguaje_mixto_digital",
-      "message": "Escribo por WhatsApp; mi consulta es: precios, por favor. Quiero consultar un precio, pero aún no he escogido el plato.",
+      "message": "Escribo por WhatsApp; necesito esto: necesito cancelar la reserva que ya tengo. Quiero anular la reserva completa; no cambiar la fecha.",
       "context": {},
       "expected": {
-        "intent": "precio",
-        "subintent": "consultar_precios_generales",
-        "intervention_mode": "needs_user_clarification",
-        "missing_slots": [
-          "product"
-        ],
-        "question_key": "missing_product_for_price"
+        "intent": "reserva_evento",
+        "subintent": "cancelar_reserva",
+        "intervention_mode": "needs_identity_verification",
+        "missing_slots": [],
+        "question_key": "identity_verification_required"
       },
       "expected_entities": [],
       "annotation": {
-        "target_evidence": "precios, por favor.",
-        "disambiguating_evidence": "Quiero consultar un precio, pero aún no he escogido el plato.",
+        "target_evidence": "necesito cancelar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero anular la reserva completa; no cambiar la fecha.",
         "excluded_readings": [
-          "pedido.iniciar_pedido",
-          "recomendacion.solicitar_recomendacion"
+          "reserva_evento.modificar_reserva",
+          "reserva_evento.solicitar_reserva"
         ],
-        "expected_action": "aplicar el siguiente paso definido por la política sin completar información por inferencia"
+        "expected_action": "verificar la identidad y confirmar la cancelación de la reserva"
       }
     },
     {
@@ -16458,65 +16212,53 @@
     {
       "id": "caso_575",
       "profile_id": "perfil_20_lenguaje_mixto_digital",
-      "message": "Desde la app necesito resolver esto: quiero 4 de ese. Esa es la cantidad del producto activo, no una consulta de precio.",
+      "message": "Escribo por WhatsApp; necesito esto: necesito cancelar el pedido que está activo. Quiero anular el pedido completo; no modificar un producto.",
       "context": {
-        "producto_activo": "bagre_a_la_marinera"
+        "identity_verified": true,
+        "order_id": "validation_order_575"
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "indicar_cantidad",
-        "intervention_mode": "resolved",
+        "subintent": "cancelar_pedido",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_order_cancellation"
       },
-      "expected_entities": [
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_producto"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "quiero 4 de ese.",
-        "disambiguating_evidence": "Esa es la cantidad del producto activo, no una consulta de precio.",
+        "target_evidence": "necesito cancelar el pedido que está activo",
+        "disambiguating_evidence": "Quiero anular el pedido completo; no modificar un producto.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "pedido.solicitar_modificacion",
+          "pedido.consultar_estado_pedido"
         ],
-        "expected_action": "actualizar el estado conversacional con el dato explícito"
+        "expected_action": "verificar la identidad y confirmar la cancelación del pedido"
       }
     },
     {
       "id": "caso_576",
       "profile_id": "perfil_20_lenguaje_mixto_digital",
-      "message": "En este chat, el punto concreto es: lo quiero en salsa. Estoy escogiendo la preparación del producto que veníamos revisando, no consultando opciones generales.",
+      "message": "Escribo por WhatsApp; necesito esto: necesito modificar la reserva que ya tengo. Quiero cambiar una reserva existente; no crear una nueva.",
       "context": {
-        "producto_activo": "salmon"
+        "identity_verified": true,
+        "reservation_id": "validation_reservation_576"
       },
       "expected": {
-        "intent": "pedido",
-        "subintent": "seleccionar_preparacion",
-        "intervention_mode": "resolved",
+        "intent": "reserva_evento",
+        "subintent": "modificar_reserva",
+        "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "confirm_reservation_change"
       },
-      "expected_entities": [
-        {
-          "entity_type": "PREPARACION",
-          "entity_id": "en_salsa"
-        },
-        {
-          "entity_type": "REFERENCIA_CONTEXTUAL",
-          "entity_id": "ultimo_producto"
-        }
-      ],
+      "expected_entities": [],
       "annotation": {
-        "target_evidence": "lo quiero en salsa.",
-        "disambiguating_evidence": "Estoy escogiendo la preparación del producto que veníamos revisando, no consultando opciones generales.",
+        "target_evidence": "necesito modificar la reserva que ya tengo",
+        "disambiguating_evidence": "Quiero cambiar una reserva existente; no crear una nueva.",
         "excluded_readings": [
-          "catalogo.consultar_disponibilidad_producto",
-          "precio.consultar_precio_producto"
+          "reserva_evento.solicitar_reserva",
+          "reserva_evento.cancelar_reserva"
         ],
-        "expected_action": "actualizar el estado conversacional con el dato explícito"
+        "expected_action": "verificar la identidad y confirmar la modificación de la reserva"
       }
     },
     {
@@ -16863,11 +16605,11 @@
       "message": "Escribo por WhatsApp; mi consulta es: ¿tienen menú infantil? Solo estoy preguntando por ese servicio adicional; todavía no inicio una compra.",
       "context": {},
       "expected": {
-        "intent": "operacion",
-        "subintent": "consultar_servicio",
-        "intervention_mode": "resolved",
+        "intent": "catalogo",
+        "subintent": "consultar_opciones_infantiles",
+        "intervention_mode": "needs_business_lookup",
         "missing_slots": [],
-        "question_key": null
+        "question_key": "children_options_lookup"
       },
       "expected_entities": [
         {
@@ -16882,7 +16624,7 @@
           "pedido.solicitar_modificacion",
           "domicilio.consultar_domicilio"
         ],
-        "expected_action": "responder la consulta informativa correspondiente"
+        "expected_action": "consultar las opciones y porciones infantiles disponibles"
       }
     },
     {
@@ -16956,10 +16698,10 @@
       },
       "expected": {
         "intent": "pedido",
-        "subintent": "agregar_productos_pedido",
+        "subintent": "agregar_producto_pedido",
         "intervention_mode": "needs_transaction_confirmation",
         "missing_slots": [],
-        "question_key": "confirm_order"
+        "question_key": "confirm_order_change"
       },
       "expected_entities": [
         {

@@ -812,6 +812,27 @@
             "menú infantil",
             "menu infantil"
           ]
+        },
+        {
+          "id": "recoger_en_restaurante",
+          "canonical": "Recoger en el restaurante",
+          "phrases": [
+            "recoger en el restaurante",
+            "pasar a recoger",
+            "recogerlo",
+            "recogerla",
+            "pickup"
+          ]
+        },
+        {
+          "id": "consumo_en_sitio",
+          "canonical": "Consumo en el restaurante",
+          "phrases": [
+            "comer en el restaurante",
+            "consumo en sitio",
+            "comer allá",
+            "dine in"
+          ]
         }
       ]
     },

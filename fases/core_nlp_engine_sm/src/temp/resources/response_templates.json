@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "schema_version": "1.0.0",
+    "schema_version": "2.0.0",
     "purpose": "Definir textos de respuesta neutrales para presentar datos ya validados por la aplicación sin duplicar información comercial.",
     "language": "es-CO"
   },
@@ -19,6 +19,12 @@
     "thanks": "Con gusto. ¿Hay algo más en lo que pueda ayudarte?",
     "farewell": "Gracias por comunicarte con {restaurant_name}. Hasta pronto.",
     "human_handoff": "Una persona del restaurante debe continuar esta gestión contigo.",
-    "unknown": "No pude relacionar el mensaje con los servicios del restaurante. Puedes consultar la carta, precios, pedidos, domicilios, reservas, pagos, ubicación y horarios."
+    "unknown": "No pude relacionar el mensaje con los servicios del restaurante. Puedes consultar la carta, precios, pedidos, domicilios, reservas, pagos, ubicación y horarios.",
+    "fulfillment_method": "La modalidad seleccionada para recibir el pedido es: {fulfillment_method}.",
+    "order_status": "El estado validado del pedido es: {order_status}.",
+    "order_cancellation": "La solicitud de cancelación del pedido fue enviada para confirmación.",
+    "reservation_change": "La modificación de la reserva fue enviada para confirmación.",
+    "reservation_cancellation": "La cancelación de la reserva fue enviada para confirmación.",
+    "invoice_request": "La solicitud de factura será continuada con los datos tributarios autorizados."
   }
 }

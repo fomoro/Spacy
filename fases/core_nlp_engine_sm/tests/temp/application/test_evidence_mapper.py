@@ -17,6 +17,7 @@ class LinguisticEvidenceMapperTests(unittest.TestCase):
             / "src"
             / "temp"
             / "resources"
+            / "intent_resolver"
             / "linguistic_evidence_mapping.json"
         )
 

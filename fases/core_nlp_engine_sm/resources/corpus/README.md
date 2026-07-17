@@ -25,7 +25,7 @@ Las definiciones que sustentan las anotaciones pertenecen a otros recursos:
 - Campos de datos conversacionales: `src/temp/resources/intent_resolver/conversation_data_fields.json`.
 - Entidades comerciales: `src/infrastructure/resources/phrase_matcher_service_config.json`.
 - Entidades contextuales: `src/infrastructure/resources/entity_ruler_service_config.json`.
-- Mapeo de señales y entidades a intenciones: `src/temp/resources/linguistic_evidence_mapping.json`.
+- Mapeo de señales y entidades a intenciones: `src/temp/resources/intent_resolver/linguistic_evidence_mapping.json`.
 - Acciones, reglas de completitud y preguntas: `src/temp/resources/intent_resolver/conversation_action_rules.json`.
 
 Si cambia alguno de esos contratos, el benchmark debe revisarse; no se deben redefinir taxonomías, perfiles ni entidades dentro del benchmark.
@@ -35,7 +35,7 @@ Los archivos de `conversations/` contienen exclusivamente listas de mensajes. No
 ## Diseño actual
 
 - 600 casos únicos: 20 perfiles conversacionales por 30 casos.
-- Cobertura de las 49 combinaciones de intención y subintención.
+- Cobertura de las 56 combinaciones de intención y subintención.
 - Mínimo de 8 casos por combinación.
 - Cada perfil cubre resolución, confirmación, consulta operativa, seguridad y al menos una intervención de aclaración o verificación; la asistencia humana se usa cuando el flujo debe escalarse.
 - 150 casos contienen contexto conversacional; cada perfil aporta entre 6 y 9.
