@@ -75,7 +75,7 @@ class ResponseRendererTests(unittest.TestCase):
 
         self.assertEqual(
             result.text,
-            "El precio vigente de Mojarra frita es $35.000.",
+            "¡Claro! Te cuento que el precio de Mojarra frita es de $35.000.",
         )
         self.assertFalse(result.used_fallback)
         self.assertEqual(result.template_key, "product_price")
@@ -99,7 +99,7 @@ class ResponseRendererTests(unittest.TestCase):
 
         self.assertEqual(
             result.text,
-            "Con gusto. ¿Hay algo más en lo que pueda ayudarte?",
+            "¡Con muchísimo gusto! ¿Te puedo colaborar con alguna otra cosita?",
         )
         self.assertFalse(result.used_fallback)
 

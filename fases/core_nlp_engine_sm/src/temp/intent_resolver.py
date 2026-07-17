@@ -80,7 +80,6 @@ class IntentResolver:
         self,
         intents_and_subintents: str | Path | Mapping[str, Any],
         conversation_action_rules: str | Path | Mapping[str, Any] | None = None,
-        conversation_data_fields: str | Path | Mapping[str, Any] | None = None,
     ) -> None:
         self._intents_and_subintents = self._load_intent_definition(
             intents_and_subintents
@@ -91,12 +90,6 @@ class IntentResolver:
             filename="conversation_action_rules.json",
             resource_name="reglas de acción conversacional",
         )
-        self._conversation_data_fields = self._load_related_resource(
-            conversation_data_fields,
-            resolver_source=intents_and_subintents,
-            filename="conversation_data_fields.json",
-            resource_name="campos de datos conversacionales",
-        )
         resolver_settings = self._intents_and_subintents["resolver_settings"]
         self._thresholds = resolver_settings["thresholds"]
         self._multipliers = resolver_settings["source_multipliers"]
@@ -104,10 +97,10 @@ class IntentResolver:
             self._intents_and_subintents
         )
         self._valid_pairs = self._taxonomy_pairs(self._intents_and_subintents)
-        slots = self._conversation_data_fields.get("slots")
+        slots = self._intents_and_subintents.get("slots")
         if not isinstance(slots, dict) or not slots:
             raise ValueError(
-                "conversation_data_fields.json debe contener un objeto 'slots' no vacío."
+                "intents_and_subintents.json debe contener un objeto 'slots' no vacío."
             )
         self._valid_slots = {str(slot) for slot in slots}
         self._validate_runtime_resources()

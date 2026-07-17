@@ -469,214 +469,214 @@
   },
   "questions": {
     "no_evidence": {
-      "template": "No pude identificar la solicitud. ¿Qué deseas consultar o pedir?"
+      "template": "¡Ay! Qué pena, no te entendí muy bien. ¿Me cuentas de nuevo qué se te antoja o qué necesitas?"
     },
     "close_candidates": {
-      "template": "Puedo interpretar tu mensaje de dos maneras: {options}. ¿Cuál corresponde a lo que necesitas?",
-      "fallback": "Tu mensaje admite dos interpretaciones. ¿Qué deseas hacer?"
+      "template": "¡Qué pena! Estoy un poco confundido. ¿Te refieres a {options}? Cuéntame cuál es la correcta.",
+      "fallback": "¡Qué pena! Entendí dos cosas distintas. ¿Qué te gustaría hacer exactamente?"
     },
     "missing_product_for_price": {
-      "template": "¿De cuál plato deseas conocer el precio?"
+      "template": "¡Claro! ¿De qué plato te gustaría saber el precio?"
     },
     "missing_catalog_product": {
-      "template": "¿Sobre cuál plato deseas hacer la consulta?"
+      "template": "¡Súper! ¿De qué platillo te gustaría saber más detalles?"
     },
     "missing_order_product": {
-      "template": "¿Qué plato deseas pedir?"
+      "template": "¡Listo! ¿Qué plato te gustaría pedir hoy?"
     },
     "missing_group_products": {
-      "template": "¿Qué platos necesitas para el grupo?"
+      "template": "¡Qué chévere! ¿Qué platos les preparo para el grupo?"
     },
     "missing_quantity": {
-      "template": "¿Cuántas unidades necesitas?"
+      "template": "¿Cuántas porciones te enviamos?"
     },
     "missing_party_size": {
-      "template": "¿Para cuántas personas sería?"
+      "template": "¿Para cuántas personas sería, más o menos?"
     },
     "missing_preparation": {
-      "template": "¿Qué preparación prefieres para {product}?",
-      "fallback": "¿Qué preparación prefieres?"
+      "template": "¡Con gusto! ¿Cómo prefieres {product}?",
+      "fallback": "¡Súper! ¿Cómo prefieres la preparación?"
     },
     "missing_product_reference": {
-      "template": "¿A cuál plato te refieres?"
+      "template": "Disculpa, ¿a cuál de los platos te refieres?"
     },
     "ambiguous_product_reference": {
-      "template": "¿Cuál de los productos anteriores deseas agregar?"
+      "template": "Tengo varios en mente, ¿cuál de esos productos deseas agregar?"
     },
     "missing_modification_target": {
-      "template": "¿Qué ingrediente o preparación deseas cambiar?"
+      "template": "¡Claro que sí! ¿Qué ingrediente te gustaría cambiarle?"
     },
     "missing_modification_product": {
-      "template": "¿A cuál plato deseas hacerle ese cambio?"
+      "template": "¿A cuál de los platos le hacemos ese cambiecito?"
     },
     "missing_previous_order": {
-      "template": "No encuentro un pedido anterior. ¿Qué deseas repetir?"
+      "template": "¡Ay! No encuentro tu pedido anterior. ¿Qué te gustaría volver a pedir?"
     },
     "missing_previous_address": {
-      "template": "No encuentro una dirección anterior. ¿A qué dirección debemos enviarlo?"
+      "template": "No me aparece una dirección guardada. ¿A dónde te enviamos el pedido?"
     },
     "missing_reservation_date": {
-      "template": "¿Para qué fecha necesitas la reserva?"
+      "template": "¡Súper! ¿Para qué día te gustaría la reserva?"
     },
     "missing_reservation_time": {
-      "template": "¿A qué hora necesitas la reserva?"
+      "template": "¿Y a qué hora te esperamos?"
     },
     "missing_event_date": {
-      "template": "¿Para qué fecha estás planeando el evento?"
+      "template": "¡Qué emoción! ¿Para qué fecha tienes pensado el evento?"
     },
     "missing_delivery_time": {
-      "template": "¿Para qué hora necesitas la entrega?"
+      "template": "¿Para qué hora te enviamos el domicilio?"
     },
     "missing_restriction": {
-      "template": "¿Qué ingrediente o restricción debemos tener en cuenta?"
+      "template": "¡Tranquilo, nosotros nos encargamos! ¿Qué ingrediente debemos evitar?"
     },
     "missing_allergen": {
-      "template": "¿Cuál es el alérgeno o ingrediente sensible que debemos validar?"
+      "template": "¡Es súper importante! ¿Cuál es el alérgeno al que debemos estar súper atentos?"
     },
     "confirm_order": {
-      "template": "Entendí el pedido. ¿Deseas que lo confirme con esos productos y cantidades?"
+      "template": "¡Excelente elección! ¿Confirmamos el pedido con estos platos y cantidades para mandarlo a cocina?"
     },
     "confirm_order_change": {
-      "template": "¿Confirmas que deseas agregar ese producto al pedido?"
+      "template": "¡Listo! ¿Confirmamos agregar este plato al pedido?"
     },
     "confirm_group_order": {
-      "template": "¿Confirmas el pedido grupal con las cantidades indicadas?"
+      "template": "¡Súper! ¿Confirmamos el pedido para el grupo con las cantidades que me diste?"
     },
     "confirm_modification": {
-      "template": "¿Confirmas esa modificación para {product}?",
-      "fallback": "¿Confirmas esa modificación?"
+      "template": "¡Claro que sí! ¿Confirmo este cambio para {product}?",
+      "fallback": "¡Listo! ¿Confirmo esta modificación?"
     },
     "confirm_repeat_order": {
-      "template": "¿Confirmas que deseas repetir el pedido anterior?"
+      "template": "¡Qué delicia! ¿Confirmamos enviar exactamente lo mismo de la vez pasada?"
     },
     "confirm_reservation": {
-      "template": "¿Confirmas la solicitud de reserva con esos datos?"
+      "template": "¡Todo casi listo! ¿Me confirmas la reserva con estos daticos?"
     },
     "confirm_previous_address": {
-      "template": "¿Confirmas que debemos usar la dirección anterior?"
+      "template": "¡Súper! ¿Te lo enviamos a la misma dirección de siempre?"
     },
     "invoice_business_lookup": {
-      "template": "Debo validar las condiciones de facturación con el restaurante."
+      "template": "Dame un segundito, valido las condiciones de facturación con el restaurante."
     },
     "packaging_business_lookup": {
-      "template": "Debo confirmar con el restaurante si puede preparar el empaque solicitado."
+      "template": "¡Claro! Déjame revisar con el restaurante si tenemos ese empaque disponible."
     },
     "scheduled_order_lookup": {
-      "template": "Debo confirmar si el restaurante puede atender la hora solicitada."
+      "template": "Déjame le pregunto a cocina si alcanzamos a tenerlo listo para esa hora."
     },
     "group_delivery_lookup": {
-      "template": "Debo validar el tiempo y las condiciones de entrega para ese pedido grupal."
+      "template": "¡Wow! Déjame valido con el equipo el tiempo y la logística para entregar ese pedido grande."
     },
     "missing_delivery_order": {
-      "template": "¿Cuál pedido deseas enviar a domicilio?"
+      "template": "¿Cuál de los pedidos deseas que te enviemos a domicilio?"
     },
     "missing_delivery_address": {
-      "template": "¿A qué dirección debemos enviar el pedido?"
+      "template": "¡Listo! ¿A qué dirección te enviamos esta delicia?"
     },
     "confirm_delivery": {
-      "template": "¿Confirmas que deseas enviar ese pedido a la dirección indicada?"
+      "template": "¡Perfecto! ¿Confirmamos enviar el pedido a esa dirección?"
     },
     "missing_delivery_tracking_reference": {
-      "template": "¿Cuál es el número o pedido cuyo domicilio deseas consultar?"
+      "template": "¿Me regalas el número o la referencia de tu pedido para revisarlo, porfa?"
     },
     "delivery_status_lookup": {
-      "template": "Consultaré el estado actualizado del domicilio asociado a ese pedido."
+      "template": "¡Dame un segundo! Ya te averiguo por dónde va tu pedido."
     },
     "mixed_payment_lookup": {
-      "template": "Debo confirmar si el restaurante permite combinar esos medios de pago."
+      "template": "Déjame valido rapidito si podemos recibirte esos dos medios de pago juntos."
     },
     "restriction_catalog_lookup": {
-      "template": "Debo validar cuáles opciones cumplen esa restricción."
+      "template": "¡Tranquilo! Déjame revisar con lupa qué opciones son 100% seguras para ti."
     },
     "restriction_recommendation_lookup": {
-      "template": "Debo validar la composición de los platos antes de recomendar una opción."
+      "template": "Déjame valido los ingredientes exactos antes de darte una recomendación."
     },
     "comparison_lookup": {
-      "template": "Debo consultar la información de los platos para compararlos con ese criterio."
+      "template": "¡Súper! Déjame comparo los detallitos de esos platos y te cuento."
     },
     "installation_lookup": {
-      "template": "Debo confirmar esa condición de las instalaciones con el restaurante."
+      "template": "¡Claro! Dame un segundito y te confirmo esa información de nuestras instalaciones."
     },
     "event_business_lookup": {
-      "template": "Debo validar capacidad, disponibilidad y condiciones para el evento."
+      "template": "¡Qué chévere! Déjame valido nuestra disponibilidad y el espacio para el evento."
     },
     "safety_validation": {
-      "template": "Por seguridad, debo validar ingredientes y preparación con el personal del restaurante."
+      "template": "¡La salud es lo primero! Voy a confirmar directamente con el chef los ingredientes y la preparación."
     },
     "cross_contamination_validation": {
-      "template": "Por seguridad, debo confirmar con cocina el manejo de utensilios, aceite y superficies."
+      "template": "¡Tranquilo! Voy a reconfirmar con cocina los protocolos de limpieza para que comas tranquilo."
     },
     "missing_budget": {
-      "template": "¿Cuál es el presupuesto máximo que deseas destinar?"
+      "template": "¿Hasta cuánto tienes pensado invertir, más o menos?"
     },
     "budget_recommendation_lookup": {
-      "template": "Debo consultar los precios vigentes para identificar opciones dentro de ese presupuesto."
+      "template": "¡Perfecto! Déjame busco unas opciones deliciosas que se ajusten a tu presupuesto."
     },
     "product_availability_lookup": {
-      "template": "Debo consultar la disponibilidad actual de ese producto con el restaurante."
+      "template": "¡Qué delicia! Déjame reviso rapidito si todavía nos queda."
     },
     "delivery_lookup": {
-      "template": "Debo validar la cobertura, el costo y el tiempo estimado del domicilio."
+      "template": "¡Súper! Déjame valido la cobertura y el tiempo que nos demoramos en llegar allá."
     },
     "parking_lookup": {
-      "template": "Debo confirmar la disponibilidad y las condiciones actuales del parqueadero."
+      "template": "Dame un segundito y te confirmo cómo está el parqueadero hoy."
     },
     "menu_changes_lookup": {
-      "template": "Debo consultar cuáles cambios de la carta se encuentran vigentes."
+      "template": "¡Claro! Déjame veo qué cositas nuevas metimos en el menú hace poco."
     },
     "events_lookup": {
-      "template": "Debo validar las condiciones actuales para realizar eventos en el restaurante."
+      "template": "Déjame averiguo rapidito qué condiciones tenemos ahorita para eventos."
     },
     "reservation_lookup": {
-      "template": "Debo validar disponibilidad, condiciones y posibles costos de la reserva."
+      "template": "¡Qué gusto! Déjame reviso la agenda a ver si tenemos mesita libre."
     },
     "event_human_assistance": {
-      "template": "La solicitud del evento requiere que una persona del restaurante continúe la gestión contigo."
+      "template": "¡Qué emocionante! Para que todo salga perfecto, te voy a pasar con alguien de nuestro equipo."
     },
     "identity_verification_required": {
-      "template": "Antes de consultar o reutilizar información de pedidos o direcciones anteriores, necesito que la aplicación verifique tu identidad."
+      "template": "¡Qué pena contigo! Para cuidar tus datos, necesito que el sistema verifique tu identidad un momentico."
     },
     "out_of_scope": {
-      "template": "No pude relacionar el mensaje con los servicios del restaurante. Puedo ayudarte con la carta, precios, pedidos, domicilios, reservas, pagos, ubicación y horarios."
+      "template": "¡Ay, qué pena! Me sacaste de base. Todavía no sé cómo ayudarte con eso. Pero aquí estoy si necesitas ver la carta, pedir domicilio, reservar o saber los horarios."
     },
     "children_options_lookup": {
-      "template": "Voy a consultar las opciones y porciones infantiles disponibles."
+      "template": "¡Claro que sí! Déjame reviso qué cositas ricas tenemos para los más chiquitos."
     },
     "missing_fulfillment_method": {
-      "template": "¿Deseas recibir el pedido a domicilio, recogerlo en el restaurante o consumirlo en el lugar?"
+      "template": "¡Súper! ¿Te lo enviamos a domicilio, pasas a recogerlo, o vienes a comer aquí?"
     },
     "confirm_fulfillment_method": {
-      "template": "¿Confirmas esa modalidad para recibir el pedido?"
+      "template": "¡Listo! ¿Me confirmas si te lo entrego así?"
     },
     "missing_order_tracking_reference": {
-      "template": "¿Cuál es el número o la referencia del pedido que deseas consultar?"
+      "template": "¿Me regalas el número del pedido que quieres revisar, porfa?"
     },
     "order_status_lookup": {
-      "template": "Voy a consultar el estado actual del pedido identificado."
+      "template": "¡Dame un segundito! Ya mismo pregunto cómo va tu pedido."
     },
     "missing_order_cancellation_reference": {
-      "template": "¿Cuál es el número o la referencia del pedido que deseas cancelar?"
+      "template": "¡Uy, qué pena! ¿Me regalas el número del pedido que quieres cancelar?"
     },
     "confirm_order_cancellation": {
-      "template": "¿Confirmas que deseas cancelar el pedido identificado?"
+      "template": "¿Estás súper seguro de que quieres cancelar este pedido?"
     },
     "missing_reservation_reference": {
-      "template": "¿Cuál es el identificador de la reserva que deseas gestionar?"
+      "template": "¿Me das el nombre o numerito de la reserva, por favor?"
     },
     "confirm_reservation_change": {
-      "template": "¿Confirmas que deseas modificar la reserva identificada?"
+      "template": "¡Súper! ¿Confirmamos entonces el cambio en la reserva?"
     },
     "confirm_reservation_cancellation": {
-      "template": "¿Confirmas que deseas cancelar la reserva identificada?"
+      "template": "¿Estás súper seguro de que deseas cancelar la reserva?"
     },
     "missing_invoice_order_reference": {
-      "template": "¿Cuál es el número o la referencia del pedido que debe facturarse?"
+      "template": "¿Me recuerdas el numerito del pedido para sacarte la factura?"
     },
     "missing_invoice_data": {
-      "template": "¿Cuáles son los datos tributarios autorizados para generar la factura?"
+      "template": "¡Claro que sí! ¿Me regalas los daticos para hacerte la factura electrónica?"
     },
     "invoice_human_assistance": {
-      "template": "Una persona del restaurante continuará la generación de la factura con los datos validados."
+      "template": "¡Listo! Alguien de nuestro equipo ya mismo se encarga de enviarte la factura."
     }
   }
 }

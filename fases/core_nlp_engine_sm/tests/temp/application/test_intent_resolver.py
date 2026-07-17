@@ -114,7 +114,7 @@ class IntentResolverTests(unittest.TestCase):
         self.assertEqual(result.response.source, "response_templates")
         self.assertEqual(
             result.response.text,
-            "Con gusto. ¿Hay algo más en lo que pueda ayudarte?",
+            "¡Con muchísimo gusto! ¿Te puedo colaborar con alguna otra cosita?",
         )
 
     def test_engine_renders_price_only_with_validated_response_value(self):
@@ -127,7 +127,7 @@ class IntentResolverTests(unittest.TestCase):
         self.assertEqual(result.response.template_key, "product_price")
         self.assertEqual(
             result.response.text,
-            "El precio vigente de Mojarra Frita es $35.000.",
+            "¡Claro! Te cuento que el precio de Mojarra Frita es de $35.000.",
         )
 
     def test_selects_pickup_as_fulfillment_method(self):
@@ -383,18 +383,12 @@ class IntentResolverTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        data_fields = json.loads(
-            (resource_directory / "conversation_data_fields.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        resolver = IntentResolver(intents, conversation_rules, data_fields)
+        resolver = IntentResolver(intents, conversation_rules)
         self.assertIn("thresholds", resolver.resolver_settings)
         self.assertIn(
             "rules_by_intent_and_subintent", resolver.conversation_action_rules
         )
         self.assertIn("intents", resolver.intents_and_subintents)
-        self.assertIn("slots", resolver.conversation_data_fields)
 
     def test_intent_dictionary_requires_other_runtime_resources(self):
         resource_directory = (
@@ -405,12 +399,13 @@ class IntentResolverTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
+        del intents["slots"]
         rules = json.loads(
             (resource_directory / "conversation_action_rules.json").read_text(
                 encoding="utf-8"
             )
         )
-        with self.assertRaisesRegex(ValueError, "conversation_data_fields.json"):
+        with self.assertRaisesRegex(ValueError, "intents_and_subintents.json debe contener un objeto 'slots'"):
             IntentResolver(intents, rules)
 
     def test_runtime_rejects_rules_outside_the_intent_catalog(self):
@@ -422,13 +417,12 @@ class IntentResolverTests(unittest.TestCase):
         )
         rules = load("conversation_action_rules.json")
         intents = load("intents_and_subintents.json")
-        fields = load("conversation_data_fields.json")
         rules["rules_by_intent_and_subintent"]["inexistente.no_declarada"] = {}
 
         with self.assertRaisesRegex(
             ValueError, "intención o subintención desconocida"
         ):
-            IntentResolver(intents, rules, fields)
+            IntentResolver(intents, rules)
 
     def test_runtime_requires_priority_on_every_intent(self):
         resource_directory = (
@@ -439,11 +433,10 @@ class IntentResolverTests(unittest.TestCase):
         )
         intents = load("intents_and_subintents.json")
         rules = load("conversation_action_rules.json")
-        fields = load("conversation_data_fields.json")
         del intents["intents"]["precio"]["tie_break_priority"]
 
         with self.assertRaisesRegex(ValueError, "tie_break_priority"):
-            IntentResolver(intents, rules, fields)
+            IntentResolver(intents, rules)
 
 
 if __name__ == "__main__":

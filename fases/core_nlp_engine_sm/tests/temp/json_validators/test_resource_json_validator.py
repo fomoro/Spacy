@@ -20,9 +20,6 @@ RESOURCE_PATHS = {
     "intents_and_subintents.json": (
         ROOT / "src" / "temp" / "resources" / "intent_resolver" / "intents_and_subintents.json"
     ),
-    "conversation_data_fields.json": (
-        ROOT / "src" / "temp" / "resources" / "intent_resolver" / "conversation_data_fields.json"
-    ),
     "text_normalizer_service_config.json": ROOT / "src" / "infrastructure" / "resources" / "text_normalizer_service_config.json",
     "matcher_service_config.json": ROOT / "src" / "infrastructure" / "resources" / "matcher_service_config.json",
     "lemma_service_config.json": ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json",
@@ -70,7 +67,6 @@ def validate() -> list[str]:
         return [f"Faltan recursos: {', '.join(missing)}"]
 
     taxonomy = load("intents_and_subintents.json")
-    conversation_data_fields = load("conversation_data_fields.json")
     menu = load("phrase_matcher_service_config.json")
     normalizer = load("text_normalizer_service_config.json")
     matcher = load("matcher_service_config.json")
@@ -127,6 +123,7 @@ def validate() -> list[str]:
         "language",
         "intent_count",
         "intent_subintent_pair_count",
+        "slot_count",
     }
     if not isinstance(taxonomy_metadata, dict) or set(taxonomy_metadata) != expected_taxonomy_metadata:
         errors.append(
@@ -296,32 +293,14 @@ def validate() -> list[str]:
             )
 
     actions = conversation_rules.get("conversation_actions", {})
-    slots = conversation_data_fields.get("slots", {})
+    slots = taxonomy.get("slots", {})
     rules = conversation_rules.get("rules_by_intent_and_subintent", {})
     questions = conversation_rules.get("questions", {})
-    slot_metadata = conversation_data_fields.get("metadata", {})
-    expected_slot_metadata_fields = {
-        "schema_version",
-        "purpose",
-        "language",
-        "slot_count",
-    }
-    if (
-        not isinstance(slot_metadata, dict)
-        or set(slot_metadata) != expected_slot_metadata_fields
-    ):
+    
+    if taxonomy_metadata.get("slot_count") != len(slots):
         errors.append(
-            "conversation_data_fields.json: metadata no coincide con el contrato mínimo."
+            f"intents_and_subintents.json: metadata.slot_count debe ser {len(slots)}."
         )
-    else:
-        if not str(slot_metadata.get("purpose", "")).strip():
-            errors.append(
-                "conversation_data_fields.json: metadata.purpose debe ser texto no vacío."
-            )
-        if slot_metadata.get("slot_count") != len(slots):
-            errors.append(
-                f"conversation_data_fields.json: metadata.slot_count debe ser {len(slots)}."
-            )
     conversation_metadata = conversation_rules.get("metadata", {})
     expected_conversation_metadata_fields = {
         "schema_version",
