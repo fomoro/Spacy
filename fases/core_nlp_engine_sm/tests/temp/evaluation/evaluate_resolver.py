@@ -20,6 +20,7 @@ from src.temp import (
     IntentEngine,
     IntentResolver,
     LinguisticParser,
+    ResponseRenderer,
 )
 from src.temp import LinguisticEvidenceMapper
 
@@ -39,7 +40,10 @@ ruler = EntityRulerService(ROOT / "src" / "infrastructure" / "resources" / "enti
 evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json")
 parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler, evidence_mapper)
 resolver = IntentResolver(ROOT / "src" / "temp" / "resources" / "intent_resolver")
-pipeline = IntentEngine(parser, resolver)
+response_renderer = ResponseRenderer(
+    ROOT / "src" / "temp" / "resources" / "response_templates.json"
+)
+pipeline = IntentEngine(parser, resolver, response_renderer)
 
 payload = json.loads(CASES.read_text(encoding="utf-8"))
 cases = payload["cases"]

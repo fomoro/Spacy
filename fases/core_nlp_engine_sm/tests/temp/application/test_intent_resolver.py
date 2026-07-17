@@ -15,6 +15,7 @@ from src.temp import (
     IntentEngine,
     IntentResolver,
     LinguisticParser,
+    ResponseRenderer,
 )
 from src.temp import LinguisticEvidenceMapper
 
@@ -40,8 +41,11 @@ class IntentResolverTests(unittest.TestCase):
         resolver = IntentResolver(
             ROOT / "src" / "temp" / "resources" / "intent_resolver"
         )
+        response_renderer = ResponseRenderer(
+            ROOT / "src" / "temp" / "resources" / "response_templates.json"
+        )
         cls.resolver = resolver
-        cls.pipeline = IntentEngine(parser, resolver)
+        cls.pipeline = IntentEngine(parser, resolver, response_renderer)
 
     def resolve(self, text, context=None):
         return self.pipeline.analyze(text, context).resolution
@@ -101,6 +105,29 @@ class IntentResolverTests(unittest.TestCase):
         self.assertEqual((greeting.intent, greeting.subintent), ("social", "saludar"))
         self.assertEqual(
             (farewell.intent, farewell.subintent), ("social", "despedirse")
+        )
+
+    def test_engine_closes_flow_with_direct_social_response(self):
+        result = self.pipeline.analyze("Gracias")
+
+        self.assertEqual(result.resolution.subintent, "agradecer")
+        self.assertEqual(result.response.source, "response_templates")
+        self.assertEqual(
+            result.response.text,
+            "Con gusto. ¿Hay algo más en lo que pueda ayudarte?",
+        )
+
+    def test_engine_renders_price_only_with_validated_response_value(self):
+        result = self.pipeline.analyze(
+            "¿Cuánto cuesta la mojarra frita?",
+            response_values={"price": "$35.000"},
+        )
+
+        self.assertEqual(result.resolution.subintent, "consultar_precio_producto")
+        self.assertEqual(result.response.template_key, "product_price")
+        self.assertEqual(
+            result.response.text,
+            "El precio vigente de Mojarra Frita es $35.000.",
         )
 
     def test_selects_pickup_as_fulfillment_method(self):

@@ -37,11 +37,14 @@ core_nlp_engine/
 │       └── profiles/conversation_profiles.json
 ├── src/                               # Código fuente y recursos por capa
 │   ├── temp/                          # Código y recursos todavía en revisión
-│   │   └── resources/intent_resolver/
-│   │       ├── intents_and_subintents.json
-│   │       ├── linguistic_evidence_mapping.json
-│   │       ├── conversation_data_fields.json
-│   │       └── conversation_action_rules.json
+│   │   ├── response_renderer.py
+│   │   └── resources/
+│   │       ├── response_templates.json
+│   │       └── intent_resolver/
+│   │           ├── intents_and_subintents.json
+│   │           ├── linguistic_evidence_mapping.json
+│   │           ├── conversation_data_fields.json
+│   │           └── conversation_action_rules.json
 │   └── infrastructure/
 │       ├── nlp/                       # Servicios lingüísticos autónomos con spaCy
 │       └── resources/                 # JSON exclusivos de infraestructura
@@ -243,7 +246,7 @@ python -m unittest tests.application.test_intent_resolver
 
 ## Tema 7: Fachada de resolución (`IntentEngine`)
 
-**Foco Principal**: Integrar `LinguisticParser` e `IntentResolver` en una única llamada `analyze(text, context)`, retornando `ResolvedNlpResult`.
+**Foco Principal**: Integrar `LinguisticParser`, `IntentResolver` y `ResponseRenderer` en una única llamada `analyze(text, context, response_values)`. `ResolvedNlpResult` contiene evidencia, resolución y respuesta. Las preguntas y confirmaciones provienen de las reglas conversacionales; las resoluciones directas seleccionan una plantilla de `response_templates.json` y solo interpolan valores comerciales suministrados explícitamente.
 
 ### ¿Cómo evaluar la calidad del Resolutor?
 

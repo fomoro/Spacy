@@ -20,7 +20,10 @@ flowchart LR
     H --> I[IntentResolver]
     J[Contexto de diálogo] --> I
     I --> K[IntentResolution]
-    K --> L[IntentEngine / ResolvedNlpResult]
+    K --> R[ResponseRenderer]
+    T[response_templates.json] --> R
+    V[Datos de respuesta validados] --> R
+    R --> L[IntentEngine / ResolvedNlpResult]
 ```
 
 Los cuatro analizadores posteriores a la normalización son independientes. `MatcherService` y `LemmaService` producen señales neutrales; `LinguisticEvidenceMapper`, en aplicación, las relaciona con entidades e intenciones. `EntityRulerService` usa el componente nativo `entity_ruler` de spaCy.
@@ -40,7 +43,7 @@ Cada responsabilidad tiene un recurso auditable:
 - `src/temp/resources/intent_resolver/conversation_action_rules.json`: acciones, reglas y preguntas, temporalmente en revisión.
 
 Los cuatro contratos se ubican juntos porque participan en la resolución, pero no forman una dependencia circular. `LinguisticEvidenceMapper` carga únicamente `linguistic_evidence_mapping.json`: sus referencias se validan contra `intents_and_subintents.json` y sus claves de señal contra los recursos de infraestructura; no conoce campos, preguntas ni acciones. `IntentResolver` recibe la carpeta `src/temp/resources/intent_resolver/`, carga los otros tres JSON y rechaza al iniciar reglas con pares de intención o campos no declarados. Las prioridades, los umbrales y los multiplicadores están integrados en `intents_and_subintents.json` para evitar duplicar identificadores de intención.
-- `src/temp/resources/response_templates.json`: plantillas para presentar información ya validada.
+- `src/temp/resources/response_templates.json`: plantillas, valores requeridos y selección para los 20 pares que pueden finalizar directamente en `resolved`.
 - `business_data/menu/menu_offerings.json`: precios, presentaciones y recomendaciones enlazados por `product_id`.
 - `business_data/restaurant/restaurant_profile.json`: información estable del restaurante.
 - `corpus/benchmarks/customer_intent_benchmark.json`: benchmark conocido de 600 casos para medir el sistema.
@@ -71,7 +74,8 @@ Estos componentes no eligen la intención final ni generan respuestas comerciale
 - `LinguisticEvidenceMapper`, en `src/temp/linguistic_evidence_mapper.py`, combina señales neutrales y entidades, y allí asigna intención, subintención y peso.
 - `LinguisticParser` y `LinguisticEvidenceBundle`, en `src/temp/linguistic_parser.py`, coordinan las cinco fuentes lingüísticas mientras esta capa permanece en revisión.
 - `IntentResolver`, `CandidateScore` e `IntentResolution`, en `src/temp/intent_resolver.py`, aplican pesos, prioridades, requisitos y contexto conversacional.
-- `IntentEngine` y `ResolvedNlpResult`, en `src/temp/intent_engine.py`, forman la fachada pública provisional para `analyze(text, context)`.
+- `ResponseRenderer` y `RenderedResponse`, en `src/temp/response_renderer.py`, conservan preguntas y confirmaciones ya resueltas o renderizan una respuesta directa sin inventar datos faltantes.
+- `IntentEngine` y `ResolvedNlpResult`, en `src/temp/intent_engine.py`, forman la fachada pública provisional para `analyze(text, context, response_values)`.
 
 El resolutor combina las entidades del catálogo con las del `EntityRuler`. Así, las referencias contextuales se mantienen desacopladas del catálogo comercial.
 

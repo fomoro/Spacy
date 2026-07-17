@@ -120,14 +120,6 @@ def validate() -> list[str]:
             )
         conversation_messages.update(normalized)
 
-    minimal_metadata_fields = {"schema_version", "purpose", "language"}
-    for resource_name, resource in (("response_templates.json", response_templates),):
-        metadata = resource.get("metadata", {})
-        if not isinstance(metadata, dict) or set(metadata) != minimal_metadata_fields:
-            errors.append(f"{resource_name}: metadata no coincide con el contrato mínimo.")
-        elif not str(metadata.get("purpose", "")).strip():
-            errors.append(f"{resource_name}: metadata.purpose debe ser texto no vacío.")
-
     taxonomy_metadata = taxonomy.get("metadata", {})
     expected_taxonomy_metadata = {
         "schema_version",
@@ -455,13 +447,154 @@ def validate() -> list[str]:
                     + ", ".join(sorted(unknown))
                 )
 
+    expected_response_fields = {
+        "metadata",
+        "fallback_template",
+        "templates",
+        "direct_response_by_intent_and_subintent",
+    }
+    if set(response_templates) != expected_response_fields:
+        errors.append(
+            "response_templates.json: la raíz no coincide con el contrato de respuestas."
+        )
+
     templates = response_templates.get("templates", {})
+    direct_responses = response_templates.get(
+        "direct_response_by_intent_and_subintent", {}
+    )
+    fallback_template = response_templates.get("fallback_template")
+    response_metadata = response_templates.get("metadata", {})
+    expected_response_metadata_fields = {
+        "schema_version",
+        "purpose",
+        "language",
+        "template_count",
+        "direct_response_pair_count",
+    }
+    if (
+        not isinstance(response_metadata, dict)
+        or set(response_metadata) != expected_response_metadata_fields
+    ):
+        errors.append(
+            "response_templates.json: metadata no coincide con el contrato."
+        )
+    else:
+        if not str(response_metadata.get("purpose", "")).strip():
+            errors.append("response_templates.json: metadata.purpose está vacío.")
+        if response_metadata.get("language") != "es-CO":
+            errors.append("response_templates.json: metadata.language debe ser 'es-CO'.")
+        if response_metadata.get("template_count") != len(templates):
+            errors.append(
+                "response_templates.json: metadata.template_count no coincide."
+            )
+        if response_metadata.get("direct_response_pair_count") != len(
+            direct_responses
+        ):
+            errors.append(
+                "response_templates.json: metadata.direct_response_pair_count "
+                "no coincide."
+            )
+
     if not isinstance(templates, dict) or not templates:
         errors.append("Respuestas: 'templates' debe ser un objeto no vacío.")
+        templates = {}
     else:
-        for template_key, template in templates.items():
+        for template_key, definition in templates.items():
+            if not isinstance(definition, dict) or set(definition) != {
+                "template",
+                "required_values",
+                "fallback",
+            }:
+                errors.append(
+                    f"Respuestas: template '{template_key}' no coincide con el contrato."
+                )
+                continue
+            template = definition.get("template")
+            fallback = definition.get("fallback")
+            required_values = definition.get("required_values")
             if not isinstance(template, str) or not template.strip():
-                errors.append(f"Respuestas: template '{template_key}' debe ser texto no vacío.")
+                errors.append(
+                    f"Respuestas: template '{template_key}' debe ser texto no vacío."
+                )
+                continue
+            if not isinstance(fallback, str) or not fallback.strip():
+                errors.append(
+                    f"Respuestas: fallback '{template_key}' debe ser texto no vacío."
+                )
+                continue
+            if not isinstance(required_values, list) or not all(
+                isinstance(value, str) and value for value in required_values
+            ):
+                errors.append(
+                    f"Respuestas: '{template_key}' tiene required_values inválido."
+                )
+                continue
+            if len(required_values) != len(set(required_values)):
+                errors.append(
+                    f"Respuestas: '{template_key}' repite required_values."
+                )
+            try:
+                placeholders = {
+                    name for _, name, _, _ in Formatter().parse(template) if name
+                }
+                fallback_placeholders = {
+                    name for _, name, _, _ in Formatter().parse(fallback) if name
+                }
+            except ValueError as exc:
+                errors.append(
+                    f"Respuestas: formato inválido en '{template_key}': {exc}."
+                )
+                continue
+            if placeholders != set(required_values):
+                errors.append(
+                    f"Respuestas: '{template_key}' no sincroniza placeholders "
+                    "y required_values."
+                )
+            if fallback_placeholders:
+                errors.append(
+                    f"Respuestas: fallback '{template_key}' no debe requerir valores."
+                )
+
+    if fallback_template not in templates:
+        errors.append("Respuestas: fallback_template referencia una plantilla inexistente.")
+
+    if not isinstance(direct_responses, dict):
+        errors.append(
+            "Respuestas: direct_response_by_intent_and_subintent debe ser un objeto."
+        )
+        direct_responses = {}
+    expected_direct_pairs = {
+        pair
+        for pair in valid_pairs
+        if not isinstance(rules.get(pair), dict)
+        or not rules[pair].get("on_complete")
+    }
+    if set(direct_responses) != expected_direct_pairs:
+        missing_direct = sorted(expected_direct_pairs - set(direct_responses))
+        unexpected_direct = sorted(set(direct_responses) - expected_direct_pairs)
+        if missing_direct:
+            errors.append(
+                "Respuestas: faltan respuestas directas para "
+                + ", ".join(missing_direct)
+            )
+        if unexpected_direct:
+            errors.append(
+                "Respuestas: hay respuestas directas para pares que producen una acción: "
+                + ", ".join(unexpected_direct)
+            )
+    for pair, template_key in direct_responses.items():
+        if pair not in valid_pairs:
+            errors.append(f"Respuestas: pareja desconocida '{pair}'.")
+        if template_key not in templates:
+            errors.append(
+                f"Respuestas: '{pair}' referencia template desconocido '{template_key}'."
+            )
+    referenced_templates = set(direct_responses.values()) | {fallback_template}
+    unused_templates = sorted(set(templates) - referenced_templates)
+    if unused_templates:
+        errors.append(
+            "Respuestas: templates sin uso: " + ", ".join(unused_templates)
+        )
 
     for pair, policy in rules.items():
         if pair not in valid_pairs:
