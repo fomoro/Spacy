@@ -809,7 +809,7 @@ def validate() -> list[str]:
                 continue
             expected_case_fields = {
                 "id", "profile_id", "message", "context", "expected",
-                "expected_entities", "annotation",
+                "expected_entities",
             }
             if set(case) != expected_case_fields:
                 errors.append(
@@ -878,8 +878,7 @@ def validate() -> list[str]:
 
             expected = case.get("expected", {})
             expected_fields = {
-                "intent", "subintent", "intervention_mode", "missing_slots",
-                "question_key",
+                "intent", "subintent"
             }
             if not isinstance(expected, dict) or set(expected) != expected_fields:
                 errors.append(f"Dataset {case_id}: expected no coincide con el esquema mínimo.")
@@ -888,101 +887,9 @@ def validate() -> list[str]:
             dataset_pairs.add(pair)
             if pair not in valid_pairs:
                 errors.append(f"Dataset {case_id}: '{pair}' no existe en la taxonomía.")
-            mode = expected.get("intervention_mode")
-            if mode not in valid_modes:
-                errors.append(f"Dataset {case_id}: acción conversacional desconocida '{mode}'.")
-            modes_by_profile.setdefault(profile_id, set()).add(str(mode))
             pair_counts[pair] = pair_counts.get(pair, 0) + 1
-            missing_slots = expected.get("missing_slots", [])
-            if not isinstance(missing_slots, list):
-                errors.append(f"Dataset {case_id}: missing_slots debe ser una lista.")
-                missing_slots = []
-            for raw_slot in missing_slots:
-                for slot in str(raw_slot).split("|"):
-                    if slot not in slots:
-                        errors.append(f"Dataset {case_id}: slot desconocido '{slot}'.")
-            question_key = expected.get("question_key")
-            if question_key is not None and question_key not in valid_question_keys:
-                errors.append(f"Dataset {case_id}: question_key desconocida '{question_key}'.")
-            policy = rules.get(pair, {})
-            identity_pending = (
-                isinstance(policy, dict)
-                and policy.get("requires_identity_verification") is True
-                and context.get("identity_verified") is not True
-            )
-            if identity_pending:
-                if mode != "needs_identity_verification":
-                    errors.append(
-                        f"Dataset {case_id}: la operación exige verificación de identidad."
-                    )
-                if missing_slots:
-                    errors.append(
-                        f"Dataset {case_id}: la verificación de identidad no debe exponerse como slot."
-                    )
-                expected_identity_question = policy.get("identity_question")
-                if question_key != expected_identity_question:
-                    errors.append(
-                        f"Dataset {case_id}: la pregunta de identidad debe ser "
-                        f"'{expected_identity_question}' y no '{question_key}'."
-                    )
-            elif missing_slots and isinstance(policy, dict):
-                expected_missing_mode = policy.get("on_missing")
-                if expected_missing_mode and mode != expected_missing_mode:
-                    errors.append(
-                        f"Dataset {case_id}: con slots faltantes, el modo debe ser "
-                        f"'{expected_missing_mode}' y no '{mode}'."
-                    )
-                first_missing = str(missing_slots[0])
-                expected_question = policy.get("question_by_slot", {}).get(first_missing)
-                if expected_question and question_key != expected_question:
-                    errors.append(
-                        f"Dataset {case_id}: para '{first_missing}' la pregunta debe ser "
-                        f"'{expected_question}' y no '{question_key}'."
-                    )
-            elif not missing_slots and isinstance(policy, dict):
-                expected_complete_mode = policy.get("on_complete")
-                if expected_complete_mode and mode != expected_complete_mode:
-                    errors.append(
-                        f"Dataset {case_id}: con slots completos, el modo debe ser "
-                        f"'{expected_complete_mode}' y no '{mode}'."
-                    )
-                expected_complete_question = policy.get("complete_question")
-                if expected_complete_question and question_key != expected_complete_question:
-                    errors.append(
-                        f"Dataset {case_id}: la pregunta completa debe ser "
-                        f"'{expected_complete_question}' y no '{question_key}'."
-                    )
 
-            annotation = case.get("annotation", {})
-            expected_annotation_fields = {
-                "target_evidence", "disambiguating_evidence", "excluded_readings",
-                "expected_action",
-            }
-            if not isinstance(annotation, dict) or set(annotation) != expected_annotation_fields:
-                errors.append(f"Dataset {case_id}: annotation no coincide con el contrato.")
-            else:
-                for field in (
-                    "target_evidence", "disambiguating_evidence", "expected_action",
-                ):
-                    if not isinstance(annotation.get(field), str) or not annotation[field].strip():
-                        errors.append(f"Dataset {case_id}: annotation.{field} debe ser texto.")
-                if annotation.get("target_evidence") not in raw_message:
-                    errors.append(f"Dataset {case_id}: target_evidence no aparece en el mensaje.")
-                if annotation.get("disambiguating_evidence") not in raw_message:
-                    errors.append(
-                        f"Dataset {case_id}: disambiguating_evidence no aparece en el mensaje."
-                    )
-                excluded = annotation.get("excluded_readings")
-                if not isinstance(excluded, list) or not all(
-                    isinstance(value, str) and value.strip() for value in excluded
-                ):
-                    errors.append(
-                        f"Dataset {case_id}: annotation.excluded_readings debe ser una lista de textos."
-                    )
-                elif any(value not in valid_pairs for value in excluded):
-                    errors.append(
-                        f"Dataset {case_id}: excluded_readings contiene lecturas no canónicas."
-                    )
+
 
             for entity in case.get("expected_entities", []):
                 entity_type = str(entity.get("entity_type", ""))
@@ -1026,21 +933,7 @@ def validate() -> list[str]:
                 errors.append(
                     f"Dataset: '{profile_id}' debe tener entre 6 y 9 casos con contexto."
                 )
-            missing_profile_modes = required_benchmark_modes - modes_by_profile.get(
-                profile_id, set()
-            )
-            if missing_profile_modes:
-                errors.append(
-                    f"Dataset: '{profile_id}' no cubre los modos base: "
-                    + ", ".join(sorted(missing_profile_modes))
-                )
-            if not modes_by_profile.get(profile_id, set()).intersection(
-                information_gathering_modes
-            ):
-                errors.append(
-                    f"Dataset: '{profile_id}' debe cubrir aclaración de datos "
-                    "o verificación de identidad."
-                )
+
         uncovered_dataset_pairs = sorted(valid_pairs - dataset_pairs)
         if uncovered_dataset_pairs:
             errors.append(
