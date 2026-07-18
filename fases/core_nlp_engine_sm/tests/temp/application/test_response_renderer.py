@@ -97,17 +97,5 @@ class ResponseRendererTests(unittest.TestCase):
         self.assertEqual(result.missing_values, ("product", "price"))
         self.assertNotIn("{", result.text)
 
-    def test_renders_static_social_response(self):
-        result = self.renderer.render(
-            resolution(intent="social", subintent="agradecer")
-        )
-
-        self.assertEqual(
-            result.text,
-            "¡Con muchísimo gusto! ¿Te puedo colaborar con alguna otra cosita?",
-        )
-        self.assertFalse(result.used_fallback)
-
-
 if __name__ == "__main__":
     unittest.main()

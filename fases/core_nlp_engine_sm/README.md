@@ -76,28 +76,7 @@ El normalizador debe tratar con igual rigor registros coloquiales y formales, es
 
 ### ¿Cómo probar el Normalizador?
 
-#### 1. Prueba rápida interactiva (Consola interactiva)
-Ejecuta el siguiente comando para abrir la consola del normalizador en tiempo real:
-```bash
-python tests/temp/interactive/normalizer_console.py
-```
-**5 frases recomendadas para probar:**
-*   `Bro, me regala un corrientazo porfa?` *(Estandariza modismos afectuosos y jergas de almuerzos)*
-*   `nea, puedo pagar el combito con dabiplata?` *(Corrige ortografía de combos, pasarelas de pago y abreviaciones)*
-*   `patrón, mándeme lo de siempre xfa` *(Mapea aliases informales y abreviaciones comunes de chat)*
-*   `hola buenas tardes señorita, ¿tienen platos vege o lacto?` *(Estandariza preferencias y restricciones dietarias)*
-*   `tengo 25 lucas` *(Extrae montos monetarios colombianos como $25,000 en el campo de valores)*
-
-#### 2. Evaluación de calidad en lote (Simulación masiva)
-Para procesar los 600 casos de prueba y generar reportes de calidad detallados:
-```bash
-python tests/temp/evaluation/evaluate_normalizer.py
-```
-*   **Reportes generados**: 
-    *   `reports/normalizer/evaluacion_normalizador.csv`: Detalle caso por caso con las reglas aplicadas.
-    *   `reports/normalizer/resultado_evaluacion.json`: Resumen cuantitativo de cambios y errores.
-
-#### 3. Pruebas unitarias del Normalizador
+#### Pruebas unitarias del Normalizador
 Para validar de forma automatizada las aserciones de código del normalizador:
 ```bash
 python -m unittest tests.infrastructure.test_text_normalizer_service
@@ -111,28 +90,7 @@ python -m unittest tests.infrastructure.test_text_normalizer_service
 
 ### ¿Cómo probar el PhraseMatcher?
 
-#### 1. Prueba rápida interactiva (Consola interactiva)
-Este interactivo primero **normaliza** el mensaje del usuario y luego extrae los conceptos clave e ingredientes identificados en el texto:
-```bash
-python tests/temp/interactive/phrase_matcher_console.py
-```
-**5 frases recomendadas para probar:**
-*   `¿Cuánto vale la mojarra frita?` *(Detecta "mojarra frita" como Plato Específico)*
-*   `¿Qué arroces tienen?` *(Detecta "arroces" como Categoría del Menú)*
-*   `quiero una cazuela de mariscos y dos limonaditas` *(Detecta el plato "cazuela de mariscos" y el ingrediente "mariscos")*
-*   `¿Tienen platos sin gluten?` *(Detecta "gluten" como restricción de salud/alérgeno)*
-*   `¿Reciben nequi?` *(Detecta "nequi" como método de pago)*
-
-#### 2. Evaluación de calidad en lote (Simulación masiva)
-Para procesar los 600 casos de prueba midiendo la precisión de la extracción:
-```bash
-python tests/temp/evaluation/evaluate_phrase_matcher.py
-```
-*   **Reportes generados**: 
-    *   `reports/phrase_matcher/evaluacion_phrase_matcher.csv`: Detalla los términos detectados y descartados por solape.
-    *   `reports/phrase_matcher/resultado_phrase_matcher.json`: Métricas consolidadas del PhraseMatcher.
-
-#### 3. Pruebas unitarias del PhraseMatcher
+#### Pruebas unitarias del PhraseMatcher
 Para ejecutar la suite de validación automatizada de resolución de cruces de palabras en el menú:
 ```bash
 python -m unittest tests.infrastructure.test_phrase_matcher_service
@@ -146,28 +104,7 @@ python -m unittest tests.infrastructure.test_phrase_matcher_service
 
 ### ¿Cómo probar el Matcher?
 
-#### 1. Prueba rápida interactiva (Consola interactiva)
-Este interactivo limpia el mensaje del usuario, identifica el vocabulario del menú y luego deduce la intención del cliente en tiempo real:
-```bash
-python tests/temp/interactive/matcher_console.py
-```
-**5 frases recomendadas para probar:**
-*   `¿Cuánto vale la cazuela de mariscos?` *(Detecta la acción de consultar precio, identificando el plato)*
-*   `Quiero reservar una mesa para cuatro hoy` *(Detecta solicitud de reserva y la cantidad 4)*
-*   `Tráigame dos mojarras fritas por favor` *(Detecta inicio de pedido, la cantidad 2 y el plato)*
-*   `¿Puedo pagar con tarjeta?` *(Detecta consulta de medios de pago)*
-*   `Quiero la trucha pero sin ajo` *(Detecta solicitud de modificación y registra que hay una negación)*
-
-#### 2. Evaluación de calidad en lote
-Para medir la cobertura de evidencia sintáctica sobre los 600 casos:
-```bash
-python tests/temp/evaluation/evaluate_matcher.py
-```
-*   **Reportes generados**: 
-    *   `reports/matcher/evaluacion_matcher.csv`: Detalle de intenciones detectadas frente a las esperadas.
-    *   `reports/matcher/resultado_matcher.json`: Resumen estadístico del dataset.
-
-#### 3. Pruebas unitarias del Matcher
+#### Pruebas unitarias del Matcher
 Para ejecutar las pruebas lógicas automatizadas de detección de intenciones:
 ```bash
 python -m unittest tests.infrastructure.test_matcher_service
@@ -181,28 +118,7 @@ python -m unittest tests.infrastructure.test_matcher_service
 
 ### ¿Cómo probar el LemmaService?
 
-#### 1. Prueba rápida interactiva (Consola interactiva)
-Este interactivo normaliza el texto y muestra lemas y señales, sin asignar intenciones ni pesos:
-```bash
-python tests/temp/interactive/lemma_console.py
-```
-**5 frases recomendadas para probar:**
-*   `quiero agradecer por el gran servicio` *(Reconoce la señal morfológica `agradecer`.)*
-*   `Soy alérgica a los mariscos` *(Normaliza la forma hacia el lema `alérgico`.)*
-*   `¿Cuánto me costará el almuerzo?` *(Lematiza `costará` hacia `costar`.)*
-*   `Quisiera reservar una mesa` *(Lematiza `quisiera` hacia `querer`.)*
-*   `Hola, buenas` *(Muestra los lemas aunque no exista una señal configurada.)*
-
-#### 2. Evaluación de lemas en lote
-Para procesar los 600 casos evaluando la cobertura de lemas:
-```bash
-python -X utf8 tests/temp/evaluation/evaluate_lemma.py
-```
-*   **Reportes generados**:
-    *   `reports/lemma/evaluacion_lemas_dataset.csv`: Detalle de tokens, origen y apoyo a la subintención esperada.
-    *   `reports/lemma/resultado_lemas.json`: Métricas consolidadas del LemmaService.
-
-#### 3. Pruebas unitarias del LemmaService
+#### Pruebas unitarias del LemmaService
 Para ejecutar la suite de validación del lematizador y su comportamiento de fallback:
 ```bash
 python -m unittest tests.infrastructure.test_lemma_service
@@ -216,13 +132,7 @@ python -m unittest tests.infrastructure.test_lemma_service
 
 ### ¿Cómo probar el Pipeline?
 
-#### 1. Prueba rápida interactiva (Consola interactiva del Pipeline)
-Permite ingresar cualquier frase en consola y ver el bundle completo de evidencias consolidadas:
-```bash
-python tests/temp/interactive/linguistic_parser_console.py
-```
-
-#### 2. Pruebas unitarias del Pipeline
+#### Pruebas unitarias del Pipeline
 Para ejecutar las pruebas del pipeline de evidencias:
 ```bash
 python -m unittest tests.application.test_linguistic_parser

@@ -1,6 +1,6 @@
 # Pruebas y herramientas de calidad
 
-Esta carpeta separa las comprobaciones automáticas de las evaluaciones masivas y las consolas manuales. Los datos de referencia no viven aquí: `resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de casos.
+Esta carpeta separa las comprobaciones automáticas de la evaluación integral del resolutor. Los datos de referencia no viven aquí: `resources/corpus/benchmarks/customer_intent_benchmark.json` es la única fuente canónica de casos.
 
 ## Estructura
 
@@ -10,8 +10,7 @@ tests/
 └── temp/
     ├── application/      # Parser, mapper, resolutor y DialogueOrchestrator
     ├── json_validators/  # Validadores de archivos JSON
-    ├── evaluation/       # Evaluaciones masivas que escriben en reports/
-    └── interactive/      # Consolas manuales
+    └── evaluation/       # Evaluación integral que escribe en reports/
 ```
 
 ### `infrastructure/`
@@ -28,11 +27,7 @@ Contiene validadores ejecutables por archivo o conjunto de archivos. `test_resou
 
 ### `temp/evaluation/`
 
-Procesa los 600 casos sin formar parte de la suite unitaria. Los evaluadores de Matcher y Lemma miden cobertura técnica de señales, no intenciones. El evaluador del resolutor mide intención, subintención, modo, slots faltantes, clave de pregunta y activación indebida de lecturas excluidas. Los reportes derivados no son fuentes de verdad y no deben contener datos personales reales.
-
-### `temp/interactive/`
-
-Permite escribir mensajes manualmente y observar la salida de un componente. Los archivos se llaman `*_console.py` para que no se confundan con pruebas automáticas.
+Procesa los 600 casos sin formar parte de la suite unitaria. `evaluate_resolver.py` mide intención, subintención, modo, slots faltantes, clave de pregunta y activación indebida de lecturas excluidas. Los reportes derivados no son fuentes de verdad y no deben contener datos personales reales.
 
 ## Comandos
 
@@ -53,28 +48,13 @@ python -m unittest discover -s tests -p "test_*.py"
 Evaluaciones sobre el benchmark canónico:
 
 ```bash
-python -X utf8 tests/temp/evaluation/evaluate_normalizer.py
-python -X utf8 tests/temp/evaluation/evaluate_phrase_matcher.py
-python -X utf8 tests/temp/evaluation/evaluate_matcher.py
-python -X utf8 tests/temp/evaluation/evaluate_lemma.py
 python -X utf8 tests/temp/evaluation/evaluate_resolver.py
-```
-
-Consolas manuales:
-
-```bash
-python -X utf8 tests/temp/interactive/normalizer_console.py
-python -X utf8 tests/temp/interactive/phrase_matcher_console.py
-python -X utf8 tests/temp/interactive/matcher_console.py
-python -X utf8 tests/temp/interactive/lemma_console.py
-python -X utf8 tests/temp/interactive/linguistic_parser_console.py
 ```
 
 ## Convenciones
 
 - Solo las pruebas automáticas comienzan por `test_`.
-- Solo las evaluaciones masivas comienzan por `evaluate_`.
-- Las herramientas manuales terminan en `_console.py`.
+- Solo la evaluación integral comienza por `evaluate_`.
 - Ninguna prueba redefine taxonomías, perfiles o entidades mediante JSON locales.
 - Toda evaluación usa `resources/corpus/benchmarks/customer_intent_benchmark.json` y conserva `profile_id` para segmentar resultados.
 - Una prueba unitaria debe ser determinista y no modificar `resources/`.

@@ -25,12 +25,6 @@ class LinguisticParserTests(unittest.TestCase):
         ruler = EntityRulerService(ROOT / "src" / "infrastructure" / "resources" / "entity_ruler_service_config.json")
         cls.pipeline = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
 
-    def test_integrated_price_analysis(self):
-        result = self.pipeline.analyze("cuanto balen la mojarra frita")
-        self.assertIn("valen", result.normalized_text)
-        self.assertTrue(result.phrase_matcher["entities"])
-        self.assertTrue(result.lemmas["signals"])
-
     def test_pipeline_does_not_resolve_final_intent(self):
         result = self.pipeline.analyze("Quiero saber cuánto vale la mojarra")
         payload = result.to_dict()

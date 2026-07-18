@@ -76,8 +76,8 @@ flowchart TD
     Engine -->|10. Respuesta Final| Cliente
 ```
 
-## 4. Flujo Completo con Capa de Infraestructura (Servicios NLP)
-Para tener la fotografía completa del sistema, este diagrama hace un "zoom" dentro de los Oídos (`linguistic_parser.py`) para mostrar cómo se apoya en los distintos servicios de procesamiento natural ubicados en `src/infrastructure/nlp`.
+## 4. Detalle de la Infraestructura NLP
+Este diagrama hace un "zoom" dentro de `linguistic_parser.py` para mostrar cómo se apoya en los servicios ubicados en `src/infrastructure/nlp`.
 
 ```mermaid
 flowchart TD
@@ -94,7 +94,7 @@ flowchart TD
         PhraseMatcher["phrase_matcher_service.py<br>(Búsqueda exacta)"]
         Matcher["matcher_service.py<br>(Patrones)"]
         EntityRuler["entity_ruler_service.py<br>(Entidades)"]
-        Categorizer["text_categorizer_service.py<br>(Clasificación)"]
+        Categorizer["text_categorizer_service.py<br>(Extensión pendiente)"]
     end
 
     Parser -.->|a. Normaliza| Normalizer
@@ -102,7 +102,7 @@ flowchart TD
     Parser -.->|c. Frases| PhraseMatcher
     Parser -.->|d. Patrones| Matcher
     Parser -.->|e. Entidades| EntityRuler
-    Parser -.->|f. Clasifica| Categorizer
+    Parser -.->|f. Integración futura| Categorizer
 
     Parser -->|3. Retorna ParsedNLPBundle| Engine
     Engine -->|4. Traducir señales| Mapper["linguistic_evidence_mapper.py"]
@@ -116,126 +116,76 @@ flowchart TD
     Engine -->|9. Respuesta Final| Cliente
 ```
 
-## 5. Arquitectura del Futuro (Integración con APIs y Memoria)
-Este diagrama muestra el mapa maestro definitivo de cómo se vería el sistema en la **Fase 4** (Conexión a Bases de Datos y Memoria), incluyendo todas las capas de infraestructura.
+## 5. Flujo Completo con Capa de Infraestructura
+
+Este es el mapa consolidado del sistema. Las flechas continuas representan el flujo implementado actualmente; las flechas discontinuas hacia Estado y APIs representan los puntos de extensión documentados para la Fase 4.
 
 ```mermaid
 flowchart TD
-    Cliente(("👤 Usuario"))
-    Engine{"dialogue_orchestrator.py<br>👑 Director"}
+    Cliente(("Usuario / Aplicación cliente"))
 
-    %% Bases de datos y memoria
-    subgraph InfraEstado ["💾 Infraestructura de Memoria"]
-        Memoria["dialogue_state.py"]
+    subgraph Aplicacion ["Capa de Aplicación (src/temp)"]
+        Orchestrator{"DialogueOrchestrator<br/>dialogue_orchestrator.py"}
+        Parser["LinguisticParser<br/>linguistic_parser.py"]
+        Mapper["LinguisticEvidenceMapper<br/>linguistic_evidence_mapper.py"]
+        Resolver["IntentResolver<br/>intent_resolver.py"]
+        Renderer["ResponseRenderer<br/>response_renderer.py"]
     end
 
-    %% APIs y ejecución
-    subgraph InfraAPI ["🔌 Infraestructura de APIs"]
-        Ejecutor["fulfillment_service.py"]
+    subgraph Infraestructura ["Capa de Infraestructura (src/infrastructure)"]
+        subgraph InfraNLP ["nlp/ - Implementado"]
+            ServiciosNLP[["TextNormalizerService<br/>PhraseMatcherService<br/>MatcherService<br/>LemmaService<br/>EntityRulerService"]]
+        end
+
+        subgraph InfraEstado ["state/ - Placeholder Fase 4"]
+            DialogueState["dialogue_state.py<br/>Memoria conversacional"]
+        end
+
+        subgraph InfraAPI ["api/ - Placeholder Fase 4"]
+            Fulfillment["fulfillment_service.py<br/>APIs y operaciones de negocio"]
+        end
     end
 
-    %% Desagregación NLU
-    Mapper["linguistic_evidence_mapper.py<br>👂 Los Oídos (Traductor)"]
-    Parser["linguistic_parser.py<br>⚙️ Fachada NLP"]
-
-    subgraph InfraNLP ["📚 Infraestructura NLP"]
-        direction TB
-        ServiciosNLP[["Normalizer<br>Lemmatizer<br>PhraseMatcher<br>Matcher<br>EntityRuler"]]
+    subgraph Recursos ["Recursos de configuración"]
+        NLPConfig[["src/infrastructure/resources/<br/>Configuración de servicios NLP"]]
+        MappingConfig[["linguistic_evidence_mapping.json"]]
+        ResolverConfig[["intents_and_subintents.json<br/>conversation_action_rules.json"]]
+        ResponseConfig[["response_templates.json"]]
     end
 
-    %% Reglas y Respuesta
-    subgraph CapaLogica ["🧠 Cerebro y 👄 Boca"]
-        Resolver["intent_resolver.py"]
-        Renderer["response_renderer.py"]
-    end
+    Cliente -->|"1. analyze(text, context, response_values)"| Orchestrator
 
-    %% Interacciones
-    Cliente -->|"1. Texto"| Engine
-    Engine -->|"10. Respuesta"| Cliente
-
-    Engine <-->|"2. Lee/Escribe Contexto"| Memoria
-
-    %% Flujo NLU
-    Engine -->|"3. Extraer señales NLP"| Parser
-    Parser -.->|"a. Llama a"| InfraNLP
-    Parser -->|"4. Retorna señales crudas"| Engine
-    Engine -->|"5. Traducir señales"| Mapper
-    Mapper -->|"6. Retorna Intención Limpia"| Engine
-
-    %% Flujo Cerebro
-    Engine -->|"7. Intención + Contexto"| Resolver
-    Resolver -->|"8. Decide Acción"| Engine
-
-    %% Flujo Ejecución
-    Engine <-->|"8b. Guardar/Conectar BD"| Ejecutor
-
-    %% Flujo Boca
-    Engine -->|"9. Renderizar texto"| Renderer
-    Renderer -->|"9b. Retorna Mensaje"| Engine
-```
-
-## 6. Arquitectura Recomendada (Orchestrator como Director Puro)
-Este diagrama muestra la arquitectura aplicada al pipeline central: `DialogueOrchestrator` coordina a `LinguisticParser` y `LinguisticEvidenceMapper` de forma **separada e independiente**. Cada clase tiene exactamente un trabajo y el orquestador es el único que conoce el pipeline completo. `dialogue_state.py` y `fulfillment_service.py` ya existen como placeholders documentados; su implementación e integración continúan reservadas para la Fase 4 descrita en el diagrama 5.
-
-```mermaid
-flowchart TD
-    Cliente(("👤 Usuario"))
-    Orchestrator{"dialogue_orchestrator.py<br>👑 Director"}
-
-    %% NLU: dos clases con un solo trabajo cada una
-    Parser["linguistic_parser.py<br>⚙️ Fachada NLP<br>Solo extrae señales crudas"]
-    Mapper["linguistic_evidence_mapper.py<br>👂 Traductor<br>Solo traduce señales a intenciones"]
-
-    subgraph InfraNLP ["📚 Infraestructura NLP"]
-        direction TB
-        ServiciosNLP[["Normalizer<br>Lemmatizer<br>PhraseMatcher<br>Matcher<br>EntityRuler"]]
-    end
-
-    subgraph CapaLogica ["🧠 Cerebro y 👄 Boca"]
-        Resolver["intent_resolver.py"]
-        Renderer["response_renderer.py"]
-    end
-
-    subgraph InfraEstado ["💾 Infraestructura de Memoria"]
-        Memoria["dialogue_state.py"]
-    end
-
-    subgraph InfraAPI ["🔌 Infraestructura de APIs"]
-        Ejecutor["fulfillment_service.py"]
-    end
-
-    %% Flujo principal
-    Cliente -->|"1. Texto"| Orchestrator
-    Orchestrator -->|"10. Respuesta"| Cliente
-
-    Orchestrator <-->|"2. Lee/Escribe Contexto"| Memoria
-
-    %% Flujo NLU - DialogueOrchestrator coordina cada paso por separado
-    Orchestrator -->|"3. Extraer señales crudas"| Parser
-    Parser -.->|"a. Usa servicios"| InfraNLP
+    Orchestrator -->|"2. analyze(text)"| Parser
+    Parser <-->|"3. Señales NLP crudas"| ServiciosNLP
     Parser -->|"4. ParsedNLPBundle"| Orchestrator
 
-    Orchestrator -->|"5. Traducir señales"| Mapper
+    Orchestrator -->|"5. map_bundle(parsed_bundle)"| Mapper
     Mapper -->|"6. LinguisticEvidenceBundle"| Orchestrator
 
-    %% Flujo Cerebro
-    Orchestrator -->|"7. Intención + Contexto"| Resolver
-    Resolver -->|"8. Decide Acción"| Orchestrator
+    Orchestrator -->|"7. resolve(evidence, context)"| Resolver
+    Resolver -->|"8. IntentResolution"| Orchestrator
 
-    %% Flujo Ejecución
-    Orchestrator <-->|"8b. Guardar/Consultar BD"| Ejecutor
+    Orchestrator -->|"9. render(resolution, response_values)"| Renderer
+    Renderer -->|"10. RenderedResponse"| Orchestrator
+    Orchestrator -->|"11. ResolvedNlpResult"| Cliente
 
-    %% Flujo Boca
-    Orchestrator -->|"9. Renderizar texto"| Renderer
-    Renderer -->|"9b. Retorna Mensaje"| Orchestrator
+    NLPConfig -.-> ServiciosNLP
+    MappingConfig -.-> Mapper
+    ResolverConfig -.-> Resolver
+    ResponseConfig -.-> Renderer
+
+    Orchestrator -.->|"Fase 4: leer/escribir contexto"| DialogueState
+    Orchestrator -.->|"Fase 4: consultar/ejecutar operaciones"| Fulfillment
+
+    classDef placeholder fill:#fff3cd,stroke:#b8860b,stroke-dasharray: 5 5,color:#5f4500;
+    class DialogueState,Fulfillment placeholder;
 ```
 
-### Diferencias clave vs. Diagrama 5
+### Estado de cada bloque
 
-| Aspecto | Diagrama 5 (diseño anterior) | Diagrama 6 (pipeline aplicado) |
+| Bloque | Ruta | Estado |
 |---|---|---|
-| **Quién orquesta NLU** | El Mapper llama al Parser internamente | `DialogueOrchestrator` coordina Parser y Mapper por separado |
-| **Responsabilidad del Mapper** | Traduce Y coordina | Solo traduce |
-| **Responsabilidad del Parser** | Solo extrae señales | Solo extrae señales ✅ |
-| **Legibilidad del pipeline** | Oculto dentro del Mapper | Visible en `DialogueOrchestrator` |
-| **Testabilidad** | Mapper necesita un Parser real o mock anidado | Cada clase se mockea de forma independiente |
+| Servicios NLP | `src/infrastructure/nlp/` | Implementados e integrados mediante `LinguisticParser` |
+| Estado conversacional | `src/infrastructure/state/dialogue_state.py` | Placeholder; todavía no es invocado |
+| APIs y operaciones | `src/infrastructure/api/fulfillment_service.py` | Placeholder; todavía no es invocado |
+| Pipeline de aplicación | `src/temp/` | Implementado hasta `ResolvedNlpResult` |

@@ -45,21 +45,18 @@ class DialogueOrchestratorTests(unittest.TestCase):
         self.assertIs(result.resolution, resolution)
         self.assertIs(result.response, response)
 
-    def test_rejects_missing_parser(self):
-        with self.assertRaisesRegex(ValueError, "parser es obligatorio"):
-            DialogueOrchestrator(None, Mock(), Mock(), Mock())
+    def test_rejects_missing_dependencies(self):
+        cases = (
+            ("parser", (None, Mock(), Mock(), Mock())),
+            ("evidence_mapper", (Mock(), None, Mock(), Mock())),
+            ("resolver", (Mock(), Mock(), None, Mock())),
+            ("response_renderer", (Mock(), Mock(), Mock(), None)),
+        )
 
-    def test_rejects_missing_evidence_mapper(self):
-        with self.assertRaisesRegex(ValueError, "evidence_mapper es obligatorio"):
-            DialogueOrchestrator(Mock(), None, Mock(), Mock())
-
-    def test_rejects_missing_resolver(self):
-        with self.assertRaisesRegex(ValueError, "resolver es obligatorio"):
-            DialogueOrchestrator(Mock(), Mock(), None, Mock())
-
-    def test_rejects_missing_response_renderer(self):
-        with self.assertRaisesRegex(ValueError, "response_renderer es obligatorio"):
-            DialogueOrchestrator(Mock(), Mock(), Mock(), None)
+        for dependency, arguments in cases:
+            with self.subTest(dependency=dependency):
+                with self.assertRaisesRegex(ValueError, f"{dependency} es obligatorio"):
+                    DialogueOrchestrator(*arguments)
 
 
 if __name__ == "__main__":

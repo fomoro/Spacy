@@ -1,8 +1,9 @@
 # Infraestructura
 
-Esta capa contiene implementaciones técnicas que producen texto normalizado,
-entidades y señales neutrales. No asigna intenciones, subintenciones o pesos,
-ni genera respuestas comerciales.
+Esta capa contiene adaptadores técnicos separados por capacidad. `nlp/`
+produce texto normalizado, entidades y señales neutrales; `state/` alojará la
+persistencia conversacional y `api/` las integraciones con sistemas externos.
+Ningún adaptador dirige por sí mismo el flujo completo del diálogo.
 
 ## NLP
 
@@ -24,6 +25,18 @@ Cada servicio recibe texto y puede probarse sin construir otro servicio. La
 capa de aplicación combina después sus resultados mediante
 `LinguisticEvidenceMapper`; por ello Matcher no recibe `PhraseMatchResult` y
 Lemma no contiene intenciones ni pesos.
+
+## Estado conversacional
+
+`state/dialogue_state.py` es un placeholder de Fase 4. Alojará el adaptador de
+persistencia para recuperar y guardar contexto entre turnos; no analizará
+texto ni decidirá intenciones.
+
+## APIs y ejecución
+
+`api/fulfillment_service.py` es un placeholder de Fase 4. Alojará las
+integraciones con APIs o bases de datos para consultas y acciones de negocio;
+no redactará respuestas para el usuario.
 
 ## Resources
 

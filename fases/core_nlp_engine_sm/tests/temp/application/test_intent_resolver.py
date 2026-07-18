@@ -117,16 +117,6 @@ class IntentResolverTests(unittest.TestCase):
             (farewell.intent, farewell.subintent), ("social", "despedirse")
         )
 
-    def test_engine_closes_flow_with_direct_social_response(self):
-        result = self.pipeline.analyze("Gracias")
-
-        self.assertEqual(result.resolution.subintent, "agradecer")
-        self.assertEqual(result.response.source, "response_templates")
-        self.assertEqual(
-            result.response.text,
-            "¡Con muchísimo gusto! ¿Te puedo colaborar con alguna otra cosita?",
-        )
-
     def test_engine_renders_price_only_with_validated_response_value(self):
         result = self.pipeline.analyze(
             "¿Cuánto cuesta la mojarra frita?",

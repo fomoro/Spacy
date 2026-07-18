@@ -109,14 +109,12 @@ Desde la raíz del proyecto:
 ```bash
 python -X utf8 tests/temp/json_validators/test_resource_json_validator.py
 python -m unittest discover -s tests -p "test_*.py"
-python -X utf8 tests/temp/evaluation/evaluate_normalizer.py
-python -X utf8 tests/temp/evaluation/evaluate_phrase_matcher.py
 python -X utf8 tests/temp/evaluation/evaluate_resolver.py
 ```
 
 `tests/temp/json_validators/test_resource_json_validator.py` comprueba el JSON canónico, sus metadatos mínimos, conteos, IDs, unicidad de mensajes, perfiles, taxonomía, slots, preguntas, entidades, cobertura y evidencia lingüística de las anotaciones. Los evaluadores generan resultados en `reports/`; esos archivos son salidas derivadas y no forman parte de la verdad anotada.
 
-Los cinco evaluadores de `tests/temp/evaluation/` recorren este mismo benchmark de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
+El evaluador integral `tests/temp/evaluation/evaluate_resolver.py` recorre este benchmark de 600 casos. No existen contratos JSON alternativos dentro de `tests/`.
 
 ## Alcance de las métricas
 
