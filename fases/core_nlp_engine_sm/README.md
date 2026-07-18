@@ -212,7 +212,7 @@ python -m unittest tests.infrastructure.test_lemma_service
 
 ## Tema 5: Parser lingüístico (`LinguisticParser`)
 
-**Foco Principal**: Orquestar el flujo completo de procesamiento. Normaliza, extrae entidades del menú, detecta patrones sintácticos, analiza lemas y aplica el `EntityRuler`. Empaqueta el resultado en `LinguisticEvidenceBundle`.
+**Foco Principal**: Extraer señales lingüísticas crudas. Normaliza, extrae entidades del menú, detecta patrones sintácticos, analiza lemas y aplica el `EntityRuler`. Empaqueta el resultado en `ParsedNLPBundle`, sin traducirlo a intenciones.
 
 ### ¿Cómo probar el Pipeline?
 
@@ -244,9 +244,9 @@ python -m unittest tests.application.test_intent_resolver
 
 ---
 
-## Tema 7: Fachada de resolución (`IntentEngine`)
+## Tema 7: Orquestador de diálogo (`DialogueOrchestrator`)
 
-**Foco Principal**: Integrar `LinguisticParser`, `IntentResolver` y `ResponseRenderer` en una única llamada `analyze(text, context, response_values)`. `ResolvedNlpResult` contiene evidencia, resolución y respuesta. Las preguntas y confirmaciones provienen de las reglas conversacionales; las resoluciones directas seleccionan una plantilla de `response_templates.json` y solo interpolan valores comerciales suministrados explícitamente.
+**Foco Principal**: Dirigir de forma explícita e independiente a `LinguisticParser`, `LinguisticEvidenceMapper`, `IntentResolver` y `ResponseRenderer` en una única llamada `analyze(text, context, response_values)`. `ResolvedNlpResult` contiene evidencia, resolución y respuesta. Las preguntas y confirmaciones provienen de las reglas conversacionales; las resoluciones directas seleccionan una plantilla de `response_templates.json` y solo interpolan valores comerciales suministrados explícitamente.
 
 ### ¿Cómo evaluar la calidad del Resolutor?
 

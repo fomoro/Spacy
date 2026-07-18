@@ -30,7 +30,14 @@ RESOURCE_PATHS = {
     "conversation_action_rules.json": (
         ROOT / "src" / "temp" / "resources" / "intent_resolver" / "conversation_action_rules.json"
     ),
-    "response_templates.json": ROOT / "src" / "temp" / "resources" / "response_templates.json",
+    "response_templates.json": (
+        ROOT
+        / "src"
+        / "temp"
+        / "resources"
+        / "intent_resolver"
+        / "response_templates.json"
+    ),
     "phrase_matcher_service_config.json": (
         ROOT / "src" / "infrastructure" / "resources" / "phrase_matcher_service_config.json"
     ),
@@ -428,8 +435,7 @@ def validate() -> list[str]:
 
     expected_response_fields = {
         "metadata",
-        "fallback_template",
-        "templates",
+        "responses",
         "direct_response_by_intent_and_subintent",
     }
     if set(response_templates) != expected_response_fields:
@@ -437,17 +443,16 @@ def validate() -> list[str]:
             "response_templates.json: la raíz no coincide con el contrato de respuestas."
         )
 
-    templates = response_templates.get("templates", {})
+    responses = response_templates.get("responses", {})
     direct_responses = response_templates.get(
         "direct_response_by_intent_and_subintent", {}
     )
-    fallback_template = response_templates.get("fallback_template")
     response_metadata = response_templates.get("metadata", {})
     expected_response_metadata_fields = {
         "schema_version",
         "purpose",
         "language",
-        "template_count",
+        "response_count",
         "direct_response_pair_count",
     }
     if (
@@ -462,9 +467,9 @@ def validate() -> list[str]:
             errors.append("response_templates.json: metadata.purpose está vacío.")
         if response_metadata.get("language") != "es-CO":
             errors.append("response_templates.json: metadata.language debe ser 'es-CO'.")
-        if response_metadata.get("template_count") != len(templates):
+        if response_metadata.get("response_count") != len(responses):
             errors.append(
-                "response_templates.json: metadata.template_count no coincide."
+                "response_templates.json: metadata.response_count no coincide."
             )
         if response_metadata.get("direct_response_pair_count") != len(
             direct_responses
@@ -474,31 +479,27 @@ def validate() -> list[str]:
                 "no coincide."
             )
 
-    if not isinstance(templates, dict) or not templates:
-        errors.append("Respuestas: 'templates' debe ser un objeto no vacío.")
-        templates = {}
+    if not isinstance(responses, dict) or not responses:
+        errors.append("Respuestas: 'responses' debe ser un objeto no vacío.")
+        responses = {}
     else:
-        for template_key, definition in templates.items():
+        for template_key, definition in responses.items():
             if not isinstance(definition, dict) or set(definition) != {
-                "template",
+                "templates",
                 "required_values",
-                "fallback",
             }:
                 errors.append(
-                    f"Respuestas: template '{template_key}' no coincide con el contrato."
+                    f"Respuestas: response '{template_key}' no coincide con el contrato."
                 )
                 continue
-            template = definition.get("template")
-            fallback = definition.get("fallback")
+            variants = definition.get("templates")
             required_values = definition.get("required_values")
-            if not isinstance(template, str) or not template.strip():
+            if not isinstance(variants, list) or not variants or not all(
+                isinstance(template, str) and template.strip()
+                for template in variants
+            ):
                 errors.append(
-                    f"Respuestas: template '{template_key}' debe ser texto no vacío."
-                )
-                continue
-            if not isinstance(fallback, str) or not fallback.strip():
-                errors.append(
-                    f"Respuestas: fallback '{template_key}' debe ser texto no vacío."
+                    f"Respuestas: '{template_key}' debe tener templates no vacíos."
                 )
                 continue
             if not isinstance(required_values, list) or not all(
@@ -512,64 +513,40 @@ def validate() -> list[str]:
                 errors.append(
                     f"Respuestas: '{template_key}' repite required_values."
                 )
-            try:
-                placeholders = {
-                    name for _, name, _, _ in Formatter().parse(template) if name
-                }
-                fallback_placeholders = {
-                    name for _, name, _, _ in Formatter().parse(fallback) if name
-                }
-            except ValueError as exc:
-                errors.append(
-                    f"Respuestas: formato inválido en '{template_key}': {exc}."
-                )
-                continue
-            if placeholders != set(required_values):
-                errors.append(
-                    f"Respuestas: '{template_key}' no sincroniza placeholders "
-                    "y required_values."
-                )
-            if fallback_placeholders:
-                errors.append(
-                    f"Respuestas: fallback '{template_key}' no debe requerir valores."
-                )
+            for variant_index, template in enumerate(variants):
+                try:
+                    placeholders = {
+                        name for _, name, _, _ in Formatter().parse(template) if name
+                    }
+                except ValueError as exc:
+                    errors.append(
+                        f"Respuestas: formato inválido en '{template_key}' "
+                        f"variante {variant_index}: {exc}."
+                    )
+                    continue
+                if placeholders != set(required_values):
+                    errors.append(
+                        f"Respuestas: '{template_key}' variante {variant_index} "
+                        "no sincroniza placeholders y required_values."
+                    )
 
-    if fallback_template not in templates:
-        errors.append("Respuestas: fallback_template referencia una plantilla inexistente.")
+    if "unknown" not in responses:
+        errors.append("Respuestas: falta la respuesta segura 'unknown'.")
 
     if not isinstance(direct_responses, dict):
         errors.append(
             "Respuestas: direct_response_by_intent_and_subintent debe ser un objeto."
         )
         direct_responses = {}
-    expected_direct_pairs = {
-        pair
-        for pair in valid_pairs
-        if not isinstance(rules.get(pair), dict)
-        or not rules[pair].get("on_complete")
-    }
-    if set(direct_responses) != expected_direct_pairs:
-        missing_direct = sorted(expected_direct_pairs - set(direct_responses))
-        unexpected_direct = sorted(set(direct_responses) - expected_direct_pairs)
-        if missing_direct:
-            errors.append(
-                "Respuestas: faltan respuestas directas para "
-                + ", ".join(missing_direct)
-            )
-        if unexpected_direct:
-            errors.append(
-                "Respuestas: hay respuestas directas para pares que producen una acción: "
-                + ", ".join(unexpected_direct)
-            )
     for pair, template_key in direct_responses.items():
         if pair not in valid_pairs:
             errors.append(f"Respuestas: pareja desconocida '{pair}'.")
-        if template_key not in templates:
+        if template_key not in responses:
             errors.append(
                 f"Respuestas: '{pair}' referencia template desconocido '{template_key}'."
             )
-    referenced_templates = set(direct_responses.values()) | {fallback_template}
-    unused_templates = sorted(set(templates) - referenced_templates)
+    referenced_templates = set(direct_responses.values()) | {"unknown"}
+    unused_templates = sorted(set(responses) - referenced_templates)
     if unused_templates:
         errors.append(
             "Respuestas: templates sin uso: " + ", ".join(unused_templates)

@@ -12,7 +12,7 @@ from src.infrastructure import (
     LemmaService,
 )
 from src.temp import (
-    IntentEngine,
+    DialogueOrchestrator,
     IntentResolver,
     LinguisticParser,
     ResponseRenderer,
@@ -37,15 +37,25 @@ class IntentResolverTests(unittest.TestCase):
         lemmas = LemmaService(ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json")
         ruler = EntityRulerService(ROOT / "src" / "infrastructure" / "resources" / "entity_ruler_service_config.json")
         evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json")
-        parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler, evidence_mapper)
+        parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
         resolver = IntentResolver(
             ROOT / "src" / "temp" / "resources" / "intent_resolver"
         )
         response_renderer = ResponseRenderer(
-            ROOT / "src" / "temp" / "resources" / "response_templates.json"
+            ROOT
+            / "src"
+            / "temp"
+            / "resources"
+            / "intent_resolver"
+            / "response_templates.json"
         )
         cls.resolver = resolver
-        cls.pipeline = IntentEngine(parser, resolver, response_renderer)
+        cls.pipeline = DialogueOrchestrator(
+            parser,
+            evidence_mapper,
+            resolver,
+            response_renderer,
+        )
 
     def resolve(self, text, context=None):
         return self.pipeline.analyze(text, context).resolution

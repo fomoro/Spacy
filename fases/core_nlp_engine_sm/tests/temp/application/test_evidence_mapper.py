@@ -3,7 +3,7 @@
 from pathlib import Path
 import unittest
 
-from src.temp import LinguisticEvidenceMapper
+from src.temp import LinguisticEvidenceMapper, ParsedNLPBundle
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -110,6 +110,24 @@ class LinguisticEvidenceMapperTests(unittest.TestCase):
         mapper = LinguisticEvidenceMapper(self.mapper.config)
         mapped = mapper.map_sections(**self.sections())
         self.assertTrue(mapped["matcher"]["evidence"])
+
+    def test_translates_a_parsed_bundle_without_owning_the_parser(self):
+        sections = self.sections()
+        parsed_bundle = ParsedNLPBundle(
+            original_text="¿Cuánto vale la mojarra?",
+            normalized_text="cuánto vale la mojarra",
+            normalization={"normalized": "cuánto vale la mojarra"},
+            **sections,
+        )
+
+        evidence = self.mapper.map_bundle(parsed_bundle)
+
+        self.assertEqual(evidence.original_text, "¿Cuánto vale la mojarra?")
+        self.assertTrue(evidence.matcher["evidence"])
+
+    def test_rejects_an_invalid_parsed_bundle(self):
+        with self.assertRaisesRegex(TypeError, "ParsedNLPBundle"):
+            self.mapper.map_bundle({})
 
 
 if __name__ == "__main__":

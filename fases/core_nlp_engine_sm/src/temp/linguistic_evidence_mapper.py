@@ -3,17 +3,41 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from dataclasses import dataclass
 import json
 from pathlib import Path
 from typing import Any, Mapping
 
+from src.temp.linguistic_parser import ParsedNLPBundle
+
+
+@dataclass(frozen=True)
+class LinguisticEvidenceBundle:
+    original_text: str
+    normalized_text: str
+    normalization: dict[str, Any]
+    phrase_matcher: dict[str, Any]
+    matcher: dict[str, Any]
+    lemmas: dict[str, Any]
+    entity_ruler: dict[str, Any]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "original_text": self.original_text,
+            "normalized_text": self.normalized_text,
+            "normalization": self.normalization,
+            "phrase_matcher": self.phrase_matcher,
+            "matcher": self.matcher,
+            "lemmas": self.lemmas,
+            "entity_ruler": self.entity_ruler,
+        }
 
 class LinguisticEvidenceMapper:
-    """Combina señales neutrales sin depender de spaCy ni de sus servicios.
+    """Traduce señales lingüísticas neutrales a evidencia del dominio.
 
-    Los adaptadores de infraestructura entregan diccionarios con señales y
-    entidades. Esta clase aplica las decisiones configurables de intención,
-    subintención y peso que pertenecen a la capa de aplicación.
+    Esta clase no extrae texto ni conoce los servicios NLP. Recibe el resultado
+    crudo de ``LinguisticParser`` y aplica las decisiones configurables de
+    intención, subintención y peso que pertenecen a la capa de aplicación.
     """
 
     def __init__(self, config: str | Path | Mapping[str, Any]) -> None:
@@ -23,6 +47,27 @@ class LinguisticEvidenceMapper:
         self._phrase_entity_types = self._config["phrase_entity_types"]
         self._service_entities = self._config["service_entities"]
         self._entity_ruler_types = self._config["entity_ruler_types"]
+
+    def map_bundle(self, parsed_bundle: ParsedNLPBundle) -> LinguisticEvidenceBundle:
+        """Convierte un bundle NLP crudo en evidencia lista para resolver."""
+        if not isinstance(parsed_bundle, ParsedNLPBundle):
+            raise TypeError("parsed_bundle debe ser ParsedNLPBundle.")
+
+        mapped = self.map_sections(
+            phrase_matcher=parsed_bundle.phrase_matcher,
+            matcher=parsed_bundle.matcher,
+            lemmas=parsed_bundle.lemmas,
+            entity_ruler=parsed_bundle.entity_ruler,
+        )
+        return LinguisticEvidenceBundle(
+            original_text=parsed_bundle.original_text,
+            normalized_text=parsed_bundle.normalized_text,
+            normalization=parsed_bundle.normalization,
+            phrase_matcher=mapped["phrase_matcher"],
+            matcher=mapped["matcher"],
+            lemmas=mapped["lemmas"],
+            entity_ruler=mapped["entity_ruler"],
+        )
 
     @staticmethod
     def _load_config(source: str | Path | Mapping[str, Any]) -> dict[str, Any]:

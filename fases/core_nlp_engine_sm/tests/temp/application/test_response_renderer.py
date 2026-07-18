@@ -41,7 +41,12 @@ class ResponseRendererTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.renderer = ResponseRenderer(
-            ROOT / "src" / "temp" / "resources" / "response_templates.json"
+            ROOT
+            / "src"
+            / "temp"
+            / "resources"
+            / "intent_resolver"
+            / "response_templates.json"
         )
 
     def test_preserves_conversation_action_message(self):

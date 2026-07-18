@@ -6,24 +6,30 @@ El motor separa extracción lingüística y resolución de negocio. Los servicio
 
 ```mermaid
 flowchart LR
-    A[Mensaje] --> B[TextNormalizerService]
-    B --> C[LinguisticParser]
+    A[Mensaje] --> O[DialogueOrchestrator]
+    O --> C[LinguisticParser]
+    C --> B[TextNormalizerService]
     C --> D[PhraseMatcherService]
     C --> E[MatcherService]
     C --> F[LemmaService]
     C --> G[EntityRulerService]
-    D --> M[LinguisticEvidenceMapper]
-    E --> M
-    F --> M
-    G --> M
+    B --> P[ParsedNLPBundle]
+    D --> P
+    E --> P
+    F --> P
+    G --> P
+    P --> O
+    O --> M[LinguisticEvidenceMapper]
     M --> H[LinguisticEvidenceBundle]
-    H --> I[IntentResolver]
-    J[Contexto de diálogo] --> I
+    H --> O
+    O --> I[IntentResolver]
+    J[Contexto de diálogo] --> O
     I --> K[IntentResolution]
-    K --> R[ResponseRenderer]
+    K --> O
+    O --> R[ResponseRenderer]
     T[response_templates.json] --> R
     V[Datos de respuesta validados] --> R
-    R --> L[IntentEngine / ResolvedNlpResult]
+    R --> L[ResolvedNlpResult]
 ```
 
 Los cuatro analizadores posteriores a la normalización son independientes. `MatcherService` y `LemmaService` producen señales neutrales; `LinguisticEvidenceMapper`, en aplicación, las relaciona con entidades e intenciones. `EntityRulerService` usa el componente nativo `entity_ruler` de spaCy.
@@ -43,7 +49,7 @@ Cada responsabilidad tiene un recurso auditable:
 - `src/temp/resources/intent_resolver/conversation_action_rules.json`: acciones, reglas y preguntas, temporalmente en revisión.
 
 Los cuatro contratos se ubican juntos porque participan en la resolución, pero no forman una dependencia circular. `LinguisticEvidenceMapper` carga únicamente `linguistic_evidence_mapping.json`: sus referencias se validan contra `intents_and_subintents.json` y sus claves de señal contra los recursos de infraestructura; no conoce campos, preguntas ni acciones. `IntentResolver` recibe la carpeta `src/temp/resources/intent_resolver/`, carga los otros tres JSON y rechaza al iniciar reglas con pares de intención o campos no declarados. Las prioridades, los umbrales y los multiplicadores están integrados en `intents_and_subintents.json` para evitar duplicar identificadores de intención.
-- `src/temp/resources/response_templates.json`: plantillas, valores requeridos y selección para los 20 pares que pueden finalizar directamente en `resolved`.
+- `src/temp/resources/intent_resolver/response_templates.json`: variantes de plantillas, valores requeridos y selección para los 41 pares configurados actualmente.
 - `business_data/menu/menu_offerings.json`: precios, presentaciones y recomendaciones enlazados por `product_id`.
 - `business_data/restaurant/restaurant_profile.json`: información estable del restaurante.
 - `corpus/benchmarks/customer_intent_benchmark.json`: benchmark conocido de 600 casos para medir el sistema.
@@ -71,11 +77,11 @@ Estos componentes no eligen la intención final ni generan respuestas comerciale
 
 ## Aplicación
 
-- `LinguisticEvidenceMapper`, en `src/temp/linguistic_evidence_mapper.py`, combina señales neutrales y entidades, y allí asigna intención, subintención y peso.
-- `LinguisticParser` y `LinguisticEvidenceBundle`, en `src/temp/linguistic_parser.py`, coordinan las cinco fuentes lingüísticas mientras esta capa permanece en revisión.
+- `LinguisticParser` y `ParsedNLPBundle`, en `src/temp/linguistic_parser.py`, coordinan las cinco fuentes lingüísticas y solo entregan señales crudas.
+- `LinguisticEvidenceMapper` y `LinguisticEvidenceBundle`, en `src/temp/linguistic_evidence_mapper.py`, traducen esas señales y entidades a intención, subintención y peso sin conocer al parser.
 - `IntentResolver`, `CandidateScore` e `IntentResolution`, en `src/temp/intent_resolver.py`, aplican pesos, prioridades, requisitos y contexto conversacional.
 - `ResponseRenderer` y `RenderedResponse`, en `src/temp/response_renderer.py`, conservan preguntas y confirmaciones ya resueltas o renderizan una respuesta directa sin inventar datos faltantes.
-- `IntentEngine` y `ResolvedNlpResult`, en `src/temp/intent_engine.py`, forman la fachada pública provisional para `analyze(text, context, response_values)`.
+- `DialogueOrchestrator` y `ResolvedNlpResult`, en `src/temp/dialogue_orchestrator.py`, forman la fachada pública y hacen visible el pipeline `Parser -> Mapper -> Resolver -> Renderer` mediante `analyze(text, context, response_values)`.
 
 El resolutor combina las entidades del catálogo con las del `EntityRuler`. Así, las referencias contextuales se mantienen desacopladas del catálogo comercial.
 

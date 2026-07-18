@@ -8,7 +8,7 @@ Esta carpeta separa las comprobaciones automáticas de las evaluaciones masivas 
 tests/
 ├── infrastructure/  # Pruebas unitarias de los cinco servicios spaCy
 └── temp/
-    ├── application/      # Parser, resolutor y fachada IntentEngine
+    ├── application/      # Parser, mapper, resolutor y DialogueOrchestrator
     ├── json_validators/  # Validadores de archivos JSON
     ├── evaluation/       # Evaluaciones masivas que escriben en reports/
     └── interactive/      # Consolas manuales

@@ -41,12 +41,54 @@ class ResponseRenderer:
 
     def __init__(self, templates: str | Path | Mapping[str, Any]) -> None:
         self._config = self._load_config(templates)
-        self._templates = self._config["templates"]
+        self._templates = self._normalize_templates(self._config)
         self._direct_responses = self._config[
             "direct_response_by_intent_and_subintent"
         ]
-        self._fallback_template = str(self._config["fallback_template"])
+        self._fallback_template = str(self._config.get("fallback_template", "unknown"))
         self._validate_config()
+
+    @staticmethod
+    def _normalize_templates(config: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+        """Adapta el catálogo simple y el catálogo con variantes al runtime."""
+        raw_templates = config.get("templates", config.get("responses"))
+        if not isinstance(raw_templates, Mapping) or not raw_templates:
+            raise ValueError(
+                "response_templates.json debe contener 'templates' o 'responses'."
+            )
+
+        unknown = raw_templates.get("unknown", {})
+        unknown_variants = (
+            unknown.get("templates", []) if isinstance(unknown, Mapping) else []
+        )
+        safe_fallback = (
+            str(unknown_variants[0])
+            if isinstance(unknown_variants, list) and unknown_variants
+            else "No pude preparar una respuesta segura con la información disponible."
+        )
+
+        normalized: dict[str, dict[str, Any]] = {}
+        for key, raw_definition in raw_templates.items():
+            if not isinstance(raw_definition, Mapping):
+                raise ValueError(f"La plantilla '{key}' debe ser un objeto.")
+
+            if "template" in raw_definition:
+                normalized[str(key)] = dict(raw_definition)
+                continue
+
+            variants = raw_definition.get("templates")
+            if not isinstance(variants, list) or not variants or not all(
+                isinstance(variant, str) and variant.strip() for variant in variants
+            ):
+                raise ValueError(
+                    f"La respuesta '{key}' debe declarar variantes no vacías."
+                )
+            normalized[str(key)] = {
+                "template": variants[0],
+                "required_values": raw_definition.get("required_values", []),
+                "fallback": safe_fallback,
+            }
+        return normalized
 
     @staticmethod
     def _load_config(source: str | Path | Mapping[str, Any]) -> dict[str, Any]:

@@ -46,7 +46,7 @@ Principios obligatorios:
 | `src/infrastructure/resources/entity_ruler_service_config.json` | Tiempo y referencias que requieren contexto conversacional | Productos, ingredientes, precios o negación |
 | `src/temp/resources/intent_resolver/linguistic_evidence_mapping.json` | Correspondencia entre señales o entidades de infraestructura e intenciones, subintenciones y pesos | Campos conversacionales, preguntas, acciones, carta o respuestas |
 | `src/temp/resources/intent_resolver/conversation_action_rules.json` | Acciones conversacionales, reglas y preguntas en revisión | Definiciones de slots, puntajes o respuestas comerciales generales |
-| `src/temp/resources/response_templates.json` | Plantillas neutrales, valores requeridos y selección de respuestas directas por intención/subintención | Preguntas, acciones, precios, disponibilidad o datos personales persistidos |
+| `src/temp/resources/intent_resolver/response_templates.json` | Plantillas neutrales, valores requeridos y selección de respuestas directas por intención/subintención | Preguntas, acciones, precios, disponibilidad o datos personales persistidos |
 | `business_data/restaurant/restaurant_profile.json` | Nombre, ubicación, horario y medios de pago estables | Patrones NLP o textos conversacionales |
 | `business_data/menu/menu_offerings.json` | Productos, ofertas, precios y una lista breve de recomendaciones comerciales suministradas por el usuario | Alias, reglas lingüísticas o conversiones implícitas de precios |
 | `corpus/profiles/conversation_profiles.json` | Estilos conversacionales para diseño y evaluación de cobertura | Casos, datos personales o reglas de producción |

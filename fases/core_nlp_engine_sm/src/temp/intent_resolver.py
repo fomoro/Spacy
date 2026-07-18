@@ -10,7 +10,7 @@ import math
 import re
 
 if TYPE_CHECKING:
-    from src.temp.linguistic_parser import LinguisticEvidenceBundle
+    from src.temp.linguistic_evidence_mapper import LinguisticEvidenceBundle
 
 
 @dataclass(frozen=True)

@@ -43,8 +43,8 @@ def main() -> None:
         evidence_mapper = LinguisticEvidenceMapper(
             ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json"
         )
-        pipeline = LinguisticParser(
-            normalizer, phrase_matcher, matcher, lemmas, ruler, evidence_mapper
+        parser = LinguisticParser(
+            normalizer, phrase_matcher, matcher, lemmas, ruler
         )
     except Exception as exc:
         print(f"❌ Error cargando configuración del pipeline: {exc}")
@@ -70,7 +70,8 @@ def main() -> None:
             break
 
         try:
-            bundle = pipeline.analyze(user_input)
+            parsed_bundle = parser.analyze(user_input)
+            bundle = evidence_mapper.map_bundle(parsed_bundle)
 
             print("-" * 60)
             print(f"📝 Original:      '{bundle.original_text}'")

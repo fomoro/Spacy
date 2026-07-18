@@ -1,11 +1,16 @@
+"""Orquestación del pipeline completo de diálogo."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any, Mapping
 
-from src.temp.linguistic_parser import LinguisticParser, LinguisticEvidenceBundle
-from src.temp.intent_resolver import IntentResolver, IntentResolution
+from src.temp.intent_resolver import IntentResolution, IntentResolver
+from src.temp.linguistic_evidence_mapper import (
+    LinguisticEvidenceBundle,
+    LinguisticEvidenceMapper,
+)
+from src.temp.linguistic_parser import LinguisticParser
 from src.temp.response_renderer import RenderedResponse, ResponseRenderer
 
 
@@ -23,22 +28,27 @@ class ResolvedNlpResult:
         }
 
 
-class IntentEngine:
-    """Integra análisis de evidencia y resolución de intención."""
+class DialogueOrchestrator:
+    """Director puro del pipeline Parser -> Mapper -> Resolver -> Renderer."""
 
     def __init__(
         self,
         parser: LinguisticParser,
+        evidence_mapper: LinguisticEvidenceMapper,
         resolver: IntentResolver,
         response_renderer: ResponseRenderer,
     ) -> None:
         if parser is None:
             raise ValueError("parser es obligatorio.")
+        if evidence_mapper is None:
+            raise ValueError("evidence_mapper es obligatorio.")
         if resolver is None:
             raise ValueError("resolver es obligatorio.")
         if response_renderer is None:
             raise ValueError("response_renderer es obligatorio.")
+
         self._parser = parser
+        self._evidence_mapper = evidence_mapper
         self._resolver = resolver
         self._response_renderer = response_renderer
 
@@ -48,7 +58,8 @@ class IntentEngine:
         context: Mapping[str, Any] | None = None,
         response_values: Mapping[str, Any] | None = None,
     ) -> ResolvedNlpResult:
-        evidence = self._parser.analyze(text)
+        parsed_bundle = self._parser.analyze(text)
+        evidence = self._evidence_mapper.map_bundle(parsed_bundle)
         resolution = self._resolver.resolve(evidence, context)
         response = self._response_renderer.render(resolution, response_values)
         return ResolvedNlpResult(evidence, resolution, response)

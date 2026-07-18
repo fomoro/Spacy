@@ -1,4 +1,4 @@
-"""Evaluación de IntentEngine sobre el benchmark canónico."""
+"""Evaluación de DialogueOrchestrator sobre el benchmark canónico."""
 
 import csv
 from collections import defaultdict
@@ -17,7 +17,7 @@ from src.infrastructure import (
     LemmaService,
 )
 from src.temp import (
-    IntentEngine,
+    DialogueOrchestrator,
     IntentResolver,
     LinguisticParser,
     ResponseRenderer,
@@ -38,12 +38,12 @@ matcher = MatcherService(ROOT / "src" / "infrastructure" / "resources" / "matche
 lemmas = LemmaService(ROOT / "src" / "infrastructure" / "resources" / "lemma_service_config.json")
 ruler = EntityRulerService(ROOT / "src" / "infrastructure" / "resources" / "entity_ruler_service_config.json")
 evidence_mapper = LinguisticEvidenceMapper(ROOT / "src" / "temp" / "resources" / "intent_resolver" / "linguistic_evidence_mapping.json")
-parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler, evidence_mapper)
+parser = LinguisticParser(normalizer, phrase, matcher, lemmas, ruler)
 resolver = IntentResolver(ROOT / "src" / "temp" / "resources" / "intent_resolver")
 response_renderer = ResponseRenderer(
-    ROOT / "src" / "temp" / "resources" / "response_templates.json"
+    ROOT / "src" / "temp" / "resources" / "intent_resolver" / "response_templates.json"
 )
-pipeline = IntentEngine(parser, resolver, response_renderer)
+pipeline = DialogueOrchestrator(parser, evidence_mapper, resolver, response_renderer)
 
 payload = json.loads(CASES.read_text(encoding="utf-8"))
 cases = payload["cases"]

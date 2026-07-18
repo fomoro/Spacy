@@ -9,11 +9,10 @@ from src.infrastructure.nlp.phrase_matcher_service import PhraseMatcherService
 from src.infrastructure.nlp.matcher_service import MatcherService
 from src.infrastructure.nlp.lemma_service import LemmaService
 from src.infrastructure.nlp.entity_ruler_service import EntityRulerService
-from src.temp.linguistic_evidence_mapper import LinguisticEvidenceMapper
 
 
 @dataclass(frozen=True)
-class LinguisticEvidenceBundle:
+class ParsedNLPBundle:
     original_text: str
     normalized_text: str
     normalization: dict[str, Any]
@@ -35,7 +34,7 @@ class LinguisticEvidenceBundle:
 
 
 class LinguisticParser:
-    """Orquesta fuentes de evidencia sin resolver la intención final."""
+    """Fachada NLP: Orquesta fuentes de evidencia usando infraestructura cruda."""
 
     def __init__(
         self,
@@ -44,7 +43,6 @@ class LinguisticParser:
         matcher: MatcherService,
         lemma_service: LemmaService,
         entity_ruler: EntityRulerService,
-        evidence_mapper: LinguisticEvidenceMapper,
     ) -> None:
         if normalizer is None:
             raise ValueError("normalizer es obligatorio.")
@@ -56,17 +54,14 @@ class LinguisticParser:
             raise ValueError("lemma_service es obligatorio.")
         if entity_ruler is None:
             raise ValueError("entity_ruler es obligatorio.")
-        if evidence_mapper is None:
-            raise ValueError("evidence_mapper es obligatorio.")
 
         self._normalizer = normalizer
         self._phrase_matcher = phrase_matcher
         self._matcher = matcher
         self._lemma_service = lemma_service
         self._entity_ruler = entity_ruler
-        self._evidence_mapper = evidence_mapper
 
-    def analyze(self, text: str) -> LinguisticEvidenceBundle:
+    def analyze(self, text: str) -> ParsedNLPBundle:
         if not isinstance(text, str):
             raise TypeError("text debe ser str.")
 
@@ -76,19 +71,13 @@ class LinguisticParser:
         matcher_result = self._matcher.analyze(normalized)
         lemma_result = self._lemma_service.analyze(normalized)
         entity_ruler_result = self._entity_ruler.analyze(normalized)
-        mapped = self._evidence_mapper.map_sections(
+
+        return ParsedNLPBundle(
+            original_text=text,
+            normalized_text=normalized,
+            normalization=normalization.to_dict(),
             phrase_matcher=phrase_result.to_dict(),
             matcher=matcher_result.to_dict(),
             lemmas=lemma_result.to_dict(),
             entity_ruler=entity_ruler_result.to_dict(),
-        )
-
-        return LinguisticEvidenceBundle(
-            original_text=text,
-            normalized_text=normalized,
-            normalization=normalization.to_dict(),
-            phrase_matcher=mapped["phrase_matcher"],
-            matcher=mapped["matcher"],
-            lemmas=mapped["lemmas"],
-            entity_ruler=mapped["entity_ruler"],
         )
