@@ -1,0 +1,323 @@
+{
+  "metadata": {
+    "version": "1.1.0",
+    "profile_count": 21
+  },
+  "profiles": {
+    "comunica_de_forma_neutra_y_explicita": {
+      "description": "Formula la solicitud con español colombiano estándar, información suficiente y una estructura directa, sin que domine una marca coloquial, cortés, analítica, emocional, dialectal o digital.",
+      "linguistic_markers": [
+        "usa oraciones completas y vocabulario de uso general",
+        "expresa de manera directa la consulta o acción solicitada",
+        "identifica con claridad productos, cantidades o datos operativos",
+        "mantiene una puntuación y segmentación convencionales",
+        "evita abreviaturas, intensificadores y referencias dependientes del contexto"
+      ],
+      "representative_utterances": [
+        "Quiero reservar una mesa para cuatro personas el 15 de agosto de 2026 a las siete de la noche.",
+        "¿Cuál es el precio del plato del día?",
+        "Necesito dos almuerzos para recoger a las doce y media."
+      ]
+    },
+    "usa_registro_coloquial_urbano": {
+      "description": "Se comunica mediante informalidad conversacional urbana y expresiones colombianas ampliamente reconocibles. Una palabra cercana aislada no basta, y las formas dialectales regionales marcadas pertenecen a otro perfil.",
+      "linguistic_markers": [
+        "usa vocativos informales como 'parce', 'llave', 'socio' o 'viejo'",
+        "emplea expresiones como 'de una', 'hágale', 'todo bien' o 'fresco'",
+        "reduce conectores o elementos previsibles sin perder la intención",
+        "combina cercanía interpersonal con peticiones directas",
+        "utiliza intensificadores coloquiales como 'bien', 'súper' o 'un resto'"
+      ],
+      "representative_utterances": [
+        "Parce, ¿qué plato me recomienda que sea bien sabroso?",
+        "Vea, hágame el favor y me guarda una mesa para cuatro.",
+        "De una, mándeme dos platos del día y una bebida."
+      ]
+    },
+    "formula_solicitudes_con_cortesia_mitigada": {
+      "description": "Construye la solicitud mediante varias señales de cortesía, atenuación o consideración interpersonal. Un saludo o un único 'por favor' no son suficientes para definir el perfil.",
+      "linguistic_markers": [
+        "abre con saludos y fórmulas de consideración",
+        "usa condicionales como 'quisiera', 'podría' o 'sería tan amable'",
+        "incluye disculpas como 'qué pena molestarlo' o 'disculpe la pregunta'",
+        "justifica brevemente la solicitud antes de formularla",
+        "cierra con agradecimientos o expresiones de atención"
+      ],
+      "representative_utterances": [
+        "Buenas tardes. ¿Sería tan amable de indicarme qué incluye el plato del día? Muchas gracias.",
+        "Qué pena molestarlo; quisiera saber si todavía reciben reservas para esta noche.",
+        "Por favor, ¿me podría confirmar el horario del domingo? Le agradezco mucho."
+      ]
+    },
+    "expone_con_precision_analitica": {
+      "description": "Desarrolla la consulta con vocabulario específico, relaciones explícitas y criterios verificables. La precisión analítica debe dominar; la cortesía por sí sola no define este perfil.",
+      "linguistic_markers": [
+        "usa oraciones completas con subordinación y conectores lógicos",
+        "emplea vocabulario gastronómico u operativo específico",
+        "distingue atributos, condiciones y criterios verificables",
+        "solicita diferencias o explicaciones fundamentadas",
+        "evita referencias vagas y explicita el alcance de la pregunta"
+      ],
+      "representative_utterances": [
+        "¿Qué diferencias hay entre las dos opciones de plato principal en sabor, preparación y acompañamientos?",
+        "¿Podrían indicarme la capacidad del espacio, el valor del anticipo y las condiciones de cancelación para el evento?",
+        "Necesito confirmar el procedimiento y los datos requeridos para solicitar factura electrónica."
+      ]
+    },
+    "expresa_urgencia_con_plazo_explicito": {
+      "description": "Organiza el mensaje alrededor de una hora límite, un plazo corto o una necesidad de respuesta inmediata. La brevedad sin una restricción temporal explícita no pertenece a este perfil.",
+      "linguistic_markers": [
+        "menciona plazos como 'en veinte minutos', 'antes de las siete' o 'a más tardar a las ocho'",
+        "ubica la restricción temporal al inicio o al cierre de la solicitud",
+        "formula preguntas cerradas sobre disponibilidad o cumplimiento",
+        "refuerza el plazo con verbos como 'necesito', 'confírmeme' o 'alcanzan'",
+        "explica una consecuencia operativa asociada al plazo"
+      ],
+      "representative_utterances": [
+        "Necesito un pedido para recoger en veinte minutos, ¿alcanzan a tenerlo listo?",
+        "¿Me confirman ya si hay mesa? Llegamos en media hora.",
+        "El domicilio debía llegar a la una y tengo que salir a la una y cuarto; ¿en qué va?"
+      ]
+    },
+    "responde_con_fragmentos_dependientes_del_turno": {
+      "description": "Responde mediante fragmentos mínimos cuyo referente o función solo se entiende con el turno inmediatamente anterior. Un mensaje corto que puede interpretarse por sí solo no pertenece a este perfil.",
+      "linguistic_markers": [
+        "usa números aislados para indicar cantidad o seleccionar una opción",
+        "responde con demostrativos como 'ese', 'esa' o 'la segunda'",
+        "emplea confirmaciones o negaciones de una sola palabra",
+        "omite producto, acción o unidad porque aparecen en el turno anterior",
+        "puede usar un emoji como respuesta pragmática completa"
+      ],
+      "representative_utterances": [
+        "Restaurante: ¿Cuál opción prefiere?\nCliente: La segunda.",
+        "Restaurante: ¿Cuántas porciones necesita?\nCliente: Dos, por favor.",
+        "Restaurante: ¿A las siete está bien?\nCliente: Sí, a esa hora."
+      ]
+    },
+    "escribe_con_convenciones_digitales_no_estandar": {
+      "description": "Presenta varias desviaciones gráficas propias de escritura digital informal. No se asigna por un error aislado ni cuando las formas corresponden a variación dialectal o a huellas de dictado.",
+      "linguistic_markers": [
+        "omite tildes, mayúsculas o puntuación de manera recurrente",
+        "usa abreviaciones como 'xfa', 'pq', 'q' o 'tmb'",
+        "representa palabras por su sonido, como 'kiero' o 'bale'",
+        "une o separa palabras de manera no convencional",
+        "repite letras o signos con función expresiva"
+      ],
+      "representative_utterances": [
+        "hola tienen menu del dia? cuanto vale xfa",
+        "xfa me manda 2 almuerzos sin sevolla",
+        "reciven nequi o solo efetivo???"
+      ]
+    },
+    "produce_huellas_textuales_de_dictado": {
+      "description": "El texto conserva señales reconocibles de transcripción por voz. Una autocorrección ordinaria no basta: debe aparecer una marca de dictado, segmentación anómala o confusión fonética atribuible al canal.",
+      "linguistic_markers": [
+        "incluye palabras de puntuación como 'coma', 'punto' o 'nueva línea'",
+        "presenta falsos comienzos y reinicios propios del habla planificada en tiempo real",
+        "contiene instrucciones al sistema de voz mezcladas con el mensaje",
+        "transcribe números o direcciones en secuencias orales extensas",
+        "muestra confusiones fonéticas entre nombres de productos"
+      ],
+      "representative_utterances": [
+        "Quiero dos porciones coma una sin cebolla punto.",
+        "Envíelo a la carrera treinta y dos número ocho quince, coma, llamar al llegar, punto.",
+        "Necesito un almuerzo, coma, no, mejor dos almuerzos, punto."
+      ]
+    },
+    "usa_variacion_morfosintactica_colombiana_marcada": {
+      "description": "Emplea tratamientos pronominales o formas verbales colombianas marcadas y reconocibles. La informalidad y el vocabulario coloquial general no bastan para definir este perfil.",
+      "linguistic_markers": [
+        "usa tratamientos pronominales marcados como 'sumercé'",
+        "emplea el pronombre 'vos' como segunda persona singular",
+        "conjuga verbos con voseo como 'tenés', 'querés' o 'podés'",
+        "mantiene concordancia entre el pronombre y la forma verbal dialectal",
+        "emplea imperativos voseantes como 'mirá', 'decime' o 'confirmame'"
+      ],
+      "representative_utterances": [
+        "Sumercé, ¿me confirma si todavía reciben reservas?",
+        "¿Vos tenés almuerzo para llevar o toca pedirlo con tiempo?",
+        "Si vos podés, ¿me preparás dos platos para esta noche?"
+      ]
+    },
+    "alterna_espanol_e_ingles": {
+      "description": "Alterna español con estados, instrucciones o segmentos en inglés no plenamente integrados en el uso común. Mencionar solamente 'app', 'QR', 'link', 'combo' o 'WhatsApp' no es suficiente.",
+      "linguistic_markers": [
+        "inserta estados en inglés como 'ready for pickup' o 'in progress'",
+        "combina cláusulas españolas con instrucciones breves en inglés",
+        "usa nombres de acciones en inglés dentro de sintaxis española",
+        "conserva segmentos ingleses de varias palabras provenientes de una interfaz",
+        "cambia entre ambos idiomas dentro del mismo mensaje"
+      ],
+      "representative_utterances": [
+        "La app muestra 'order in progress'; ¿todavía falta mucho para que esté listo?",
+        "Me llegó 'payment confirmed' para la orden 284; ¿ya la están preparando?",
+        "La app dice ready for pickup, ¿ya puedo pasar?"
+      ]
+    },
+    "narra_antecedentes_con_una_sola_solicitud": {
+      "description": "Incluye antecedentes, secuencias o digresiones antes de formular una sola necesidad operativa. La longitud por sí sola no basta y dos solicitudes independientes corresponden a otro perfil.",
+      "linguistic_markers": [
+        "usa aperturas como 'resulta que', 'el otro día' o 'la cuestión es que'",
+        "ordena antecedentes mediante conectores temporales",
+        "mezcla información operativa con detalles secundarios",
+        "ubica la solicitud principal después de uno o más segmentos narrativos",
+        "retoma el objetivo con expresiones como 'en fin' o 'para no alargarle'"
+      ],
+      "representative_utterances": [
+        "Resulta que tenemos una cita médica cerca del restaurante y no sabemos cuánto nos vamos a demorar; en fin, quisiera saber hasta qué hora sirven almuerzo.",
+        "Primero habíamos pensado ir temprano, después se nos cruzó otro compromiso y finalmente dejamos la comida para la noche; quisiera saber a qué hora cierran la cocina.",
+        "Yo pensaba pasar por el pedido, pero me cambiaron una reunión y ahora no alcanzo a moverme; para no alargarle, necesito saber si hacen domicilio en Chapinero."
+      ]
+    },
+    "combina_objetivos_independientes_en_un_mensaje": {
+      "description": "Reúne dos o más consultas o acciones que pueden resolverse de manera independiente. Varios datos de una sola operación o una acción subordinada a una condición no constituyen este perfil.",
+      "linguistic_markers": [
+        "formula varias preguntas con resultados autónomos",
+        "une solicitudes mediante 'además', 'también' o cambios de tema",
+        "combina una consulta informativa con una acción diferente",
+        "incluye objetivos pertenecientes a operaciones separables",
+        "mantiene valor comunicativo completo en cada segmento"
+      ],
+      "representative_utterances": [
+        "¿Cuánto vale el plato del día y qué horario tienen el domingo?",
+        "Quiero reservar para cuatro y también necesito que me envíen el menú.",
+        "Confírmenme si reciben Nequi; además, ¿tienen parqueadero?"
+      ]
+    },
+    "corrige_datos_con_reparacion_explicita": {
+      "description": "Invalida de manera explícita un dato anterior y establece otro como vigente. Una duda entre alternativas no pertenece a este perfil mientras no exista una corrección confirmada.",
+      "linguistic_markers": [
+        "usa expresiones como 'no, mejor', 'perdón' o 'quise decir'",
+        "contrasta el valor descartado con el valor nuevo",
+        "emplea construcciones correctivas con 'sino'",
+        "limita el cambio mediante 'solo' o 'el resto igual'",
+        "puede corregir producto, cantidad, fecha, hora o dirección"
+      ],
+      "representative_utterances": [
+        "No, perdón, no eran tres platos sino dos.",
+        "Quise decir para mañana a las siete, no para hoy.",
+        "Cambie la entrada por el postre; la bebida sí déjela."
+      ]
+    },
+    "retoma_antecedentes_de_interacciones_previas": {
+      "description": "Hace referencia a información compartida en una interacción anterior y no en el turno inmediato. El mensaje presupone ese antecedente sin repetir todos sus datos.",
+      "linguistic_markers": [
+        "usa expresiones como 'lo mismo de la vez pasada' o 'el de siempre'",
+        "emplea grupos definidos como 'la reserva que hice' o 'el pedido anterior'",
+        "usa demostrativos o pronombres sin antecedente dentro del turno actual",
+        "presupone una referencia compartida mediante elipsis",
+        "introduce cambios parciales con expresiones como 'pero esta vez' o 'solo cambie'"
+      ],
+      "representative_utterances": [
+        "Mándeme lo mismo de la vez pasada, pero a la otra dirección.",
+        "Repítame el pedido del domingo y cambie únicamente la bebida.",
+        "La reserva que hice ayer, pásela para las ocho."
+      ]
+    },
+    "describe_platos_mediante_parafrasis": {
+      "description": "Sustituye el nombre exacto de un plato, especie o preparación por una descripción de sus rasgos. Preguntar por un producto ya identificado no pertenece a este perfil.",
+      "linguistic_markers": [
+        "usa hiperónimos como 'plato', 'sopa' o 'postre'",
+        "identifica el producto por su apariencia o forma de servirlo",
+        "emplea construcciones como 'el que viene con' o 'ese que preparan'",
+        "compara con un producto conocido para aproximarse al nombre",
+        "manifiesta incertidumbre léxica mediante 'no recuerdo cómo se llama'"
+      ],
+      "representative_utterances": [
+        "¿Cómo se llama el postre que sirven caliente y viene con helado?",
+        "Quiero esa sopa espesa que viene con pan, pero no recuerdo el nombre.",
+        "¿Tienen ese plato que cocinan envuelto en hoja? No recuerdo cómo se llama."
+      ]
+    },
+    "organiza_una_solicitud_en_listas_o_bloques": {
+      "description": "Presenta una sola operación mediante listas, etiquetas o bloques semiestructurados. La presencia de varios productos o datos no la convierte en una solicitud con objetivos independientes.",
+      "linguistic_markers": [
+        "enumera elementos con números, guiones o saltos de línea",
+        "repite un mismo patrón sintáctico o tabular",
+        "usa etiquetas con la forma 'campo: valor'",
+        "agrupa la información bajo títulos o secciones",
+        "reduce conectores porque la disposición visual organiza el contenido"
+      ],
+      "representative_utterances": [
+        "Pedido oficina:\n- 4 platos del día\n- 3 sopas\n- Entrega: 12:30",
+        "Reserva:\nFecha: sábado\nHora: 7:00 p. m.\nPersonas: 6",
+        "Para recoger:\n1 plato principal sin salsa\n2 bebidas\nNombre: Andrea"
+      ]
+    },
+    "transmite_solicitudes_atribuidas_a_terceros": {
+      "description": "Presenta información, preferencias o solicitudes como palabras de otra persona. La atribución aparece mediante discurso referido o verbos de reporte; mencionar a alguien no basta.",
+      "linguistic_markers": [
+        "usa verbos de atribución como 'dice', 'pidió', 'me encargó' o 'quiere saber'",
+        "emplea discurso indirecto mediante construcciones con 'que'",
+        "identifica de forma explícita la fuente de la solicitud",
+        "marca información pendiente con 'le confirmo' o 'déjeme preguntarle'",
+        "distingue entre lo que afirma quien escribe y lo que afirma el tercero"
+      ],
+      "representative_utterances": [
+        "Le escribo por mi mamá: quiere saber qué incluye el plato del día, pero por ahora solo estamos consultando.",
+        "Mi jefe me pidió cotizar doce almuerzos para el viernes; yo le confirmo después cuáles escoge.",
+        "Laura me pidió preguntar si tienen mesa para cuatro personas a las ocho."
+      ]
+    },
+    "intensifica_una_evaluacion_negativa": {
+      "description": "Refuerza una valoración negativa mediante recursos léxicos, gráficos o retóricos. Una consulta neutral sobre el estado del servicio o una urgencia sin valoración negativa no pertenecen a este perfil.",
+      "linguistic_markers": [
+        "usa palabras valorativas como 'molesto', 'frustrante', 'pésimo' o 'inaceptable'",
+        "amplifica la valoración mediante adverbios, repeticiones o gradación",
+        "emplea mayúsculas o puntuación enfática para reforzar el reclamo",
+        "formula preguntas retóricas, ironías o exclamaciones",
+        "usa construcciones adversativas para destacar una contradicción"
+      ],
+      "representative_utterances": [
+        "Estoy muy molesto: el domicilio aparece entregado y acá no llegó. Necesito que lo revisen.",
+        "Tenía la reserva confirmada y al llegar no había mesa. Esto es muy frustrante, ¿qué solución me van a dar?",
+        "Me cobraron un valor que no corresponde y ya expliqué el problema dos veces. Es inaceptable; necesito una respuesta clara."
+      ]
+    },
+    "expresa_datos_aproximados": {
+      "description": "Comunica cantidades, horas u otros datos operativos como estimaciones, rangos o valores provisionales. Una referencia exacta o un plazo usado para exigir atención inmediata no pertenecen a este perfil.",
+      "linguistic_markers": [
+        "emplea aproximadores como 'unas', 'más o menos', 'tipo' o 'por ahí'",
+        "presenta rangos en lugar de valores definitivos",
+        "marca provisionalidad con 'creo que serían', 'calculamos' o 'todavía no sé exacto'",
+        "redondea cantidades u horas sin afirmarlas como exactas",
+        "anuncia que confirmará el valor definitivo más adelante"
+      ],
+      "representative_utterances": [
+        "Seríamos unas quince personas, pero todavía no tengo el número exacto.",
+        "Necesitaría el pedido más o menos entre doce y doce y media.",
+        "Quiero entre ocho y diez almuerzos; le confirmo la cantidad exacta más tarde."
+      ]
+    },
+    "formula_exclusiones_con_alcance_complejo": {
+      "description": "Combina varias negaciones, excepciones o contrastes cuyo alcance debe asociarse con productos o partes diferentes. Una modificación simple aplicada a un solo producto no pertenece a este perfil.",
+      "linguistic_markers": [
+        "usa estructuras como 'una sin..., la otra con...'",
+        "combina negación y contraste mediante 'pero sí' o 'eso no aplica a'",
+        "emplea cuantificadores como 'solo una', 'ninguna' o 'las demás'",
+        "coordina varias exclusiones con 'ni' o 'tampoco'",
+        "mantiene algunas partes sin cambios mediante expresiones de alcance"
+      ],
+      "representative_utterances": [
+        "Dos platos: uno sin cebolla y el otro sin crema, pero a los dos sí póngales arroz.",
+        "De los tres platos, solo uno sin sal; los otros déjelos normales.",
+        "No quiero salsa ni picante en el plato principal, pero eso no aplica al acompañamiento."
+      ]
+    },
+    "condiciona_una_accion_a_una_respuesta_previa": {
+      "description": "Plantea una decisión cuya ejecución o alternativa depende de una condición. Las ramas son mutuamente excluyentes y no constituyen objetivos independientes.",
+      "linguistic_markers": [
+        "usa construcciones con 'si', 'solo si' o 'en caso de que'",
+        "presenta primero una condición y después la acción dependiente",
+        "incluye alternativas con 'de lo contrario' o 'si no'",
+        "evita confirmar la operación antes de conocer la respuesta",
+        "relaciona disponibilidad, tiempo o precio con una decisión posterior"
+      ],
+      "representative_utterances": [
+        "Si tienen plato del día, déjeme dos para recoger; si no, no haga el pedido.",
+        "Solo si hay mesa a las siete, hágame la reserva.",
+        "Si pueden entregarlo antes de las ocho, envíenlo a domicilio; si no, lo recojo en el restaurante."
+      ]
+    }
+  }
+}

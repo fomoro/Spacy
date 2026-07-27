@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "version": "5.0.0",
+    "category_count": 7,
+    "case_type_count": 82
+  },
+  "categories": {
+    "Reservas de mesa": {
+      "scope": "Consultas y gestiones de mesas con la atención habitual del restaurante. Los eventos que requieren cotización o coordinación especial y los incumplimientos de reservas confirmadas pertenecen a otras categorías.",
+      "case_types": {
+        "consultar_condiciones_de_reserva": "El cliente pregunta por políticas, anticipación, tolerancia o requisitos para reservar una mesa.",
+        "consultar_atencion_sin_reserva": "El cliente quiere saber si puede llegar sin reserva y cómo funciona la asignación de mesas.",
+        "consultar_disponibilidad_de_mesa": "El cliente pregunta si hay mesa para una fecha, hora y número de personas.",
+        "crear_reserva_de_mesa": "El cliente solicita registrar una nueva reserva con la atención habitual del restaurante.",
+        "verificar_reserva_existente": "El cliente comprueba que una reserva esté registrada y revisa sus datos principales.",
+        "modificar_reserva_existente": "El cliente solicita cambiar fecha, hora, número de personas o datos de una reserva.",
+        "cancelar_reserva_existente": "El cliente solicita cancelar una reserva previamente registrada.",
+        "avisar_llegada_tarde": "El cliente informa que llegará tarde y pregunta si el restaurante conservará la mesa.",
+        "solicitar_ingreso_a_lista_de_espera": "El cliente pide quedar en espera para ser contactado si se libera una mesa."
+      }
+    },
+    "Eventos especiales y cotizaciones": {
+      "scope": "Consultas y gestiones de servicios que requieren propuesta comercial, uso especial del espacio o coordinación adicional. Las reservas atendidas solo con mesa y carta habituales no pertenecen a esta categoría.",
+      "case_types": {
+        "consultar_condiciones_para_eventos": "El cliente solicita una orientación general sobre capacidad, horarios, anticipos y funcionamiento antes de definir un requerimiento específico.",
+        "consultar_disponibilidad_para_evento": "El cliente pregunta si el espacio está disponible para la fecha y franja previstas.",
+        "solicitar_cotizacion_de_evento": "El cliente solicita una propuesta comercial inicial para una celebración o actividad.",
+        "consultar_estado_de_cotizacion_de_evento": "El cliente pregunta si una cotización solicitada ya está lista.",
+        "solicitar_aclaracion_de_cotizacion_de_evento": "El cliente pide explicar valores, condiciones o elementos incluidos en una cotización recibida.",
+        "solicitar_ajuste_de_cotizacion_de_evento": "El cliente solicita cambiar una propuesta aún no confirmada.",
+        "solicitar_exclusividad_del_espacio": "El cliente consulta el uso privado de una zona o de la totalidad del restaurante.",
+        "coordinar_montaje_y_proveedores": "El cliente organiza la ejecución de un montaje o proveedor ya aprobado, sin cambiar el alcance contratado.",
+        "coordinar_requerimientos_tecnicos": "El cliente organiza el uso de un recurso técnico ya aprobado, sin cambiar el alcance contratado.",
+        "confirmar_evento_cotizado": "El cliente acepta una propuesta y solicita formalizar el evento.",
+        "confirmar_pago_de_anticipo_de_evento": "El cliente informa el pago de un anticipo y solicita verificar su aplicación al evento.",
+        "modificar_evento_confirmado": "El cliente solicita cambiar el alcance comercial u operativo de un evento confirmado.",
+        "cancelar_evento_confirmado": "El cliente solicita cancelar un evento confirmado y conocer las condiciones aplicables."
+      }
+    },
+    "Oferta gastronómica": {
+      "scope": "Consultas para conocer, comparar o elegir productos de la carta por sus características culinarias o comerciales. Las decisiones determinadas por una restricción o un riesgo pertenecen a seguridad alimentaria.",
+      "case_types": {
+        "solicitar_menu": "El cliente pide recibir o consultar la carta vigente del restaurante.",
+        "consultar_categoria_del_menu": "El cliente pregunta qué opciones pertenecen a una sección específica de la carta.",
+        "consultar_disponibilidad_de_producto": "El cliente verifica si un producto identificado puede pedirse en ese momento.",
+        "consultar_precio_de_producto": "El cliente pregunta el valor vigente de un producto identificado.",
+        "consultar_ingredientes_y_acompanamientos": "El cliente solicita conocer la composición culinaria y los acompañamientos de un producto.",
+        "consultar_preparacion_y_coccion": "El cliente pregunta por la técnica, el término o la forma de preparación de un producto.",
+        "consultar_tamano_y_rendimiento_de_porcion": "El cliente pregunta por el tamaño, la cantidad o el número de personas para las que alcanza una porción.",
+        "comparar_productos": "El cliente solicita diferencias entre dos o más productos por precio, sabor, tamaño o preparación.",
+        "solicitar_recomendacion_por_gusto": "El cliente pide orientación de acuerdo con sabores, texturas o preparaciones que prefiere.",
+        "solicitar_recomendacion_por_presupuesto": "El cliente pide opciones que no superen un presupuesto determinado."
+      }
+    },
+    "Seguridad y restricciones alimentarias": {
+      "scope": "Consultas preventivas en las que una dieta, alergia, intolerancia o condición de seguridad determina la elección. Los incidentes reportados después del consumo pertenecen a recuperación del servicio.",
+      "case_types": {
+        "consultar_opciones_vegetarianas": "El cliente busca opciones sin carnes, pescados ni mariscos y acepta productos con huevo o lácteos.",
+        "consultar_opciones_veganas": "El cliente busca opciones sin ingredientes ni derivados de origen animal.",
+        "consultar_producto_crudo_durante_el_embarazo": "El cliente pregunta preventivamente por preparaciones crudas o semicrudas durante el embarazo.",
+        "consultar_opciones_por_enfermedad_celiaca": "El cliente busca opciones compatibles y verifica ingredientes con gluten por enfermedad celíaca.",
+        "consultar_producto_por_intolerancia_alimentaria": "El cliente verifica ingredientes o preparaciones por una intolerancia no alérgica.",
+        "consultar_alergeno_en_producto": "El cliente pregunta si un producto identificado contiene un alérgeno específico.",
+        "solicitar_opciones_por_alergia": "El cliente pide alternativas compatibles con una alergia declarada.",
+        "consultar_contaminacion_cruzada": "El cliente pregunta por aceites, utensilios, superficies o áreas compartidas durante la preparación.",
+        "solicitar_adaptacion_por_restriccion": "El cliente pregunta si es posible adaptar un producto por una restricción alimentaria y qué validación requiere.",
+        "consultar_producto_por_restriccion_religiosa": "El cliente necesita verificar ingredientes o procesos por una práctica religiosa.",
+        "consultar_producto_por_restriccion_medica": "El cliente solicita información por una restricción médica distinta de alergia, intolerancia, celiaquía o embarazo, sin pedir consejo clínico."
+      }
+    },
+    "Información comercial y del lugar": {
+      "scope": "Consultas generales sobre horarios, ubicación, instalaciones, pagos y beneficios del restaurante. Las condiciones particulares de una reserva, evento o pedido pertenecen a su flujo correspondiente.",
+      "case_types": {
+        "consultar_horarios": "El cliente pregunta por los días y horas de atención del restaurante o de la cocina.",
+        "consultar_ubicacion": "El cliente solicita la dirección o indicaciones generales para llegar al restaurante.",
+        "consultar_parqueadero": "El cliente pregunta por disponibilidad, costo o convenio de parqueadero.",
+        "consultar_accesibilidad": "El cliente consulta las condiciones de ingreso y circulación para personas con movilidad reducida.",
+        "consultar_ingreso_con_mascotas": "El cliente pregunta si puede ingresar con una mascota y bajo qué condiciones.",
+        "consultar_facilidades_para_ninos": "El cliente pregunta por sillas para bebé, cambiadores u otras facilidades para niños.",
+        "consultar_medios_de_pago": "El cliente pregunta qué medios de pago se aceptan y si pueden combinarse.",
+        "consultar_facturacion_electronica": "El cliente pregunta por los requisitos y el procedimiento de facturación electrónica.",
+        "consultar_propina": "El cliente pregunta por la inclusión, voluntariedad o modificación de la propina.",
+        "consultar_promociones": "El cliente pregunta por promociones vigentes y por sus condiciones de uso."
+      }
+    },
+    "Pedidos a domicilio y para recoger": {
+      "scope": "Consultas y gestiones normales de pedidos para entrega o recogida antes de que exista un incumplimiento. Las fallas posteriores a un compromiso del restaurante pertenecen a recuperación del servicio.",
+      "case_types": {
+        "consultar_condiciones_de_domicilio": "El cliente pregunta por cobertura, costo, compra mínima o tiempo estimado antes de iniciar un pedido.",
+        "crear_pedido_a_domicilio": "El cliente solicita registrar un nuevo pedido de preparación inmediata para entrega en una dirección.",
+        "crear_pedido_para_recoger": "El cliente solicita registrar un nuevo pedido de preparación inmediata que retirará en el restaurante.",
+        "programar_pedido": "El cliente coordina con anticipación la fecha y hora de un pedido individual.",
+        "coordinar_pedido_grupal_empacado": "El cliente organiza un pedido consolidado para varias personas, con separación o identificación individual y sin servicio de evento.",
+        "repetir_pedido_anterior": "El cliente solicita reutilizar los productos de un pedido anterior verificable.",
+        "modificar_pedido_activo": "El cliente solicita cambiar productos, cantidades, preparación, horario o modalidad de un pedido vigente.",
+        "actualizar_datos_de_entrega": "El cliente solicita cambiar dirección, teléfono, portería o instrucciones de llegada.",
+        "consultar_empaque_de_pedido": "El cliente consulta exclusivamente por separación, marcado, cubiertos o presentación de un pedido cuyos productos ya están definidos.",
+        "consultar_estado_de_pedido": "El cliente solicita seguimiento mientras el pedido permanece dentro del tiempo informado.",
+        "cancelar_pedido_activo": "El cliente solicita detener un pedido antes de su entrega o recogida."
+      }
+    },
+    "Novedades y recuperación del servicio": {
+      "scope": "Reportes y seguimientos después de un compromiso, una visita o un incidente. Incluye objetos olvidados y condiciones inadecuadas del establecimiento; excluye consultas preventivas y cambios normales.",
+      "case_types": {
+        "gestionar_producto_no_disponible_tras_confirmacion": "El cliente busca una solución porque un producto aceptado ya no puede ser entregado.",
+        "reportar_demora_fuera_del_tiempo_prometido": "El cliente informa que un pedido o servicio operativo superó el plazo comunicado, sin tratarse de una devolución financiera.",
+        "reportar_domicilio_marcado_como_entregado_no_recibido": "El cliente informa que el domicilio figura como entregado, pero no lo recibió.",
+        "reportar_pedido_incompleto": "El cliente recibió el pedido, pero faltan productos, unidades o componentes confirmados.",
+        "reportar_pedido_diferente_al_confirmado": "El cliente recibió un producto diferente del acordado, aunque no faltan unidades confirmadas.",
+        "reportar_calidad_inadecuada": "El cliente reporta temperatura, cocción o frescura inadecuadas, sin daño del empaque ni afectación a la salud declarada.",
+        "reportar_posible_afectacion_a_la_salud": "El cliente informa malestar, reacción, cuerpo extraño u otra posible afectación después del consumo.",
+        "reportar_modificacion_culinaria_no_aplicada": "El cliente informa que no se respetó un ajuste de ingredientes o preparación previamente confirmado.",
+        "reportar_dano_por_empaque_o_transporte": "El cliente informa que los alimentos llegaron derramados o afectados por el empaque o el traslado.",
+        "reportar_cobro_incorrecto": "El cliente informa valores, cantidades, descuentos o cargos que no corresponden.",
+        "reportar_pago_sin_confirmacion_de_pedido": "El cliente pagó el monto correcto, pero el pedido no aparece confirmado.",
+        "reportar_factura_no_emitida_o_incorrecta": "El cliente informa que la factura no llegó o contiene errores tributarios, aunque el monto cobrado es correcto.",
+        "reportar_incumplimiento_de_reserva": "El cliente informa que una reserva confirmada no fue encontrada o respetada.",
+        "reportar_incumplimiento_de_evento": "El cliente informa un incumplimiento del espacio, montaje, decoración o recurso técnico acordado.",
+        "reportar_mala_atencion": "El cliente informa un trato irrespetuoso, una comunicación inadecuada o abandono de la atención.",
+        "consultar_reembolso_aprobado_pendiente": "El cliente solicita seguimiento a una devolución aprobada que no llegó en el plazo informado.",
+        "consultar_objeto_olvidado": "El cliente solicita localizar o recuperar un objeto dejado en el restaurante.",
+        "reportar_problema_de_higiene_o_instalaciones": "El cliente informa una condición inadecuada de limpieza, mobiliario o infraestructura."
+      }
+    }
+  }
+}

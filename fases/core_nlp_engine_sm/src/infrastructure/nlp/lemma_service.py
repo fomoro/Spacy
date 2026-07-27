@@ -68,7 +68,7 @@ class LemmaService:
         self,
         config: str | Path | Mapping[str, Any],
         nlp: Language | None = None,
-        model_name: str = "es_core_news_sm",
+        model_name: str = "es_core_news_md",
         allow_catalog_fallback: bool = True,
     ) -> None:
         self._catalog = self._load_catalog(config)
