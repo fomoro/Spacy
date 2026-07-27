@@ -1,0 +1,460 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "situation_count": 98,
+    "response_count": 241
+  },
+  "responses": {
+    "Reservas de mesa": {
+      "consultar_condiciones_de_reserva": {
+        "condiciones_pendientes": "Necesitamos validar la anticipación, la tolerancia y los requisitos aplicables a las reservas antes de confirmártelos."
+      },
+      "consultar_atencion_sin_reserva": {
+        "condiciones_pendientes": "Necesitamos validar cómo funciona la atención sin reserva y la asignación de mesas antes de confirmártelo."
+      },
+      "consultar_disponibilidad_de_mesa": {
+        "disponibilidad_confirmada": "Hay disponibilidad para {party_size} personas el {date} a las {time}.",
+        "sin_disponibilidad": "No hay disponibilidad para {party_size} personas el {date} a las {time}.",
+        "disponibilidad_pendiente": "La disponibilidad para {party_size} personas el {date} a las {time} está pendiente de validación."
+      },
+      "crear_reserva_de_mesa": {
+        "reserva_confirmada": "Tu reserva quedó confirmada a nombre de {reservation_holder} para {party_size} personas el {date} a las {time}. La referencia es {reservation_reference}.",
+        "registro_pendiente": "El registro de la reserva para el {date} a las {time} está pendiente de confirmación.",
+        "reserva_no_confirmada": "La reserva no quedó confirmada."
+      },
+      "verificar_reserva_existente": {
+        "reserva_encontrada": "Encontramos la reserva {reservation_reference} para {party_size} personas el {date} a las {time}.",
+        "reserva_no_encontrada": "No encontramos una reserva asociada a {reservation_reference}.",
+        "validacion_pendiente": "La reserva {reservation_reference} está pendiente de validación."
+      },
+      "modificar_reserva_existente": {
+        "modificacion_confirmada": "Los cambios de la reserva {reservation_reference} quedaron confirmados: {reservation_changes}.",
+        "modificacion_pendiente": "Los cambios de la reserva {reservation_reference} están pendientes de validación.",
+        "modificacion_no_aplicada": "No fue posible aplicar los cambios a la reserva {reservation_reference}."
+      },
+      "cancelar_reserva_existente": {
+        "cancelacion_confirmada": "La reserva {reservation_reference} quedó cancelada.",
+        "cancelacion_pendiente": "La cancelación de la reserva {reservation_reference} está pendiente de confirmación.",
+        "cancelacion_no_aplicada": "La reserva {reservation_reference} no fue cancelada."
+      },
+      "avisar_llegada_tarde": {
+        "mesa_conservada": "La llegada estimada a las {estimated_arrival_time} quedó registrada para la reserva {reservation_reference}, y la mesa se conservará hasta ese momento.",
+        "conservacion_pendiente": "El aviso de llegada a las {estimated_arrival_time} quedó asociado a la reserva {reservation_reference}, pero la conservación de la mesa sigue pendiente de validación."
+      },
+      "solicitar_ingreso_a_lista_de_espera": {
+        "ingreso_confirmado": "Quedaste en la lista de espera para {party_size} personas el {date} en el horario {time}.",
+        "ingreso_pendiente": "El ingreso a la lista de espera está pendiente de confirmación.",
+        "lista_no_disponible": "La lista de espera no está disponible para {party_size} personas el {date} en el horario {time}."
+      }
+    },
+    "Eventos especiales y cotizaciones": {
+      "consultar_condiciones_para_eventos": {
+        "condiciones_pendientes": "Necesitamos validar la capacidad, los horarios, los anticipos y las demás condiciones para eventos antes de confirmártelos."
+      },
+      "consultar_disponibilidad_para_evento": {
+        "disponibilidad_confirmada": "El espacio está disponible el {date} en el horario {time_range} para {party_size} personas.",
+        "sin_disponibilidad": "El espacio no está disponible el {date} en el horario {time_range} para {party_size} personas.",
+        "disponibilidad_pendiente": "La disponibilidad del espacio para el {date} en el horario {time_range} está pendiente de validación."
+      },
+      "solicitar_cotizacion_de_evento": {
+        "solicitud_registrada": "La solicitud de cotización para {event_type}, con {requested_services}, quedó registrada con la referencia {quote_reference}.",
+        "solicitud_pendiente": "La solicitud de cotización para {event_type} está pendiente de registro.",
+        "solicitud_no_registrada": "La solicitud de cotización para {event_type} no quedó registrada."
+      },
+      "consultar_estado_de_cotizacion_de_evento": {
+        "cotizacion_lista": "La cotización {quote_reference} está lista para revisión.",
+        "cotizacion_en_preparacion": "La cotización {quote_reference} continúa en preparación.",
+        "cotizacion_no_encontrada": "No encontramos la cotización {quote_reference}."
+      },
+      "solicitar_aclaracion_de_cotizacion_de_evento": {
+        "aclaracion_entregada": "La aclaración sobre {clarification_topic} de la cotización {quote_reference} es la siguiente: {clarification_detail}.",
+        "aclaracion_pendiente": "La aclaración sobre {clarification_topic} de la cotización {quote_reference} está pendiente de revisión."
+      },
+      "solicitar_ajuste_de_cotizacion_de_evento": {
+        "ajuste_registrado": "Los cambios de la cotización {quote_reference} quedaron registrados: {quote_changes}.",
+        "ajuste_pendiente": "Los cambios de la cotización {quote_reference} están pendientes de validación.",
+        "ajuste_no_aplicado": "No fue posible aplicar los cambios a la cotización {quote_reference}."
+      },
+      "solicitar_exclusividad_del_espacio": {
+        "exclusividad_disponible": "La exclusividad de {space_scope} está disponible el {date} en el horario {time_range} para {party_size} personas.",
+        "sin_disponibilidad": "La exclusividad de {space_scope} no está disponible el {date} en el horario {time_range}.",
+        "disponibilidad_pendiente": "La exclusividad de {space_scope} para el {date} en el horario {time_range} está pendiente de validación."
+      },
+      "coordinar_montaje_y_proveedores": {
+        "coordinacion_confirmada": "El ingreso de {setup_or_provider} para el evento {event_reference} quedó coordinado a las {access_time}.",
+        "coordinacion_pendiente": "La coordinación del ingreso de {setup_or_provider} para el evento {event_reference} está pendiente.",
+        "coordinacion_no_confirmada": "El ingreso de {setup_or_provider} no quedó coordinado para el evento {event_reference}."
+      },
+      "coordinar_requerimientos_tecnicos": {
+        "coordinacion_confirmada": "El uso de {technical_resource} para el evento {event_reference} quedó coordinado.",
+        "coordinacion_pendiente": "La coordinación de {technical_resource} para el evento {event_reference} está pendiente.",
+        "coordinacion_no_confirmada": "El uso de {technical_resource} no quedó coordinado para el evento {event_reference}."
+      },
+      "confirmar_evento_cotizado": {
+        "evento_confirmado": "El evento asociado a la cotización {quote_reference} quedó confirmado. La referencia es {event_reference}.",
+        "confirmacion_pendiente": "La confirmación del evento asociado a la cotización {quote_reference} está pendiente.",
+        "cotizacion_no_vigente": "La cotización {quote_reference} no está vigente para confirmar el evento."
+      },
+      "confirmar_pago_de_anticipo_de_evento": {
+        "anticipo_aplicado": "El pago {payment_reference} quedó verificado y aplicado al evento {event_reference}.",
+        "verificacion_pendiente": "La aplicación del pago {payment_reference} al evento {event_reference} está pendiente de verificación.",
+        "pago_no_identificado": "No encontramos el pago {payment_reference} asociado al evento {event_reference}."
+      },
+      "modificar_evento_confirmado": {
+        "modificacion_confirmada": "Los cambios del evento {event_reference} quedaron confirmados: {event_changes}.",
+        "modificacion_pendiente": "Los cambios del evento {event_reference} están pendientes de validación.",
+        "modificacion_no_aplicada": "No fue posible aplicar los cambios al evento {event_reference}."
+      },
+      "cancelar_evento_confirmado": {
+        "cancelacion_confirmada": "El evento {event_reference} quedó cancelado. Las condiciones aplicadas son {cancellation_terms}.",
+        "cancelacion_pendiente": "La cancelación del evento {event_reference} y sus condiciones aplicables están pendientes de confirmación.",
+        "cancelacion_no_aplicada": "El evento {event_reference} no fue cancelado. Las condiciones vigentes son {cancellation_terms}."
+      }
+    },
+    "Oferta gastronómica": {
+      "solicitar_menu": {
+        "carta_presentada": "Esta es la carta vigente del restaurante: {menu_content}.",
+        "carta_no_disponible": "La carta no está disponible en este momento."
+      },
+      "consultar_categoria_del_menu": {
+        "categoria_encontrada": "En {menu_category} aparecen estas opciones: {category_options}.",
+        "categoria_sin_productos": "La categoría {menu_category} no tiene productos publicados en la carta vigente.",
+        "categoria_no_encontrada": "La categoría {menu_category} no aparece en la carta vigente. Estas son las categorías publicadas: {available_categories}."
+      },
+      "consultar_disponibilidad_de_producto": {
+        "producto_disponible_confirmado": "La disponibilidad operativa de {product} está confirmada en este momento.",
+        "producto_no_disponible_confirmado": "La falta de disponibilidad de {product} está confirmada en este momento.",
+        "disponibilidad_no_verificada": "La disponibilidad actual de {product} sigue pendiente de validación."
+      },
+      "consultar_precio_de_producto": {
+        "precio_publicado": "El precio vigente de {product} es {price} COP.",
+        "precios_por_presentacion": "Estos son los precios publicados de {product} según su presentación: {price}.",
+        "precio_no_publicado": "La carta vigente no publica un precio para {product}."
+      },
+      "consultar_ingredientes_y_acompanamientos": {
+        "descripcion_publicada": "La descripción publicada de {product} es: {product_description}.",
+        "descripcion_parcial_publicada": "La carta publica esta descripción de {product}: {product_description}. La lista completa de ingredientes y acompañamientos no está disponible.",
+        "detalle_no_publicado": "La carta no publica ingredientes ni acompañamientos detallados de {product}; necesitamos validarlos con cocina."
+      },
+      "consultar_preparacion_y_coccion": {
+        "preparacion_publicada": "La preparación publicada de {product} se describe así: {product_description}.",
+        "opciones_de_coccion_confirmadas": "Cocina confirmó estas opciones de preparación o término para {product}: {cooking_options}.",
+        "preparacion_no_documentada": "La carta no especifica la preparación o el término disponible para {product}; necesitamos validarlo con cocina."
+      },
+      "consultar_tamano_y_rendimiento_de_porcion": {
+        "porcion_publicada": "La porción de {product} está indicada como {portion}.",
+        "presentaciones_publicadas": "Las presentaciones publicadas de {product} y sus precios son: {price}.",
+        "porcion_no_documentada": "La carta no publica el tamaño o rendimiento de {product}; necesitamos validarlo."
+      },
+      "comparar_productos": {
+        "comparacion_disponible": "Entre {products}, estas son las diferencias publicadas: {comparison_summary}.",
+        "comparacion_parcial": "La carta permite comparar parcialmente {products}: {available_comparison}. Los demás aspectos no están publicados.",
+        "comparacion_no_disponible": "La carta no contiene información suficiente para comparar {products} con el criterio solicitado."
+      },
+      "solicitar_recomendacion_por_gusto": {
+        "recomendaciones_encontradas": "Según tus preferencias de {taste_preferences}, estas opciones de la carta son las más cercanas: {recommended_products}.",
+        "sin_coincidencias": "No encontramos en la carta opciones que coincidan con {taste_preferences}."
+      },
+      "solicitar_recomendacion_por_presupuesto": {
+        "opciones_dentro_del_presupuesto": "Con un presupuesto de {budget} COP {budget_scope}, estas opciones no superan el monto: {recommended_products}.",
+        "sin_opciones_dentro_del_presupuesto": "No encontramos opciones en la carta que se mantengan dentro de {budget} COP {budget_scope}."
+      }
+    },
+    "Seguridad y restricciones alimentarias": {
+      "consultar_opciones_vegetarianas": {
+        "opciones_vegetarianas_publicadas": "Estas opciones aparecen identificadas como vegetarianas en la carta: {vegetarian_options}.",
+        "sin_opciones_vegetarianas_publicadas": "La carta vigente no publica opciones identificadas como vegetarianas."
+      },
+      "consultar_opciones_veganas": {
+        "opciones_validadas_por_cocina": "Cocina reporta estas opciones sin ingredientes ni derivados de origen animal: {validated_options}. La contaminación cruzada solo se considera revisada si se informa expresamente.",
+        "validacion_de_cocina_pendiente": "La carta no identifica productos como veganos; necesitamos validar ingredientes, derivados y preparación con cocina."
+      },
+      "consultar_producto_crudo_durante_el_embarazo": {
+        "preparacion_publicada": "La carta describe {product} así: {product_description}. Los componentes crudos o semicrudos no explícitos requieren validación con cocina.",
+        "preparacion_confirmada_por_cocina": "Cocina reporta que {product} se sirve {preparation_status}.",
+        "validacion_de_cocina_pendiente": "La carta no permite confirmar si {product} contiene componentes crudos o semicrudos; necesitamos validar la preparación con cocina."
+      },
+      "consultar_opciones_por_enfermedad_celiaca": {
+        "hechos_de_preparacion_validados": "Cocina reporta estos ingredientes y condiciones de preparación: {validation_details}. Esta información no certifica ausencia de gluten ni de contaminación cruzada.",
+        "validacion_de_cocina_pendiente": "La carta no certifica opciones para enfermedad celíaca ni documenta contaminación cruzada; necesitamos validar ingredientes y preparación con cocina."
+      },
+      "consultar_producto_por_intolerancia_alimentaria": {
+        "ingredientes_publicados": "La descripción publicada de {product} es {product_description}. La presencia de {dietary_restriction} requiere validación con cocina si no está explícita.",
+        "hechos_validados_por_cocina": "Cocina reporta esta información sobre la intolerancia a {dietary_restriction} en {product}: {validation_details}.",
+        "validacion_de_cocina_pendiente": "La carta no permite confirmar la presencia ni el manejo de {dietary_restriction} en {product}; necesitamos validar ambos aspectos con cocina."
+      },
+      "consultar_alergeno_en_producto": {
+        "alergeno_identificado_en_descripcion": "La descripción publicada de {product} incluye {allergen}.",
+        "resultado_validado_por_cocina": "Cocina reporta este resultado sobre {allergen} en {product}: {validation_details}. La contaminación cruzada solo se considera revisada si el resultado la menciona expresamente.",
+        "validacion_de_cocina_pendiente": "La carta no permite confirmar si {product} contiene {allergen}; necesitamos validar la receta y el manejo de preparación con cocina."
+      },
+      "solicitar_opciones_por_alergia": {
+        "hechos_validados_por_cocina": "Cocina reporta estos ingredientes y condiciones de preparación para las opciones revisadas frente a {allergen}: {validation_details}. La contaminación cruzada solo queda cubierta si se informa expresamente.",
+        "validacion_de_cocina_pendiente": "La carta no permite confirmar opciones compatibles frente a {allergen}; necesitamos validar ingredientes y contaminación cruzada con cocina."
+      },
+      "consultar_contaminacion_cruzada": {
+        "practicas_de_cocina_informadas": "Cocina reporta estas condiciones de aceites, utensilios, superficies y áreas compartidas para {cross_contact_concern}: {cross_contact_details}.",
+        "validacion_de_cocina_pendiente": "La carta no documenta el manejo de contaminación cruzada para {cross_contact_concern}; necesitamos validarlo con cocina."
+      },
+      "solicitar_adaptacion_por_restriccion": {
+        "adaptacion_aprobada_por_cocina": "Cocina confirmó que puede realizar en {product} este ajuste culinario: {approved_adaptation}. Esto no certifica compatibilidad médica, alérgica ni ausencia de contaminación cruzada.",
+        "adaptacion_no_disponible": "Cocina informó que {product} no admite el ajuste solicitado para {dietary_restriction}.",
+        "validacion_de_cocina_pendiente": "La posibilidad de adaptar {product} para {dietary_restriction} no está documentada y requiere validación con cocina."
+      },
+      "consultar_producto_por_restriccion_religiosa": {
+        "ingredientes_y_procesos_publicados": "La carta describe {product} así: {product_description}. Los ingredientes o procesos no publicados requieren validación con cocina.",
+        "hechos_validados_por_cocina": "Cocina reporta estos ingredientes y procesos de {product}: {validation_details}.",
+        "validacion_de_cocina_pendiente": "La carta no documenta todos los ingredientes o procesos de {product} relacionados con {dietary_restriction}; necesitamos validarlos con cocina."
+      },
+      "consultar_producto_por_restriccion_medica": {
+        "ingredientes_y_preparacion_publicados": "La carta describe {product} así: {product_description}. Esta información no determina su conveniencia para una condición médica.",
+        "hechos_validados_por_cocina": "Cocina reporta estos ingredientes y condiciones de preparación de {product} relacionados con {dietary_restriction}: {validation_details}. Esta información no determina su conveniencia para una condición médica.",
+        "validacion_de_cocina_pendiente": "La carta no permite confirmar los ingredientes o la preparación relacionados con {dietary_restriction} en {product}; necesitamos validarlos con cocina."
+      }
+    },
+    "Información comercial y del lugar": {
+      "consultar_horarios": {
+        "horario_presencial_disponible": "Nuestro horario de atención presencial es {opening_hours}.",
+        "horario_de_cocina_pendiente": "El horario específico de cocina está pendiente de validación."
+      },
+      "consultar_ubicacion": {
+        "direccion_disponible": "Estamos en {address}, barrio {neighborhood}, {city}.",
+        "indicaciones_pendientes": "Las indicaciones específicas para llegar dependen del punto de partida y están pendientes de validación."
+      },
+      "consultar_parqueadero": {
+        "parqueadero_disponible": "Contamos con parqueadero para {parking_vehicle_types}.",
+        "condiciones_pendientes": "El costo, los convenios y las demás condiciones del parqueadero están pendientes de validación."
+      },
+      "consultar_accesibilidad": {
+        "accesibilidad_confirmada": "Contamos con acceso para personas con movilidad reducida.",
+        "detalles_pendientes": "Los detalles específicos de ingreso y circulación están pendientes de validación."
+      },
+      "consultar_ingreso_con_mascota_de_compania": {
+        "politica_pendiente": "Las condiciones de ingreso con una mascota de compañía están pendientes de validación."
+      },
+      "consultar_ingreso_con_animal_de_asistencia": {
+        "condiciones_pendientes": "Las condiciones de ingreso con un animal de asistencia se gestionan por separado de las mascotas y están pendientes de validación."
+      },
+      "consultar_facilidades_para_ninos": {
+        "informacion_pendiente": "La disponibilidad de sillas para bebé, cambiadores y otras facilidades para niños está pendiente de validación."
+      },
+      "consultar_medios_de_pago": {
+        "medios_y_combinacion_disponibles": "Aceptamos {payment_methods}. La política para combinarlos es {payment_combination_policy}.",
+        "combinacion_pendiente": "Aceptamos {payment_methods}. La posibilidad de combinarlos está pendiente de validación."
+      },
+      "consultar_facturacion_electronica": {
+        "procedimiento_pendiente": "Los requisitos y el procedimiento de facturación electrónica están pendientes de validación."
+      },
+      "consultar_propina": {
+        "condiciones_pendientes": "La inclusión, la voluntariedad y la modificación de la propina están pendientes de validación."
+      },
+      "consultar_promociones": {
+        "promociones_pendientes": "Las promociones vigentes y sus condiciones están pendientes de validación."
+      }
+    },
+    "Pedidos a domicilio y para recoger": {
+      "consultar_servicio_de_domicilio": {
+        "servicio_disponible": "Sí contamos con servicio a domicilio. Puedes solicitarlo por {delivery_channels}.",
+        "servicio_no_disponible": "Por el momento el servicio a domicilio no está disponible.",
+        "disponibilidad_pendiente": "La disponibilidad actual del servicio a domicilio está pendiente de validación."
+      },
+      "consultar_cobertura_de_domicilio": {
+        "zona_con_cobertura": "La ubicación {delivery_area} está dentro de la cobertura disponible. La dirección completa se valida al construir el pedido.",
+        "zona_sin_cobertura": "La ubicación {delivery_area} está fuera de la cobertura disponible. No se iniciará un domicilio para esa zona.",
+        "cobertura_pendiente": "La cobertura para {delivery_area} está pendiente de validación."
+      },
+      "consultar_tarifa_de_domicilio": {
+        "tarifa_disponible": "La tarifa de entrega para {delivery_area} es {delivery_fee}. Este valor no corresponde al total de productos.",
+        "tarifa_pendiente": "No fue posible obtener una tarifa confirmada para {delivery_area}. Ningún valor de domicilio se añadirá sin validación."
+      },
+      "consultar_pedido_minimo_para_domicilio": {
+        "pedido_minimo_definido": "El valor mínimo de productos para solicitar domicilio es {minimum_order}. La tarifa de entrega se calcula por separado.",
+        "sin_pedido_minimo": "El servicio de domicilio no exige un valor mínimo de productos. La tarifa de entrega se valida por separado.",
+        "condicion_pendiente": "La condición de pedido mínimo para domicilio está pendiente de validación."
+      },
+      "consultar_tiempo_estimado_de_entrega": {
+        "tiempo_estimado_disponible": "El tiempo estimado para entregar en {delivery_area} es {estimated_delivery_time}. Esta estimación puede actualizarse al confirmar el pedido.",
+        "estimacion_pendiente": "No fue posible confirmar un tiempo estimado para {delivery_area}. El pedido no se registrará con un plazo sin validar."
+      },
+      "consultar_horario_del_servicio_de_domicilio": {
+        "horario_disponible": "El servicio de domicilio opera en {delivery_hours}. La disponibilidad concreta se confirma antes de registrar el pedido.",
+        "fuera_del_horario": "La franja {requested_time_range} está fuera del horario del servicio de domicilio. La siguiente franja disponible es {available_time_range}.",
+        "horario_pendiente": "El horario vigente del servicio de domicilio está pendiente de validación."
+      },
+      "iniciar_pedido_a_domicilio": {
+        "borrador_iniciado": "El pedido a domicilio quedó en borrador con {order_summary}. Todavía no está confirmado ni enviado a preparación.",
+        "borrador_no_creado": "No fue posible crear el borrador del pedido a domicilio. Ningún pedido quedó confirmado."
+      },
+      "iniciar_pedido_para_recoger": {
+        "borrador_iniciado": "El pedido para recoger quedó en borrador con {order_summary}. Todavía no está confirmado ni enviado a preparación.",
+        "borrador_no_creado": "No fue posible crear el borrador del pedido para recoger. Ningún pedido quedó confirmado."
+      },
+      "programar_pedido": {
+        "programacion_en_borrador": "El pedido quedó programado en borrador para {date} a las {time}, con modalidad {fulfillment_method}. Todavía no está confirmado.",
+        "programacion_no_disponible": "No hay disponibilidad confirmada para {date} a las {time}. Ningún pedido quedó registrado."
+      },
+      "coordinar_pedido_grupal_empacado": {
+        "pedido_grupal_en_borrador": "El pedido grupal para {party_size} personas quedó en borrador con {order_summary}. Todavía no está confirmado.",
+        "pedido_grupal_requiere_ajuste": "El pedido grupal requiere este ajuste para continuar: {required_adjustment}. El borrador sigue sin confirmar."
+      },
+      "repetir_pedido_anterior": {
+        "pedido_anterior_recuperado": "Los productos del pedido {previous_order_reference} quedaron copiados en un nuevo borrador. La modalidad, la entrega y el total corresponden al pedido nuevo.",
+        "pedido_anterior_no_recuperado": "No fue posible recuperar el pedido {previous_order_reference}. Ningún borrador nuevo quedó creado."
+      },
+      "enviar_pedido_a_otro_destinatario": {
+        "destinatario_agregado": "El destinatario {recipient_name} quedó asociado al borrador con los datos de entrega suministrados. El pedido todavía no está confirmado.",
+        "destinatario_no_agregado": "No fue posible asociar el nuevo destinatario al borrador. El pedido conserva sus datos anteriores."
+      },
+      "agregar_instrucciones_de_entrega": {
+        "instrucciones_agregadas": "Las indicaciones {delivery_instructions} quedaron guardadas en el borrador. Se aplicarán únicamente si el pedido es confirmado.",
+        "instrucciones_no_agregadas": "No fue posible guardar las indicaciones de entrega. El borrador permanece sin cambios."
+      },
+      "consultar_empaque_de_pedido": {
+        "empaque_disponible": "La opción de empaque disponible para este pedido es {packaging_option}. Sus condiciones se reflejarán antes de confirmar.",
+        "empaque_pendiente": "La disponibilidad y las condiciones del empaque solicitado siguen pendientes de validación.",
+        "empaque_sin_alternativa": "La opción de empaque solicitada no está disponible y no hay una alternativa confirmada para este pedido."
+      },
+      "consultar_resumen_y_total_del_pedido": {
+        "resumen_disponible": "El borrador contiene {order_summary}. El total final antes de confirmar es {order_total}.",
+        "total_pendiente": "El borrador contiene {order_summary}, pero el total sigue pendiente de {pending_component}. El pedido todavía no está confirmado."
+      },
+      "aplicar_promocion_al_pedido": {
+        "promocion_aplicada": "La promoción {promotion_reference} quedó aplicada al borrador. El descuento es {applied_discount} y el total actualizado es {order_total}.",
+        "promocion_no_aplicada": "La promoción {promotion_reference} no se aplicó al borrador: {non_application_reason}. El total permanece sin cambios."
+      },
+      "seleccionar_medio_de_pago_del_pedido": {
+        "medio_de_pago_seleccionado": "El medio de pago {payment_method} quedó seleccionado para el borrador. Esto no confirma todavía el pedido.",
+        "medio_de_pago_no_disponible": "El medio de pago {payment_method} no está disponible para este pedido. Las opciones habilitadas son {available_payment_methods}."
+      },
+      "solicitar_cambio_para_pago_en_efectivo": {
+        "cambio_registrado": "Registramos que pagarás en efectivo con {cash_tendered_amount}. El cambio calculado sobre el total vigente es {estimated_change}.",
+        "cambio_no_registrado": "No fue posible registrar la solicitud de cambio: {registration_failure_reason}. El borrador conserva su medio de pago sin cambios."
+      },
+      "registrar_referencia_de_pago_digital": {
+        "pago_asociado": "La referencia {payment_reference} quedó asociada al pago normal del pedido. La confirmación del pedido se informa por separado.",
+        "pago_en_verificacion": "La referencia {payment_reference} está en verificación. El borrador todavía no se considera un pedido confirmado."
+      },
+      "solicitar_factura_para_pedido": {
+        "factura_solicitada": "La solicitud de factura quedó registrada para el pedido {order_reference} con los datos suministrados. Esto no confirma que la factura ya haya sido emitida.",
+        "factura_no_solicitada": "No fue posible registrar la solicitud de factura para el pedido {order_reference}: {registration_failure_reason}. No se modificaron los datos del pedido."
+      },
+      "confirmar_pedido_a_domicilio": {
+        "pedido_confirmado": "El pedido a domicilio quedó confirmado con la referencia {order_reference}. El resumen final es {confirmed_order_summary}.",
+        "pedido_no_confirmado": "No fue posible confirmar el pedido a domicilio: {confirmation_failure_reason}. El borrador no pasó a pedido activo."
+      },
+      "confirmar_pedido_para_recoger": {
+        "pedido_confirmado": "El pedido para recoger quedó confirmado con la referencia {order_reference}. El resumen final es {confirmed_order_summary}.",
+        "pedido_no_confirmado": "No fue posible confirmar el pedido para recoger: {confirmation_failure_reason}. El borrador no pasó a pedido activo."
+      },
+      "modificar_pedido_activo": {
+        "cambio_aplicado": "El pedido activo {order_reference} quedó actualizado con {changes_summary}. Su estado actual es {order_status}.",
+        "cambio_no_aplicado": "No fue posible modificar el pedido activo {order_reference}: {non_application_reason}. El pedido conserva sus condiciones anteriores."
+      },
+      "actualizar_datos_de_entrega": {
+        "datos_actualizados": "Los datos de entrega del pedido activo {order_reference} quedaron actualizados: {changes_summary}. La entrega continuará con esta información.",
+        "datos_no_actualizados": "No fue posible actualizar los datos de entrega del pedido {order_reference}: {non_application_reason}. Permanecen vigentes los datos anteriores."
+      },
+      "consultar_estado_de_pedido": {
+        "estado_disponible": "El pedido {order_reference} está {order_status} y continúa dentro del tiempo informado. La actualización confirmada es {tracking_details}.",
+        "estado_no_disponible": "No fue posible obtener una actualización confirmada del pedido {order_reference}. Esto no indica por sí solo una demora."
+      },
+      "cancelar_pedido_activo": {
+        "pedido_cancelado_con_condiciones_confirmadas": "El pedido activo {order_reference} quedó cancelado. Las condiciones confirmadas son {cancellation_terms}.",
+        "pedido_cancelado_con_condiciones_pendientes": "El pedido activo {order_reference} quedó cancelado. Las condiciones aplicables siguen pendientes de validación.",
+        "pedido_no_cancelado": "No fue posible cancelar el pedido activo {order_reference}: {cancellation_failure_reason}. El pedido conserva su estado actual."
+      }
+    },
+    "Novedades y recuperación del servicio": {
+      "gestionar_producto_no_disponible_tras_confirmacion": {
+        "reporte_recibido": "Lamentamos el inconveniente. Registramos el reporte sobre el producto del pedido {order_reference} y validaremos su disponibilidad antes de proponer una solución.",
+        "resultado_verificado": "La revisión de disponibilidad del pedido {order_reference} finalizó con este resultado: {review_result}. La solución confirmada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro de la novedad de disponibilidad para el pedido {order_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_demora_fuera_del_tiempo_prometido": {
+        "reporte_de_demora_recibido": "Lamentamos la espera. Registramos el reporte del servicio {service_locator} y verificaremos el plazo informado y su estado actual.",
+        "resultado_de_demora_verificado": "La revisión del servicio {service_locator} finalizó con este resultado: {review_result}. La actualización confirmada es {service_update}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro de la demora del servicio {service_locator}. El seguimiento humano sigue pendiente."
+      },
+      "reportar_domicilio_marcado_como_entregado_no_recibido": {
+        "reporte_de_entrega_recibido": "Entendemos la preocupación. Registramos que el pedido {order_reference} aparece entregado, aunque indicas que no lo recibiste, y verificaremos la trazabilidad.",
+        "resultado_de_entrega_verificado": "La revisión de trazabilidad del pedido {order_reference} finalizó con este resultado: {review_result}. La solución confirmada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del domicilio no recibido para el pedido {order_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_pedido_incompleto": {
+        "reporte_de_faltantes_recibido": "Lamentamos el inconveniente. Registramos los faltantes reportados para el pedido {order_reference} y revisaremos lo confirmado, empacado y entregado.",
+        "resultado_de_faltantes_verificado": "La revisión de los faltantes del pedido {order_reference} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro de los faltantes del pedido {order_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_pedido_diferente_al_confirmado": {
+        "reporte_de_producto_recibido": "Lamentamos el inconveniente. Registramos que el producto recibido en el pedido {order_reference} fue reportado como diferente y revisaremos la confirmación.",
+        "resultado_de_producto_verificado": "La revisión del producto recibido en el pedido {order_reference} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del producto diferente en el pedido {order_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_calidad_inadecuada": {
+        "reporte_de_calidad_recibido": "Gracias por informarnos. Registramos el reporte sobre {affected_product} asociado al servicio {service_locator} y revisaremos la información sin anticipar la causa.",
+        "resultado_de_calidad_verificado": "La revisión del servicio {service_locator} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del reporte de calidad sobre {affected_product}. La revisión humana sigue pendiente."
+      },
+      "reportar_posible_afectacion_a_la_salud": {
+        "reporte_prioritario_escalado": "Lamentamos lo ocurrido y dimos prioridad al reporte relacionado con {consumed_product}. El caso {case_reference} quedó escalado de inmediato para atención humana.",
+        "seguimiento_prioritario_activo": "El caso {case_reference} continúa en atención prioritaria. La actualización confirmada es {case_update}.",
+        "escalamiento_no_confirmado": "El reporte relacionado con {consumed_product} requiere atención humana prioritaria, pero la derivación aún no está confirmada."
+      },
+      "reportar_modificacion_culinaria_no_aplicada": {
+        "reporte_de_modificacion_recibido": "Lamentamos el inconveniente. Registramos que el ajuste solicitado en {affected_product} fue reportado como no aplicado y revisaremos la confirmación del pedido {order_reference}.",
+        "resultado_de_modificacion_verificado": "La revisión del ajuste culinario del pedido {order_reference} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del ajuste culinario no aplicado en el pedido {order_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_dano_por_empaque_o_transporte": {
+        "reporte_de_dano_recibido": "Lamentamos el inconveniente. Registramos el daño reportado en el pedido {order_reference} y revisaremos el empaque y la entrega.",
+        "resultado_de_dano_verificado": "La revisión del daño reportado en el pedido {order_reference} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del daño en el pedido {order_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_cobro_incorrecto": {
+        "reporte_de_cobro_recibido": "Registramos la diferencia reportada para {billing_reference} y revisaremos el detalle del cobro. Esto aún no confirma un ajuste ni una devolución.",
+        "resultado_de_cobro_verificado": "La revisión de {billing_reference} finalizó con este resultado: {review_result}. La decisión informada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro de la diferencia de cobro para {billing_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_pago_sin_confirmacion_de_pedido": {
+        "reporte_de_pago_recibido": "Registramos que el pago {payment_reference} fue reportado, mientras el pedido sigue sin aparecer confirmado. Validaremos ambos registros antes de informar un resultado.",
+        "resultado_de_pago_verificado": "La revisión de {payment_reference} finalizó con este resultado: {review_result}. La solución confirmada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del pago sin pedido asociado para {payment_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_factura_no_emitida_o_incorrecta": {
+        "reporte_de_factura_recibido": "Registramos la novedad reportada sobre la factura asociada a {billing_reference}. Verificaremos la emisión y los datos antes de informar un resultado.",
+        "resultado_de_factura_verificado": "La revisión de la factura finalizó con este resultado: {review_result}. La solución confirmada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro de la novedad de factura asociada a {billing_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_incumplimiento_de_reserva": {
+        "reporte_de_reserva_recibido": "Lamentamos la situación reportada. Registramos la novedad de la reserva {reservation_reference} y revisaremos las condiciones confirmadas.",
+        "resultado_de_reserva_verificado": "La revisión de la reserva {reservation_reference} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del incumplimiento de la reserva {reservation_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_incumplimiento_de_evento": {
+        "reporte_de_evento_recibido": "Lamentamos la situación reportada. Registramos la novedad del evento {event_reference} y revisaremos las condiciones acordadas.",
+        "resultado_de_evento_verificado": "La revisión del evento {event_reference} finalizó con este resultado: {review_result}. La solución registrada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del incumplimiento del evento {event_reference}. La revisión humana sigue pendiente."
+      },
+      "reportar_mala_atencion": {
+        "reporte_de_atencion_recibido": "Lamentamos la experiencia que describes. Registramos el reporte de atención con el contexto suministrado y lo revisaremos sin anticipar conclusiones.",
+        "resultado_de_atencion_verificado": "La revisión del reporte finalizó con este resultado: {review_result}. La decisión informada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del reporte de atención. La revisión humana sigue pendiente."
+      },
+      "consultar_reembolso_aprobado_pendiente": {
+        "seguimiento_de_reembolso_registrado": "Registramos el seguimiento del reembolso {refund_reference}, reportado como pendiente pese a su aprobación. Verificaremos su estado antes de informar un resultado.",
+        "estado_de_reembolso_confirmado": "El estado confirmado del reembolso {refund_reference} es {refund_status}. El detalle de seguimiento es {tracking_details}.",
+        "seguimiento_no_confirmado": "No fue posible confirmar el registro del seguimiento para el reembolso {refund_reference}. La revisión humana sigue pendiente."
+      },
+      "consultar_objeto_olvidado": {
+        "busqueda_registrada": "Registramos la búsqueda del objeto {item_description} con los datos de la visita. Esto no confirma todavía que haya sido localizado.",
+        "resultado_de_busqueda_confirmado": "La búsqueda del objeto {item_description} finalizó con este resultado: {search_result}. La indicación confirmada es {resolution_details}.",
+        "busqueda_no_confirmada": "No fue posible confirmar el registro de la búsqueda del objeto {item_description}. La revisión humana sigue pendiente."
+      },
+      "reportar_problema_de_higiene_o_instalaciones": {
+        "reporte_de_condicion_recibido": "Gracias por informarnos. Registramos la condición reportada con los datos de la visita y la revisaremos sin anticipar conclusiones.",
+        "resultado_de_condicion_verificado": "La revisión finalizó con este resultado: {review_result}. La decisión informada es {resolution_details}.",
+        "registro_no_confirmado": "No fue posible confirmar el registro del problema de higiene o instalaciones. La revisión humana sigue pendiente."
+      }
+    }
+  }
+}

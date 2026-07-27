@@ -29,8 +29,7 @@
       "tarjeta",
       "nequi",
       "daviplata",
-      "transferencia_bancaria",
-      "pago_qr"
+      "codigo_breb"
     ]
   }
 }

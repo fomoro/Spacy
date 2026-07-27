@@ -1,0 +1,55 @@
+{
+  "Restaurante el Principito": {
+    "description": "Restaurante bogotano de cocina colombiana con platos tradicionales, opciones vegetarianas, menú infantil, postres y bebidas.",
+    "location": {
+      "address": "Calle 9a # 32a-11 Sur",
+      "neighborhood": "Ciudad Montes",
+      "city": "Bogotá",
+      "country": "Colombia"
+    },
+    "parking": {
+      "cars": true,
+      "motorcycles": true
+    },
+    "accessibility": {
+      "reduced_mobility": true
+    },
+    "timezone": "America/Bogota",
+    "opening_hours": {
+      "Lunes": {
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "Martes": {
+        "closed": true
+      },
+      "Miércoles": {
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "Jueves": {
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "Viernes": {
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "Sábado": {
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "Domingo": {
+        "open": "11:00",
+        "close": "18:00"
+      }
+    },
+    "payment_methods": [
+      "Efectivo",
+      "Tarjeta",
+      "Nequi",
+      "Daviplata",
+      "Código Bre-B"
+    ]
+  }
+}

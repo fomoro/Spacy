@@ -1,0 +1,9 @@
+profiles.json: cómo habla el cliente.
+situations.json: qué situación del restaurante se presenta.
+patterns.json o los futuros benchmarks: cómo avanza la conversación entre turnos.
+
+
+situations.json → qué ocurre
+questions.json  → qué dato falta
+responses.json  → qué responde el restaurante
+patterns.json   → en qué orden se combinan

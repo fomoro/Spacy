@@ -1,0 +1,249 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "currency": "COP"
+  },
+  "menu": {
+    "Entradas": {
+      "Empanadas de carne": {
+        "description": "Tres empanadas de maíz con carne desmechada y ají de la casa.",
+        "price": 16000
+      },
+      "Arepitas de choclo con queso": {
+        "description": "Arepitas dulces de maíz servidas con queso fundido.",
+        "price": 18000
+      },
+      "Patacones con hogao": {
+        "description": "Patacones crocantes acompañados de hogao y suero.",
+        "price": 17000
+      },
+      "Croquetas de yuca": {
+        "description": "Croquetas rellenas de queso y acompañadas de salsa de cilantro.",
+        "price": 18000
+      },
+      "Tabla de quesos colombianos": {
+        "description": "Selección de quesos nacionales con fruta, bocadillo y pan artesanal.",
+        "price": 34000,
+        "portion": "2 personas"
+      }
+    },
+    "Sopas": {
+      "Ajiaco santafereño": {
+        "description": "Sopa tradicional con pollo, tres variedades de papa, mazorca y guascas, servida con crema, alcaparras y aguacate.",
+        "price": {
+          "Taza": 18000,
+          "Porción personal": 32000,
+          "Para compartir (2 personas)": 59000
+        }
+      },
+      "Sopa del día": {
+        "description": "Preparación casera definida diariamente por la cocina.",
+        "price": 15000
+      },
+      "Crema de tomate": {
+        "description": "Crema de tomate asado con albahaca y pan tostado.",
+        "price": 17000
+      }
+    },
+    "Platos principales": {
+      "Cocina colombiana": {
+        "Sobrebarriga en salsa criolla": {
+          "description": "Sobrebarriga cocida lentamente con salsa criolla, papa y arroz.",
+          "price": 41000
+        },
+        "Tamal bogotano": {
+          "description": "Masa de maíz con pollo, cerdo y vegetales, cocida en hoja y acompañada de pan.",
+          "price": 30000
+        },
+        "Bandeja de la casa": {
+          "description": "Fríjoles, arroz, carne molida, chicharrón, huevo, plátano maduro y aguacate.",
+          "price": 43000
+        },
+        "Cazuela de fríjoles": {
+          "description": "Fríjoles con carne desmechada, chicharrón, plátano maduro y aguacate.",
+          "price": 36000
+        }
+      },
+      "Carnes y aves": {
+        "Churrasco a la parrilla": {
+          "description": "Corte de res servido con papa rústica, ensalada y chimichurri.",
+          "price": {
+            "200 g": 39000,
+            "300 g": 49000,
+            "400 g": 59000
+          }
+        },
+        "Lomo en salsa de pimienta": {
+          "description": "Lomo de res con salsa de pimienta, puré de papa y vegetales.",
+          "price": 52000
+        },
+        "Costillas de cerdo": {
+          "description": "Costillas horneadas con salsa de panela, papas y ensalada de repollo.",
+          "price": 44000
+        },
+        "Pechuga a la plancha": {
+          "description": "Pechuga de pollo con ensalada y elección entre papa rústica o arroz.",
+          "price": 33000
+        }
+      },
+      "Arroces y pastas": {
+        "Arroz campesino": {
+          "description": "Arroz salteado con pollo, cerdo, vegetales y plátano maduro.",
+          "price": {
+            "Personal": 34000,
+            "Para compartir (2 personas)": 62000
+          }
+        },
+        "Arroz con vegetales": {
+          "description": "Arroz salteado con vegetales de temporada y semillas tostadas.",
+          "price": 29000
+        },
+        "Pasta con pollo y champiñones": {
+          "description": "Pasta corta con pollo, champiñones y salsa cremosa.",
+          "price": 35000
+        },
+        "Pasta al pomodoro": {
+          "description": "Pasta larga con salsa de tomate, albahaca y queso madurado.",
+          "price": 30000
+        }
+      },
+      "Vegetarianos": {
+        "Lasaña de vegetales": {
+          "description": "Lasaña con vegetales asados, salsa de tomate y queso gratinado.",
+          "price": 32000
+        },
+        "Bowl de quinua": {
+          "description": "Quinua, garbanzos, aguacate, vegetales frescos y vinagreta de la casa.",
+          "price": 30000
+        },
+        "Berenjena gratinada": {
+          "description": "Berenjena asada con tomate, queso y ensalada verde.",
+          "price": 31000
+        }
+      }
+    },
+    "Para compartir": {
+      "Picada bogotana": {
+        "description": "Selección de carnes, papa criolla, yuca, chorizo, morcilla y arepa.",
+        "price": {
+          "2 personas": 58000,
+          "4 personas": 98000,
+          "6 personas": 138000
+        }
+      },
+      "Canasta de fritos": {
+        "description": "Empanadas, carimañolas, croquetas de yuca y patacones con salsas.",
+        "price": 39000,
+        "portion": "2 a 3 personas"
+      },
+      "Tabla mixta": {
+        "description": "Quesos, carnes frías, fruta, aceitunas y pan artesanal.",
+        "price": 47000,
+        "portion": "2 a 3 personas"
+      }
+    },
+    "Menú infantil": {
+      "Mini hamburguesa": {
+        "description": "Hamburguesa de res con queso, papas y bebida.",
+        "price": 24000
+      },
+      "Deditos de pollo": {
+        "description": "Tiras de pollo apanadas con papas, fruta y bebida.",
+        "price": 23000
+      },
+      "Pasta infantil": {
+        "description": "Pasta corta con salsa de tomate o salsa cremosa y bebida.",
+        "price": 21000
+      }
+    },
+    "Postres": {
+      "Torta de tres leches": {
+        "description": "Bizcocho húmedo de tres leches con crema batida.",
+        "price": 15000
+      },
+      "Torta de chocolate": {
+        "description": "Torta de chocolate con ganache y helado de vainilla.",
+        "price": 17000
+      },
+      "Merengón de frutas": {
+        "description": "Merengue crocante con crema y frutas de temporada.",
+        "price": 16000
+      },
+      "Cuajada con melao": {
+        "description": "Cuajada fresca con melao de panela.",
+        "price": 14000
+      },
+      "Helado artesanal": {
+        "description": "Selección de sabores disponibles.",
+        "price": {
+          "Una bola": 8000,
+          "Dos bolas": 13000,
+          "Tres bolas": 17000
+        }
+      }
+    },
+    "Bebidas": {
+      "Bebidas frías": {
+        "Limonadas de la casa": {
+          "price": {
+            "Natural": 9000,
+            "Hierbabuena": 11000,
+            "Coco": 14000
+          }
+        },
+        "Jugos naturales": {
+          "description": "Preparados en agua o leche con la fruta disponible.",
+          "price": {
+            "En agua": 10000,
+            "En leche": 12000
+          }
+        },
+        "Gaseosa": {
+          "description": "Botella de 400 ml.",
+          "price": 7000
+        },
+        "Agua": {
+          "price": {
+            "Sin gas (600 ml)": 6000,
+            "Con gas (300 ml)": 7000
+          }
+        }
+      },
+      "Bebidas calientes": {
+        "Tinto": {
+          "price": 5000
+        },
+        "Café con leche": {
+          "price": 7000
+        },
+        "Chocolate santafereño": {
+          "description": "Chocolate caliente acompañado de queso.",
+          "price": 11000
+        },
+        "Aromática de frutas": {
+          "price": 7000
+        }
+      },
+      "Bebidas con alcohol": {
+        "Cerveza nacional": {
+          "description": "Botella de 330 ml.",
+          "price": 10000
+        },
+        "Cerveza artesanal": {
+          "description": "Botella de 330 ml.",
+          "price": 16000
+        },
+        "Vino de la casa": {
+          "price": {
+            "Copa": 22000,
+            "Botella": 85000
+          }
+        },
+        "Coctel de la casa": {
+          "description": "Coctel a base de ron, cítricos y frutas tropicales.",
+          "price": 28000
+        }
+      }
+    }
+  }
+}

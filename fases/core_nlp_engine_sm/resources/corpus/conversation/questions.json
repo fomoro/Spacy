@@ -1,0 +1,337 @@
+{
+  "metadata": {
+    "version": "2.0.0",
+    "situation_count": 98,
+    "question_count": 143
+  },
+  "questions": {
+    "Reservas de mesa": {
+      "consultar_condiciones_de_reserva": {},
+      "consultar_atencion_sin_reserva": {},
+      "consultar_disponibilidad_de_mesa": {
+        "date": "¿Para qué fecha necesitas la mesa?",
+        "time": "¿A qué hora sería?",
+        "party_size": "¿Para cuántas personas sería?"
+      },
+      "crear_reserva_de_mesa": {
+        "date": "¿Para qué fecha necesitas la reserva?",
+        "time": "¿A qué hora sería?",
+        "party_size": "¿Para cuántas personas sería?",
+        "reservation_holder": "¿A nombre de quién registramos la reserva?"
+      },
+      "verificar_reserva_existente": {
+        "reservation_reference": "¿Con qué nombre o número está registrada la reserva?"
+      },
+      "modificar_reserva_existente": {
+        "reservation_reference": "¿Con qué nombre o número está registrada la reserva?",
+        "reservation_changes": "¿Qué necesitas cambiar en la reserva?"
+      },
+      "cancelar_reserva_existente": {
+        "reservation_reference": "¿Con qué nombre o número está registrada la reserva?"
+      },
+      "avisar_llegada_tarde": {
+        "reservation_reference": "¿Con qué nombre o número está registrada la reserva?",
+        "estimated_arrival_time": "¿A qué hora estimas llegar?"
+      },
+      "solicitar_ingreso_a_lista_de_espera": {
+        "date": "¿Para qué fecha necesitas la mesa?",
+        "time": "¿En qué horario buscas disponibilidad?",
+        "party_size": "¿Para cuántas personas sería?"
+      }
+    },
+    "Eventos especiales y cotizaciones": {
+      "consultar_condiciones_para_eventos": {},
+      "consultar_disponibilidad_para_evento": {
+        "date": "¿Para qué fecha necesitas el espacio?",
+        "time_range": "¿En qué horario sería el evento?",
+        "party_size": "¿Cuántas personas asistirían?"
+      },
+      "solicitar_cotizacion_de_evento": {
+        "date": "¿Para qué fecha estás planeando el evento?",
+        "time_range": "¿En qué horario sería?",
+        "party_size": "¿Cuántas personas asistirían?",
+        "event_type": "¿Qué tipo de evento estás organizando?",
+        "requested_services": "¿Qué servicios necesitas incluir en la cotización?"
+      },
+      "consultar_estado_de_cotizacion_de_evento": {
+        "quote_reference": "¿A nombre de quién o con qué número se solicitó la cotización?"
+      },
+      "solicitar_aclaracion_de_cotizacion_de_evento": {
+        "quote_reference": "¿A nombre de quién o con qué número se solicitó la cotización?",
+        "clarification_topic": "¿Qué parte de la cotización necesitas que te expliquemos?"
+      },
+      "solicitar_ajuste_de_cotizacion_de_evento": {
+        "quote_reference": "¿A nombre de quién o con qué número se solicitó la cotización?",
+        "quote_changes": "¿Qué cambios necesitas hacer en la cotización?"
+      },
+      "solicitar_exclusividad_del_espacio": {
+        "date": "¿Para qué fecha necesitas el espacio?",
+        "time_range": "¿En qué horario sería?",
+        "party_size": "¿Cuántas personas asistirían?",
+        "space_scope": "¿Necesitas una zona específica o todo el restaurante?"
+      },
+      "coordinar_montaje_y_proveedores": {
+        "event_reference": "¿A nombre de quién o con qué número está registrado el evento?",
+        "setup_or_provider": "¿Qué montaje o proveedor necesitas coordinar?",
+        "access_time": "¿A qué hora está previsto el ingreso del montaje o proveedor?"
+      },
+      "coordinar_requerimientos_tecnicos": {
+        "event_reference": "¿A nombre de quién o con qué número está registrado el evento?",
+        "technical_resource": "¿Qué recurso técnico necesitas coordinar?"
+      },
+      "confirmar_evento_cotizado": {
+        "quote_reference": "¿A nombre de quién o con qué número se emitió la cotización?"
+      },
+      "confirmar_pago_de_anticipo_de_evento": {
+        "event_reference": "¿A nombre de quién o con qué número está registrado el evento?",
+        "payment_reference": "¿Cuál es la referencia del pago del anticipo?"
+      },
+      "modificar_evento_confirmado": {
+        "event_reference": "¿A nombre de quién o con qué número está registrado el evento?",
+        "event_changes": "¿Qué necesitas cambiar en el evento?"
+      },
+      "cancelar_evento_confirmado": {
+        "event_reference": "¿A nombre de quién o con qué número está registrado el evento?"
+      }
+    },
+    "Oferta gastronómica": {
+      "solicitar_menu": {},
+      "consultar_categoria_del_menu": {
+        "menu_category": "¿Qué categoría de la carta quieres consultar?"
+      },
+      "consultar_disponibilidad_de_producto": {
+        "product": "¿Qué producto quieres confirmar si está disponible?"
+      },
+      "consultar_precio_de_producto": {
+        "product": "¿De qué producto quieres conocer el precio?"
+      },
+      "consultar_ingredientes_y_acompanamientos": {
+        "product": "¿De qué producto quieres conocer los ingredientes y acompañamientos?"
+      },
+      "consultar_preparacion_y_coccion": {
+        "product": "¿Qué producto quieres consultar?"
+      },
+      "consultar_tamano_y_rendimiento_de_porcion": {
+        "product": "¿De qué producto quieres conocer el tamaño o rendimiento?"
+      },
+      "comparar_productos": {
+        "products": "¿Qué productos quieres comparar?"
+      },
+      "solicitar_recomendacion_por_gusto": {
+        "taste_preferences": "¿Qué sabores, texturas o tipos de preparación prefieres?"
+      },
+      "solicitar_recomendacion_por_presupuesto": {
+        "budget": "¿Cuál es el presupuesto máximo en pesos que quieres manejar?",
+        "budget_scope": "¿Ese presupuesto es por persona o para todo el grupo?",
+        "party_size": "Si es para todo el grupo, ¿para cuántas personas es?"
+      }
+    },
+    "Seguridad y restricciones alimentarias": {
+      "consultar_opciones_vegetarianas": {},
+      "consultar_opciones_veganas": {},
+      "consultar_producto_crudo_durante_el_embarazo": {
+        "product": "¿Qué producto o preparación quieres verificar?"
+      },
+      "consultar_opciones_por_enfermedad_celiaca": {},
+      "consultar_producto_por_intolerancia_alimentaria": {
+        "product": "¿Qué producto quieres verificar?",
+        "dietary_restriction": "¿Qué ingrediente o componente necesitas evitar por la intolerancia?"
+      },
+      "consultar_alergeno_en_producto": {
+        "product": "¿Qué producto quieres revisar?",
+        "allergen": "¿Qué alérgeno necesitas verificar?"
+      },
+      "solicitar_opciones_por_alergia": {
+        "allergen": "¿Qué alérgeno necesitas evitar?"
+      },
+      "consultar_contaminacion_cruzada": {
+        "cross_contact_concern": "¿Qué ingrediente o sustancia necesitas evitar para revisar el riesgo de contaminación cruzada?"
+      },
+      "solicitar_adaptacion_por_restriccion": {
+        "product": "¿Qué producto quieres adaptar?",
+        "dietary_restriction": "¿Qué restricción alimentaria debe cumplir la adaptación?"
+      },
+      "consultar_producto_por_restriccion_religiosa": {
+        "product": "¿Qué producto quieres verificar?",
+        "dietary_restriction": "¿Qué ingrediente o proceso necesitas evitar?"
+      },
+      "consultar_producto_por_restriccion_medica": {
+        "product": "¿Qué producto quieres verificar?",
+        "dietary_restriction": "¿Qué ingrediente o preparación necesitas evitar?"
+      }
+    },
+    "Información comercial y del lugar": {
+      "consultar_horarios": {},
+      "consultar_ubicacion": {},
+      "consultar_parqueadero": {},
+      "consultar_accesibilidad": {},
+      "consultar_ingreso_con_mascota_de_compania": {},
+      "consultar_ingreso_con_animal_de_asistencia": {},
+      "consultar_facilidades_para_ninos": {},
+      "consultar_medios_de_pago": {},
+      "consultar_facturacion_electronica": {},
+      "consultar_propina": {},
+      "consultar_promociones": {}
+    },
+    "Pedidos a domicilio y para recoger": {
+      "consultar_servicio_de_domicilio": {},
+      "consultar_cobertura_de_domicilio": {
+        "delivery_area": "¿En qué barrio o zona necesitas la entrega?"
+      },
+      "consultar_tarifa_de_domicilio": {
+        "delivery_area": "¿En qué barrio o zona debemos calcular la tarifa?"
+      },
+      "consultar_pedido_minimo_para_domicilio": {},
+      "consultar_tiempo_estimado_de_entrega": {
+        "delivery_area": "¿En qué barrio o zona necesitas la entrega?"
+      },
+      "consultar_horario_del_servicio_de_domicilio": {},
+      "iniciar_pedido_a_domicilio": {
+        "order_items": "¿Qué productos, opciones y cantidades necesitas?",
+        "delivery_address": "¿Cuál es la dirección completa de entrega?",
+        "recipient_name": "¿Cuál es el nombre de la persona que recibirá el pedido?",
+        "recipient_phone": "¿A qué número podemos contactar a quien recibe?"
+      },
+      "iniciar_pedido_para_recoger": {
+        "order_items": "¿Qué productos, opciones y cantidades necesitas?"
+      },
+      "programar_pedido": {
+        "order_items": "¿Qué productos, opciones y cantidades necesitas?",
+        "date": "¿Para qué fecha necesitas el pedido?",
+        "time": "¿A qué hora necesitas recibirlo o recogerlo?",
+        "fulfillment_method": "¿Necesitas el pedido a domicilio o para recoger?",
+        "delivery_address": "Si es a domicilio, ¿cuál es la dirección completa de entrega?"
+      },
+      "coordinar_pedido_grupal_empacado": {
+        "party_size": "¿Para cuántas personas es el pedido?",
+        "order_items": "¿Qué productos, opciones y cantidades necesitas?",
+        "date": "¿Para qué fecha necesitas el pedido grupal?",
+        "time": "¿A qué hora necesitas recibirlo o recogerlo?",
+        "packaging_instructions": "¿Cómo necesitas separar o identificar cada parte del pedido?",
+        "fulfillment_method": "¿Necesitas el pedido a domicilio o para recoger?",
+        "delivery_address": "Si es a domicilio, ¿cuál es la dirección completa de entrega?"
+      },
+      "repetir_pedido_anterior": {
+        "previous_order_reference": "¿Con qué número o fecha podemos identificar el pedido anterior?",
+        "fulfillment_method": "¿Necesitas el pedido a domicilio o para recoger?",
+        "delivery_address": "Si es a domicilio, ¿cuál es la dirección completa de entrega?"
+      },
+      "enviar_pedido_a_otro_destinatario": {
+        "recipient_name": "¿Cuál es el nombre de la persona que recibirá el pedido?",
+        "recipient_phone": "¿A qué número podemos contactar a quien recibe?",
+        "delivery_address": "¿Cuál es la dirección completa de entrega?"
+      },
+      "agregar_instrucciones_de_entrega": {
+        "delivery_instructions": "¿Qué indicaciones debemos tener en cuenta para realizar la entrega?"
+      },
+      "consultar_empaque_de_pedido": {},
+      "consultar_resumen_y_total_del_pedido": {},
+      "aplicar_promocion_al_pedido": {
+        "promotion_reference": "¿Qué promoción o código quieres aplicar al pedido?"
+      },
+      "seleccionar_medio_de_pago_del_pedido": {
+        "payment_method": "¿Con qué medio de pago quieres pagar el pedido?"
+      },
+      "solicitar_cambio_para_pago_en_efectivo": {
+        "cash_tendered_amount": "¿Con cuánto vas a pagar para calcular el cambio?"
+      },
+      "registrar_referencia_de_pago_digital": {
+        "payment_reference": "¿Cuál es la referencia del pago realizado?"
+      },
+      "solicitar_factura_para_pedido": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "invoice_data": "¿Me compartes tus datos de facturación completos?"
+      },
+      "confirmar_pedido_a_domicilio": {},
+      "confirmar_pedido_para_recoger": {},
+      "modificar_pedido_activo": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "order_changes": "¿Qué necesitas cambiar del pedido?"
+      },
+      "actualizar_datos_de_entrega": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "delivery_changes": "¿Qué dato de entrega necesitas cambiar y cuál es la información correcta?"
+      },
+      "consultar_estado_de_pedido": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?"
+      },
+      "cancelar_pedido_activo": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?"
+      }
+    },
+    "Novedades y recuperación del servicio": {
+      "gestionar_producto_no_disponible_tras_confirmacion": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido confirmado?"
+      },
+      "reportar_demora_fuera_del_tiempo_prometido": {
+        "service_locator": "¿Con qué número o referencia podemos identificar el pedido o servicio demorado?"
+      },
+      "reportar_domicilio_marcado_como_entregado_no_recibido": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?"
+      },
+      "reportar_pedido_incompleto": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "missing_items": "¿Qué productos, unidades o componentes faltaron?"
+      },
+      "reportar_pedido_diferente_al_confirmado": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "received_product": "¿Qué producto recibiste en lugar del acordado?"
+      },
+      "reportar_calidad_inadecuada": {
+        "service_locator": "¿Con qué número de pedido o datos de la visita podemos ubicar el servicio?",
+        "affected_product": "¿Qué producto presentó el problema?",
+        "quality_issue": "¿Qué problema de temperatura, cocción o frescura observaste?"
+      },
+      "reportar_posible_afectacion_a_la_salud": {
+        "service_locator": "¿Con qué número de pedido o datos de la visita podemos ubicar el servicio?",
+        "consumed_product": "¿Qué producto consumiste?",
+        "consumption_time": "¿Cuándo lo consumiste?",
+        "health_issue": "¿Qué malestar, reacción o situación observaste?"
+      },
+      "reportar_modificacion_culinaria_no_aplicada": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "affected_product": "¿En qué producto no se aplicó el cambio?",
+        "expected_modification": "¿Qué ajuste de ingredientes o preparación se había solicitado?"
+      },
+      "reportar_dano_por_empaque_o_transporte": {
+        "order_reference": "¿Cuál es el número o la referencia del pedido?",
+        "affected_products": "¿Qué productos resultaron afectados?",
+        "damage_details": "¿Qué daño o derrame presentaron los productos?"
+      },
+      "reportar_cobro_incorrecto": {
+        "billing_reference": "¿Cuál es el número del pedido o la referencia del pago?",
+        "billing_issue": "¿Qué valor, descuento o cargo no corresponde?"
+      },
+      "reportar_pago_sin_confirmacion_de_pedido": {
+        "payment_reference": "¿Cuál es la referencia del pago?"
+      },
+      "reportar_factura_no_emitida_o_incorrecta": {
+        "billing_reference": "¿Cuál es el número del pedido o la referencia del pago asociado a la factura?",
+        "invoice_issue": "¿La factura no llegó o qué dato está incorrecto y cuál es la información correcta?"
+      },
+      "reportar_incumplimiento_de_reserva": {
+        "reservation_reference": "¿Cuál es el número de la reserva o con qué nombre, fecha y hora fue registrada?",
+        "reservation_issue": "¿La reserva no apareció o qué condición acordada no se respetó?"
+      },
+      "reportar_incumplimiento_de_evento": {
+        "event_reference": "¿Cuál es la referencia o la fecha del evento?",
+        "unfulfilled_condition": "¿Qué condición acordada no se cumplió?"
+      },
+      "reportar_mala_atencion": {
+        "service_issue": "¿Qué ocurrió durante la atención?",
+        "service_context": "¿En qué fecha y hora ocurrió, y por qué canal o en qué zona fue la atención?"
+      },
+      "consultar_reembolso_aprobado_pendiente": {
+        "refund_reference": "¿Cuál es la referencia del reembolso o del pago asociado?"
+      },
+      "consultar_objeto_olvidado": {
+        "item_description": "¿Cómo es el objeto que olvidaste?",
+        "visit_details": "¿En qué fecha, hora aproximada y zona del restaurante estuviste?"
+      },
+      "reportar_problema_de_higiene_o_instalaciones": {
+        "hygiene_issue": "¿Qué situación de higiene o instalaciones observaste?",
+        "visit_details": "¿En qué fecha, hora aproximada y zona del restaurante ocurrió?"
+      }
+    }
+  }
+}
