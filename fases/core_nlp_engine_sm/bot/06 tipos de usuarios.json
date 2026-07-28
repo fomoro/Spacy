@@ -3,7 +3,7 @@
     "version": "1.1.0",
     "profile_count": 21
   },
-  "profiles": {
+  "perfiles": {
     "comunica_de_forma_neutra_y_explicita": {
       "description": "Formula la solicitud con español colombiano estándar, información suficiente y una estructura directa, sin que domine una marca coloquial, cortés, analítica, emocional, dialectal o digital.",
       "linguistic_markers": [

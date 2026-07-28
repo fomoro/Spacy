@@ -1,0 +1,67 @@
+{
+  "flujo": {
+    "nombre": "Venta de un plato principal a domicilio - camino feliz",
+    "descripcion": "El cliente solicita un plato principal a domicilio, entrega los datos faltantes y confirma el pedido.",
+    "tipo_de_usuario": "comunica_de_forma_neutra_y_explicita",
+    "intenciones": {
+      "principal": "iniciar_pedido_a_domicilio",
+      "relacionadas": [
+        "confirmar_pedido_a_domicilio"
+      ]
+    },
+    "orden": [
+      {
+        "participante": "cliente",
+        "intencion": "iniciar_pedido_a_domicilio"
+      },
+      {
+        "participante": "bot",
+        "intencion": "iniciar_pedido_a_domicilio",
+        "pregunta": "recipient_phone"
+      },
+      {
+        "participante": "cliente"
+      },
+      {
+        "participante": "bot",
+        "intencion": "iniciar_pedido_a_domicilio",
+        "respuesta": "borrador_iniciado"
+      },
+      {
+        "participante": "cliente",
+        "intencion": "confirmar_pedido_a_domicilio"
+      },
+      {
+        "participante": "bot",
+        "intencion": "confirmar_pedido_a_domicilio",
+        "respuesta": "pedido_confirmado"
+      }
+    ]
+  },
+  "conversacion": [
+    {
+      "participante": "cliente",
+      "texto": "Buenas tardes. Quiero un arroz campesino personal a domicilio. La entrega es en la calle 10 # 20-30 y recibe Laura Gómez."
+    },
+    {
+      "participante": "bot",
+      "texto": "¿A qué número podemos contactar a quien recibe?"
+    },
+    {
+      "participante": "cliente",
+      "texto": "El número de contacto es 300 000 0000."
+    },
+    {
+      "participante": "bot",
+      "texto": "El pedido a domicilio quedó en borrador con 1 arroz campesino personal por $34.000 COP para Laura Gómez. Todavía no está confirmado ni enviado a preparación."
+    },
+    {
+      "participante": "cliente",
+      "texto": "Confirmo el pedido."
+    },
+    {
+      "participante": "bot",
+      "texto": "El pedido a domicilio quedó confirmado con la referencia DOM-PRUEBA-001. El resumen final es 1 arroz campesino personal por $34.000 COP para entrega a domicilio."
+    }
+  ]
+}

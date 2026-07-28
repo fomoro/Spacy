@@ -1,0 +1,67 @@
+{
+  "flujo": {
+    "nombre": "Venta de un plato principal para recoger - producto descrito",
+    "descripcion": "El cliente describe un plato sin nombrarlo, define su presentación y confirma el pedido para recoger.",
+    "tipo_de_usuario": "describe_platos_mediante_parafrasis",
+    "intenciones": {
+      "principal": "iniciar_pedido_para_recoger",
+      "relacionadas": [
+        "confirmar_pedido_para_recoger"
+      ]
+    },
+    "orden": [
+      {
+        "participante": "cliente",
+        "intencion": "iniciar_pedido_para_recoger"
+      },
+      {
+        "participante": "bot",
+        "intencion": "iniciar_pedido_para_recoger",
+        "pregunta": "order_items"
+      },
+      {
+        "participante": "cliente"
+      },
+      {
+        "participante": "bot",
+        "intencion": "iniciar_pedido_para_recoger",
+        "respuesta": "borrador_iniciado"
+      },
+      {
+        "participante": "cliente",
+        "intencion": "confirmar_pedido_para_recoger"
+      },
+      {
+        "participante": "bot",
+        "intencion": "confirmar_pedido_para_recoger",
+        "respuesta": "pedido_confirmado"
+      }
+    ]
+  },
+  "conversacion": [
+    {
+      "participante": "cliente",
+      "texto": "Quiero pedir un plato principal para recoger."
+    },
+    {
+      "participante": "bot",
+      "texto": "¿Qué productos, opciones y cantidades necesitas?"
+    },
+    {
+      "participante": "cliente",
+      "texto": "Quiero una de esas carnes a la parrilla que vienen con papa rústica, ensalada y chimichurri, la de 300 gramos."
+    },
+    {
+      "participante": "bot",
+      "texto": "El pedido para recoger quedó en borrador con 1 churrasco a la parrilla de 300 g por $49.000 COP. Todavía no está confirmado ni enviado a preparación."
+    },
+    {
+      "participante": "cliente",
+      "texto": "Sí, confirmo ese pedido."
+    },
+    {
+      "participante": "bot",
+      "texto": "El pedido para recoger quedó confirmado con la referencia REC-PRUEBA-001. El resumen final es 1 churrasco a la parrilla de 300 g por $49.000 COP."
+    }
+  ]
+}

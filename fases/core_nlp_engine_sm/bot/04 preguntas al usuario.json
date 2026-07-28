@@ -4,7 +4,7 @@
     "situation_count": 98,
     "question_count": 143
   },
-  "questions": {
+  "preguntas": {
     "Reservas de mesa": {
       "consultar_condiciones_de_reserva": {},
       "consultar_atencion_sin_reserva": {},

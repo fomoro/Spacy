@@ -1,0 +1,37 @@
+GUÍA DE LOS ARCHIVOS DEL BOT
+============================
+
+00 Leeme.txt: Es la guía rápida para entender qué guarda cada archivo de la carpeta bot y cómo ayuda a atender mejor a los clientes del restaurante.
+
+01 cliente.json: Reúne los datos que el bot necesita para hablar del restaurante con seguridad: nombre, descripción, dirección, parqueaderos, accesibilidad, horarios y formas de pago.
+
+
+--------------------------------------------------------------------
+02 menu.json: Guarda la carta que el bot puede ofrecer al cliente. Incluye las categorías, los platos, sus descripciones, precios, porciones y las opciones disponibles de cada producto.
+
+Estructura general de la carta:
+
+Carta del restaurante
+├── Categoría A 
+│   ├── Producto
+│   └── Producto
+│
+└── Categoría B ()
+    ├── Subcategoría B.1
+    │   ├── Producto
+    │   └── Producto
+    │
+    └── Subcategoría B.2
+        └── Producto
+
+--------------------------------------------------------------------     
+
+03 situaciones (Intenciones).json: Organiza las 98 razones por las que un cliente puede escribirle al restaurante, como pedir a domicilio, consultar la carta, reservar, cotizar un evento o reportar un problema.
+
+04 preguntas al usuario.json: Reúne 143 preguntas que el bot puede hacer cuando falta información para atender una solicitud, como la fecha, la dirección, el número de personas o los datos del pedido.
+
+05 respuestas al usuario.json: Reúne 241 respuestas que el restaurante puede dar frente a las 98 necesidades del cliente. Contempla cuándo algo se confirma, no se puede realizar o todavía está pendiente de validación.
+
+06 tipos de usuarios.json: Describe 21 maneras comunes en las que un cliente puede escribir o expresarse. Ayuda a que el bot entienda distintos estilos de comunicación sin cambiar la necesidad del cliente.
+
+patterns.txt: Deja una guía inicial para combinar la forma de hablar del cliente, lo que necesita, los datos que hacen falta y la respuesta del restaurante dentro de una conversación.

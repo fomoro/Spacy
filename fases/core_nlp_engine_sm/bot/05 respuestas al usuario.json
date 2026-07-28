@@ -4,7 +4,7 @@
     "situation_count": 98,
     "response_count": 241
   },
-  "responses": {
+  "respuestas": {
     "Reservas de mesa": {
       "consultar_condiciones_de_reserva": {
         "condiciones_pendientes": "Necesitamos validar la anticipación, la tolerancia y los requisitos aplicables a las reservas antes de confirmártelos."

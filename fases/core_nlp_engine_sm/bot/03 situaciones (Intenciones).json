@@ -4,7 +4,7 @@
     "category_count": 7,
     "situation_count": 98
   },
-  "categories": {
+  "categoría o dominio": {
     "Reservas de mesa": {
       "scope": "Consultas y gestiones de mesas con la atención habitual del restaurante. Los eventos que requieren cotización o coordinación especial y los incumplimientos de reservas confirmadas pertenecen a otras categorías.",
       "situations": {
