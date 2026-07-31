@@ -1,0 +1,471 @@
+{
+  "metadata": {
+    "schema_version": "3.0.0",
+    "purpose": "Seleccionar y renderizar respuestas directas después de resolver una intención, sin duplicar preguntas ni inventar datos comerciales.",
+    "language": "es-CO",
+    "response_count": 38,
+    "direct_response_pair_count": 41
+  },
+  "responses": {
+    "category_overview": {
+      "templates": [
+        "¡Claro que sí! Mira las cositas ricas que tenemos en {category}: {category_summary}",
+        "Con mucho gusto, te cuento qué opciones manejamos en la categoría de {category}: {category_summary}",
+        "¡Qué buena elección! Esto es lo que te podemos ofrecer en {category}: {category_summary}",
+        "Revisando nuestra carta, en {category} vas a encontrar todas estas delicias: {category_summary}"
+      ],
+      "required_values": [
+        "category",
+        "category_summary"
+      ]
+    },
+    "preparation_definition": {
+      "templates": [
+        "Te cuento, {preparation} es súper rico: {preparation_details}",
+        "Mira, la preparación {preparation} consiste en lo siguiente: {preparation_details}",
+        "¡Claro! Cuando pides {preparation}, lo que hacemos es: {preparation_details}",
+        "Esa preparación es deliciosa. Básicamente, {preparation} significa que: {preparation_details}"
+      ],
+      "required_values": [
+        "preparation",
+        "preparation_details"
+      ]
+    },
+    "product_information": {
+      "templates": [
+        "¡Qué antojador! Sobre {product} te cuento que: {product_details}",
+        "¡Uf, excelente plato! Te detallo qué trae {product}: {product_details}",
+        "Con gusto te doy más información. Nuestro {product} viene así: {product_details}",
+        "¡Claro que sí! Mira, {product} es espectacular y trae: {product_details}"
+      ],
+      "required_values": [
+        "product",
+        "product_details"
+      ]
+    },
+    "preparation_options": {
+      "templates": [
+        "¡Súper! Si te gusta {preparation}, mira lo que podemos ofrecerte: {preparation_options}",
+        "Excelente, preparado así ({preparation}) te podemos ofrecer las siguientes opciones: {preparation_options}",
+        "¡Claro! En cuanto a platos con preparación {preparation}, tenemos: {preparation_options}",
+        "Si buscas algo {preparation}, te recomiendo echarle ojo a esto: {preparation_options}"
+      ],
+      "required_values": [
+        "preparation",
+        "preparation_options"
+      ]
+    },
+    "product_preparation": {
+      "templates": [
+        "Para {product}, mira cómo te lo podemos preparar: {preparation_details}",
+        "Ese plato ({product}) te lo podemos sacar de las siguientes formas: {preparation_details}",
+        "¡Claro! Si pides {product}, puedes elegir estas preparaciones: {preparation_details}",
+        "Te cuento que nuestro {product} lo podemos hacer así: {preparation_details}"
+      ],
+      "required_values": [
+        "product",
+        "preparation_details"
+      ]
+    },
+    "opening_hours": {
+      "templates": [
+        "¡Súper! Te cuento que el {day} abrimos en este horario: {opening_hours}.",
+        "¡Claro que sí! Para el {day}, nuestro horario de atención es: {opening_hours}.",
+        "Con gusto, el {day} te podemos atender en el siguiente horario: {opening_hours}.",
+        "Mira, nuestro horario para el día {day} es desde y hasta las: {opening_hours}."
+      ],
+      "required_values": [
+        "day",
+        "opening_hours"
+      ]
+    },
+    "location": {
+      "templates": [
+        "¡Te esperamos! Estamos ubicados en la {address}, en {city}.",
+        "¡Claro! Nuestro restaurante queda en la {address}, allá en {city}.",
+        "Con gusto te ubico, estamos en toda la {address} de {city}.",
+        "¡Qué chévere que nos visites! Nos encuentras en {city}, exactamente en la {address}."
+      ],
+      "required_values": [
+        "address",
+        "city"
+      ]
+    },
+    "menu": {
+      "templates": [
+        "¡Qué rico! Mira, esta es la información de nuestra carta: {menu_summary}",
+        "¡Claro que sí! Échale un vistazo a nuestro menú completo: {menu_summary}",
+        "Con muchísimo gusto, aquí te comparto todas nuestras delicias: {menu_summary}",
+        "¡Súper! Mira todo lo que tenemos para ofrecerte en la carta de hoy: {menu_summary}"
+      ],
+      "required_values": [
+        "menu_summary"
+      ]
+    },
+    "payment_methods": {
+      "templates": [
+        "¡Claro que sí! Nosotros recibimos: {payment_methods}.",
+        "Te cuento que actualmente aceptamos los siguientes medios de pago: {payment_methods}.",
+        "Para tu comodidad, acá puedes pagar con: {payment_methods}.",
+        "¡Súper! Mira, recibimos: {payment_methods}. ¿Con cuál te queda mejor?"
+      ],
+      "required_values": [
+        "payment_methods"
+      ]
+    },
+    "order_review": {
+      "templates": [
+        "¡Súper! Ya tomé nota de tu pedido. Revisemos que los platillos y las cantidades estén perfectos antes de mandarlo a la cocina.",
+        "¡Listo el pollo! Ya anoté tu orden, confirmemos rapidito que todo esté bien antes de enviarla.",
+        "¡Perfecto! Ya lo tengo apuntado. Vamos a revisar juntos que no se nos escape ningún detalle.",
+        "¡Excelente! Ya está todo en la comanda. Echémosle un último vistazo antes de prepararlo."
+      ],
+      "required_values": []
+    },
+    "product_price": {
+      "templates": [
+        "¡Claro! Te cuento que el precio de {product} es de {price}.",
+        "Mira, te confirmo que nuestro {product} tiene un valor de {price}.",
+        "Con gusto. Ese plato ({product}) te sale en {price}.",
+        "¡Súper! El precio actualizado para {product} es {price}."
+      ],
+      "required_values": [
+        "product",
+        "price"
+      ]
+    },
+    "price_overview": {
+      "templates": [
+        "¡Súper! Mira, estos son los precios que tenemos ahorita: {price_summary}",
+        "¡Claro que sí! Aquí te va un resumen con los valores de nuestros platos: {price_summary}",
+        "Con gusto, te comparto cómo estamos manejando los precios: {price_summary}",
+        "¡Listo! Estos son los rangos de precios que vas a encontrar en la carta: {price_summary}"
+      ],
+      "required_values": [
+        "price_summary"
+      ]
+    },
+    "recommendation": {
+      "templates": [
+        "¡Excelente elección! Según lo que me dices, te puedo recomendar estas delicias: {recommendations}.",
+        "¡Uy, qué rico! Para ese antojo, yo te recomendaría probar: {recommendations}.",
+        "¡Claro! Pensando en lo que buscas, las mejores opciones serían: {recommendations}.",
+        "Teniendo en cuenta tus gustos, lo que más te va a encantar es: {recommendations}."
+      ],
+      "required_values": [
+        "recommendations"
+      ]
+    },
+    "greeting": {
+      "templates": [
+        "¡Hola! Qué gusto saludarte, bienvenido a {restaurant_name}. ¿Qué se te antoja o en qué te puedo ayudar hoy?",
+        "¡Hola, hola! Bienvenido a {restaurant_name}. Cuéntame, ¿con qué delicia te podemos provocar hoy?",
+        "¡Buenas! Qué chévere tenerte por acá en {restaurant_name}. ¿En qué te puedo colaborar?",
+        "¡Hola! Gracias por comunicarte con {restaurant_name}. ¿Qué tienes en mente para pedir o consultar?"
+      ],
+      "required_values": [
+        "restaurant_name"
+      ]
+    },
+    "thanks": {
+      "templates": [
+        "¡Con muchísimo gusto! ¿Te puedo colaborar con alguna otra cosita?",
+        "¡Para eso estamos! Cuéntame si necesitas saber o pedir algo más.",
+        "¡Con todo el gusto del mundo! ¿Te ayudo con otra duda?",
+        "¡Es un placer atenderte! ¿Quedó todo claro o revisamos algo más?"
+      ],
+      "required_values": []
+    },
+    "farewell": {
+      "templates": [
+        "¡Muchísimas gracias por escribirnos a {restaurant_name}! Que tengas un día excelente, ¡hasta pronto!",
+        "¡Gracias a ti por elegir a {restaurant_name}! Quedamos súper atentos para tu próxima visita. ¡Chao!",
+        "¡Mil gracias por comunicarte con {restaurant_name}! Que estés muy bien, ¡un abrazo y hasta la próxima!",
+        "¡Fue un gusto atenderte en {restaurant_name}! Que termines de pasar un muy buen día, ¡nos vemos!"
+      ],
+      "required_values": [
+        "restaurant_name"
+      ]
+    },
+    "unknown": {
+      "templates": [
+        "¡Ay, qué pena! Me sacaste de base y no te entendí bien. Acuérdate que te puedo ayudar con la carta, precios, domicilios, reservas, ubicación y nuestros horarios.",
+        "¡Uy, me corchaste! No logré entender bien tu mensaje. Recuerda que soy experto en temas de nuestro menú, reservas, domicilios y horarios.",
+        "¡Qué pena contigo! Me perdí un poquito. ¿Me podrías volver a preguntar? Yo te ayudo con todo lo de la carta, precios y datos del restaurante.",
+        "¡Ay! No logré captar la idea. Te recuerdo que te puedo dar info sobre nuestros platos, reservar mesas, pedir domicilios o consultar los precios."
+      ],
+      "required_values": []
+    },
+    "delivery_info": {
+      "templates": [
+        "¡Claro! El domicilio te sale en {delivery_cost} y nos estamos demorando más o menos {delivery_time}.",
+        "Te cuento que el envío cuesta {delivery_cost} y el pedido te llega en un tiempo estimado de {delivery_time}.",
+        "Con gusto. Nuestro domicilio tiene un valor de {delivery_cost} y tarda aproximadamente {delivery_time}.",
+        "¡Súper! Te lo mandamos por {delivery_cost} y lo tendrías allá en {delivery_time}."
+      ],
+      "required_values": [
+        "delivery_time",
+        "delivery_cost"
+      ]
+    },
+    "delivery_group": {
+      "templates": [
+        "Para un pedido así de grande, te cuento cómo manejamos la logística: {group_conditions}.",
+        "¡Excelente! Para grupos grandes, el domicilio funciona de esta manera: {group_conditions}.",
+        "Claro que sí, para entregar varios almuerzos juntos estas son las condiciones: {group_conditions}.",
+        "¡Súper! Para coordinar entregas grupales manejamos la siguiente logística: {group_conditions}."
+      ],
+      "required_values": [
+        "group_conditions"
+      ]
+    },
+    "delivery_previous_address": {
+      "templates": [
+        "¡Listo! Ya nos quedó anotado. Te mandamos todo a la dirección que ya conocemos: {previous_address}.",
+        "¡Perfecto! Te despachamos el pedido a la misma dirección de la otra vez: {previous_address}.",
+        "¡Claro que sí! Ya tengo en sistema tu ubicación anterior: {previous_address}.",
+        "¡Súper! Te lo enviaremos directamente a {previous_address}."
+      ],
+      "required_values": [
+        "previous_address"
+      ]
+    },
+    "order_status": {
+      "templates": [
+        "¡Hola! Te cuento que tu pedido en este momento está: {order_status}.",
+        "Con gusto revisamos. Tu orden ahorita mismo se encuentra {order_status}.",
+        "¡Claro! Consultando el sistema, el estado de tu pedido es: {order_status}.",
+        "Tranqui, te informo que tu pedido va {order_status}."
+      ],
+      "required_values": [
+        "order_status"
+      ]
+    },
+    "order_cancel_confirm": {
+      "templates": [
+        "¡Listo el pollo! Ya te cancelamos el pedido, no te preocupes.",
+        "Tranquilo, ya dejamos tu pedido completamente anulado.",
+        "¡Entendido! Hemos cancelado tu orden exitosamente.",
+        "¡Perfecto! Ya detuvimos el pedido. Si necesitas algo más, nos avisas."
+      ],
+      "required_values": []
+    },
+    "order_add_item": {
+      "templates": [
+        "¡Excelente! Ya le agregamos esto a tu orden: {product_list}.",
+        "¡Listo! Acabamos de sumar a tu pedido: {product_list}.",
+        "¡Qué rico! Ya quedó añadido a tu cuenta: {product_list}.",
+        "¡Claro que sí! Agregamos sin problema {product_list} a lo que ya tenías."
+      ],
+      "required_values": [
+        "product_list"
+      ]
+    },
+    "order_modification_confirm": {
+      "templates": [
+        "¡Súper! Ya anotamos estos cambiecitos en tu orden: {modifications}.",
+        "¡Listo! Dejamos tu pedido modificado así: {modifications}.",
+        "Con gusto, ya hicimos los ajustes que nos pediste: {modifications}.",
+        "¡Perfecto! Todo ajustado según tus indicaciones: {modifications}."
+      ],
+      "required_values": [
+        "modifications"
+      ]
+    },
+    "order_repeat_confirm": {
+      "templates": [
+        "¡Qué buena elección! Te vamos a preparar lo mismito de la vez pasada: {previous_order_details}.",
+        "¡Claro! Repetimos tu orden anterior con mucho gusto. Era esto, ¿verdad?: {previous_order_details}.",
+        "¡Listo! Ya nos quedó anotado tu pedido anterior: {previous_order_details}.",
+        "¡Súper! Marchando de nuevo tu orden favorita: {previous_order_details}."
+      ],
+      "required_values": [
+        "previous_order_details"
+      ]
+    },
+    "reservation_info": {
+      "templates": [
+        "Te cuento un poquito cómo funcionan las reservas con nosotros: {reservation_conditions}.",
+        "¡Claro! Para separar tu mesita, manejamos estas condiciones: {reservation_conditions}.",
+        "Con gusto te explico cómo operan nuestras reservas: {reservation_conditions}.",
+        "¡Súper! Para reservar mesa con nosotros, ten en cuenta lo siguiente: {reservation_conditions}."
+      ],
+      "required_values": [
+        "reservation_conditions"
+      ]
+    },
+    "reservation_confirm": {
+      "templates": [
+        "¡Listo! Ya nos quedó guardada tu reserva. Te esperamos con los brazos abiertos: {reservation_details}.",
+        "¡Súper! Tu mesita ya está separada. Te confirmo los daticos: {reservation_details}.",
+        "¡Perfecto! Quedó lista la reserva con esta información: {reservation_details}.",
+        "¡Excelente! Ya te agendamos. Nos vemos pronto: {reservation_details}."
+      ],
+      "required_values": [
+        "reservation_details"
+      ]
+    },
+    "reservation_cancel": {
+      "templates": [
+        "¡Listo! Ya quedó cancelada tu reserva. Esperamos verte en otra ocasión.",
+        "Tranqui, ya anulamos la reserva de la mesa. ¡Nos avisas cuando quieras volver!",
+        "¡Entendido! Hemos liberado tu mesa sin problema. ¡Hasta la próxima!",
+        "¡Perfecto! Cancelación confirmada. ¡Que tengas un gran día!"
+      ],
+      "required_values": []
+    },
+    "reservation_modify": {
+      "templates": [
+        "¡Listo! Ya actualizamos tu reserva. Ahora quedó así: {new_reservation_details}.",
+        "¡Perfecto! Hicimos los cambios y tu reserva quedó agendada así: {new_reservation_details}.",
+        "Con gusto ajustamos tu mesita. Te confirmo cómo quedó: {new_reservation_details}.",
+        "¡Súper! Ya quedaron listos los cambios de tu reserva: {new_reservation_details}."
+      ],
+      "required_values": [
+        "new_reservation_details"
+      ]
+    },
+    "event_info": {
+      "templates": [
+        "¡Claro! Para eventos manejamos esta capacidad y condiciones: {event_capacity}.",
+        "Te cuento que para grupos grandes o eventos tenemos el siguiente espacio: {event_capacity}.",
+        "Con gusto. Nuestras instalaciones para eventos permiten: {event_capacity}.",
+        "¡Súper! Para que celebres con nosotros, te ofrezco esta logística: {event_capacity}."
+      ],
+      "required_values": [
+        "event_capacity"
+      ]
+    },
+    "event_quote": {
+      "templates": [
+        "¡Qué chévere! Para tu evento, te tenemos esta propuesta: {quote_details}.",
+        "Revisando tus necesidades, te preparamos la siguiente cotización: {quote_details}.",
+        "Con muchísimo gusto, esta es nuestra propuesta para tu grupo: {quote_details}.",
+        "¡Súper! Para tu evento te podemos organizar lo siguiente: {quote_details}."
+      ],
+      "required_values": [
+        "quote_details"
+      ]
+    },
+    "allergen_info": {
+      "templates": [
+        "Tranquilo, consultando con la cocina te confirmo que: {allergen_presence}.",
+        "¡Es muy importante! Revisé los ingredientes y te cuento que: {allergen_presence}.",
+        "Con tu salud no jugamos. Validé la receta y te informo que: {allergen_presence}.",
+        "¡Claro! Sobre el tema de los alérgenos, la respuesta de nuestra cocina es: {allergen_presence}."
+      ],
+      "required_values": [
+        "allergen_presence"
+      ]
+    },
+    "cross_contamination": {
+      "templates": [
+        "Cuidamos mucho ese tema. Sobre la contaminación cruzada en nuestra cocina, te confirmo: {kitchen_practices}.",
+        "Entiendo tu preocupación. Te cuento cómo manejamos los utensilios e ingredientes: {kitchen_practices}.",
+        "Es una excelente pregunta. En cuanto a las preparaciones y cruces, {kitchen_practices}.",
+        "¡Claro que sí! Para tu tranquilidad, nuestros protocolos en cocina indican que: {kitchen_practices}."
+      ],
+      "required_values": [
+        "kitchen_practices"
+      ]
+    },
+    "packaging_info": {
+      "templates": [
+        "¡Claro! Sobre el empaque de tus alimentos te cuento que: {packaging_options}.",
+        "Con gusto te explico cómo te entregamos empacado todo: {packaging_options}.",
+        "¡Súper! Manejamos las siguientes opciones para empacar y marcar: {packaging_options}.",
+        "Te cuento que para que todo llegue perfecto, empacamos así: {packaging_options}."
+      ],
+      "required_values": [
+        "packaging_options"
+      ]
+    },
+    "billing_info": {
+      "templates": [
+        "¡Claro que sí! Sobre la factura te cuento que {billing_process}.",
+        "Con gusto, el proceso para tu factura electrónica o comprobante es: {billing_process}.",
+        "Te explico rápidamente cómo manejamos el tema de la facturación: {billing_process}.",
+        "¡Súper! Para sacar tu factura solo debes saber esto: {billing_process}."
+      ],
+      "required_values": [
+        "billing_process"
+      ]
+    },
+    "scheduled_order_info": {
+      "templates": [
+        "¡Claro! Si quieres programar tu pedido para una hora exacta, funciona así: {scheduling_rules}.",
+        "Te cuento que para dejar órdenes programadas manejamos esto: {scheduling_rules}.",
+        "Con gusto. Sobre la programación de tu domicilio a una hora en específico: {scheduling_rules}.",
+        "¡Súper! Puedes programarlo teniendo en cuenta lo siguiente: {scheduling_rules}."
+      ],
+      "required_values": [
+        "scheduling_rules"
+      ]
+    },
+    "parking_info": {
+      "templates": [
+        "¡Claro! Sobre el tema de parqueadero para tu vehículo te cuento que: {parking_availability}.",
+        "Te informo que en cuanto a zona de estacionamiento: {parking_availability}.",
+        "Con gusto. Sobre dónde dejar el carro o moto: {parking_availability}.",
+        "¡Súper! Para que vengas tranquilo, nuestro parqueadero funciona así: {parking_availability}."
+      ],
+      "required_values": [
+        "parking_availability"
+      ]
+    },
+    "facilities_info": {
+      "templates": [
+        "¡Claro que sí! Te cuento un poquito sobre nuestras instalaciones: {facility_details}.",
+        "Con gusto te detallo cómo es nuestro local por dentro: {facility_details}.",
+        "¡Súper! Sobre la comodidad y espacios de nuestro restaurante, te confirmo: {facility_details}.",
+        "Te cuento que acá en el restaurante contamos con: {facility_details}."
+      ],
+      "required_values": [
+        "facility_details"
+      ]
+    }
+  },
+  "direct_response_by_intent_and_subintent": {
+    "catalogo.consultar_categoria": "category_overview",
+    "catalogo.consultar_definicion_preparacion": "preparation_definition",
+    "catalogo.consultar_detalle_producto": "product_information",
+    "catalogo.consultar_preparacion": "preparation_options",
+    "catalogo.consultar_preparacion_producto": "product_preparation",
+    "catalogo.consultar_producto": "product_information",
+    "horario_ubicacion.consultar_horario": "opening_hours",
+    "horario_ubicacion.consultar_ubicacion": "location",
+    "menu.consultar_menu_general": "menu",
+    "menu.reenviar_menu": "menu",
+    "menu.solicitar_menu": "menu",
+    "pago.consultar_medio_pago": "payment_methods",
+    "pedido.indicar_cantidad": "order_review",
+    "pedido.seleccionar_preparacion": "order_review",
+    "precio.consultar_precio_producto": "product_price",
+    "precio.consultar_precios_generales": "price_overview",
+    "recomendacion.solicitar_recomendacion": "recommendation",
+    "social.saludar": "greeting",
+    "social.agradecer": "thanks",
+    "social.despedirse": "farewell",
+    "domicilio.consultar_domicilio": "delivery_info",
+    "domicilio.consultar_domicilio_grupal": "delivery_group",
+    "domicilio.usar_direccion_previa": "delivery_previous_address",
+    "pedido.consultar_estado_pedido": "order_status",
+    "pedido.cancelar_pedido": "order_cancel_confirm",
+    "pedido.agregar_producto_pedido": "order_add_item",
+    "pedido.solicitar_modificacion": "order_modification_confirm",
+    "pedido.repetir_pedido": "order_repeat_confirm",
+    "reserva_evento.consultar_reserva": "reservation_info",
+    "reserva_evento.solicitar_reserva": "reservation_confirm",
+    "reserva_evento.cancelar_reserva": "reservation_cancel",
+    "reserva_evento.modificar_reserva": "reservation_modify",
+    "reserva_evento.consultar_eventos": "event_info",
+    "reserva_evento.solicitar_evento": "event_quote",
+    "seguridad_alimentaria.consultar_alergenos": "allergen_info",
+    "seguridad_alimentaria.consultar_contaminacion_cruzada": "cross_contamination",
+    "operacion.consultar_empaque": "packaging_info",
+    "operacion.consultar_facturacion": "billing_info",
+    "operacion.consultar_pedido_programado": "scheduled_order_info",
+    "horario_ubicacion.consultar_parqueadero": "parking_info",
+    "horario_ubicacion.consultar_instalacion": "facilities_info"
+  }
+}

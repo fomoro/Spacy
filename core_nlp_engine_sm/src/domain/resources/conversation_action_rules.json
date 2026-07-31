@@ -1,0 +1,682 @@
+{
+  "metadata": {
+    "schema_version": "7.0.0",
+    "purpose": "Definir la siguiente acción conversacional para cada intención y subintención, junto con las preguntas necesarias para ejecutarla.",
+    "language": "es-CO",
+    "conversation_action_count": 8,
+    "intent_subintent_rule_count": 42,
+    "question_count": 69
+  },
+  "conversation_actions": {
+    "resolved": {
+      "category": "successful_resolution",
+      "requires_clarification_compat": false,
+      "description": "Resultado exitoso. La intención tiene información suficiente y el flujo puede continuar sin preguntas, verificaciones ni escalamientos."
+    },
+    "needs_user_clarification": {
+      "category": "clarification",
+      "requires_clarification_compat": true,
+      "description": "Aclaración requerida. Falta información que solamente puede proporcionar o precisar el cliente."
+    },
+    "needs_transaction_confirmation": {
+      "category": "confirmation",
+      "requires_clarification_compat": true,
+      "description": "Confirmación requerida. La solicitud produciría una acción transaccional y el cliente debe confirmarla explícitamente antes de ejecutarla."
+    },
+    "needs_business_lookup": {
+      "category": "operational_lookup",
+      "requires_clarification_compat": true,
+      "description": "Consulta operativa requerida. La respuesta depende de información actual del restaurante, como disponibilidad, precio, cobertura o condiciones del servicio."
+    },
+    "needs_human_safety_validation": {
+      "category": "safety_escalation",
+      "requires_clarification_compat": true,
+      "description": "Escalamiento por seguridad. Una persona debe validar ingredientes, preparación o riesgo de contaminación antes de responder."
+    },
+    "needs_human_assistance": {
+      "category": "human_escalation",
+      "requires_clarification_compat": true,
+      "description": "Escalamiento operativo. Una persona debe continuar una gestión que la aplicación no puede completar automáticamente."
+    },
+    "needs_identity_verification": {
+      "category": "identity_verification",
+      "requires_clarification_compat": true,
+      "description": "Verificación requerida. La aplicación debe comprobar la identidad del cliente antes de consultar o reutilizar información protegida."
+    },
+    "out_of_scope": {
+      "category": "terminal_result",
+      "requires_clarification_compat": false,
+      "description": "Resultado terminal. El mensaje no corresponde a una capacidad reconocida y no debe forzarse una intención."
+    }
+  },
+  "rules_by_intent_and_subintent": {
+    "precio.consultar_precio_producto": {
+      "required_slots": [
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "question_by_slot": {
+        "product": "missing_product_for_price"
+      }
+    },
+    "precio.consultar_precios_generales": {
+      "required_slots": [
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "question_by_slot": {
+        "product": "missing_product_for_price"
+      }
+    },
+    "catalogo.consultar_detalle_producto": {
+      "required_slots": [
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "question_by_slot": {
+        "product": "missing_catalog_product"
+      }
+    },
+    "catalogo.consultar_preparacion_producto": {
+      "required_slots": [
+        "product",
+        "preparation"
+      ],
+      "on_missing": "needs_user_clarification",
+      "question_by_slot": {
+        "product": "missing_catalog_product",
+        "preparation": "missing_preparation"
+      }
+    },
+    "pedido.iniciar_pedido": {
+      "required_slots": [
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "product": "missing_order_product"
+      },
+      "complete_question": "confirm_order"
+    },
+    "pedido.agregar_producto_pedido": {
+      "required_slots": [
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "product": "ambiguous_product_reference"
+      },
+      "complete_question": "confirm_order_change"
+    },
+    "pedido.iniciar_pedido_grupal": {
+      "required_slots": [
+        "party_size",
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "party_size": "missing_party_size",
+        "product": "missing_group_products"
+      },
+      "complete_question": "confirm_group_order"
+    },
+    "pedido.solicitar_modificacion": {
+      "required_slots": [
+        "modification_target",
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "modification_target": "missing_modification_target",
+        "product": "missing_modification_product"
+      },
+      "complete_question": "confirm_modification"
+    },
+    "pedido.repetir_pedido": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_slots": [
+        "order"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "order": "missing_previous_order"
+      },
+      "complete_question": "confirm_repeat_order"
+    },
+    "pedido.seleccionar_preparacion": {
+      "required_slots": [
+        "preparation",
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "question_by_slot": {
+        "preparation": "missing_preparation",
+        "product": "missing_product_reference"
+      }
+    },
+    "pedido.indicar_cantidad": {
+      "required_slots": [
+        "quantity",
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "question_by_slot": {
+        "quantity": "missing_quantity",
+        "product": "missing_product_reference"
+      }
+    },
+    "reserva_evento.solicitar_reserva": {
+      "required_slots": [
+        "date",
+        "time",
+        "party_size"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "date": "missing_reservation_date",
+        "time": "missing_reservation_time",
+        "party_size": "missing_party_size"
+      },
+      "complete_question": "confirm_reservation"
+    },
+    "reserva_evento.solicitar_evento": {
+      "required_slots": [
+        "date",
+        "party_size"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_human_assistance",
+      "question_by_slot": {
+        "date": "missing_event_date",
+        "party_size": "missing_party_size"
+      },
+      "complete_question": "event_human_assistance"
+    },
+    "operacion.consultar_facturacion": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "invoice_business_lookup"
+    },
+    "operacion.consultar_empaque": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "packaging_business_lookup"
+    },
+    "operacion.consultar_pedido_programado": {
+      "required_slots": [
+        "time"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "time": "missing_delivery_time"
+      },
+      "complete_question": "scheduled_order_lookup"
+    },
+    "domicilio.consultar_domicilio_grupal": {
+      "required_slots": [
+        "party_size"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "party_size": "missing_party_size"
+      },
+      "complete_question": "group_delivery_lookup"
+    },
+    "domicilio.solicitar_domicilio": {
+      "required_slots": [
+        "order",
+        "delivery_address"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "order": "missing_delivery_order",
+        "delivery_address": "missing_delivery_address"
+      },
+      "complete_question": "confirm_delivery"
+    },
+    "domicilio.consultar_estado_domicilio": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_any": [
+        [
+          "order_id",
+          "order"
+        ]
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "order_id|order": "missing_delivery_tracking_reference"
+      },
+      "complete_question": "delivery_status_lookup"
+    },
+    "domicilio.usar_direccion_previa": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_slots": [
+        "delivery_address"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "delivery_address": "missing_previous_address"
+      },
+      "complete_question": "confirm_previous_address"
+    },
+    "pago.consultar_pago_mixto": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "mixed_payment_lookup"
+    },
+    "catalogo.consultar_categoria_por_restriccion": {
+      "required_slots": [
+        "dietary_restriction"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "dietary_restriction": "missing_restriction"
+      },
+      "complete_question": "restriction_catalog_lookup"
+    },
+    "catalogo.comparar_productos": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "comparison_lookup"
+    },
+    "horario_ubicacion.consultar_instalacion": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "installation_lookup"
+    },
+    "recomendacion.solicitar_recomendacion_por_alergia": {
+      "required_slots": [
+        "allergen"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_human_safety_validation",
+      "question_by_slot": {
+        "allergen": "missing_allergen"
+      },
+      "complete_question": "safety_validation"
+    },
+    "recomendacion.solicitar_recomendacion_por_restriccion": {
+      "required_slots": [
+        "dietary_restriction"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "dietary_restriction": "missing_restriction"
+      },
+      "complete_question": "restriction_recommendation_lookup"
+    },
+    "seguridad_alimentaria.consultar_alergenos": {
+      "required_slots": [
+        "allergen"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_human_safety_validation",
+      "question_by_slot": {
+        "allergen": "missing_allergen"
+      },
+      "complete_question": "safety_validation"
+    },
+    "seguridad_alimentaria.consultar_contaminacion_cruzada": {
+      "on_complete": "needs_human_safety_validation",
+      "complete_question": "cross_contamination_validation"
+    },
+    "precio.solicitar_recomendacion_por_presupuesto": {
+      "required_slots": [
+        "budget"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "budget": "missing_budget"
+      },
+      "complete_question": "budget_recommendation_lookup"
+    },
+    "catalogo.consultar_disponibilidad_producto": {
+      "required_slots": [
+        "product"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "product": "missing_catalog_product"
+      },
+      "complete_question": "product_availability_lookup"
+    },
+    "domicilio.consultar_domicilio": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "delivery_lookup"
+    },
+    "horario_ubicacion.consultar_parqueadero": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "parking_lookup"
+    },
+    "menu.consultar_cambios_menu": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "menu_changes_lookup"
+    },
+    "reserva_evento.consultar_eventos": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "events_lookup"
+    },
+    "reserva_evento.consultar_reserva": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "reservation_lookup"
+    },
+    "catalogo.consultar_opciones_infantiles": {
+      "on_complete": "needs_business_lookup",
+      "complete_question": "children_options_lookup"
+    },
+    "pedido.seleccionar_modalidad_entrega": {
+      "required_slots": [
+        "fulfillment_method"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "fulfillment_method": "missing_fulfillment_method"
+      },
+      "complete_question": "confirm_fulfillment_method"
+    },
+    "pedido.consultar_estado_pedido": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_any": [
+        [
+          "order_id",
+          "order"
+        ]
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_business_lookup",
+      "question_by_slot": {
+        "order_id|order": "missing_order_tracking_reference"
+      },
+      "complete_question": "order_status_lookup"
+    },
+    "pedido.cancelar_pedido": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_any": [
+        [
+          "order_id",
+          "order"
+        ]
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "order_id|order": "missing_order_cancellation_reference"
+      },
+      "complete_question": "confirm_order_cancellation"
+    },
+    "reserva_evento.modificar_reserva": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_slots": [
+        "reservation_id"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "reservation_id": "missing_reservation_reference"
+      },
+      "complete_question": "confirm_reservation_change"
+    },
+    "reserva_evento.cancelar_reserva": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_slots": [
+        "reservation_id"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_transaction_confirmation",
+      "question_by_slot": {
+        "reservation_id": "missing_reservation_reference"
+      },
+      "complete_question": "confirm_reservation_cancellation"
+    },
+    "operacion.solicitar_factura": {
+      "requires_identity_verification": true,
+      "identity_question": "identity_verification_required",
+      "required_any": [
+        [
+          "order_id",
+          "order"
+        ]
+      ],
+      "required_slots": [
+        "invoice_data"
+      ],
+      "on_missing": "needs_user_clarification",
+      "on_complete": "needs_human_assistance",
+      "question_by_slot": {
+        "order_id|order": "missing_invoice_order_reference",
+        "invoice_data": "missing_invoice_data"
+      },
+      "complete_question": "invoice_human_assistance"
+    }
+  },
+  "questions": {
+    "no_evidence": {
+      "template": "¡Ay! Qué pena, no te entendí muy bien. ¿Me cuentas de nuevo qué se te antoja o qué necesitas?"
+    },
+    "close_candidates": {
+      "template": "¡Qué pena! Estoy un poco confundido. ¿Te refieres a {options}? Cuéntame cuál es la correcta.",
+      "fallback": "¡Qué pena! Entendí dos cosas distintas. ¿Qué te gustaría hacer exactamente?"
+    },
+    "missing_product_for_price": {
+      "template": "¡Claro! ¿De qué plato te gustaría saber el precio?"
+    },
+    "missing_catalog_product": {
+      "template": "¡Súper! ¿De qué platillo te gustaría saber más detalles?"
+    },
+    "missing_order_product": {
+      "template": "¡Listo! ¿Qué plato te gustaría pedir hoy?"
+    },
+    "missing_group_products": {
+      "template": "¡Qué chévere! ¿Qué platos les preparo para el grupo?"
+    },
+    "missing_quantity": {
+      "template": "¿Cuántas porciones te enviamos?"
+    },
+    "missing_party_size": {
+      "template": "¿Para cuántas personas sería, más o menos?"
+    },
+    "missing_preparation": {
+      "template": "¡Con gusto! ¿Cómo prefieres {product}?",
+      "fallback": "¡Súper! ¿Cómo prefieres la preparación?"
+    },
+    "missing_product_reference": {
+      "template": "Disculpa, ¿a cuál de los platos te refieres?"
+    },
+    "ambiguous_product_reference": {
+      "template": "Tengo varios en mente, ¿cuál de esos productos deseas agregar?"
+    },
+    "missing_modification_target": {
+      "template": "¡Claro que sí! ¿Qué ingrediente te gustaría cambiarle?"
+    },
+    "missing_modification_product": {
+      "template": "¿A cuál de los platos le hacemos ese cambiecito?"
+    },
+    "missing_previous_order": {
+      "template": "¡Ay! No encuentro tu pedido anterior. ¿Qué te gustaría volver a pedir?"
+    },
+    "missing_previous_address": {
+      "template": "No me aparece una dirección guardada. ¿A dónde te enviamos el pedido?"
+    },
+    "missing_reservation_date": {
+      "template": "¡Súper! ¿Para qué día te gustaría la reserva?"
+    },
+    "missing_reservation_time": {
+      "template": "¿Y a qué hora te esperamos?"
+    },
+    "missing_event_date": {
+      "template": "¡Qué emoción! ¿Para qué fecha tienes pensado el evento?"
+    },
+    "missing_delivery_time": {
+      "template": "¿Para qué hora te enviamos el domicilio?"
+    },
+    "missing_restriction": {
+      "template": "¡Tranquilo, nosotros nos encargamos! ¿Qué ingrediente debemos evitar?"
+    },
+    "missing_allergen": {
+      "template": "¡Es súper importante! ¿Cuál es el alérgeno al que debemos estar súper atentos?"
+    },
+    "confirm_order": {
+      "template": "¡Excelente elección! ¿Confirmamos el pedido con estos platos y cantidades para mandarlo a cocina?"
+    },
+    "confirm_order_change": {
+      "template": "¡Listo! ¿Confirmamos agregar este plato al pedido?"
+    },
+    "confirm_group_order": {
+      "template": "¡Súper! ¿Confirmamos el pedido para el grupo con las cantidades que me diste?"
+    },
+    "confirm_modification": {
+      "template": "¡Claro que sí! ¿Confirmo este cambio para {product}?",
+      "fallback": "¡Listo! ¿Confirmo esta modificación?"
+    },
+    "confirm_repeat_order": {
+      "template": "¡Qué delicia! ¿Confirmamos enviar exactamente lo mismo de la vez pasada?"
+    },
+    "confirm_reservation": {
+      "template": "¡Todo casi listo! ¿Me confirmas la reserva con estos daticos?"
+    },
+    "confirm_previous_address": {
+      "template": "¡Súper! ¿Te lo enviamos a la misma dirección de siempre?"
+    },
+    "invoice_business_lookup": {
+      "template": "Dame un segundito, valido las condiciones de facturación con el restaurante."
+    },
+    "packaging_business_lookup": {
+      "template": "¡Claro! Déjame revisar con el restaurante si tenemos ese empaque disponible."
+    },
+    "scheduled_order_lookup": {
+      "template": "Déjame le pregunto a cocina si alcanzamos a tenerlo listo para esa hora."
+    },
+    "group_delivery_lookup": {
+      "template": "¡Wow! Déjame valido con el equipo el tiempo y la logística para entregar ese pedido grande."
+    },
+    "missing_delivery_order": {
+      "template": "¿Cuál de los pedidos deseas que te enviemos a domicilio?"
+    },
+    "missing_delivery_address": {
+      "template": "¡Listo! ¿A qué dirección te enviamos esta delicia?"
+    },
+    "confirm_delivery": {
+      "template": "¡Perfecto! ¿Confirmamos enviar el pedido a esa dirección?"
+    },
+    "missing_delivery_tracking_reference": {
+      "template": "¿Me regalas el número o la referencia de tu pedido para revisarlo, porfa?"
+    },
+    "delivery_status_lookup": {
+      "template": "¡Dame un segundo! Ya te averiguo por dónde va tu pedido."
+    },
+    "mixed_payment_lookup": {
+      "template": "Déjame valido rapidito si podemos recibirte esos dos medios de pago juntos."
+    },
+    "restriction_catalog_lookup": {
+      "template": "¡Tranquilo! Déjame revisar con lupa qué opciones son 100% seguras para ti."
+    },
+    "restriction_recommendation_lookup": {
+      "template": "Déjame valido los ingredientes exactos antes de darte una recomendación."
+    },
+    "comparison_lookup": {
+      "template": "¡Súper! Déjame comparo los detallitos de esos platos y te cuento."
+    },
+    "installation_lookup": {
+      "template": "¡Claro! Dame un segundito y te confirmo esa información de nuestras instalaciones."
+    },
+    "event_business_lookup": {
+      "template": "¡Qué chévere! Déjame valido nuestra disponibilidad y el espacio para el evento."
+    },
+    "safety_validation": {
+      "template": "¡La salud es lo primero! Voy a confirmar directamente con el chef los ingredientes y la preparación."
+    },
+    "cross_contamination_validation": {
+      "template": "¡Tranquilo! Voy a reconfirmar con cocina los protocolos de limpieza para que comas tranquilo."
+    },
+    "missing_budget": {
+      "template": "¿Hasta cuánto tienes pensado invertir, más o menos?"
+    },
+    "budget_recommendation_lookup": {
+      "template": "¡Perfecto! Déjame busco unas opciones deliciosas que se ajusten a tu presupuesto."
+    },
+    "product_availability_lookup": {
+      "template": "¡Qué delicia! Déjame reviso rapidito si todavía nos queda."
+    },
+    "delivery_lookup": {
+      "template": "¡Súper! Déjame valido la cobertura y el tiempo que nos demoramos en llegar allá."
+    },
+    "parking_lookup": {
+      "template": "Dame un segundito y te confirmo cómo está el parqueadero hoy."
+    },
+    "menu_changes_lookup": {
+      "template": "¡Claro! Déjame veo qué cositas nuevas metimos en el menú hace poco."
+    },
+    "events_lookup": {
+      "template": "Déjame averiguo rapidito qué condiciones tenemos ahorita para eventos."
+    },
+    "reservation_lookup": {
+      "template": "¡Qué gusto! Déjame reviso la agenda a ver si tenemos mesita libre."
+    },
+    "event_human_assistance": {
+      "template": "¡Qué emocionante! Para que todo salga perfecto, te voy a pasar con alguien de nuestro equipo."
+    },
+    "identity_verification_required": {
+      "template": "¡Qué pena contigo! Para cuidar tus datos, necesito que el sistema verifique tu identidad un momentico."
+    },
+    "out_of_scope": {
+      "template": "¡Ay, qué pena! Me sacaste de base. Todavía no sé cómo ayudarte con eso. Pero aquí estoy si necesitas ver la carta, pedir domicilio, reservar o saber los horarios."
+    },
+    "children_options_lookup": {
+      "template": "¡Claro que sí! Déjame reviso qué cositas ricas tenemos para los más chiquitos."
+    },
+    "missing_fulfillment_method": {
+      "template": "¡Súper! ¿Te lo enviamos a domicilio, pasas a recogerlo, o vienes a comer aquí?"
+    },
+    "confirm_fulfillment_method": {
+      "template": "¡Listo! ¿Me confirmas si te lo entrego así?"
+    },
+    "missing_order_tracking_reference": {
+      "template": "¿Me regalas el número del pedido que quieres revisar, porfa?"
+    },
+    "order_status_lookup": {
+      "template": "¡Dame un segundito! Ya mismo pregunto cómo va tu pedido."
+    },
+    "missing_order_cancellation_reference": {
+      "template": "¡Uy, qué pena! ¿Me regalas el número del pedido que quieres cancelar?"
+    },
+    "confirm_order_cancellation": {
+      "template": "¿Estás súper seguro de que quieres cancelar este pedido?"
+    },
+    "missing_reservation_reference": {
+      "template": "¿Me das el nombre o numerito de la reserva, por favor?"
+    },
+    "confirm_reservation_change": {
+      "template": "¡Súper! ¿Confirmamos entonces el cambio en la reserva?"
+    },
+    "confirm_reservation_cancellation": {
+      "template": "¿Estás súper seguro de que deseas cancelar la reserva?"
+    },
+    "missing_invoice_order_reference": {
+      "template": "¿Me recuerdas el numerito del pedido para sacarte la factura?"
+    },
+    "missing_invoice_data": {
+      "template": "¡Claro que sí! ¿Me regalas los daticos para hacerte la factura electrónica?"
+    },
+    "invoice_human_assistance": {
+      "template": "¡Listo! Alguien de nuestro equipo ya mismo se encarga de enviarte la factura."
+    }
+  }
+}

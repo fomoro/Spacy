@@ -1,0 +1,12 @@
+{
+  "casos_evaluados": 600,
+  "casos_con_senales_de_lemas": 593,
+  "errores": 0,
+  "modelo_con_lematizador": true,
+  "fuentes_de_lema": {
+    "spacy": 17015,
+    "catalog_fallback": 2323,
+    "surface": 0
+  },
+  "nota": "Las señales de lemas son neutrales. Su correspondencia con intenciones se evalúa en la capa de aplicación."
+}

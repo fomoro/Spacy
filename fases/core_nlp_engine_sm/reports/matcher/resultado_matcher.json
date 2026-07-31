@@ -1,7 +1,0 @@
-{
-  "total_casos": 600,
-  "mensajes_con_senales_sintacticas": 600,
-  "total_senales_sintacticas": 8620,
-  "errores": 0,
-  "nota": "Cobertura técnica de señales sintácticas; la correspondencia con intenciones pertenece a la aplicación."
-}

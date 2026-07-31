@@ -1,0 +1,19 @@
+Sí, puedes probar únicamente infraestructura usando ambos, pero con objetivos distintos.
+
+El benchmark puede reutilizarse como fuente de mensajes, pero no debes medir todavía intención, subintención, preguntas o acciones conversacionales, porque eso pertenece a aplicación/dominio. En infraestructura debes medir:
+
+- `TextNormalizerService`: texto normalizado y conservación del significado.
+- `PhraseMatcherService`: entidades y productos reconocidos.
+- `MatcherService`: señales sintácticas detectadas.
+- `LemmaService`: lemas y señales lingüísticas.
+- `EntityRulerService`: fechas, horas, cantidades y demás entidades regladas.
+- `TextCategorizerService`: todavía no, porque está pendiente de implementación.
+
+Las conversaciones de Carlos y Diego también sirven, principalmente como pruebas de recorrido: procesas cada mensaje individualmente por todos los servicios y compruebas que ninguno falle y que sus resultados sean razonables.
+
+La diferencia importante es:
+
+- Benchmark: permite métricas automáticas solo cuando tiene anotada la salida esperada del servicio evaluado.
+- Conversaciones: permiten probar mensajes en secuencia y detectar comportamientos extraños, pero no ofrecen un porcentaje de precisión si solo contienen los mensajes.
+
+Por tanto, sí podemos probar infraestructura con los dos. Primero conviene usar el benchmark para pruebas repetibles por componente y después las conversaciones como validación manual y prueba de robustez. No necesitamos involucrar `IntentResolver`, `LinguisticParser` ni `EvidenceMapper`.
